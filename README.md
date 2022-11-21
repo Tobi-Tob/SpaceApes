@@ -1,6 +1,6 @@
 # SpaceApesRepo
 This is the Space Apes repository of Tobi
 
-![](SpaceApes/assets/logo.png)
+![Affe](SpaceApes/assets/logo.png)
 
 
