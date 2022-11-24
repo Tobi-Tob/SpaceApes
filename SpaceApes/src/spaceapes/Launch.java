@@ -18,9 +18,9 @@ public class Launch extends StateBasedGame {
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
-	public static final int WIDTH = 1200; // Pixelbreite des Fensters
-	public static final int HEIGHT = 900; // Pixelhoehe des Fensters
-
+	public static final int HEIGHT = 450; // Pixel Mittelpunkt des Fensters
+	public static final int WIDTH = 600; // Fenster Verhaeltniss 3 zu 4
+	
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
 	}
@@ -41,7 +41,7 @@ public class Launch extends StateBasedGame {
 
 		// Lege die Einstellungen des Fensters fest und starte das Fenster
 		// (nicht aber im Vollbildmodus)
-		app.setDisplayMode(WIDTH, HEIGHT, false);
+		app.setDisplayMode(WIDTH * 2, HEIGHT * 2, false);
 		app.start();
 	}
 

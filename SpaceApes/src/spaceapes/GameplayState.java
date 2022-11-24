@@ -46,9 +46,9 @@ public class GameplayState extends BasicGameState {
 		// Hintergrund laden
 		Entity background = new Entity("background"); // Entitaet fuer Hintergrund
 		// Startposition des Hintergrunds (Mitte des Fensters)
-		background.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
+		background.setPosition(Utils.toPixelCoordinates(0, 0));
 		background.setScale(0.9f);
-		background.addComponent(new ImageRenderComponent(new Image("/assets/stars6.jpg"))); // Bildkomponente
+		background.addComponent(new ImageRenderComponent(new Image("/assets/stars5.jpg"))); // Bildkomponente
 
 		// Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 		StateBasedEntityManager.getInstance().addEntity(stateID, background);
@@ -73,9 +73,9 @@ public class GameplayState extends BasicGameState {
 
 				try {
 					// Bild laden und zuweisen
-					drop.addComponent(new ImageRenderComponent(new Image("assets/drop.png")));
+					drop.addComponent(new ImageRenderComponent(new Image("assets/coconut.png")));
 				} catch (SlickException e) {
-					System.err.println("Cannot find file assets/drop.png!");
+					System.err.println("Cannot find file assets/coconut.png!");
 					e.printStackTrace();
 				}
 

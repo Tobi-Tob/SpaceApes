@@ -41,8 +41,8 @@ public class MainMenuState extends BasicGameState {
 		// Hintergrund laden
 		Entity menu_background = new Entity("menu"); // Entitaet fuer Hintergrund
 		// Startposition des Hintergrunds (Mitte des Fensters)
-		menu_background.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-		menu_background.setScale((float) Launch.HEIGHT / 2880);
+		menu_background.setPosition(Utils.toPixelCoordinates(0, 0));
+		menu_background.setScale((float) Launch.HEIGHT / 1440);
 		menu_background.addComponent(new ImageRenderComponent(new Image("/assets/menuSP.png"))); // Bildkomponente
 
 		// Hintergrund-Entitaet an StateBasedEntityManager uebergeben
@@ -53,7 +53,7 @@ public class MainMenuState extends BasicGameState {
 		Entity new_Game_Entity = new Entity(new_Game);
 
 		// Setze Position und Bildkomponente
-		new_Game_Entity.setPosition(new Vector2f(Launch.WIDTH / 5, Launch.HEIGHT / 2));
+		new_Game_Entity.setPosition(Utils.toPixelCoordinates(-5, 0.5f));
 		new_Game_Entity.setScale(0.25f);
 		new_Game_Entity.addComponent(new ImageRenderComponent(new Image("assets/button_start.png")));
 
@@ -70,7 +70,7 @@ public class MainMenuState extends BasicGameState {
 		Entity quit_Entity = new Entity("Beenden");
 
 		// Setze Position und Bildkomponente
-		quit_Entity.setPosition(new Vector2f(Launch.WIDTH / 6, Launch.HEIGHT / 1.4f));
+		quit_Entity.setPosition(Utils.toPixelCoordinates(-5, 3));
 		quit_Entity.setScale(0.25f);
 		quit_Entity.addComponent(new ImageRenderComponent(new Image("assets/button_beenden.png")));
 
