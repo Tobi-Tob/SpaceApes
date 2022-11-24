@@ -20,7 +20,7 @@ public class Launch extends StateBasedGame {
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HEIGHT = 450; // Pixel Mittelpunkt des Fensters
 	public static final int WIDTH = 600; // Fenster Verhaeltniss 3 zu 4
-	
+
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
 	}

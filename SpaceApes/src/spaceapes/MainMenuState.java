@@ -74,6 +74,14 @@ public class MainMenuState extends BasicGameState {
 		quit_Entity.setScale(0.25f);
 		quit_Entity.addComponent(new ImageRenderComponent(new Image("assets/button_beenden.png")));
 
+		// TEST
+		// Entity coconut = new Entity("coconut");
+		// coconut.setPosition(Utils.toPixelCoordinates(5.4f, 2.2f));
+		// coconut.setScale(1);
+		// coconut.setRotation(70);
+		// coconut.addComponent(newImageRenderComponent(newImage("assets/coconut.png")));
+		// entityManager.addEntity(this.stateID, coconut);
+
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent mainEvents_q = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		Action quit_Action = new QuitAction();

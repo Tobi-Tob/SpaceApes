@@ -45,13 +45,26 @@ public class GameplayState extends BasicGameState {
 
 		// Hintergrund laden
 		Entity background = new Entity("background"); // Entitaet fuer Hintergrund
-		// Startposition des Hintergrunds (Mitte des Fensters)
-		background.setPosition(Utils.toPixelCoordinates(0, 0));
+		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
 		background.setScale(0.9f);
-		background.addComponent(new ImageRenderComponent(new Image("/assets/stars5.jpg"))); // Bildkomponente
+		background.addComponent(new ImageRenderComponent(new Image("/assets/stars1.jpg"))); // Bildkomponente
 
-		// Hintergrund-Entitaet an StateBasedEntityManager uebergeben
-		StateBasedEntityManager.getInstance().addEntity(stateID, background);
+		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
+
+		// Planeten laden
+		Entity planet1 = new Entity("planet1");
+		Entity planet2 = new Entity("planet2");
+		// an zufaelliger Position platzieren, skalieren und drehen
+		planet1.setPosition(Utils.toPixelCoordinates(Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)));
+		planet2.setPosition(Utils.toPixelCoordinates(Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)));
+		planet1.setScale(Utils.randomFloat(0.3f, 1));
+		planet2.setScale(Utils.randomFloat(0.3f, 1));
+		planet1.setRotation(Utils.randomFloat(-30, 30));
+		planet2.setRotation(Utils.randomFloat(-30, 30));
+		planet1.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
+		planet2.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
+		entityManager.addEntity(stateID, planet1);
+		entityManager.addEntity(stateID, planet2);
 
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Entity esc_Listener = new Entity("ESC_Listener");
@@ -67,9 +80,10 @@ public class GameplayState extends BasicGameState {
 		mouse_Clicked.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				// Wassertropfen wird erzeugt
-				Entity drop = new Entity("drop of water");
+				// Kokusnuss wird erzeugt
+				Entity drop = new Entity("drop of coconut");
 				drop.setPosition(new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY()));
+				drop.setRotation(Utils.randomFloat(0, 360));
 
 				try {
 					// Bild laden und zuweisen
@@ -79,7 +93,7 @@ public class GameplayState extends BasicGameState {
 					e.printStackTrace();
 				}
 
-				// Wassertropfen faellt nach unten
+				// Kokusnuss faellt nach unten
 				LoopEvent loop = new LoopEvent();
 				loop.addAction(new MoveDownAction(0.5f));
 				drop.addComponent(loop);
@@ -89,8 +103,6 @@ public class GameplayState extends BasicGameState {
 
 				// ... zerstoere den Wassertropfen
 				lse.addAction(new DestroyEntityAction());
-				// ... und wechsle ins Hauptmenue
-				// lse.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
 
 				drop.addComponent(lse);
 				entityManager.addEntity(stateID, drop);
