@@ -52,16 +52,27 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
 		// Planeten an zufaelliger Position initialisieren
-		PlanetEntity planet1 = new PlanetEntity("planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
-		PlanetEntity planet2 = new PlanetEntity("planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
+		Planet planet1 = new Planet("planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
+		Planet planet2 = new Planet("planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
 		// Bild hinzufuegen
 		planet1.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
 		planet2.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-		java.lang.System.out.println(planet1.getID() + " size: " + planet1.size() + " mass: " + planet1.mass());
-		java.lang.System.out.println(planet2.getID() + " size: " + planet2.size() + " mass: " + planet2.mass());
+		java.lang.System.out.println(planet1.getID() + " -> size: " + planet1.size() + " mass: " + planet1.mass());
+		java.lang.System.out.println(planet2.getID() + " -> size: " + planet2.size() + " mass: " + planet2.mass());
 		// entityManager uebergeben
 		entityManager.addEntity(stateID, planet1);
 		entityManager.addEntity(stateID, planet2);
+
+		// Affe initialisieren
+		Ape ape1 = new Ape("ape1", planet1, 0);
+		Ape ape2 = new Ape("ape2", planet1, 0);
+		Ape ape3 = new Ape("ape3", planet2, 1);
+		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
+		ape2.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
+		ape3.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
+		entityManager.addEntity(stateID, ape1);
+		entityManager.addEntity(stateID, ape2);
+		entityManager.addEntity(stateID, ape3);
 
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Entity esc_Listener = new Entity("ESC_Listener");
@@ -80,6 +91,7 @@ public class GameplayState extends BasicGameState {
 				// Kokusnuss wird erzeugt
 				Entity drop = new Entity("drop of coconut");
 				drop.setPosition(new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY()));
+				drop.setScale(0.8f);
 				drop.setRotation(Utils.randomFloat(0, 360));
 
 				try {
