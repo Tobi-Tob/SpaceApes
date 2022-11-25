@@ -51,18 +51,15 @@ public class GameplayState extends BasicGameState {
 
 		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
-		// Planeten laden
-		Entity planet1 = new Entity("planet1");
-		Entity planet2 = new Entity("planet2");
-		// an zufaelliger Position platzieren, skalieren und drehen
-		planet1.setPosition(Utils.toPixelCoordinates(Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)));
-		planet2.setPosition(Utils.toPixelCoordinates(Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)));
-		planet1.setScale(Utils.randomFloat(0.3f, 1));
-		planet2.setScale(Utils.randomFloat(0.3f, 1));
-		planet1.setRotation(Utils.randomFloat(-30, 30));
-		planet2.setRotation(Utils.randomFloat(-30, 30));
+		// Planeten an zufaelliger Position initialisieren
+		PlanetEntity planet1 = new PlanetEntity("planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
+		PlanetEntity planet2 = new PlanetEntity("planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
+		// Bild hinzufuegen
 		planet1.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
 		planet2.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
+		java.lang.System.out.println(planet1.getID() + " size: " + planet1.size() + " mass: " + planet1.mass());
+		java.lang.System.out.println(planet2.getID() + " size: " + planet2.size() + " mass: " + planet2.mass());
+		// entityManager uebergeben
 		entityManager.addEntity(stateID, planet1);
 		entityManager.addEntity(stateID, planet2);
 
@@ -73,7 +70,7 @@ public class GameplayState extends BasicGameState {
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
 
-		// Bei Mausklick soll Wassertropfen erscheinen
+		// Bei Mausklick soll Kokosnuss erscheinen
 		Entity mouse_Clicked_Listener = new Entity("Mouse_Clicked_Listener");
 		MouseClickedEvent mouse_Clicked = new MouseClickedEvent();
 
@@ -101,7 +98,7 @@ public class GameplayState extends BasicGameState {
 				// Wenn der Bildschirm verlassen wird, dann ...
 				LeavingScreenEvent lse = new LeavingScreenEvent();
 
-				// ... zerstoere den Wassertropfen
+				// ... zerstoere Kokosnuss
 				lse.addAction(new DestroyEntityAction());
 
 				drop.addComponent(lse);
