@@ -13,6 +13,7 @@ import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.DestroyEntityAction;
 import eea.engine.action.basicactions.MoveDownAction;
+import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -47,7 +48,7 @@ public class GameplayState extends BasicGameState {
 		Entity background = new Entity("background"); // Entitaet fuer Hintergrund
 		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
 		background.setScale(0.9f);
-		background.addComponent(new ImageRenderComponent(new Image("/assets/stars1.jpg"))); // Bildkomponente
+		background.addComponent(new ImageRenderComponent(new Image("/assets/stars2.jpeg"))); // Bildkomponente
 
 		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
@@ -81,6 +82,28 @@ public class GameplayState extends BasicGameState {
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
 
+		// Bei Druecken der Pfeiltasten Taste Affe laeuft nach rechts/links
+		Entity right_Listener = new Entity("Right_Listener");
+		Entity left_Listener = new Entity("Left_Listener");
+		KeyPressedEvent right_pressed = new KeyPressedEvent(Input.KEY_RIGHT);
+		KeyPressedEvent left_pressed = new KeyPressedEvent(Input.KEY_LEFT);
+		right_pressed.addAction(new Action() {
+			@Override
+			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+				ape1.stepRigth();
+			}
+		});
+		left_pressed.addAction(new Action() {
+			@Override
+			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+				ape1.stepLeft();
+			}
+		});
+		right_Listener.addComponent(right_pressed);
+		left_Listener.addComponent(left_pressed);
+		entityManager.addEntity(stateID, right_Listener);
+		entityManager.addEntity(stateID, left_Listener);
+
 		// Bei Mausklick soll Kokosnuss erscheinen
 		Entity mouse_Clicked_Listener = new Entity("Mouse_Clicked_Listener");
 		MouseClickedEvent mouse_Clicked = new MouseClickedEvent();
@@ -104,7 +127,7 @@ public class GameplayState extends BasicGameState {
 
 				// Kokusnuss faellt nach unten
 				LoopEvent loop = new LoopEvent();
-				loop.addAction(new MoveDownAction(0.5f));
+				loop.addAction(new RotateRightAction(0.5f));
 				drop.addComponent(loop);
 
 				// Wenn der Bildschirm verlassen wird, dann ...

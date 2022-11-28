@@ -24,18 +24,53 @@ public class Ape extends Entity {
 		setRotation(angleOnPlanet);
 	}
 
-	public Vector2f calcApePosition() {
+	/**
+	 * Bestimmt Abstand vom Mittelpunkt des Affen zum Mittelpunkt seines Planeten.
+	 * Faktoren a und b muessen manuell angepasst werden bei Nutzung anderer Bildern
+	 * 
+	 * @throws RuntimeException wenn Radius zu klein
+	 */
+	private float calcRadius() throws RuntimeException {
 		float a = 0.2f; // Faktor a Abhaengig von Groesse und Skalierung des Planetenbilds
 		float b = 0.2f; // Faktor b Abhaengig von Groesse und Skalierung des Affenbilds
 						// Hinweis: Erst a justieren, bis Affenmittelpunkt auf Planetenoberflaeche, dann
 						// mit b den Affen etwas von der Oberflaeche anheben
 		float r = homePlanet.size() * a + b; // Radius von Planetenmittelpunkt zu Affenmittelpunkt
+		if (r > 0.5f) {
+			return r;
+		} else
+			throw new RuntimeException("Radius ist zu klein");
+	}
+
+	/**
+	 * Berechnet die Welt-Koordinaten des Affen, abhaengig von seinem Winkel auf dem
+	 * Planeten (angleOnPlanet) und der Position des Planeten
+	 * 
+	 * @return Vector2f in Welt-Koordinaten
+	 */
+	public Vector2f calcApePosition() {
+		float r = this.calcRadius();
 		double angleInRad = Math.toRadians(angleOnPlanet);
-		// Koordinaten des Planetenmittelpunktes + relative Koordinaten vom Planeten zum
-		// Affen
+		// Koordinaten des Planeten + relative Koordinaten vom Planeten zum Affen
 		float apePos_x = homePlanet.getCoordinates().x + r * (float) Math.sin(angleInRad);
 		float apePos_y = homePlanet.getCoordinates().y - r * (float) Math.cos(angleInRad); // Minus, da y-Achse nach unten
 		return new Vector2f(apePos_x, apePos_y);
+	}
+
+	public void stepRigth() {
+		float c = 4; // Faktor c fuer die Schrittweite des Affen
+		angleOnPlanet += c / calcRadius(); // Update des Winkels
+
+		setPosition(Utils.toPixelCoordinates(this.calcApePosition()));
+		setRotation(angleOnPlanet);
+	}
+
+	public void stepLeft() {
+		float c = 4; // Faktor c fuer die Schrittweite des Affen
+		angleOnPlanet -= c / calcRadius(); // Update des Winkels
+
+		setPosition(Utils.toPixelCoordinates(this.calcApePosition()));
+		setRotation(angleOnPlanet);
 	}
 
 	public int belongsToPlayer() {
