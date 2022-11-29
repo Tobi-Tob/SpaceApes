@@ -4,7 +4,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.Movement;
 
-// funktioniert noch nicht
+// wird nicht benoetigt
 public class StepRightOnPlanetAction extends Movement implements Action{
 	public Planet planet;
 
@@ -17,7 +17,6 @@ public class StepRightOnPlanetAction extends Movement implements Action{
 
 	@Override
 	public Vector2f getNextPosition(Vector2f arg0, float arg1, float arg2, int arg3) {
-		// TODO Auto-generated method stub
 		return null;
 	};
 }

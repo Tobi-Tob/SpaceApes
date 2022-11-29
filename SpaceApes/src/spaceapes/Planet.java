@@ -5,34 +5,55 @@ import eea.engine.entity.Entity;
 
 public class Planet extends Entity {
 
-	private final int size;
+	private final float radius;
 	private final float mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private int amountApes = 0;
+
+	private final float scalingFactor = 0.5f; // So justieren, dass ein Planet bei (0,0) und Radius 6 genau den oberen und
+												// unteren Rand des Bildes beruehrt
 
 	/**
 	 * Konstruktor initialisiert Planet mit zufaelligen Eigenschaften: Groesse,
 	 * Masse, Ausrichtung
 	 * 
-	 * @param entityID
-	 * @param x_y      in Welt-Koordinaten
+	 * @param entityID String
+	 * @param x in Welt-Koordinaten
+	 * @param y in Welt-Koordinaten
 	 */
 	public Planet(String entityID, float x, float y) {
 		super(entityID);
-		size = (int) Utils.randomFloat(3, 10); // Integer zwischen 3 und 9
-		mass = Math.round(size * Utils.randomFloat(8, 12)) / 10f; // Float zwischen 2,4 und 10,8
+		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.7 und 1.5
+		mass = radius * Utils.randomFloat(0.8f, 1.2f) * 6; // Float zwischen 3,6 und 10,8
 		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
 
 		setPosition(Utils.toPixelCoordinates(coordinates));
-		setScale(size / 10f);
+		setScale(radius * scalingFactor);
 		setRotation(Utils.randomFloat(-30, 30));
 	}
 
-	public int size() {
-		return size;
+	/**
+	 * Bestimmt Abstand vom Mittelpunkt des Planeten zur Kreisbahn auf der sich alle
+	 * Entitaeten bewegen. Interner Faktor a muss manuell angepasst werden bei Nutzung
+	 * anderer Bildern
+	 * 
+	 * @return float in Welt-Koordinaten
+	 * @throws RuntimeException wenn Radius zu klein
+	 */
+	public float distanceToEntityPosition() throws RuntimeException {
+		float a = 0.2f; // Faktor a Abhaengig von Groesse und Skalierung des Affenbilds
+		float dist = getRadius() + a;
+		if (dist > 0.5f) {
+			return dist;
+		} else
+			throw new RuntimeException("Radius ist zu klein");
 	}
 
-	public float mass() {
+	public float getRadius() {
+		return radius;
+	}
+
+	public float getMass() {
 		return mass;
 	}
 
@@ -46,14 +67,13 @@ public class Planet extends Entity {
 	public boolean hasApes() {
 		if (amountApes > 0) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	public void addApeToPlanet() {
-		amountApes ++;
+		amountApes++;
 	}
 
 }

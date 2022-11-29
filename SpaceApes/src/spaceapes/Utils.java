@@ -48,8 +48,8 @@ public final class Utils {
 	/**
 	 * Gibt einen zufaelligen float-Wert zwischen a und b zurück
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a float
+	 * @param b float
 	 * @return float
 	 */
 	public static float randomFloat(float a, float b) {

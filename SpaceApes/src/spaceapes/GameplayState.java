@@ -18,6 +18,7 @@ import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
@@ -26,7 +27,7 @@ import eea.engine.event.basicevents.MouseClickedEvent;
 /**
  * @author Timo Baehr
  *
- *         Diese Klasse repraesentiert das Spielfenster.
+ *         Diese Klasse repraesentiert das Spielfenster
  */
 public class GameplayState extends BasicGameState {
 
@@ -44,82 +45,77 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
-		// Hintergrund laden
-		Entity background = new Entity("background"); // Entitaet fuer Hintergrund
-		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		background.setScale(0.9f);
-		background.addComponent(new ImageRenderComponent(new Image("/assets/stars2.jpeg"))); // Bildkomponente
+		/* Hintergrund */
 
+		Entity background = new Entity("background"); // Entitaet fuer Hintergrund erzeugen
+		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
+		background.setScale(0.9f); // Skalieren des Hintergrunds
+		background.addComponent(new ImageRenderComponent(new Image("/assets/stars2.jpeg"))); // Bildkomponente
 		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
-		// Planeten an zufaelliger Position initialisieren
-		Planet planet1 = new Planet("planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
-		Planet planet2 = new Planet("planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
-		// Bild hinzufuegen
+		/* Planeten */
+
+		// Zufaellig auf der linken und rechten Haelfte des Spielfelds platzieren
+		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
+		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
 		planet1.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
 		planet2.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-		java.lang.System.out.println(planet1.getID() + " -> size: " + planet1.size() + " mass: " + planet1.mass());
-		java.lang.System.out.println(planet2.getID() + " -> size: " + planet2.size() + " mass: " + planet2.mass());
-		// entityManager uebergeben
+		// Ausgabe zum testen
+		java.lang.System.out
+				.println(planet1.getID() + " -> Radius: " + planet1.getRadius() + " Mass: " + planet1.getMass());
+		java.lang.System.out
+				.println(planet2.getID() + " -> Radius: " + planet2.getRadius() + " Mass: " + planet2.getMass());
 		entityManager.addEntity(stateID, planet1);
 		entityManager.addEntity(stateID, planet2);
 
-		// Affe initialisieren
-		Ape ape1 = new Ape("ape1", planet1, 0);
-		Ape ape2 = new Ape("ape2", planet1, 0);
-		Ape ape3 = new Ape("ape3", planet2, 1);
-		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
-		ape2.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
-		ape3.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
+		/* Affen */
+
+		Ape ape0 = new Ape("ape1", planet1, 0); // Spieler 0
+		Ape ape1 = new Ape("ape2", planet2, 1); // Spieler 1
+		ape0.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
+		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
+		entityManager.addEntity(stateID, ape0);
 		entityManager.addEntity(stateID, ape1);
-		entityManager.addEntity(stateID, ape2);
-		entityManager.addEntity(stateID, ape3);
 
-		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
-		Entity esc_Listener = new Entity("ESC_Listener");
-		KeyPressedEvent esc_pressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		esc_pressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
-		esc_Listener.addComponent(esc_pressed);
-		entityManager.addEntity(stateID, esc_Listener);
-
-		// Bei Druecken der Pfeiltasten Taste Affe laeuft nach rechts/links
+		// Bei Druecken der Pfeiltasten Taste soll Affe nach rechts/links laufen
 		Entity right_Listener = new Entity("Right_Listener");
 		Entity left_Listener = new Entity("Left_Listener");
-		KeyPressedEvent right_pressed = new KeyPressedEvent(Input.KEY_RIGHT);
-		KeyPressedEvent left_pressed = new KeyPressedEvent(Input.KEY_LEFT);
-		right_pressed.addAction(new Action() {
+		KeyDownEvent right_key_pressed = new KeyDownEvent(Input.KEY_RIGHT);
+		KeyDownEvent left_key_pressed = new KeyDownEvent(Input.KEY_LEFT);
+		right_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				ape1.stepRigth();
+				ape0.stepOnPlanet(1); // rechts
 			}
 		});
-		left_pressed.addAction(new Action() {
+		left_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				ape1.stepLeft();
+				ape0.stepOnPlanet(-1); // links
 			}
 		});
-		right_Listener.addComponent(right_pressed);
-		left_Listener.addComponent(left_pressed);
+		right_Listener.addComponent(right_key_pressed);
+		left_Listener.addComponent(left_key_pressed);
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
 
+		/* Kokusnuss */
+		
 		// Bei Mausklick soll Kokosnuss erscheinen
 		Entity mouse_Clicked_Listener = new Entity("Mouse_Clicked_Listener");
 		MouseClickedEvent mouse_Clicked = new MouseClickedEvent();
-
 		mouse_Clicked.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				// Kokusnuss wird erzeugt
-				Entity drop = new Entity("drop of coconut");
-				drop.setPosition(new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY()));
-				drop.setScale(0.8f);
-				drop.setRotation(Utils.randomFloat(0, 360));
+				Entity coconut = new Entity("Coconut");
+				coconut.setPosition(new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY()));
+				coconut.setScale(0.7f);
+				coconut.setRotation(Utils.randomFloat(0, 360));
 
 				try {
 					// Bild laden und zuweisen
-					drop.addComponent(new ImageRenderComponent(new Image("assets/coconut.png")));
+					coconut.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
 				} catch (SlickException e) {
 					System.err.println("Cannot find file assets/coconut.png!");
 					e.printStackTrace();
@@ -127,22 +123,29 @@ public class GameplayState extends BasicGameState {
 
 				// Kokusnuss faellt nach unten
 				LoopEvent loop = new LoopEvent();
-				loop.addAction(new RotateRightAction(0.5f));
-				drop.addComponent(loop);
+				loop.addAction(new MoveDownAction(0.5f));
+				loop.addAction(new RotateRightAction(Utils.randomFloat(-0.2f, 0.2f)));
+				coconut.addComponent(loop);
 
 				// Wenn der Bildschirm verlassen wird, dann ...
 				LeavingScreenEvent lse = new LeavingScreenEvent();
-
 				// ... zerstoere Kokosnuss
 				lse.addAction(new DestroyEntityAction());
 
-				drop.addComponent(lse);
-				entityManager.addEntity(stateID, drop);
+				coconut.addComponent(lse);
+				entityManager.addEntity(stateID, coconut);
 			}
 		});
 		mouse_Clicked_Listener.addComponent(mouse_Clicked);
 
 		entityManager.addEntity(stateID, mouse_Clicked_Listener);
+
+		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
+		Entity esc_Listener = new Entity("ESC_Listener");
+		KeyPressedEvent esc_pressed = new KeyPressedEvent(Input.KEY_ESCAPE);
+		esc_pressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
+		esc_Listener.addComponent(esc_pressed);
+		entityManager.addEntity(stateID, esc_Listener);
 
 	}
 
