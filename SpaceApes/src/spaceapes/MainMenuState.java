@@ -28,7 +28,7 @@ public class MainMenuState extends BasicGameState {
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
 	MainMenuState(int sid) {
-		stateID = sid;
+		stateID = sid; // MAINMENU_STATE = 0
 		entityManager = StateBasedEntityManager.getInstance();
 	}
 

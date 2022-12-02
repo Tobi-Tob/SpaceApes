@@ -1,5 +1,7 @@
 package spaceapes;
 
+import java.util.Random;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -32,10 +34,12 @@ import eea.engine.event.basicevents.MouseClickedEvent;
 public class GameplayState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
+	private Player activePlayer; // Spieler, der am Zug ist
+	private boolean PlayerInteractionAllowed = true;
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
 	GameplayState(int sid) {
-		stateID = sid;
+		stateID = sid; // GAMEPLAY_STATE = 1
 		entityManager = StateBasedEntityManager.getInstance();
 	}
 
@@ -44,6 +48,18 @@ public class GameplayState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+
+		/* Spieler */
+
+		Player playerA = new Player("PlayerA");
+		Player playerB = new Player("PlayerB");
+		Random random = new Random(); // Zuaelligen Spieler zum Starten auswaehlen
+		if (random.nextBoolean()) {
+			activePlayer = playerA;
+		} else {
+			activePlayer = playerB;
+		}
+		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
 		/* Hintergrund */
 
@@ -70,12 +86,12 @@ public class GameplayState extends BasicGameState {
 
 		/* Affen */
 
-		Ape ape0 = new Ape("ape1", planet1, 0); // Spieler 0
-		Ape ape1 = new Ape("ape2", planet2, 1); // Spieler 1
-		ape0.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
-		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
-		entityManager.addEntity(stateID, ape0);
+		Ape ape1 = new Ape("ape1", planet1, playerA); // Spieler A (linke Spielhaelfte)
+		Ape ape2 = new Ape("ape2", planet2, playerB); // Spieler B (rechte Spielhaelfte)
+		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
+		ape2.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
 		entityManager.addEntity(stateID, ape1);
+		entityManager.addEntity(stateID, ape2);
 
 		// Bei Druecken der Pfeiltasten Taste soll Affe nach rechts/links laufen
 		Entity right_Listener = new Entity("Right_Listener");
@@ -85,13 +101,17 @@ public class GameplayState extends BasicGameState {
 		right_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				ape0.stepOnPlanet(1); // rechts
+				if (PlayerInteractionAllowed) {
+					activePlayer.getApe().stepOnPlanet(1); // rechts rum
+				}
 			}
 		});
 		left_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				ape0.stepOnPlanet(-1); // links
+				if (PlayerInteractionAllowed) {
+					activePlayer.getApe().stepOnPlanet(-1); // links rum
+				}
 			}
 		});
 		right_Listener.addComponent(right_key_pressed);
@@ -100,7 +120,7 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, left_Listener);
 
 		/* Kokusnuss */
-		
+
 		// Bei Mausklick soll Kokosnuss erscheinen
 		Entity mouse_Clicked_Listener = new Entity("Mouse_Clicked_Listener");
 		MouseClickedEvent mouse_Clicked = new MouseClickedEvent();

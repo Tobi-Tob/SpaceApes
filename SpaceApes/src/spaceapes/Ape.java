@@ -5,36 +5,40 @@ import eea.engine.entity.Entity;
 
 public class Ape extends Entity {
 
-	private final int belongsToPlayer; // Zugehoeriger Spieler (0 oder 1)
+	private final Player belongsToPlayer; // Zugehoeriger Spieler (0 oder 1)
 	private final Planet homePlanet; // Planet auf dem sich der Affe befindet
-	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
-												// bewegt
+
 	private float angleOnPlanet; // Repraesentiert durch Winkel, Drehsinn mathematisch positiv, 0 enspricht dem
 									// noerdlichsten Punkt
-	private float movmentSpeed; // Faktor fuer die Schrittweite des Affen
-	private int health;
+	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
+												// bewegt
+	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
+	public final float apeScalingFactor = 0.1f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
+	public final float apeDistanceFromSurface = 0.2f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
+	private int health = 100;
 
 	/**
-	 * Konstruktor fuegt Planeten einen Affen hinzu, der zufaellig auf der
-	 * Oberflaeche platziert wird
+	 * Konstruktor fuegt einem Planet einen Affen hinzu, der zufaellig auf der
+	 * Oberflaeche platziert wird. Ebenso wird der Spieler mit seinem Affen
+	 * verknuepft
 	 * 
 	 * @param entityID String
 	 * @param planet   Zugehoeriger Planet
-	 * @param player   Zugehoeriger Spieler (0 Oder 1)
+	 * @param player   Zugehoeriger Spieler
 	 */
-	public Ape(String entityID, Planet planet, int player) {
+	public Ape(String entityID, Planet planet, Player player) {
 		super(entityID);
 		belongsToPlayer = player;
+		player.setApe(this); // Bidirektionaler Zugriff moeglich: Affe kennt seinen Spieler und umgekehrt.
 		homePlanet = planet;
-		distancePlanetCenter = homePlanet.distanceToEntityPosition();
+		planet.setApe(this); // Affe kennt seinen Planeten und Planet weiﬂ welcher Affe auf ihm sitzt.
 		angleOnPlanet = Utils.randomFloat(0, 360);
-		movmentSpeed = 0.08f;
-		health = 100;
-		planet.addApeToPlanet();
+		distancePlanetCenter = homePlanet.distanceToEntityPosition();
 
 		setPosition(Utils.toPixelCoordinates(this.calcApePosition()));
-		setScale(0.1f);
+		setScale(apeScalingFactor);
 		setRotation(angleOnPlanet);
+
 	}
 
 	/**
@@ -54,8 +58,7 @@ public class Ape extends Entity {
 	/**
 	 * Aendert Winkel des Affens nach links oder rechts
 	 * 
-	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach
-	 *                  rechts +1
+	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
 	public void stepOnPlanet(int direction) {
 		if (!(direction == -1 || direction == 1)) {
@@ -67,7 +70,7 @@ public class Ape extends Entity {
 		setRotation(angleOnPlanet);
 	}
 
-	public int belongsToPlayer() {
+	public Player belongsToPlayer() {
 		return belongsToPlayer;
 	}
 

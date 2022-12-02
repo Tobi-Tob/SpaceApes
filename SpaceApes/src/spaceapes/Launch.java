@@ -18,6 +18,9 @@ public class Launch extends StateBasedGame {
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
+	// Beim Aendern der Fenstergroesse muessen Konstanten neu justiert werden:
+	// Klasse Planet: planetScalingFactor
+	// Klasse Ape: apeScalingFactor, apeDistanceFromSurface
 	public static final int HEIGHT = 450; // Pixel Mittelpunkt des Fensters
 	public static final int WIDTH = 600; // Fenster Verhaeltniss 3 zu 4
 

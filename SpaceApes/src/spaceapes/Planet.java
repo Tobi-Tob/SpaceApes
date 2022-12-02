@@ -8,9 +8,9 @@ public class Planet extends Entity {
 	private final float radius;
 	private final float mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
-	private int amountApes = 0;
+	private Ape ape;
 
-	private final float scalingFactor = 0.5f; // So justieren, dass ein Planet bei (0,0) und Radius 6 genau den oberen und
+	private final float planetScalingFactor = 0.5f; // So justieren, dass ein Planet bei (0,0) und Radius 6 genau den oberen und
 												// unteren Rand des Bildes beruehrt
 
 	/**
@@ -28,21 +28,20 @@ public class Planet extends Entity {
 		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
 
 		setPosition(Utils.toPixelCoordinates(coordinates));
-		setScale(radius * scalingFactor);
+		setScale(radius * planetScalingFactor);
 		setRotation(Utils.randomFloat(-30, 30));
 	}
 
 	/**
-	 * Bestimmt Abstand vom Mittelpunkt des Planeten zur Kreisbahn auf der sich alle
-	 * Entitaeten bewegen. Interner Faktor a muss manuell angepasst werden bei Nutzung
+	 * Bestimmt Abstand vom Mittelpunkt des Planeten zur Kreisbahn auf der sich die
+	 * Affen bewegen. Ape.apeScalingFactor muss manuell angepasst werden bei Nutzung
 	 * anderer Bildern
 	 * 
 	 * @return float in Welt-Koordinaten
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
 	public float distanceToEntityPosition() throws RuntimeException {
-		float a = 0.2f; // Faktor a Abhaengig von Groesse und Skalierung des Affenbilds
-		float dist = getRadius() + a;
+		float dist = getRadius() + ape.apeDistanceFromSurface;
 		if (dist > 0.5f) {
 			return dist;
 		} else
@@ -64,16 +63,13 @@ public class Planet extends Entity {
 		return coordinates;
 	}
 
-	public boolean hasApes() {
-		if (amountApes > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	public void addApeToPlanet() {
-		amountApes++;
+	public void setApe(Ape a) {
+		ape = a;
+	}
+	
+	public Ape getApe() {
+		return ape;
 	}
 
 }
