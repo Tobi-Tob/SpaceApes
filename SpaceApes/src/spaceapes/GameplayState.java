@@ -119,6 +119,37 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
 
+		/* Schiessen */
+
+		Entity space_bar_Listener = new Entity("Space_bar_Listener");
+		KeyPressedEvent space_bar_pressed = new KeyPressedEvent(Input.KEY_SPACE);
+		space_bar_pressed.addAction(new Action() {
+			@Override
+			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+				if (PlayerInteractionAllowed) {
+					// Abfragen der Affenposition und Ausrichtung
+					Vector2f position = activePlayer.getApe().getCoordinates();
+					float direction = activePlayer.getApe().getAngleOfView_global();
+					float velocity = 0.6f;
+					// Projektil wird erzeugt
+					Projectile projectile = new Projectile("Projectile", position, direction, velocity);
+					// Projektil fliegt
+					LoopEvent loop = new LoopEvent();
+					loop.addAction(new MoveInDirectionAction(velocity));
+					projectile.addComponent(loop);
+
+					// Wenn der Bildschirm verlassen wird zerstoere Entitaet
+					LeavingScreenEvent lse = new LeavingScreenEvent();
+					lse.addAction(new DestroyEntityAction());
+					projectile.addComponent(lse);
+
+					entityManager.addEntity(stateID, projectile);
+				}
+			}
+		});
+		space_bar_Listener.addComponent(space_bar_pressed);
+		entityManager.addEntity(stateID, space_bar_Listener);
+
 		/* Kokusnuss */
 
 		// Bei Mausklick soll Kokosnuss erscheinen
@@ -137,7 +168,7 @@ public class GameplayState extends BasicGameState {
 					// Bild laden und zuweisen
 					coconut.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
 				} catch (SlickException e) {
-					System.err.println("Cannot find file assets/coconut.png!");
+					System.err.println("Cannot find file assets/coconut.png");
 					e.printStackTrace();
 				}
 

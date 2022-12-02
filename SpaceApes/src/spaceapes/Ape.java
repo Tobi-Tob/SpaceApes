@@ -10,6 +10,7 @@ public class Ape extends Entity {
 
 	private float angleOnPlanet; // Repraesentiert durch Winkel, Drehsinn mathematisch positiv, 0 enspricht dem
 									// noerdlichsten Punkt
+	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
 	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
 												// bewegt
 	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
@@ -33,9 +34,10 @@ public class Ape extends Entity {
 		homePlanet = planet;
 		planet.setApe(this); // Affe kennt seinen Planeten und Planet weiﬂ welcher Affe auf ihm sitzt.
 		angleOnPlanet = Utils.randomFloat(0, 360);
+		angleOfView = 0f;
 		distancePlanetCenter = homePlanet.distanceToEntityPosition();
 
-		setPosition(Utils.toPixelCoordinates(this.calcApePosition()));
+		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setScale(apeScalingFactor);
 		setRotation(angleOnPlanet);
 
@@ -47,7 +49,7 @@ public class Ape extends Entity {
 	 * 
 	 * @return Vector2f in Welt-Koordinaten
 	 */
-	public Vector2f calcApePosition() {
+	public Vector2f getCoordinates() {
 		double angleInRad = Math.toRadians(angleOnPlanet);
 		// Koordinaten des Planeten + relative Koordinaten vom Planeten zum Affen
 		float apePos_x = homePlanet.getCoordinates().x + distancePlanetCenter * (float) Math.sin(angleInRad);
@@ -56,7 +58,7 @@ public class Ape extends Entity {
 	}
 
 	/**
-	 * Aendert Winkel des Affens nach links oder rechts
+	 * Aendert angleOnPlanet des Affens nach links oder rechts
 	 * 
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
@@ -66,7 +68,7 @@ public class Ape extends Entity {
 		}
 		angleOnPlanet += direction * movmentSpeed / distancePlanetCenter; // Update des Winkels
 
-		setPosition(Utils.toPixelCoordinates(this.calcApePosition()));
+		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setRotation(angleOnPlanet);
 	}
 
@@ -84,6 +86,18 @@ public class Ape extends Entity {
 
 	public void setAngleOnPlanet(float alpha) {
 		angleOnPlanet = alpha;
+	}
+
+	public void setAngleOfView(float beta) {
+		angleOfView = beta;
+	}
+
+	public float getAngleOfView_local() {
+		return angleOfView;
+	}
+
+	public float getAngleOfView_global() {
+		return angleOnPlanet + angleOfView;
 	}
 
 	public int getHealth() {
