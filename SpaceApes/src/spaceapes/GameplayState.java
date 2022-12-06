@@ -61,38 +61,28 @@ public class GameplayState extends BasicGameState {
 		}
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
+		/* Erzeugen des Objekts Map */
+
+		Map map = new Map(); // Objekt zum Speichern von Hintergrund, Planeten, etc
+
 		/* Hintergrund */
 
-		Entity background = new Entity("background"); // Entitaet fuer Hintergrund erzeugen
-		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		background.setScale(0.9f); // Skalieren des Hintergrunds
-		background.addComponent(new ImageRenderComponent(new Image("/assets/stars2.jpeg"))); // Bildkomponente
-		entityManager.addEntity(stateID, background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
+		map.initBackground();
+		entityManager.addEntity(stateID, map.background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
 		/* Planeten */
 
-		// Zufaellig auf der linken und rechten Haelfte des Spielfelds platzieren
-		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4));
-		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4));
-		planet1.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-		planet2.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-		// Ausgabe zum testen
-		java.lang.System.out
-				.println(planet1.getID() + " -> Radius: " + planet1.getRadius() + " Mass: " + planet1.getMass());
-		java.lang.System.out
-				.println(planet2.getID() + " -> Radius: " + planet2.getRadius() + " Mass: " + planet2.getMass());
-		entityManager.addEntity(stateID, planet1);
-		entityManager.addEntity(stateID, planet2);
+		map.initPlanets();
+		entityManager.addEntity(stateID, map.listOfPlanets.get(0));
+		entityManager.addEntity(stateID, map.listOfPlanets.get(1));
 
 		/* Affen */
 
-		Ape ape1 = new Ape("ape1", planet1, playerA); // Spieler A (linke Spielhaelfte)
-		Ape ape2 = new Ape("ape2", planet2, playerB); // Spieler B (rechte Spielhaelfte)
-		ape1.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
-		ape2.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
-		entityManager.addEntity(stateID, ape1);
-		entityManager.addEntity(stateID, ape2);
+		map.initApes(playerA, playerB);
+		entityManager.addEntity(stateID, map.listOfApes.get(0));
+		entityManager.addEntity(stateID, map.listOfApes.get(1));
 
+		/* Affenbewegung */
 		// Bei Druecken der Pfeiltasten Taste soll Affe nach rechts/links laufen
 		Entity right_Listener = new Entity("Right_Listener");
 		Entity left_Listener = new Entity("Left_Listener");
@@ -102,7 +92,7 @@ public class GameplayState extends BasicGameState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				if (PlayerInteractionAllowed) {
-					activePlayer.getApe().stepOnPlanet(1); // rechts rum
+					activePlayer.getApe().stepOnPlanet(1); // 1 = rechts rum
 				}
 			}
 		});
@@ -110,7 +100,7 @@ public class GameplayState extends BasicGameState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				if (PlayerInteractionAllowed) {
-					activePlayer.getApe().stepOnPlanet(-1); // links rum
+					activePlayer.getApe().stepOnPlanet(-1); // -1 = links rum
 				}
 			}
 		});
