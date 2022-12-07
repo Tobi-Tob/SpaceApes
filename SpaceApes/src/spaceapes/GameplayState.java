@@ -1,5 +1,6 @@
 package spaceapes;
 
+import java.util.List;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -20,6 +21,7 @@ import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LeavingScreenEvent;
@@ -73,6 +75,7 @@ public class GameplayState extends BasicGameState {
 		/* Planeten */
 
 		map.initPlanets();
+		List<float[]> planetData = map.generatePlanetData();
 		entityManager.addEntity(stateID, map.listOfPlanets.get(0));
 		entityManager.addEntity(stateID, map.listOfPlanets.get(1));
 
@@ -117,24 +120,35 @@ public class GameplayState extends BasicGameState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				if (PlayerInteractionAllowed) {
-					// Abfragen von initial Position und Geschwindigkeit
+					// Abfragen von initialer Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
 					float startDirection = activePlayer.getApe().getAngleOfView_global();
-					float startVelocity = 4f; // Einheit: Koordinaten/Sekunde
+					float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
 					Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+					
 					// Projektil wird erzeugt
-					Projectile projectile = new Projectile("Projectile", position, velocity);
-					// Projektil fliegt
+					Projectile projectile = new Projectile("Projectile", position, velocity, planetData);
+					
+					// CollisionEvent
+					CollisionEvent ce = new CollisionEvent();
+					ce.addAction(new DestroyEntityAction());
+					//projectile.addComponent(ce);
+					
+					// Loop Event
 					LoopEvent projectileLoop = new LoopEvent();
 					projectileLoop.addAction(new Action() {
 						// Action, die fortlaufend wiederholt werden soll:
 						@Override
 						public void update(GameContainer gc, StateBasedGame sb, int timeDelta, Component event) {
-							projectile.moveStepInStraightLine(timeDelta);
-						}});
+							projectile.explizitEulerStep(timeDelta);
+							if (projectile.collides(map.listOfPlanets.get(0))) {
+								java.lang.System.out.println("Kollision");
+							}
+						}
+					});
 					projectile.addComponent(projectileLoop);
 
-					// Wenn der Bildschirm verlassen wird zerstoere Entitaet
+					// Wenn der Bildschirm verlassen wird, zerstoere Entitaet
 					LeavingScreenEvent lse = new LeavingScreenEvent();
 					lse.addAction(new DestroyEntityAction());
 					projectile.addComponent(lse);

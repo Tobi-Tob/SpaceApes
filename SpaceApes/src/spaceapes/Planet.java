@@ -24,7 +24,7 @@ public class Planet extends Entity {
 	public Planet(String entityID, float x, float y) {
 		super(entityID);
 		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.7 und 1.5
-		mass = radius * Utils.randomFloat(0.8f, 1.2f) * 6; // Float zwischen 3,6 und 10,8
+		mass = radius * Utils.randomFloat(0.8f, 1.2f) * 80; // Float zwischen 48 und 144
 		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
 
 		setPosition(Utils.toPixelCoordinates(coordinates));

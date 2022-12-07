@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -51,12 +52,10 @@ public class Map {
 			;
 		}
 		// Ausgabe zum testen
-		/*
-		 * java.lang.System.out .println(planetA.getID() + " -> Radius: " +
-		 * planetA.getRadius() + " Mass: " + planetA.getMass()); java.lang.System.out
-		 * .println(planetB.getID() + " -> Radius: " + planetB.getRadius() + " Mass: " +
-		 * planetB.getMass());
-		 */
+		java.lang.System.out
+				.println(planetA.getID() + " -> Radius: " + planetA.getRadius() + " Mass: " + planetA.getMass());
+		java.lang.System.out
+				.println(planetB.getID() + " -> Radius: " + planetB.getRadius() + " Mass: " + planetB.getMass());
 	}
 
 	/**
@@ -77,5 +76,24 @@ public class Map {
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for apes");
 		}
+	}
+
+	/**
+	 * Sammelt alle fuer die spaetere Berechnung benoetigten Daten in einer Liste
+	 * von Arrays
+	 * 
+	 * @return Liste mit Planetendaten. Jeder Listeneintrag enthaelt ein Array mit
+	 *         Struktur [x, y, mass]
+	 */
+	public List<float[]> generatePlanetData() {
+		List<float[]> planetData = new ArrayList<>();
+		for (int i = 0; i < listOfPlanets.size(); i++) {
+
+			Vector2f planetPosition = listOfPlanets.get(i).getCoordinates();
+			float planetMass = listOfPlanets.get(i).getMass();
+
+			planetData.add(new float[] { planetPosition.x, planetPosition.y, planetMass });
+		}
+		return planetData;
 	}
 }
