@@ -5,11 +5,10 @@ import eea.engine.entity.Entity;
 
 public class Ape extends Entity {
 
-	private final Player belongsToPlayer; // Zugehoeriger Spieler (0 oder 1)
+	private final Player belongsToPlayer; // Zugehoeriger Spieler
 	private final Planet homePlanet; // Planet auf dem sich der Affe befindet
 
-	private float angleOnPlanet; // Repraesentiert durch Winkel, Drehsinn mathematisch positiv, 0 enspricht dem
-									// noerdlichsten Punkt
+	private float angleOnPlanet; // Einheit Grad, Drehsinn im Uhrzeigersinn, 0 enspricht Osten
 	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
 	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
 												// bewegt
@@ -39,7 +38,7 @@ public class Ape extends Entity {
 
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setScale(apeScalingFactor);
-		setRotation(angleOnPlanet);
+		setRotation(angleOnPlanet + 90f); // Entity Rotation ist nach oben Zeigend als 0 definiert
 
 	}
 
@@ -50,11 +49,9 @@ public class Ape extends Entity {
 	 * @return Vector2f in Welt-Koordinaten
 	 */
 	public Vector2f getCoordinates() {
-		double angleInRad = Math.toRadians(angleOnPlanet);
+		Vector2f relativPos = Utils.toCartesianCoordinates(distancePlanetCenter, angleOnPlanet);
 		// Koordinaten des Planeten + relative Koordinaten vom Planeten zum Affen
-		float apePos_x = homePlanet.getCoordinates().x + distancePlanetCenter * (float) Math.sin(angleInRad);
-		float apePos_y = homePlanet.getCoordinates().y - distancePlanetCenter * (float) Math.cos(angleInRad);
-		return new Vector2f(apePos_x, apePos_y);
+		return new Vector2f(homePlanet.getCoordinates().x + relativPos.x, homePlanet.getCoordinates().y + relativPos.y);
 	}
 
 	/**
@@ -69,7 +66,7 @@ public class Ape extends Entity {
 		angleOnPlanet += direction * movmentSpeed / distancePlanetCenter; // Update des Winkels
 
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
-		setRotation(angleOnPlanet);
+		setRotation(angleOnPlanet + 90f);
 	}
 
 	public Player belongsToPlayer() {

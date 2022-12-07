@@ -3,36 +3,38 @@ package spaceapes;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 
 public class Projectile extends Entity {
 
-	private Vector2f coordinates; // In Welt-Koordinaten
-	private float direction; // Winkel in Welt-Koordinaten
-	private float velocity; // Geschwindigkeit
+	private double x; // x-Koordinate (double fuer erhoehte Genauigkeit)
+	private double y; // y-Koordinate
+	private double vx; // Geschwindigkeit in x-Richtung
+	private double vy; // Geschwindigkeit in y-Richtung
+	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
+	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich
-	private final float projectileScalingFactor = 0.4f;
+	private final float projectileScalingFactor = 0.4f; // Faktor der das Bild skaliert
 
 	/**
 	 * Konstruktor fuer ein Projektil
-	 * 
 	 * @param entityID String
-	 * @param x        in Welt-Koordinaten
-	 * @param y        in Welt-Koordinaten
-	 * @param alpha    Winkel in Welt-Koordinaten
+	 * @param position Startkoordinaten
+	 * @param velocity Startgeschwindigkeit
 	 */
-	public Projectile(String entityID, Vector2f position, float rotation, float speed) {
+	public Projectile(String entityID, Vector2f position, Vector2f velocity) {
 		super(entityID);
-		coordinates = new Vector2f(position); // Gespeichert als Welt-Koordinaten
-		direction = rotation;
-		velocity = speed;
+		this.x = position.x;
+		this.y = position.y;
+		this.vx = velocity.x;
+		this.vy = velocity.y;
+		this.direction = getMovementDirection();
 		mass = 1f;
 
-		setPosition(Utils.toPixelCoordinates(coordinates));
+		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		setScale(projectileScalingFactor);
-		setRotation(direction);
+		setRotation(direction + 90f);
 		try {
 			addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
 		} catch (SlickException e) {
@@ -41,28 +43,24 @@ public class Projectile extends Entity {
 		}
 	}
 
-	public Vector2f getCoordinates() {
-		return coordinates;
+	/*
+	 * Gibt Ausrichtung des Projektils als Winkel zurueck
+	 */
+	public float getMovementDirection() {
+		return Utils.angleInPolarCoordinates((float) vx, (float) vy);
 	}
 
-	public void setCoordinates(float x, float y) {
-		coordinates = new Vector2f(x, y);
-	}
-
-	public float getDirection() {
-		return direction;
-	}
-
-	public void setDirection(float dir) {
-		direction = dir;
-	}
-
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(float velocity) {
-		this.velocity = velocity;
+	/**
+	 * Berechnet die Neue Position des Projektils abhaengig von seiner
+	 * Geschwindigkeit und der verstrichenen Zeit in ms
+	 * 
+	 * @param timeDelta int in Millisekunden
+	 */
+	public void moveStepInStraightLine(int timeDelta) {
+		double dt = timeDelta * 1e-3d;
+		this.x = x + vx * dt; // x1 = x0 + dx, dx = v0 * dt
+		this.y = y + vy * dt;
+		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 	}
 
 }

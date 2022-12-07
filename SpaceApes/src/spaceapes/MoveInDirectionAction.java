@@ -15,8 +15,8 @@ public class MoveInDirectionAction extends Movement implements Action {
 	public Vector2f getNextPosition(Vector2f pos, float speed, float rotation, int delta) {
 		float s = speed * delta; // s = v*t
 		double directionInRad = Math.toRadians(rotation);
-		float dx = s * (float) Math.sin(directionInRad);
-		float dy = -s * (float) Math.cos(directionInRad);
+		float dx = s * (float) Math.cos(directionInRad);
+		float dy = s * (float) Math.sin(directionInRad);
 		return new Vector2f(pos.x + dx, pos.y + dy);
 	};
 }

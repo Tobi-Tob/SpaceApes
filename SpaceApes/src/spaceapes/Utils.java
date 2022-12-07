@@ -56,4 +56,28 @@ public final class Utils {
 		Random r = new Random();
 		return a + r.nextFloat() * (b - a);
 	}
+
+	/**
+	 * Wandelt Polarkoordinaten [r, phi] in kartesische Koordinaten [x, y] um.
+	 * (X-Achse ist nach rechts, Y-Achse nach unten gerichtet, phi laeuft von der
+	 * X-Achse aus im Uhrzeigersinn)
+	 * 
+	 * @param radius      float
+	 * @param angleInGrad float
+	 * @return Vector2f in kartesische Koordinaten
+	 */
+	public static Vector2f toCartesianCoordinates(float radius, float angleInGrad) {
+		double angleInRad = Math.toRadians(angleInGrad);
+		return new Vector2f(radius * (float) Math.cos(angleInRad), radius * (float) Math.sin(angleInRad));
+	}
+
+	/**
+	 * Gibt Winkel im Intervall (-180, 180] in Grad zurueck.
+	 * 
+	 * @param vec
+	 * @return Winkel in Grad (0 ist Osten)
+	 */
+	public static float angleInPolarCoordinates(float x, float y) {
+		return (float) Math.toDegrees(Math.atan2(y, x));
+	}
 }

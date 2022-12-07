@@ -51,10 +51,12 @@ public class Map {
 			;
 		}
 		// Ausgabe zum testen
-		java.lang.System.out
-				.println(planetA.getID() + " -> Radius: " + planetA.getRadius() + " Mass: " + planetA.getMass());
-		java.lang.System.out
-				.println(planetB.getID() + " -> Radius: " + planetB.getRadius() + " Mass: " + planetB.getMass());
+		/*
+		 * java.lang.System.out .println(planetA.getID() + " -> Radius: " +
+		 * planetA.getRadius() + " Mass: " + planetA.getMass()); java.lang.System.out
+		 * .println(planetB.getID() + " -> Radius: " + planetB.getRadius() + " Mass: " +
+		 * planetB.getMass());
+		 */
 	}
 
 	/**

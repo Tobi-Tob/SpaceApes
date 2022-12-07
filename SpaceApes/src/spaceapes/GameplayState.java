@@ -117,16 +117,22 @@ public class GameplayState extends BasicGameState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				if (PlayerInteractionAllowed) {
-					// Abfragen der Affenposition und Ausrichtung
+					// Abfragen von initial Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
-					float direction = activePlayer.getApe().getAngleOfView_global();
-					float velocity = 0.6f;
+					float startDirection = activePlayer.getApe().getAngleOfView_global();
+					float startVelocity = 4f; // Einheit: Koordinaten/Sekunde
+					Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 					// Projektil wird erzeugt
-					Projectile projectile = new Projectile("Projectile", position, direction, velocity);
+					Projectile projectile = new Projectile("Projectile", position, velocity);
 					// Projektil fliegt
-					LoopEvent loop = new LoopEvent();
-					loop.addAction(new MoveInDirectionAction(velocity));
-					projectile.addComponent(loop);
+					LoopEvent projectileLoop = new LoopEvent();
+					projectileLoop.addAction(new Action() {
+						// Action, die fortlaufend wiederholt werden soll:
+						@Override
+						public void update(GameContainer gc, StateBasedGame sb, int timeDelta, Component event) {
+							projectile.moveStepInStraightLine(timeDelta);
+						}});
+					projectile.addComponent(projectileLoop);
 
 					// Wenn der Bildschirm verlassen wird zerstoere Entitaet
 					LeavingScreenEvent lse = new LeavingScreenEvent();
