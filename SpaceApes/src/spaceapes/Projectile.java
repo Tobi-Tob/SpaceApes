@@ -19,8 +19,8 @@ public class Projectile extends Entity {
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
 	private final float projectileScalingFactor = 0.4f; // Faktor der das Bild skaliert
 
-	public final List<float[]> planetData; // Alle benoetigten Daten fuer die Bahnberechnung (x, y, Masse der Planeten)
-											// sind hier gespeichert
+	public final List<float[]> planetData; // Alle benoetigten Daten fuer die Bahnberechnung (x, y, Masse, Radius) sind
+											// hier gespeichert
 
 	/**
 	 * Konstruktor fuer ein Projektil
@@ -36,6 +36,7 @@ public class Projectile extends Entity {
 		this.vx = velocity.x;
 		this.vy = velocity.y;
 		this.direction = getMovementDirection();
+		this.rotationSpeed = 0f;
 		this.mass = 1f;
 		this.planetData = planetData;
 
@@ -76,8 +77,10 @@ public class Projectile extends Entity {
 	 * ms
 	 * 
 	 * @param timeDelta int in Millisekunden
+	 * @return true, falls keine Kollision mit einem Planeten in diesem Schritt
+	 *         vorliegt
 	 */
-	public void explizitEulerStep(int timeDelta) {
+	public boolean explizitEulerStep(int timeDelta) {
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
 		// Positionsupdate:
 		// X1 = X0 + dt * V0
@@ -85,23 +88,32 @@ public class Projectile extends Entity {
 		double y_new = y + dt * vy;
 		// Geschwindigkeitsupdate:
 		// V1 = V0 + dt * ddX
-		Vector2f sum = new Vector2f(0, 0);
+		Vector2f ddx = new Vector2f(0, 0);
+		float G = 0.2f; // Gravitationskonstante (frei waehlbar)
 
 		for (int i = 0; i < planetData.size(); i++) {
 			float p_x = planetData.get(i)[0];
 			float p_y = planetData.get(i)[1];
 			float p_mass = planetData.get(i)[2];
+			float p_radius = planetData.get(i)[3];
 			Vector2f distanceVector = new Vector2f(p_x - (float) x, p_y - (float) y);
+			// Test auf Kollision mit Planet i (durch Kreisgleichung)
+			if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(p_radius, 2)) {
+				return false; // Bei Kollision Abbruch der weiteren Berechnung
+			}
 
-			sum.add(distanceVector.scale(p_mass * (float) Math.pow(distanceVector.length(), -3)));
+			ddx.add(distanceVector.scale(G * p_mass * (float) Math.pow(distanceVector.length(), -3)));
 		}
 		this.x = x_new;
 		this.y = y_new;
-		float G = 0.2f; // Gravitationskonstante (frei waehlbar)
-		this.vx = vx + dt * G * sum.x;
-		this.vy = vy + dt * G * sum.y;
+		this.vx = vx + dt * ddx.x;
+		this.vy = vy + dt * ddx.y;
+		// Aendern der direction in Richtung der Beschleunigung
+		this.direction = Utils.angleInPolarCoordinates(ddx.x, ddx.y);
+		setRotation(direction + 90f);
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
+		return true; // Keine Kollision
 	}
 
 }

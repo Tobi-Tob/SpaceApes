@@ -83,7 +83,7 @@ public class Map {
 	 * von Arrays
 	 * 
 	 * @return Liste mit Planetendaten. Jeder Listeneintrag enthaelt ein Array mit
-	 *         Struktur [x, y, mass]
+	 *         Struktur [x, y, mass, radius]
 	 */
 	public List<float[]> generatePlanetData() {
 		List<float[]> planetData = new ArrayList<>();
@@ -91,8 +91,9 @@ public class Map {
 
 			Vector2f planetPosition = listOfPlanets.get(i).getCoordinates();
 			float planetMass = listOfPlanets.get(i).getMass();
+			float planetRadius = listOfPlanets.get(i).getRadius();
 
-			planetData.add(new float[] { planetPosition.x, planetPosition.y, planetMass });
+			planetData.add(new float[] { planetPosition.x, planetPosition.y, planetMass, planetRadius });
 		}
 		return planetData;
 	}

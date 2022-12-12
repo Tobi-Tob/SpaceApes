@@ -125,24 +125,18 @@ public class GameplayState extends BasicGameState {
 					float startDirection = activePlayer.getApe().getAngleOfView_global();
 					float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
 					Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-					
+
 					// Projektil wird erzeugt
 					Projectile projectile = new Projectile("Projectile", position, velocity, planetData);
-					
-					// CollisionEvent
-					CollisionEvent ce = new CollisionEvent();
-					ce.addAction(new DestroyEntityAction());
-					//projectile.addComponent(ce);
-					
+
 					// Loop Event
 					LoopEvent projectileLoop = new LoopEvent();
 					projectileLoop.addAction(new Action() {
 						// Action, die fortlaufend wiederholt werden soll:
 						@Override
 						public void update(GameContainer gc, StateBasedGame sb, int timeDelta, Component event) {
-							projectile.explizitEulerStep(timeDelta);
-							if (projectile.collides(map.listOfPlanets.get(0))) {
-								java.lang.System.out.println("Kollision");
+							if (projectile.explizitEulerStep(timeDelta) == false) {
+								entityManager.removeEntity(stateID, projectile); // Wenn Kollision mit Planet
 							}
 						}
 					});

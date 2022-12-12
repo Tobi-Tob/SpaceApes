@@ -74,7 +74,6 @@ public final class Utils {
 	/**
 	 * Gibt Winkel im Intervall (-180, 180] in Grad zurueck.
 	 * 
-	 * @param vec
 	 * @return Winkel in Grad (0 ist Osten)
 	 */
 	public static float angleInPolarCoordinates(float x, float y) {
