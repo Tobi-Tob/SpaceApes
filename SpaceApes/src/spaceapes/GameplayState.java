@@ -76,8 +76,9 @@ public class GameplayState extends BasicGameState {
 
 		map.initPlanets();
 		List<float[]> planetData = map.generatePlanetData();
-		entityManager.addEntity(stateID, map.listOfPlanets.get(0));
-		entityManager.addEntity(stateID, map.listOfPlanets.get(1));
+		for (int i = 0; i < map.listOfPlanets.size(); i++) { 
+			entityManager.addEntity(stateID, map.listOfPlanets.get(i));
+		}
 
 		/* Affen */
 

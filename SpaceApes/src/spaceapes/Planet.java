@@ -10,16 +10,13 @@ public class Planet extends Entity {
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private Ape ape;
 
-	private final float planetScalingFactor = 0.5f; // So justieren, dass ein Planet bei (0,0) und Radius 6 genau den oberen und
-												// unteren Rand des Bildes beruehrt
-
 	/**
 	 * Konstruktor initialisiert Planet mit zufaelligen Eigenschaften: Groesse,
 	 * Masse, Ausrichtung
 	 * 
 	 * @param entityID String
-	 * @param x in Welt-Koordinaten
-	 * @param y in Welt-Koordinaten
+	 * @param x        in Welt-Koordinaten
+	 * @param y        in Welt-Koordinaten
 	 */
 	public Planet(String entityID, float x, float y) {
 		super(entityID);
@@ -28,7 +25,6 @@ public class Planet extends Entity {
 		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
 
 		setPosition(Utils.toPixelCoordinates(coordinates));
-		setScale(radius * planetScalingFactor);
 		setRotation(Utils.randomFloat(-30, 30));
 	}
 
@@ -63,11 +59,10 @@ public class Planet extends Entity {
 		return coordinates;
 	}
 
-
 	public void setApe(Ape a) {
 		ape = a;
 	}
-	
+
 	public Ape getApe() {
 		return ape;
 	}
