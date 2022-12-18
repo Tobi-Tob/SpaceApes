@@ -21,7 +21,6 @@ import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LeavingScreenEvent;
@@ -121,6 +120,8 @@ public class GameplayState extends BasicGameState {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 				if (PlayerInteractionAllowed) {
+					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
+					PlayerInteractionAllowed = false;
 					// Abfragen von initialer Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
 					float startDirection = activePlayer.getApe().getAngleOfView_global();
@@ -139,28 +140,32 @@ public class GameplayState extends BasicGameState {
 							if (projectile.explizitEulerStep(timeDelta) == false) {
 								// Wenn Kollision mit Planet
 								entityManager.removeEntity(stateID, projectile);
+								PlayerInteractionAllowed = true;
 								// Zeige Explosion
-								Entity explosion = new Entity("Explosion");
-								explosion.setPosition(projectile.getPosition());
-								explosion.setScale(0.4f);
-								explosion.setRotation(Utils.randomFloat(0, 360));
+								AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
+								Image[] images = new Image[2];
 								try {
-									explosion.addComponent(new ImageRenderComponent(new Image("/assets/explosion.png")));
+									images[0] = new Image("/assets/explosion.png");
+									images[1] = new Image("/assets/explosion_green.png");
+
 								} catch (SlickException e) {
 									System.err.println("Cannot find image for explosion");
 								}
+								explosion.setImages(images);
+								explosion.scaleAndRotateAnimation(0.4f, Utils.randomFloat(0, 360));
+								explosion.addAnimation(0.01f, false);
 								entityManager.addEntity(stateID, explosion);
 
+							}
+							if (Math.abs(projectile.getCoordinates().x) > 10
+									|| Math.abs(projectile.getCoordinates().y) > 8) {
+								// Zu weit auﬂerhalb des Bildes
+								entityManager.removeEntity(stateID, projectile);
+								PlayerInteractionAllowed = true;
 							}
 						}
 					});
 					projectile.addComponent(projectileLoop);
-
-					// Wenn der Bildschirm verlassen wird, zerstoere Entitaet
-					LeavingScreenEvent lse = new LeavingScreenEvent();
-					lse.addAction(new DestroyEntityAction());
-					projectile.addComponent(lse);
-
 					entityManager.addEntity(stateID, projectile);
 				}
 			}

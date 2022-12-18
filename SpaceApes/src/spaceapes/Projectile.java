@@ -51,6 +51,10 @@ public class Projectile extends Entity {
 		}
 	}
 
+	public Vector2f getCoordinates() {
+		return new Vector2f((float) x, (float) y);
+	}
+
 	/*
 	 * Gibt Ausrichtung des Projektils als Winkel zurueck
 	 */

@@ -114,7 +114,7 @@ public class Map {
 		for (int n = 0; n < 100; n++) { // Suche bis zu 100 Zufallspositionen ab
 			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-6.5f, 6.5f), Utils.randomFloat(-4.5f, 4.5f));
 			boolean positionIsValide = true;
-			float safetyMargin = 3f;
+			float marginToNextPlanetCenter = 5f;
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < listOfPlanets.size(); i++) {
 				Planet p_i = listOfPlanets.get(i);
@@ -122,12 +122,12 @@ public class Map {
 						p_i.getCoordinates().y - randomPosition.y);
 				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
 				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
-						.pow(p_i.getRadius() + safetyMargin, 2)) {
+						.pow(marginToNextPlanetCenter, 2)) {
 					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
 				}
 			}
 			if (positionIsValide) {
-				java.lang.System.out.println("n= " + n);
+				java.lang.System.out.println("Planet spawning after: n=" + n);
 				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 			}
 		}
