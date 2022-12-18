@@ -76,7 +76,7 @@ public class GameplayState extends BasicGameState {
 
 		map.initPlanets();
 		List<float[]> planetData = map.generatePlanetData();
-		for (int i = 0; i < map.listOfPlanets.size(); i++) { 
+		for (int i = 0; i < map.listOfPlanets.size(); i++) {
 			entityManager.addEntity(stateID, map.listOfPlanets.get(i));
 		}
 
@@ -137,7 +137,20 @@ public class GameplayState extends BasicGameState {
 						@Override
 						public void update(GameContainer gc, StateBasedGame sb, int timeDelta, Component event) {
 							if (projectile.explizitEulerStep(timeDelta) == false) {
-								entityManager.removeEntity(stateID, projectile); // Wenn Kollision mit Planet
+								// Wenn Kollision mit Planet
+								entityManager.removeEntity(stateID, projectile);
+								// Zeige Explosion
+								Entity explosion = new Entity("Explosion");
+								explosion.setPosition(projectile.getPosition());
+								explosion.setScale(0.4f);
+								explosion.setRotation(Utils.randomFloat(0, 360));
+								try {
+									explosion.addComponent(new ImageRenderComponent(new Image("/assets/explosion.png")));
+								} catch (SlickException e) {
+									System.err.println("Cannot find image for explosion");
+								}
+								entityManager.addEntity(stateID, explosion);
+
 							}
 						}
 					});
