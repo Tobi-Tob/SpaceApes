@@ -1,6 +1,7 @@
 package spaceapes;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,18 +16,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
-import eea.engine.action.basicactions.DestroyEntityAction;
-import eea.engine.action.basicactions.MoveDownAction;
-import eea.engine.action.basicactions.QuitAction;
-import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.Component;
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
-import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
@@ -39,6 +34,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 public class GameplayState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
+	private List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
 	private Player activePlayer; // Spieler, der am Zug ist
 	private boolean PlayerInteractionAllowed = true;
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
@@ -46,6 +42,9 @@ public class GameplayState extends BasicGameState {
 	GameplayState(int sid) {
 		stateID = sid; // GAMEPLAY_STATE = 1
 		entityManager = StateBasedEntityManager.getInstance();
+		listOfAllPlayers.add(new Player("Player1"));
+		listOfAllPlayers.add(new Player("Player2"));
+		// listOfAllPlayers.add(new Player("Player3"));
 	}
 
 	/**
@@ -56,14 +55,9 @@ public class GameplayState extends BasicGameState {
 
 		/* Spieler */
 
-		Player playerA = new Player("PlayerA");
-		Player playerB = new Player("PlayerB");
-		Random random = new Random(); // Zuaelligen Spieler zum Starten auswaehlen
-		if (random.nextBoolean()) {
-			activePlayer = playerA;
-		} else {
-			activePlayer = playerB;
-		}
+		Random r = new Random();
+		activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten
+																					// auswaehlen
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
 		/* Erzeugen des Objekts Map */
@@ -80,7 +74,8 @@ public class GameplayState extends BasicGameState {
 		map.initPlanets();
 		List<float[]> planetData = map.generatePlanetData();
 
-		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen ueber sie ausgibt
+		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen
+		// ueber sie ausgibt
 		for (int i = 0; i < map.listOfPlanets.size(); i++) {
 			ANDEvent clicked_On_Planet_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 			clicked_On_Planet_Event.addAction(new Action() {
@@ -97,9 +92,10 @@ public class GameplayState extends BasicGameState {
 
 		/* Affen */
 
-		map.initApes(playerA, playerB);
-		entityManager.addEntity(stateID, map.listOfApes.get(0));
-		entityManager.addEntity(stateID, map.listOfApes.get(1));
+		map.initApes(listOfAllPlayers);
+		for (Ape ape : map.listOfApes) {
+			entityManager.addEntity(stateID, ape);
+		}
 
 		/* Affenbewegung */
 		// Bei Druecken der Pfeiltasten Taste soll Affe nach rechts/links laufen
@@ -156,7 +152,7 @@ public class GameplayState extends BasicGameState {
 							if (projectile.explizitEulerStep(timeDelta) == false) {
 								// Wenn Kollision mit Planet
 								entityManager.removeEntity(stateID, projectile);
-								PlayerInteractionAllowed = true;
+								changeActivePlayerToNextPlayer();
 								// Zeige Explosion
 								AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
 								Image[] images = new Image[4];
@@ -179,7 +175,7 @@ public class GameplayState extends BasicGameState {
 									|| Math.abs(projectile.getCoordinates().y) > 8) {
 								// Zu weit außerhalb des Bildes
 								entityManager.removeEntity(stateID, projectile);
-								PlayerInteractionAllowed = true;
+								changeActivePlayerToNextPlayer();
 							}
 						}
 					});
@@ -221,6 +217,17 @@ public class GameplayState extends BasicGameState {
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
 
+	}
+
+	private void changeActivePlayerToNextPlayer() {
+		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
+		int indexNextPlayer = indexActivePlayer + 1;
+		if (indexNextPlayer >= listOfAllPlayers.size()) {
+			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
+		}
+		activePlayer = listOfAllPlayers.get(indexNextPlayer);
+		PlayerInteractionAllowed = true;
+		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 	}
 
 	/**

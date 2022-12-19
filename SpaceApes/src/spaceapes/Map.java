@@ -41,13 +41,13 @@ public class Map {
 	 */
 	public void initPlanets() {
 		// Home planets zufaellig auf den Spielfeld Haelften platzieren
-		Planet planetA = new Planet("Planet_A", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)); // rechte Haelfte
-		Planet planetB = new Planet("Planet_B", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)); // linke Haelfte
-		listOfPlanets.add(planetA); // Speichern in der Planeten Liste des Map Objekts
-		listOfPlanets.add(planetB);
+		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)); // rechte Haelfte
+		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)); // linke Haelfte
+		listOfPlanets.add(planet1); // Speichern in der Planeten Liste des Map Objekts
+		listOfPlanets.add(planet2);
 		try {
-			addRandomImageToPlanet(planetA, false);
-			addRandomImageToPlanet(planetB, false);
+			addRandomImageToPlanet(planet1, false);
+			addRandomImageToPlanet(planet2, false);
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for planet");
 		}
@@ -59,7 +59,7 @@ public class Map {
 			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
 			// hinzu
 			if (validePosition != null) {
-				Planet planet_i = new Planet("Planet_" + (i + 1), validePosition.x, validePosition.y);
+				Planet planet_i = new Planet("Planet" + (i + 3), validePosition.x, validePosition.y);
 				listOfPlanets.add(planet_i);
 				try {
 					addRandomImageToPlanet(planet_i, true);
@@ -147,26 +147,6 @@ public class Map {
 	}
 
 	/**
-	 * @param playerA Spieler A (linke Spielhaelfte)
-	 * @param playerB Spieler B (rechte Spielhaelfte)
-	 */
-	public void initApes(Player playerA, Player playerB) {
-		if (listOfPlanets.isEmpty()) {
-			throw new RuntimeException("List of Planets is empty");
-		}
-		Ape apeA = new Ape("apeA", listOfPlanets.get(0), playerA);
-		Ape apeB = new Ape("apeB", listOfPlanets.get(1), playerB);
-		listOfApes.add(apeA); // Speichern in der Affen Liste des Map Objekts
-		listOfApes.add(apeB);
-		try {
-			apeA.addComponent(new ImageRenderComponent(new Image("/assets/ape_blue.png")));
-			apeB.addComponent(new ImageRenderComponent(new Image("/assets/ape_yellow.png")));
-		} catch (SlickException e) {
-			System.err.println("Cannot find image for apes");
-		}
-	}
-
-	/**
 	 * Sammelt alle fuer die spaetere Berechnung benoetigten Daten in einer Liste
 	 * von Arrays
 	 * 
@@ -184,5 +164,35 @@ public class Map {
 			planetData.add(new float[] { planetPosition.x, planetPosition.y, planetMass, planetRadius });
 		}
 		return planetData;
+	}
+
+	/**
+	 * WICHTIG: Muss ausgefuehrt werden, nachdem Planeten initalisiert wurden
+	 */
+	public void initApes(List<Player> listOfAllPlayers) {
+		if (listOfPlanets.isEmpty() || listOfAllPlayers.isEmpty()) {
+			throw new RuntimeException("initApes failed, one of the required lists is empty");
+		}
+		// Jeder Spieler in der Liste bekommt seinen eigenen Affen
+		for (int i = 0; i < listOfAllPlayers.size(); i++) {
+			Ape ape;
+			if (i >= listOfPlanets.size()) { // Tritt ein falls weniger Planeten existieren als Spieler
+				int randomPlanet = (int) Utils.randomFloat(0, listOfPlanets.size());
+				ape = new Ape("ape" + (i + 1), listOfPlanets.get(randomPlanet), listOfAllPlayers.get(i));
+			} else {
+				ape = new Ape("ape" + (i + 1), listOfPlanets.get(i), listOfAllPlayers.get(i));
+			}
+			listOfApes.add(ape); // Speichern in der Affen Liste des Map Objekts
+			try {
+				ape.addComponent(new ImageRenderComponent(new Image("/assets/ape" + (i + 1) + ".png")));
+			} catch (SlickException | RuntimeException e) {
+				try {
+					ape.addComponent(new ImageRenderComponent(new Image("/assets/ape1.png")));
+				} catch (SlickException e1) {
+					System.err.println("Cannot find image for ape");
+				}
+			}
+		}
+
 	}
 }
