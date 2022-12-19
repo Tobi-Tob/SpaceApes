@@ -1,5 +1,6 @@
 package spaceapes;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -16,16 +17,19 @@ import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.DestroyEntityAction;
 import eea.engine.action.basicactions.MoveDownAction;
+import eea.engine.action.basicactions.QuitAction;
 import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
+import eea.engine.event.basicevents.MouseEnteredEvent;
 
 /**
  * @author Timo Baehr
@@ -75,7 +79,19 @@ public class GameplayState extends BasicGameState {
 
 		map.initPlanets();
 		List<float[]> planetData = map.generatePlanetData();
+
+		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen ueber sie ausgibt
 		for (int i = 0; i < map.listOfPlanets.size(); i++) {
+			ANDEvent clicked_On_Planet_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+			clicked_On_Planet_Event.addAction(new Action() {
+				@Override
+				public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+					Planet planet = (Planet) event.getOwnerEntity();
+					java.lang.System.out.println(planet.getID());
+					java.lang.System.out.println("Mass: " + planet.getMass() + " Radius: " + planet.getRadius());
+				}
+			});
+			map.listOfPlanets.get(i).addComponent(clicked_On_Planet_Event);
 			entityManager.addEntity(stateID, map.listOfPlanets.get(i));
 		}
 
@@ -143,17 +159,19 @@ public class GameplayState extends BasicGameState {
 								PlayerInteractionAllowed = true;
 								// Zeige Explosion
 								AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
-								Image[] images = new Image[2];
+								Image[] images = new Image[4];
 								try {
-									images[0] = new Image("/assets/explosion.png");
-									images[1] = new Image("/assets/explosion_green.png");
+									images[0] = new Image("/assets/explosion/explosion1.png");
+									images[1] = new Image("/assets/explosion/explosion2.png");
+									images[2] = new Image("/assets/explosion/explosion3.png");
+									images[3] = new Image("/assets/explosion/explosion4.png");
 
 								} catch (SlickException e) {
 									System.err.println("Cannot find image for explosion");
 								}
 								explosion.setImages(images);
-								explosion.scaleAndRotateAnimation(0.4f, Utils.randomFloat(0, 360));
-								explosion.addAnimation(0.01f, false);
+								explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
+								explosion.addAnimation(0.012f, false);
 								entityManager.addEntity(stateID, explosion);
 
 							}
@@ -173,46 +191,28 @@ public class GameplayState extends BasicGameState {
 		space_bar_Listener.addComponent(space_bar_pressed);
 		entityManager.addEntity(stateID, space_bar_Listener);
 
-		/* Kokusnuss */
+		/* Koordinatenabfrage */
 
-		// Bei Mausklick soll Kokosnuss erscheinen
-		Entity mouse_Clicked_Listener = new Entity("Mouse_Clicked_Listener");
-		MouseClickedEvent mouse_Clicked = new MouseClickedEvent();
-		mouse_Clicked.addAction(new Action() {
+		// Bei Mausklick und druecken der Shift-Taste sollen Koordinaten an der
+		// Mausposition abgefragt werden
+		Entity mouse_Clicked_With_Shift_Listener = new Entity("Mouse_Clicked_With_Shift_Listener");
+		ANDEvent mouse_Clicked_With_Shift = new ANDEvent(new KeyDownEvent(Input.KEY_LSHIFT), new MouseClickedEvent());
+		mouse_Clicked_With_Shift.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				// Kokusnuss wird erzeugt
-				Entity coconut = new Entity("Coconut");
-				coconut.setPosition(new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY()));
-				coconut.setScale(0.7f);
-				coconut.setRotation(Utils.randomFloat(0, 360));
-
-				try {
-					// Bild laden und zuweisen
-					coconut.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
-				} catch (SlickException e) {
-					System.err.println("Cannot find file assets/coconut.png");
-					e.printStackTrace();
-				}
-
-				// Kokusnuss faellt nach unten
-				LoopEvent loop = new LoopEvent();
-				loop.addAction(new MoveDownAction(0.5f));
-				loop.addAction(new RotateRightAction(Utils.randomFloat(-0.2f, 0.2f)));
-				coconut.addComponent(loop);
-
-				// Wenn der Bildschirm verlassen wird, dann ...
-				LeavingScreenEvent lse = new LeavingScreenEvent();
-				// ... zerstoere Kokosnuss
-				lse.addAction(new DestroyEntityAction());
-
-				coconut.addComponent(lse);
-				entityManager.addEntity(stateID, coconut);
+				Vector2f mousePixelPos = new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+				Vector2f mouseCoords = Utils.toWorldCoordinates(mousePixelPos);
+				int px = (int) mousePixelPos.x;
+				int py = (int) mousePixelPos.y;
+				DecimalFormat formatter = new DecimalFormat("#.##");
+				java.lang.System.out.println("World coords (" + formatter.format(mouseCoords.x) + ", "
+						+ formatter.format(mouseCoords.y) + "); Pixel pos (" + px + ", " + py + ")");
 			}
 		});
-		mouse_Clicked_Listener.addComponent(mouse_Clicked);
+		mouse_Clicked_With_Shift_Listener.addComponent(mouse_Clicked_With_Shift);
+		entityManager.addEntity(stateID, mouse_Clicked_With_Shift_Listener);
 
-		entityManager.addEntity(stateID, mouse_Clicked_Listener);
+		/* ESC-Taste */
 
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Entity esc_Listener = new Entity("ESC_Listener");

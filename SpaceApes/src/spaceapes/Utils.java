@@ -38,7 +38,7 @@ public final class Utils {
 	 * @param p Vector2f mit Pixel-Koordinaten
 	 * @return Vector2f mit Welt-Koordinaten
 	 */
-	public static Vector2f toInternCoordinates(Vector2f p) {
+	public static Vector2f toWorldCoordinates(Vector2f p) {
 		// z.B [0,1200]x[0,900] abgebildet auf [-8,8]x[-6,6]
 		float w = Launch.WIDTH;
 		float h = Launch.HEIGHT;

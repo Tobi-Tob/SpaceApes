@@ -93,7 +93,7 @@ public class Projectile extends Entity {
 		// Geschwindigkeitsupdate:
 		// V1 = V0 + dt * ddX
 		Vector2f ddx = new Vector2f(0, 0);
-		float G = 0.2f; // Gravitationskonstante (frei waehlbar)
+		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 
 		for (int i = 0; i < planetData.size(); i++) {
 			float p_x = planetData.get(i)[0];

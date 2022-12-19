@@ -41,8 +41,8 @@ public class Map {
 	 */
 	public void initPlanets() {
 		// Home planets zufaellig auf den Spielfeld Haelften platzieren
-		Planet planetA = new Planet("PlanetA", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)); // rechte Haelfte
-		Planet planetB = new Planet("PlanetB", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)); // linke Haelfte
+		Planet planetA = new Planet("Planet_A", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)); // rechte Haelfte
+		Planet planetB = new Planet("Planet_B", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)); // linke Haelfte
 		listOfPlanets.add(planetA); // Speichern in der Planeten Liste des Map Objekts
 		listOfPlanets.add(planetB);
 		try {
@@ -51,22 +51,21 @@ public class Map {
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for planet");
 		}
-		// Ausgabe zum testen
-		java.lang.System.out
-				.println(planetA.getID() + " -> Radius: " + planetA.getRadius() + " Mass: " + planetA.getMass());
-		java.lang.System.out
-				.println(planetB.getID() + " -> Radius: " + planetB.getRadius() + " Mass: " + planetB.getMass());
 		Random r = new Random();
-		int morePlanetsToAdd = r.nextInt(3); // 0, 1 oder 2
+		int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
 		// Schleife zum Initialisieren aller restlichen Planeten (ohne Affen)
 		for (int i = 0; i < morePlanetsToAdd; i++) {
-			Vector2f validePosition = findValidePositionForPlanetSpawning();
-			Planet planet_i = new Planet("Planet" + i, validePosition.x, validePosition.y);
-			listOfPlanets.add(planet_i);
-			try {
-				addRandomImageToPlanet(planet_i, true);
-			} catch (SlickException e) {
-				System.err.println("Cannot find image for planet");
+			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 10);
+			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
+			// hinzu
+			if (validePosition != null) {
+				Planet planet_i = new Planet("Planet_" + (i + 1), validePosition.x, validePosition.y);
+				listOfPlanets.add(planet_i);
+				try {
+					addRandomImageToPlanet(planet_i, true);
+				} catch (SlickException e) {
+					System.err.println("Cannot find image for planet");
+				}
 			}
 		}
 	}
@@ -110,11 +109,21 @@ public class Map {
 		}
 	}
 
-	private Vector2f findValidePositionForPlanetSpawning() {
-		for (int n = 0; n < 100; n++) { // Suche bis zu 100 Zufallspositionen ab
+	/**
+	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
+	 * von allen anderen Planeten entfernt ist
+	 * 
+	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
+	 *                                 mindestens entfernt sein muss
+	 * @param iterations               Wie oft soll maximal nach einer gueltigen
+	 *                                 Position gesucht werden
+	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
+	 *         ueberschritten wurde
+	 */
+	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
+		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
 			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-6.5f, 6.5f), Utils.randomFloat(-4.5f, 4.5f));
 			boolean positionIsValide = true;
-			float marginToNextPlanetCenter = 5f;
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < listOfPlanets.size(); i++) {
 				Planet p_i = listOfPlanets.get(i);
@@ -124,6 +133,7 @@ public class Map {
 				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
 						.pow(marginToNextPlanetCenter, 2)) {
 					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
+					break;
 				}
 			}
 			if (positionIsValide) {
@@ -131,8 +141,9 @@ public class Map {
 				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 			}
 		}
-		// Falls Such Schleife bis zum Ende durch laeuft:
-		throw new RuntimeException("Could not find a valide Position for Planet spawning");
+		// Falls Such-Schleife bis zum Ende durch laeuft:
+		java.lang.System.out.println("Planet spawning after: null");
+		return null;
 	}
 
 	/**

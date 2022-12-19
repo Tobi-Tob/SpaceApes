@@ -6,7 +6,7 @@ import eea.engine.entity.Entity;
 public class Planet extends Entity {
 
 	private final float radius;
-	private final float mass;
+	private final int mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private Ape ape;
 
@@ -20,8 +20,8 @@ public class Planet extends Entity {
 	 */
 	public Planet(String entityID, float x, float y) {
 		super(entityID);
-		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.7 und 1.5
-		mass = radius * Utils.randomFloat(0.8f, 1.2f) * 80; // Float zwischen 48 und 144
+		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.75 und 1.5
+		mass = (int) (radius * Utils.randomFloat(0.91f, 1.1f) * 65); // Integer zwischen 44 und 107 (Im Mittel 73)
 		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
 
 		setPosition(Utils.toPixelCoordinates(coordinates));
@@ -48,7 +48,7 @@ public class Planet extends Entity {
 		return radius;
 	}
 
-	public float getMass() {
+	public int getMass() {
 		return mass;
 	}
 
