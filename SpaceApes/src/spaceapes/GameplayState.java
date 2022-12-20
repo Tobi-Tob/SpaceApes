@@ -44,7 +44,7 @@ public class GameplayState extends BasicGameState {
 		entityManager = StateBasedEntityManager.getInstance();
 		listOfAllPlayers.add(new Player("Player1"));
 		listOfAllPlayers.add(new Player("Player2"));
-		// listOfAllPlayers.add(new Player("Player3"));
+		listOfAllPlayers.add(new Player("Player3"));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class GameplayState extends BasicGameState {
 							}
 							if (Math.abs(projectile.getCoordinates().x) > 10
 									|| Math.abs(projectile.getCoordinates().y) > 8) {
-								// Zu weit auﬂerhalb des Bildes
+								// Zu weit ausserhalb des Bildes
 								entityManager.removeEntity(stateID, projectile);
 								changeActivePlayerToNextPlayer();
 							}
@@ -228,6 +228,7 @@ public class GameplayState extends BasicGameState {
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
 		PlayerInteractionAllowed = true;
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
+		java.lang.System.out.println("Du Esel");
 	}
 
 	/**
