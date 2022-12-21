@@ -1,6 +1,5 @@
 package spaceapes;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,7 +35,7 @@ public class GameplayState extends BasicGameState {
 	private int stateID; // Identifier dieses BasicGameState
 	private List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
 	private Player activePlayer; // Spieler, der am Zug ist
-	private boolean PlayerInteractionAllowed = true;
+	private boolean playerInteractionAllowed = true;
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
 	GameplayState(int sid) {
@@ -78,14 +77,7 @@ public class GameplayState extends BasicGameState {
 		// ueber sie ausgibt
 		for (int i = 0; i < map.listOfPlanets.size(); i++) {
 			ANDEvent clicked_On_Planet_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-			clicked_On_Planet_Event.addAction(new Action() {
-				@Override
-				public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-					Planet planet = (Planet) event.getOwnerEntity();
-					java.lang.System.out.println(planet.getID());
-					java.lang.System.out.println("Mass: " + planet.getMass() + " Radius: " + planet.getRadius());
-				}
-			});
+			clicked_On_Planet_Event.addAction(new DisplayPlanetInfoAction());
 			map.listOfPlanets.get(i).addComponent(clicked_On_Planet_Event);
 			entityManager.addEntity(stateID, map.listOfPlanets.get(i));
 		}
@@ -103,10 +95,14 @@ public class GameplayState extends BasicGameState {
 		Entity left_Listener = new Entity("Left_Listener");
 		KeyDownEvent right_key_pressed = new KeyDownEvent(Input.KEY_RIGHT);
 		KeyDownEvent left_key_pressed = new KeyDownEvent(Input.KEY_LEFT);
+		// Bei dem Movement funktioniert noch was nicht, es kann sich immer nur der erste Spieler bewegen. Das liegt daran, dass
+		// playerInteractionAllowed als true übergeben wird und anschließend nicht auf false gesetzt wird...
+		//right_key_pressed.addAction(new MoveRightOnPlanetAction(playerInteractionAllowed, activePlayer));
+		//left_key_pressed.addAction(new MoveLeftOnPlanetAction(playerInteractionAllowed, activePlayer));
 		right_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (PlayerInteractionAllowed) {
+				if (playerInteractionAllowed) {
 					activePlayer.getApe().stepOnPlanet(1); // 1 = rechts rum
 				}
 			}
@@ -114,7 +110,7 @@ public class GameplayState extends BasicGameState {
 		left_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (PlayerInteractionAllowed) {
+				if (playerInteractionAllowed) {
 					activePlayer.getApe().stepOnPlanet(-1); // -1 = links rum
 				}
 			}
@@ -131,9 +127,9 @@ public class GameplayState extends BasicGameState {
 		space_bar_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (PlayerInteractionAllowed) {
+				if (playerInteractionAllowed) {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
-					PlayerInteractionAllowed = false;
+					playerInteractionAllowed = false;
 					// Abfragen von initialer Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
 					float startDirection = activePlayer.getApe().getAngleOfView_global();
@@ -193,18 +189,7 @@ public class GameplayState extends BasicGameState {
 		// Mausposition abgefragt werden
 		Entity mouse_Clicked_With_Shift_Listener = new Entity("Mouse_Clicked_With_Shift_Listener");
 		ANDEvent mouse_Clicked_With_Shift = new ANDEvent(new KeyDownEvent(Input.KEY_LSHIFT), new MouseClickedEvent());
-		mouse_Clicked_With_Shift.addAction(new Action() {
-			@Override
-			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				Vector2f mousePixelPos = new Vector2f(gc.getInput().getMouseX(), gc.getInput().getMouseY());
-				Vector2f mouseCoords = Utils.toWorldCoordinates(mousePixelPos);
-				int px = (int) mousePixelPos.x;
-				int py = (int) mousePixelPos.y;
-				DecimalFormat formatter = new DecimalFormat("#.##");
-				java.lang.System.out.println("World coords (" + formatter.format(mouseCoords.x) + ", "
-						+ formatter.format(mouseCoords.y) + "); Pixel pos (" + px + ", " + py + ")");
-			}
-		});
+		mouse_Clicked_With_Shift.addAction(new DisplayCoordinatesAction());
 		mouse_Clicked_With_Shift_Listener.addComponent(mouse_Clicked_With_Shift);
 		entityManager.addEntity(stateID, mouse_Clicked_With_Shift_Listener);
 
@@ -226,7 +211,7 @@ public class GameplayState extends BasicGameState {
 			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
 		}
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
-		PlayerInteractionAllowed = true;
+		playerInteractionAllowed = true;
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 		java.lang.System.out.println("Du Esel");
 	}
