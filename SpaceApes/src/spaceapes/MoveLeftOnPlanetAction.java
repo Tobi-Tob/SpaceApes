@@ -8,17 +8,15 @@ import eea.engine.component.Component;
 
 public class MoveLeftOnPlanetAction implements Action {
 
-	private boolean playerInteractionAllowed;
 	private Player activePlayer;
 	
-	public MoveLeftOnPlanetAction(boolean playerInteractionAllowed, Player activePlayer) {
-		this.playerInteractionAllowed = playerInteractionAllowed;
+	public MoveLeftOnPlanetAction(Player activePlayer) {
 		this.activePlayer = activePlayer;
 	}
 
 	@Override
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2, Component arg3) {
-		if (playerInteractionAllowed) {
+		if (activePlayer.isInteractionAllowed()) {
 			activePlayer.getApe().stepOnPlanet(-1); // -1 = links rum
 		}
 	}

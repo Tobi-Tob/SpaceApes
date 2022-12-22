@@ -4,6 +4,7 @@ public class Player {
 	public final String iD;
 	private Ape ape;
 	private int coins = 0;
+	private boolean isInteractionAllowed;
 
 	/**
 	 * Konstruktor fuer ein Spielerobjekt.
@@ -40,5 +41,13 @@ public class Player {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean isInteractionAllowed() {
+		return isInteractionAllowed;
+	}
+	
+	public void setInteractionAllowed(boolean isInteractionAllowed) {
+		this.isInteractionAllowed = isInteractionAllowed;
 	}
 }

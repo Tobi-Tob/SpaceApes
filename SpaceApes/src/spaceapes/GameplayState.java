@@ -35,7 +35,6 @@ public class GameplayState extends BasicGameState {
 	private int stateID; // Identifier dieses BasicGameState
 	private List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
 	private Player activePlayer; // Spieler, der am Zug ist
-	private boolean playerInteractionAllowed = true;
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
 	GameplayState(int sid) {
@@ -55,8 +54,9 @@ public class GameplayState extends BasicGameState {
 		/* Spieler */
 
 		Random r = new Random();
-		activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten
+		Player activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten
 																					// auswaehlen
+		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
 		/* Erzeugen des Objekts Map */
@@ -97,8 +97,9 @@ public class GameplayState extends BasicGameState {
 		KeyDownEvent left_key_pressed = new KeyDownEvent(Input.KEY_LEFT);
 		// Bei dem Movement funktioniert noch was nicht, es kann sich immer nur der erste Spieler bewegen. Das liegt daran, dass
 		// playerInteractionAllowed als true übergeben wird und anschließend nicht auf false gesetzt wird...
-		//right_key_pressed.addAction(new MoveRightOnPlanetAction(playerInteractionAllowed, activePlayer));
+		right_key_pressed.addAction(new MoveRightOnPlanetAction(activePlayer));
 		//left_key_pressed.addAction(new MoveLeftOnPlanetAction(playerInteractionAllowed, activePlayer));
+		/*
 		right_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
@@ -107,10 +108,11 @@ public class GameplayState extends BasicGameState {
 				}
 			}
 		});
+		*/
 		left_key_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (playerInteractionAllowed) {
+				if (activePlayer.isInteractionAllowed()) {
 					activePlayer.getApe().stepOnPlanet(-1); // -1 = links rum
 				}
 			}
@@ -127,9 +129,9 @@ public class GameplayState extends BasicGameState {
 		space_bar_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (playerInteractionAllowed) {
+				if (activePlayer.isInteractionAllowed()) {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
-					playerInteractionAllowed = false;
+					activePlayer.setInteractionAllowed(false);
 					// Abfragen von initialer Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
 					float startDirection = activePlayer.getApe().getAngleOfView_global();
@@ -211,7 +213,7 @@ public class GameplayState extends BasicGameState {
 			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
 		}
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
-		playerInteractionAllowed = true;
+		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 		java.lang.System.out.println("Du Esel");
 	}
