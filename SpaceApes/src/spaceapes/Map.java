@@ -41,8 +41,10 @@ public class Map {
 	 */
 	public void initPlanets() {
 		// Home planets zufaellig auf den Spielfeld Haelften platzieren
-		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-6, -2), Utils.randomFloat(-4, 4)); // rechte Haelfte
-		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2, 6), Utils.randomFloat(-4, 4)); // linke Haelfte
+		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-5.5f, -2.5f), Utils.randomFloat(-3.5f, 3.5f)); // rechte
+																													// Haelfte
+		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2.5f, 5.5f), Utils.randomFloat(-3.5f, 3.5f)); // linke
+																												// Haelfte
 		listOfPlanets.add(planet1); // Speichern in der Planeten Liste des Map Objekts
 		listOfPlanets.add(planet2);
 		try {
@@ -80,20 +82,20 @@ public class Map {
 	 */
 	private void addRandomImageToPlanet(Planet planet, boolean allowRings) throws SlickException {
 		Random r = new Random();
-		int imageNumber = r.nextInt(3) + 1; // Integer im Intervall [1, 3]
+		int imageNumber = r.nextInt(4) + 1; // Integer im Intervall [1, 4]
 		if (allowRings) {
-			imageNumber = r.nextInt(4) + 1; // Integer im Intervall [1, 4]
+			imageNumber = r.nextInt(7) + 1; // Integer im Intervall [1, 7]
 		}
 
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-			float ScalingFactorPlanet1 = 0.31f;
+			float ScalingFactorPlanet1 = 0.315f;
 			planet.setScale(planet.getRadius() * ScalingFactorPlanet1);
 			break;
 		case 2:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet2.png")));
-			float ScalingFactorPlanet2 = 0.32f;
+			float ScalingFactorPlanet2 = 0.325f;
 			planet.setScale(planet.getRadius() * ScalingFactorPlanet2);
 			break;
 		case 3:
@@ -102,9 +104,24 @@ public class Map {
 			planet.setScale(planet.getRadius() * ScalingFactorPlanet3);
 			break;
 		case 4:
+			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet4.png")));
+			float ScalingFactorPlanet4 = 0.31f;
+			planet.setScale(planet.getRadius() * ScalingFactorPlanet4);
+			break;
+		case 5:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet1.png")));
-			float ScalingFactorRingPlanet1 = 0.35f;
+			float ScalingFactorRingPlanet1 = 0.345f;
 			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet1);
+			break;
+		case 6:
+			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet2.png")));
+			float ScalingFactorRingPlanet2 = 0.335f;
+			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet2);
+			break;
+		case 7:
+			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet3.png")));
+			float ScalingFactorRingPlanet3 = 0.31f;
+			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet3);
 			break;
 		}
 	}
