@@ -42,7 +42,7 @@ public class GameplayState extends BasicGameState {
 		entityManager = StateBasedEntityManager.getInstance();
 		listOfAllPlayers.add(new Player("Player1"));
 		listOfAllPlayers.add(new Player("Player2"));
-		listOfAllPlayers.add(new Player("Player3"));
+		// listOfAllPlayers.add(new Player("Player3"));
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class GameplayState extends BasicGameState {
 
 		Random r = new Random();
 		this.activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten
-																					// auswaehlen
+																						// auswaehlen
 		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
@@ -114,7 +114,7 @@ public class GameplayState extends BasicGameState {
 				if (activePlayer.isInteractionAllowed()) {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
 					activePlayer.setInteractionAllowed(false);
-					
+
 					// Abfragen von initialer Position und Geschwindigkeit
 					Vector2f position = activePlayer.getApe().getCoordinates();
 					float startDirection = activePlayer.getApe().getAngleOfView_global();

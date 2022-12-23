@@ -5,8 +5,8 @@ import eea.engine.entity.Entity;
 
 public class Planet extends Entity {
 
-	private final float radius;
-	private final int mass;
+	protected float radius;
+	protected int mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private Ape ape;
 
@@ -38,7 +38,7 @@ public class Planet extends Entity {
 	 */
 	public float distanceToEntityPosition() throws RuntimeException {
 		float dist = getRadius() + ape.apeDistanceFromSurface;
-		if (dist > 0.5f) {
+		if (dist > 0.1f) {
 			return dist;
 		} else
 			throw new RuntimeException("Radius ist zu klein");
