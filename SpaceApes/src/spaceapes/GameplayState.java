@@ -70,7 +70,7 @@ public class GameplayState extends BasicGameState {
 
 		/* Planeten */
 
-		map.initPlanets();
+		map.spawnPlanets(0.3f, 0.2f);
 		List<float[]> planetData = map.generatePlanetData();
 
 		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen

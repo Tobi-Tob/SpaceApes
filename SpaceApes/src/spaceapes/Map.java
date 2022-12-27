@@ -39,7 +39,7 @@ public class Map {
 	/**
 	 * WICHTIG: Muss ausgefuehrt werden, bevor Affen initalisiert werden
 	 */
-	public void initPlanets() {
+	public void spawnPlanets(float blackHoleProbability, float antiPlanetProbability) {
 		// Home planets zufaellig auf den Spielfeld Haelften platzieren
 		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-5.5f, -2.5f), Utils.randomFloat(-3.5f, 3.5f)); // rechte
 																													// Haelfte
@@ -53,11 +53,32 @@ public class Map {
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for planet");
 		}
+
+		// Versuche Schwarzes Loch zu platzieren
+		if (Utils.randomFloat(0, 1) < blackHoleProbability) {
+			Vector2f blackHolePosition = findValidePositionForPlanetSpawning(5, 30);
+			if (blackHolePosition != null) {
+				Planet blackHole = new Planet("BlackHole", blackHolePosition.x, blackHolePosition.y);
+				blackHole.changeToBlackHole();
+				listOfPlanets.add(blackHole);
+			}
+		}
+
+		// Versuche Anti Planet zu platzieren
+		if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
+			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
+			if (antiPlanetPosition != null) {
+				Planet antiPlanet = new Planet("Anti-Planet", antiPlanetPosition.x, antiPlanetPosition.y);
+				antiPlanet.changeToAntiPlanet();
+				listOfPlanets.add(antiPlanet);
+			}
+		}
+
+		// Restliche Planeten
 		Random r = new Random();
 		int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
-		// Schleife zum Initialisieren aller restlichen Planeten (ohne Affen)
 		for (int i = 0; i < morePlanetsToAdd; i++) {
-			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 10);
+			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 5);
 			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
 			// hinzu
 			if (validePosition != null) {
@@ -70,13 +91,43 @@ public class Map {
 				}
 			}
 		}
-		if (Utils.randomFloat(0, 1) < 0.3f) {
-			Vector2f blackHolePosition = findValidePositionForPlanetSpawning(5, 10);
-			if (blackHolePosition != null) {
-				BlackHole blackHole = new BlackHole("BlackHole", blackHolePosition.x, blackHolePosition.y);
-				listOfPlanets.add(blackHole);
+	}
+
+	/**
+	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
+	 * von allen anderen Planeten entfernt ist
+	 * 
+	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
+	 *                                 mindestens entfernt sein muss
+	 * @param iterations               Wie oft soll maximal nach einer gueltigen
+	 *                                 Position gesucht werden
+	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
+	 *         ueberschritten wurde
+	 */
+	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
+		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
+			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-6f, 6f), Utils.randomFloat(-4.5f, 4.5f));
+			boolean positionIsValide = true;
+			// Iteriere ueber alle Planeten
+			for (int i = 0; i < listOfPlanets.size(); i++) {
+				Planet p_i = listOfPlanets.get(i);
+				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
+						p_i.getCoordinates().y - randomPosition.y);
+				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
+				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
+						.pow(marginToNextPlanetCenter, 2)) {
+					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
+					break;
+				}
+			}
+			if (positionIsValide) {
+				java.lang.System.out.println("Planet spawning after: n=" + n);
+				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 			}
 		}
+		// Falls Such-Schleife bis zum Ende durch laeuft:
+		java.lang.System.out.println("Planet spawning after: null");
+		return null;
 	}
 
 	/**
@@ -89,9 +140,9 @@ public class Map {
 	 */
 	private void addRandomImageToPlanet(Planet planet, boolean ringsAllowed) throws SlickException {
 		Random r = new Random();
-		int imageNumber = r.nextInt(6) + 1; // Integer im Intervall [1, 6]
+		int imageNumber = r.nextInt(5) + 1; // Integer im Intervall [1, 5]
 		if (ringsAllowed) {
-			imageNumber = r.nextInt(9) + 1; // Integer im Intervall [1, 9]
+			imageNumber = r.nextInt(8) + 1; // Integer im Intervall [1, 8]
 		}
 
 		switch (imageNumber) {
@@ -121,63 +172,21 @@ public class Map {
 			planet.setScale(planet.getRadius() * ScalingFactorPlanet5);
 			break;
 		case 6:
-			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet6.png")));
-			float ScalingFactorPlanet6 = 0.335f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet6);
-			break;
-		case 7:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet1.png")));
 			float ScalingFactorRingPlanet1 = 0.36f;
 			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet1);
 			break;
-		case 8:
+		case 7:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet2.png")));
 			float ScalingFactorRingPlanet2 = 0.335f;
 			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet2);
 			break;
-		case 9:
+		case 8:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet3.png")));
 			float ScalingFactorRingPlanet3 = 0.31f;
 			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet3);
 			break;
 		}
-	}
-
-	/**
-	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
-	 * von allen anderen Planeten entfernt ist
-	 * 
-	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
-	 *                                 mindestens entfernt sein muss
-	 * @param iterations               Wie oft soll maximal nach einer gueltigen
-	 *                                 Position gesucht werden
-	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
-	 *         ueberschritten wurde
-	 */
-	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
-		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
-			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-6.5f, 6.5f), Utils.randomFloat(-4.5f, 4.5f));
-			boolean positionIsValide = true;
-			// Iteriere ueber alle Planeten
-			for (int i = 0; i < listOfPlanets.size(); i++) {
-				Planet p_i = listOfPlanets.get(i);
-				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
-						p_i.getCoordinates().y - randomPosition.y);
-				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
-				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
-						.pow(marginToNextPlanetCenter, 2)) {
-					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
-					break;
-				}
-			}
-			if (positionIsValide) {
-				java.lang.System.out.println("Planet spawning after: n=" + n);
-				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
-			}
-		}
-		// Falls Such-Schleife bis zum Ende durch laeuft:
-		java.lang.System.out.println("Planet spawning after: null");
-		return null;
 	}
 
 	/**

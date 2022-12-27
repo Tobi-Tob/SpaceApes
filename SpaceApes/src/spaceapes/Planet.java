@@ -1,12 +1,16 @@
 package spaceapes;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+
+import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 
 public class Planet extends Entity {
 
-	protected float radius;
-	protected int mass;
+	private float radius;
+	private int mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private Ape ape;
 
@@ -50,6 +54,30 @@ public class Planet extends Entity {
 
 	public int getMass() {
 		return mass;
+	}
+
+	public void changeToBlackHole() {
+		radius = Utils.randomFloat(0.4f, 0.5f);
+		mass = (int) (radius * 250);
+		try {
+			this.addComponent(new ImageRenderComponent(new Image("/assets/blackhole1.png")));
+		} catch (SlickException e) {
+			System.err.println("Cannot find image for black hole");
+		}
+		float scalingFactorBlackhole = 1.3f;
+		this.setScale(radius * scalingFactorBlackhole);
+		setRotation(0);
+	}
+
+	public void changeToAntiPlanet() {
+		mass = (int) (-0.3f * mass);
+		try {
+			this.addComponent(new ImageRenderComponent(new Image("/assets/planet_anti1.png")));
+		} catch (SlickException e) {
+			System.err.println("Cannot find image for planet");
+		}
+		float ScalingFactorPlanetAnti1 = 0.325f;
+		this.setScale(radius * ScalingFactorPlanetAnti1);
 	}
 
 	/**
