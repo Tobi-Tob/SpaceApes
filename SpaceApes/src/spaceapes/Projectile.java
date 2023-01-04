@@ -17,7 +17,7 @@ public class Projectile extends Entity {
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
 	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
-	private final float projectileScalingFactor = 0.4f; // Faktor der das Bild skaliert
+	private final float projectileScalingFactor = 0.07f; // Faktor der das Bild skaliert
 
 	public final List<float[]> planetData; // Alle benoetigten Daten fuer die Bahnberechnung (x, y, Masse, Radius) sind
 											// hier gespeichert
