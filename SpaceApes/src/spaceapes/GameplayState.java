@@ -43,6 +43,7 @@ public class GameplayState extends BasicGameState {
 		listOfAllPlayers.add(new Player("Player1"));
 		listOfAllPlayers.add(new Player("Player2"));
 		// listOfAllPlayers.add(new Player("Player3"));
+		// listOfAllPlayers.add(new Player("Player4"));
 	}
 
 	/**

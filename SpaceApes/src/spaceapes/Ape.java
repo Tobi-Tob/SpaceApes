@@ -13,8 +13,8 @@ public class Ape extends Entity {
 	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
 												// bewegt
 	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
-	public final float apeScalingFactor = 0.1f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
-	public final float apeDistanceFromSurface = 0.2f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
+	public final float apeScalingFactor = 0.18f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
+	public final float apeDistanceFromSurface = 0.25f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
 	private int health = 100;
 
 	/**
