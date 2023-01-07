@@ -10,6 +10,7 @@ public class Ape extends Entity {
 
 	private float angleOnPlanet; // Einheit Grad, Drehsinn im Uhrzeigersinn, 0 enspricht Osten
 	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
+	private float throwStrength; // Abwurfgeschwindigkeit fuer Projektile
 	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
 												// bewegt
 	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
@@ -34,6 +35,7 @@ public class Ape extends Entity {
 		planet.setApe(this); // Affe kennt seinen Planeten und Planet weiﬂ welcher Affe auf ihm sitzt.
 		angleOnPlanet = Utils.randomFloat(0, 360);
 		angleOfView = 0f;
+		throwStrength = 5f;
 		distancePlanetCenter = homePlanet.distanceToEntityPosition();
 
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
@@ -60,11 +62,7 @@ public class Ape extends Entity {
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
 	public void stepOnPlanet(int direction) {
-		if (!(direction == -1 || direction == 1)) {
-			throw new RuntimeException("Ungueltige direction");
-		}
 		angleOnPlanet += direction * movmentSpeed / distancePlanetCenter; // Update des Winkels
-
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setRotation(angleOnPlanet + 90f);
 	}
@@ -95,6 +93,10 @@ public class Ape extends Entity {
 
 	public float getAngleOfView_global() {
 		return angleOnPlanet + angleOfView;
+	}
+
+	public float getThrowStrength() {
+		return throwStrength;
 	}
 
 	public int getHealth() {

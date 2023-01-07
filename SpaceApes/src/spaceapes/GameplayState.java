@@ -16,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.Component;
+import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
@@ -105,6 +106,8 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
 
+		clacTrajectory(activePlayer.getApe(), planetData, 1000, true);
+
 		/* Schiessen */
 
 		Entity space_bar_Listener = new Entity("Space_bar_Listener");
@@ -116,14 +119,23 @@ public class GameplayState extends BasicGameState {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
 					activePlayer.setInteractionAllowed(false);
 
+					removeAimeLine();
+
 					// Abfragen von initialer Position und Geschwindigkeit
-					Vector2f position = activePlayer.getApe().getCoordinates();
-					float startDirection = activePlayer.getApe().getAngleOfView_global();
-					float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
+					Ape activeApe = activePlayer.getApe();
+					Vector2f position = activeApe.getCoordinates();
+					float startDirection = activeApe.getAngleOfView_global();
+					float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
 					Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 
 					// Projektil wird erzeugt
 					Projectile projectile = new Projectile("Projectile", position, velocity, planetData);
+					try {
+						projectile.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
+					} catch (SlickException e) {
+						System.err.println("Cannot find file assets/coconut.png");
+						e.printStackTrace();
+					}
 
 					// Loop Event
 					LoopEvent projectileLoop = new LoopEvent();
@@ -199,6 +211,65 @@ public class GameplayState extends BasicGameState {
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
 		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
+		removeAimeLine();
+	}
+
+	/**
+	 * Berechnet eine vorhergesagte Trajektorie eines Projektils
+	 * 
+	 * @param ape        Affe von dem die Trajektorie berechnet werden soll
+	 * @param planetData Planetendaten fuer die Berechnung benoetigt
+	 * @param lineLenth  Laenge der vorhergesagten Flugbahn in ms
+	 * @param draw       true, wenn die Bahn durch Punkte gezeichnet werden soll
+	 */
+	private void clacTrajectory(Ape ape, List<float[]> planetData, int lineLenth, boolean draw) {
+		removeAimeLine();
+		Vector2f position = ape.getCoordinates();
+		float startDirection = ape.getAngleOfView_global();
+		float startVelocity = ape.getThrowStrength();
+		Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+
+		int updateFrequency = 3; // Frequenz in ms in der die Euler Schritte ausgefuehrt werden (sollte fuer gute
+									// Vorhersage nahe an der Frequenz liegen, die bei der Echtzeit Berechnung
+									// auftritt)
+		int iterations = (int) lineLenth / updateFrequency;
+
+		// Hilfsprojektil wird erzeugt
+		Projectile projectile = new Projectile("Help_Projectile", position, velocity, planetData);
+		for (int i = 1; i < iterations; i++) {
+			if (projectile.explizitEulerStep(updateFrequency) == false) {
+				// Wenn Kollision mit Planet
+				entityManager.removeEntity(stateID, projectile);
+				break;
+			}
+			if (draw && i % (100 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
+															// gesetzt
+				Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
+				dot.setPosition(Utils.toPixelCoordinates(projectile.getCoordinates()));
+				dot.setScale(1 - (i * 0.8f / iterations));
+				try {
+					dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
+				} catch (SlickException e) {
+					System.err.println("Cannot find image for dot");
+				}
+				entityManager.addEntity(stateID, dot);
+			}
+		}
+
+	}
+
+	/**
+	 * Entfernt alle Hilfslinien Punkte
+	 */
+	private void removeAimeLine() {
+		for (int i = 0; i < 100; i++) {
+			Entity dot = entityManager.getEntity(stateID, "dot");
+			if (dot == null) {
+				break;
+			}
+			entityManager.removeEntity(stateID, dot);
+		}
+
 	}
 
 	/**

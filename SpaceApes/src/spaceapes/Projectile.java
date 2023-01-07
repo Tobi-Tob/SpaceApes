@@ -42,13 +42,6 @@ public class Projectile extends Entity {
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		setScale(projectileScalingFactor);
-		setRotation(direction + 90f);
-		try {
-			addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
-		} catch (SlickException e) {
-			System.err.println("Cannot find file assets/coconut.png");
-			e.printStackTrace();
-		}
 	}
 
 	public Vector2f getCoordinates() {
