@@ -11,11 +11,14 @@ public class Ape extends Entity {
 	private float angleOnPlanet; // Einheit Grad, Drehsinn im Uhrzeigersinn, 0 enspricht Osten
 	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
 	private float throwStrength; // Abwurfgeschwindigkeit fuer Projektile
+	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
 	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
 												// bewegt
-	private float movmentSpeed = 0.08f; // Faktor fuer die Schrittweite des Affen
-	public final float apeScalingFactor = 0.18f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
-	public final float apeDistanceFromSurface = 0.25f; // Faktor Abhaengig von Groesse und Skalierung des Affenbilds
+	public float apePixelHeight = 300;
+	public float pixelfromFeetToCenter = 130;
+	public float desiredApeSizeInWorldUnits = 0.6f;
+	float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
+
 	private int health = 100;
 
 	/**
@@ -36,10 +39,10 @@ public class Ape extends Entity {
 		angleOnPlanet = Utils.randomFloat(0, 360);
 		angleOfView = 0f;
 		throwStrength = 5f;
-		distancePlanetCenter = homePlanet.distanceToEntityPosition();
+		distancePlanetCenter = homePlanet.distanceToApePosition();
 
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
-		setScale(apeScalingFactor);
+		setScale(scalingFactor);
 		setRotation(angleOnPlanet + 90f); // Entity Rotation ist nach oben Zeigend als 0 definiert
 
 	}

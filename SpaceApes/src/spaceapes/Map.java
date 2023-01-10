@@ -28,9 +28,10 @@ public class Map {
 
 	public void initBackground() {
 		background.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		background.setScale(0.5f); // Skalieren des Hintergrunds
 		try {
+			Image image = new Image("/assets/space1.jpg");
 			background.addComponent(new ImageRenderComponent(new Image("/assets/space1.jpg")));
+			background.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for background");
 		}
@@ -40,11 +41,13 @@ public class Map {
 	 * WICHTIG: Muss ausgefuehrt werden, bevor Affen initalisiert werden
 	 */
 	public void spawnPlanets(float blackHoleProbability, float antiPlanetProbability) {
+		float xBorder = Utils.worldWidth / 2;
+		float yBorder = Utils.worldHeight / 2;
 		// Home planets zufaellig auf den Spielfeld Haelften platzieren
-		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-5.5f, -2.5f), Utils.randomFloat(-3.5f, 3.5f)); // rechte
-																													// Haelfte
-		Planet planet2 = new Planet("Planet2", Utils.randomFloat(2.5f, 5.5f), Utils.randomFloat(-3.5f, 3.5f)); // linke
-																												// Haelfte
+		Planet planet1 = new Planet("Planet1", Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f),
+				Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f)); // rechte Haelfte
+		Planet planet2 = new Planet("Planet2", Utils.randomFloat(xBorder * 0.3f, xBorder * 0.6f),
+				Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f)); // linke Haelfte
 		listOfPlanets.add(planet1); // Speichern in der Planeten Liste des Map Objekts
 		listOfPlanets.add(planet2);
 		try {
@@ -78,7 +81,7 @@ public class Map {
 		Random r = new Random();
 		int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
 		for (int i = 0; i < morePlanetsToAdd; i++) {
-			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 5);
+			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 10);
 			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
 			// hinzu
 			if (validePosition != null) {
@@ -105,8 +108,11 @@ public class Map {
 	 *         ueberschritten wurde
 	 */
 	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
+		float xBorder = Utils.worldWidth / 2;
+		float yBorder = Utils.worldHeight / 2;
 		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
-			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-6f, 6f), Utils.randomFloat(-4.5f, 4.5f));
+			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
+					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
 			boolean positionIsValide = true;
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < listOfPlanets.size(); i++) {
@@ -148,43 +154,51 @@ public class Map {
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
-			float ScalingFactorPlanet1 = 0.315f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet1);
+			float planetRadiusInPixel = 235;
+			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 2:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet2.png")));
-			float ScalingFactorPlanet2 = 0.33f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet2);
+			planetRadiusInPixel = 230;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 3:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet3.png")));
-			float ScalingFactorPlanet3 = 0.315f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet3);
+			planetRadiusInPixel = 242;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 4:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet4.png")));
-			float ScalingFactorPlanet4 = 0.31f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet4);
+			planetRadiusInPixel = 242;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 5:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet5.png")));
-			float ScalingFactorPlanet5 = 0.34f;
-			planet.setScale(planet.getRadius() * ScalingFactorPlanet5);
+			planetRadiusInPixel = 222;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 6:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet1.png")));
-			float ScalingFactorRingPlanet1 = 0.36f;
-			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet1);
+			planetRadiusInPixel = 210;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 7:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet2.png")));
-			float ScalingFactorRingPlanet2 = 0.335f;
-			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet2);
+			planetRadiusInPixel = 230;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 8:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet3.png")));
-			float ScalingFactorRingPlanet3 = 0.31f;
-			planet.setScale(planet.getRadius() * ScalingFactorRingPlanet3);
+			planetRadiusInPixel = 245;
+			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		}
 	}

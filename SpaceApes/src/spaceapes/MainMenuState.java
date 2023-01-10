@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -42,16 +43,17 @@ public class MainMenuState extends BasicGameState {
 
 		Entity menuBackground = new Entity("menu"); // Entitaet fuer Hintergrund erzeugen
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		menuBackground.setScale((float) Launch.HEIGHT / 1440); // Skalieren des Hintergrunds
-		menuBackground.addComponent(new ImageRenderComponent(new Image("/assets/menuSP.png"))); // Bildkomponente
+		Image image = new Image("/assets/menuSP.png");
+		menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
+		menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
 		/* Neues Spiel starten-Entitaet */
 
 		Entity newGameEntity = new Entity("Spiel starten");
 		// Setze Position und Bildkomponente
-		newGameEntity.setPosition(Utils.toPixelCoordinates(-5, 0.5f));
-		newGameEntity.setScale(0.25f);
+		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
+		newGameEntity.setScale((float) Launch.HEIGHT / 3200);
 		newGameEntity.addComponent(new ImageRenderComponent(new Image("assets/button_start.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -65,8 +67,8 @@ public class MainMenuState extends BasicGameState {
 
 		Entity quitEntity = new Entity("Beenden");
 		// Setze Position und Bildkomponente
-		quitEntity.setPosition(Utils.toPixelCoordinates(-5, 3));
-		quitEntity.setScale(0.25f);
+		quitEntity.setPosition(new Vector2f(Launch.WIDTH / 4.4f, Launch.HEIGHT / 1.4f));
+		quitEntity.setScale((float) Launch.HEIGHT / 3200);
 		quitEntity.addComponent(new ImageRenderComponent(new Image("assets/button_beenden.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action

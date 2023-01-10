@@ -40,12 +40,12 @@ public class Planet extends Entity {
 	 * @return float in Welt-Koordinaten
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
-	public float distanceToEntityPosition() throws RuntimeException {
-		float dist = getRadius() + ape.apeDistanceFromSurface;
+	public float distanceToApePosition() throws RuntimeException {
+		float dist = getRadius() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
 		if (dist > 0.1f) {
 			return dist;
 		} else
-			throw new RuntimeException("Radius ist zu klein");
+			throw new RuntimeException("Radius ist zu nah an null");
 	}
 
 	public float getRadius() {
@@ -59,25 +59,27 @@ public class Planet extends Entity {
 	public void changeToBlackHole() {
 		radius = Utils.randomFloat(0.4f, 0.5f);
 		mass = (int) (radius * 250);
+		float blackHoleRadiusInPixel = 60;
+		float blackHoleRadiusInWorldUnits = Utils.pixelLengthToWorldLength(blackHoleRadiusInPixel);
+		this.setScale(radius / blackHoleRadiusInWorldUnits);
 		try {
 			this.addComponent(new ImageRenderComponent(new Image("/assets/blackhole1.png")));
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for black hole");
 		}
-		float scalingFactorBlackhole = 1.3f;
-		this.setScale(radius * scalingFactorBlackhole);
 		setRotation(0);
 	}
 
 	public void changeToAntiPlanet() {
 		mass = (int) (-0.3f * mass);
+		float planetRadiusInPixel = 230;
+		float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+		this.setScale(radius / planetRadiusInWorldUnits);
 		try {
 			this.addComponent(new ImageRenderComponent(new Image("/assets/planet_anti1.png")));
 		} catch (SlickException e) {
 			System.err.println("Cannot find image for planet");
 		}
-		float ScalingFactorPlanetAnti1 = 0.325f;
-		this.setScale(radius * ScalingFactorPlanetAnti1);
 	}
 
 	/**

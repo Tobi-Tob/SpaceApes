@@ -1,5 +1,7 @@
 package spaceapes;
 
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -18,11 +20,10 @@ public class Launch extends StateBasedGame {
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
-	// Beim Aendern der Fenstergroesse muessen Konstanten neu justiert werden:
-	// Klasse Planet: planetScalingFactor
-	// Klasse Ape: apeScalingFactor, apeDistanceFromSurface
-	public static final int HEIGHT = 450; // Pixel Mittelpunkt des Fensters
-	public static final int WIDTH = 600; // Fenster Verhaeltniss 3 zu 4
+
+	public static int WIDTH = 1200;
+	public static int HEIGHT = 900; // Fenstergroeﬂe wird ueberschrieben, wenn USE_FULL_SCREEN = true
+	public static boolean USE_FULL_SCREEN = true;
 
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
@@ -44,7 +45,13 @@ public class Launch extends StateBasedGame {
 
 		// Lege die Einstellungen des Fensters fest und starte das Fenster
 		// (nicht aber im Vollbildmodus)
-		app.setDisplayMode(WIDTH * 2, HEIGHT * 2, false);
+
+		if (USE_FULL_SCREEN) {
+			DisplayMode dm = Display.getDesktopDisplayMode();
+			WIDTH = dm.getWidth();
+			HEIGHT = dm.getHeight();
+		}
+		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
 		app.start();
 	}
 

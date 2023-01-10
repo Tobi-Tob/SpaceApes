@@ -5,44 +5,48 @@ import java.util.Random;
 import org.newdawn.slick.geom.Vector2f;
 
 public final class Utils {
+	public static float worldWidth = 16;
+	public static float worldHeight = worldWidth * Launch.HEIGHT / Launch.WIDTH;
 
 	/**
 	 * Wandelt Welt-Koordinaten in Pixel-Koordinaten um
 	 * 
-	 * @param x sichtbarer Bereich zwischen -8 und 8
-	 * @param y sichtbarer Bereich zwischen -6 und 6
+	 * @param x in Welt-Koordinaten
+	 * @param y in Welt-Koordinaten
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(float x, float y) {
-		// [-8,8]x[-6,6] abgebildet auf [0,1200]x[0,900] z.B
 		float w = Launch.WIDTH;
 		float h = Launch.HEIGHT;
-		return new Vector2f(x * w / 8 + w, y * h / 6 + h);
+		return new Vector2f(x * w / worldWidth + w / 2, y * w / worldWidth + h / 2);
 	}
 
 	/**
 	 * Wandelt Welt-Koordinaten in Pixel-Koordinaten um
 	 * 
-	 * @param v Vector2f mit Welt-Koordinaten
+	 * @param v Vector2f in Welt-Koordinaten
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(Vector2f v) {
 		float w = Launch.WIDTH;
 		float h = Launch.HEIGHT;
-		return new Vector2f(v.x * w / 8 + w, v.y * h / 6 + h);
+		return new Vector2f(v.x * w / worldWidth + w / 2, v.y * w / worldWidth + h / 2);
 	}
 
 	/**
 	 * Wandelt Pixel-Koordinaten in Welt-Koordinaten um
 	 * 
-	 * @param p Vector2f mit Pixel-Koordinaten
+	 * @param p Vector2f in Pixel-Koordinaten
 	 * @return Vector2f mit Welt-Koordinaten
 	 */
 	public static Vector2f toWorldCoordinates(Vector2f p) {
-		// z.B [0,1200]x[0,900] abgebildet auf [-8,8]x[-6,6]
 		float w = Launch.WIDTH;
 		float h = Launch.HEIGHT;
-		return new Vector2f((p.x - w) * 8 / w, (p.y - h) * 6 / h);
+		return new Vector2f((p.x - w * 0.5f) * worldWidth / w, (p.y - h * 0.5f) * worldWidth / w);
+	}
+
+	public static float pixelLengthToWorldLength(float p) {
+		return p * worldWidth / Launch.WIDTH;
 	}
 
 	/**

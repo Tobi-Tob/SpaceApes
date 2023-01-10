@@ -160,7 +160,11 @@ public class GameplayState extends BasicGameState {
 									System.err.println("Cannot find image for explosion");
 								}
 								explosion.setImages(images);
-								explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
+								float explosionSizeInPixel = 300;
+								float explosionSizeInWorldUnits = Utils.pixelLengthToWorldLength(explosionSizeInPixel);
+								float desiredExplosionSize = 1f;
+								float explosionScalingFactor = desiredExplosionSize / explosionSizeInWorldUnits;
+								explosion.scaleAndRotateAnimation(explosionScalingFactor, Utils.randomFloat(0, 360));
 								explosion.addAnimation(0.012f, false);
 								entityManager.addEntity(stateID, explosion);
 
@@ -199,6 +203,17 @@ public class GameplayState extends BasicGameState {
 		esc_pressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
+
+		/* Controlpanel */
+
+		Entity controlpanel = new Entity("Controlpanel");
+		controlpanel.setPosition(new Vector2f(Launch.WIDTH / 8, Launch.HEIGHT / 10));
+		float controlpanelWidthInPixel = 839;
+		float controlpanelWidthInWorldUnits = Utils.pixelLengthToWorldLength(controlpanelWidthInPixel);
+		float desiredControlpanelWidth = 3.5f;
+		controlpanel.setScale(desiredControlpanelWidth / controlpanelWidthInWorldUnits);
+		controlpanel.addComponent(new ImageRenderComponent(new Image("/assets/wood_panel.png")));
+		entityManager.addEntity(stateID, controlpanel);
 
 	}
 
