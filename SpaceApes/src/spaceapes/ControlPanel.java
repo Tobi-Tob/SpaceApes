@@ -2,31 +2,70 @@ package spaceapes;
 
 import java.util.Collections;
 import java.util.HashMap;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 
 public class ControlPanel extends Entity {
+
+	private Vector2f coordinates;
 
 	public ControlPanel(String entityID) {
 		super(entityID);
 	}
 
-	public void initControlPanel(Map map) {
-		Vector2f bestPosition = findBestPosition(map);
-		this.setPosition(bestPosition);
-		float controlpanelWidthInPixel = 1500;
-		float controlpanelWidthInWorldUnits = Utils.pixelLengthToWorldLength(controlpanelWidthInPixel);
-		float desiredControlpanelWidth = 4.5f;
-		this.setScale(desiredControlpanelWidth / controlpanelWidthInWorldUnits);
+	public void initControlPanel(Map map, int stateID, StateBasedEntityManager entityManager) {
+		coordinates = findBestPosition(map);
+		this.setPosition(coordinates);
+		float controlpanelWidthInPixel = 1483;
+		float desiredControlpanelWidth = 0.3f; // im Verhaeltnis zur Fenster Breite
+		float panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
+		this.setScale(panelScaleFactor);
+
+		// Arrows
+		float desiredArrowWidth = 0.8f; // im Verhaeltnis zum Control Panel
+
+		Entity arrow_Weapons = new Entity("ArrowForWeapons");
+		arrow_Weapons.setScale(panelScaleFactor * desiredArrowWidth);
+		Vector2f relativPos = new Vector2f(600, -230); // relative Position auf dem Control Panel
+		arrow_Weapons.setPosition(relativPos.scale(panelScaleFactor).add(coordinates));
+
+		Entity arrow_Power_Right = new Entity("ArrowForPowerRight");
+		arrow_Power_Right.setScale(panelScaleFactor * desiredArrowWidth);
+		arrow_Power_Right.setPosition(new Vector2f(-120, 200).scale(panelScaleFactor).add(coordinates));
+
+		Entity arrow_Power_Left = new Entity("ArrowForPowerLeft");
+		arrow_Power_Left.setScale(panelScaleFactor * desiredArrowWidth);
+		arrow_Power_Left.setPosition(new Vector2f(-620, 200).scale(panelScaleFactor).add(coordinates));
+
+		Entity arrow_Angle_Right = new Entity("ArrowForAngleRight");
+		arrow_Angle_Right.setScale(panelScaleFactor * desiredArrowWidth);
+		arrow_Angle_Right.setPosition(new Vector2f(620, 200).scale(panelScaleFactor).add(coordinates));
+
+		Entity arrow_Angle_Left = new Entity("ArrowForAngleLeft");
+		arrow_Angle_Left.setScale(panelScaleFactor * desiredArrowWidth);
+		arrow_Angle_Left.setPosition(new Vector2f(120, 200).scale(panelScaleFactor).add(coordinates));
+
 		try {
 			this.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
+			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
+			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
+			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
+			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
+			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
 		} catch (SlickException e) {
 			System.err.println("Problem with Controlpanel");
 		}
+		entityManager.addEntity(stateID, this);
+		entityManager.addEntity(stateID, arrow_Weapons);
+		entityManager.addEntity(stateID, arrow_Power_Right);
+		entityManager.addEntity(stateID, arrow_Power_Left);
+		entityManager.addEntity(stateID, arrow_Angle_Right);
+		entityManager.addEntity(stateID, arrow_Angle_Left);
 	}
 
 	/**
@@ -37,10 +76,10 @@ public class ControlPanel extends Entity {
 	 * @return Vector2f Position, die am besten fuer das Control Panel geeignet ist.
 	 */
 	private Vector2f findBestPosition(Map map) {
-		Vector2f leftUpperCorner = new Vector2f(0.15f * Launch.WIDTH, 0.13f * Launch.HEIGHT);
-		Vector2f rightUpperCorner = new Vector2f(0.85f * Launch.WIDTH, 0.13f * Launch.HEIGHT);
-		Vector2f leftLowerCorner = new Vector2f(0.15f * Launch.WIDTH, 0.87f * Launch.HEIGHT);
-		Vector2f rightLowerCorner = new Vector2f(0.85f * Launch.WIDTH, 0.87f * Launch.HEIGHT);
+		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
+		Vector2f rightUpperCorner = new Vector2f(0.82f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
+		Vector2f leftLowerCorner = new Vector2f(0.18f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
+		Vector2f rightLowerCorner = new Vector2f(0.82f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
 
 		HashMap<Vector2f, Float> positionsToDistance = new HashMap<Vector2f, Float>();
 		// Die HashMap speichtert als Key die 4 moeglichen Positionen und als Value die

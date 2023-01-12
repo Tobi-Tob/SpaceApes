@@ -171,8 +171,8 @@ public class GameplayState extends BasicGameState {
 								entityManager.addEntity(stateID, explosion);
 
 							}
-							if (Math.abs(projectile.getCoordinates().x) > 10
-									|| Math.abs(projectile.getCoordinates().y) > 8) {
+							if (Math.abs(projectile.getCoordinates().x) > 1.3f * Utils.worldWidth / 2
+									|| Math.abs(projectile.getCoordinates().y) > 1.3f * Utils.worldHeight / 2) {
 								// Zu weit ausserhalb des Bildes
 								entityManager.removeEntity(stateID, projectile);
 								changeActivePlayerToNextPlayer();
@@ -206,11 +206,10 @@ public class GameplayState extends BasicGameState {
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
 
-		/* Controlpanel */
+		/* Control Panel */
 
-		ControlPanel controlpanel = new ControlPanel("Controlpanel");
-		controlpanel.initControlPanel(map);
-		entityManager.addEntity(stateID, controlpanel);
+		ControlPanel controlPanel = new ControlPanel("ControlPanel");
+		controlPanel.initControlPanel(map, stateID, entityManager);
 
 	}
 
@@ -300,6 +299,7 @@ public class GameplayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		// StatedBasedEntityManager soll alle Entities rendern
 		entityManager.renderEntities(container, game, g);
+		// g.drawString("TEST", 100, 100);
 	}
 
 	@Override
