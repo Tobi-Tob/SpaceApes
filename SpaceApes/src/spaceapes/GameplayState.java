@@ -77,17 +77,19 @@ public class GameplayState extends BasicGameState {
 
 		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen
 		// ueber sie ausgibt
-		for (int i = 0; i < map.listOfPlanets.size(); i++) {
+		for (Planet planet : map.listOfPlanets) {
 			ANDEvent clicked_On_Planet_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 			clicked_On_Planet_Event.addAction(new DisplayPlanetInfoAction());
-			map.listOfPlanets.get(i).addComponent(clicked_On_Planet_Event);
-			entityManager.addEntity(stateID, map.listOfPlanets.get(i));
+			planet.addComponent(clicked_On_Planet_Event);
+			entityManager.addEntity(stateID, planet);
 		}
-
 		/* Affen */
 
 		map.initApes(listOfAllPlayers);
 		for (Ape ape : map.listOfApes) {
+			ANDEvent clicked_On_Ape_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+			clicked_On_Ape_Event.addAction(new DisplayApeInfoAction());
+			ape.addComponent(clicked_On_Ape_Event);
 			entityManager.addEntity(stateID, ape);
 		}
 
@@ -207,7 +209,7 @@ public class GameplayState extends BasicGameState {
 		/* Controlpanel */
 
 		ControlPanel controlpanel = new ControlPanel("Controlpanel");
-		controlpanel.init(map);
+		controlpanel.initControlPanel(map);
 		entityManager.addEntity(stateID, controlpanel);
 
 	}
@@ -220,7 +222,7 @@ public class GameplayState extends BasicGameState {
 		}
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
 		activePlayer.setInteractionAllowed(true);
-		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
+		// java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 		removeAimeLine();
 	}
 

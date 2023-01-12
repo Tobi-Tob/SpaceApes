@@ -17,9 +17,10 @@ public class Ape extends Entity {
 	public float apePixelHeight = 300;
 	public float pixelfromFeetToCenter = 130;
 	public float desiredApeSizeInWorldUnits = 0.6f;
-	float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
+	public float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
 
 	private int health = 100;
+	private float energy = 50;
 
 	/**
 	 * Konstruktor fuegt einem Planet einen Affen hinzu, der zufaellig auf der
@@ -108,5 +109,13 @@ public class Ape extends Entity {
 
 	public void setHealth(int health) {
 		this.health = health;
+	}
+
+	public float getEnergy() {
+		return energy;
+	}
+
+	public void setEnergy(float energy) {
+		this.energy = energy;
 	}
 }

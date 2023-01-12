@@ -2,8 +2,6 @@ package spaceapes;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -17,7 +15,7 @@ public class ControlPanel extends Entity {
 		super(entityID);
 	}
 
-	public void init(Map map) {
+	public void initControlPanel(Map map) {
 		Vector2f bestPosition = findBestPosition(map);
 		this.setPosition(bestPosition);
 		float controlpanelWidthInPixel = 1500;
