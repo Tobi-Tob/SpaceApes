@@ -9,7 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
-import eea.engine.action.basicactions.ChangeStateInitAction;
+import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.QuitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -58,7 +58,7 @@ public class MainMenuState extends BasicGameState {
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent start_Game_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action start_Game_Action = new ChangeStateInitAction(Launch.GAMEPLAY_STATE);
+		Action start_Game_Action = new ChangeStateAction(Launch.GAMEPLAY_STATE);
 		start_Game_Event.addAction(start_Game_Action);
 		newGameEntity.addComponent(start_Game_Event);
 		entityManager.addEntity(this.stateID, newGameEntity); // Fuege die Entity zum StateBasedEntityManager hinzu

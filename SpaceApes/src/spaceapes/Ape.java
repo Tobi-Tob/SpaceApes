@@ -38,7 +38,7 @@ public class Ape extends Entity {
 		homePlanet = planet;
 		planet.setApe(this); // Affe kennt seinen Planeten und Planet weiﬂ welcher Affe auf ihm sitzt.
 		angleOnPlanet = Utils.randomFloat(0, 360);
-		angleOfView = 0f;
+		angleOfView = 0;
 		throwStrength = 5f;
 		distancePlanetCenter = homePlanet.distanceToApePosition();
 
@@ -65,7 +65,7 @@ public class Ape extends Entity {
 	 * 
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
-	public void stepOnPlanet(int direction) {
+	public void stepOnPlanet(float direction) {
 		angleOnPlanet += direction * movmentSpeed / distancePlanetCenter; // Update des Winkels
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setRotation(angleOnPlanet + 90f);
@@ -88,7 +88,20 @@ public class Ape extends Entity {
 	}
 
 	public void setAngleOfView(float beta) {
+		if (beta < -90 || beta > 90) {
+			throw new RuntimeException("Invalide angle of view");
+		}
 		angleOfView = beta;
+	}
+
+	public void changeAngleOfView(float gamma) {
+		angleOfView = angleOfView + gamma;
+		if (angleOfView < -90) {
+			angleOfView = -90;
+		}
+		if (angleOfView > 90) {
+			angleOfView = 90;
+		}
 	}
 
 	public float getAngleOfView_local() {
@@ -101,6 +114,23 @@ public class Ape extends Entity {
 
 	public float getThrowStrength() {
 		return throwStrength;
+	}
+
+	public void setThrowStrength(float power) {
+		if (power < 0 || power > 10) {
+			throw new RuntimeException("Invalide Throw Strength");
+		}
+		throwStrength = power;
+	}
+
+	public void changeThrowStrength(float power) {
+		throwStrength = throwStrength + power;
+		if (throwStrength < 0) {
+			throwStrength = 0;
+		}
+		if (throwStrength > 10) {
+			throwStrength = 10;
+		}
 	}
 
 	public int getHealth() {

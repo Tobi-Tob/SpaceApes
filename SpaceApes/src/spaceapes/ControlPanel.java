@@ -6,13 +6,20 @@ import java.util.HashMap;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+
+import eea.engine.action.Action;
+import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.ANDEvent;
+import eea.engine.event.basicevents.MouseClickedEvent;
+import eea.engine.event.basicevents.MouseEnteredEvent;
 
 public class ControlPanel extends Entity {
 
 	private Vector2f coordinates;
+	public Player activePlayer;
 
 	public ControlPanel(String entityID) {
 		super(entityID);
@@ -66,6 +73,28 @@ public class ControlPanel extends Entity {
 		entityManager.addEntity(stateID, arrow_Power_Left);
 		entityManager.addEntity(stateID, arrow_Angle_Right);
 		entityManager.addEntity(stateID, arrow_Angle_Left);
+
+		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
+
+		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action increase_Angle_Action = new ChangeAngleAction(1f);
+		increase_Angle_Event.addAction(increase_Angle_Action);
+		arrow_Angle_Right.addComponent(increase_Angle_Event);
+
+		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action decrease_Angle_Action = new ChangeAngleAction(-1f);
+		decrease_Angle_Event.addAction(decrease_Angle_Action);
+		arrow_Angle_Left.addComponent(decrease_Angle_Event);
+
+		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action increase_Power_Action = new ChangePowerAction(0.1f);
+		increase_Power_Event.addAction(increase_Power_Action);
+		arrow_Power_Right.addComponent(increase_Power_Event);
+
+		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action decrease_Power_Action = new ChangePowerAction(-0.1f);
+		decrease_Power_Event.addAction(decrease_Power_Action);
+		arrow_Power_Left.addComponent(decrease_Power_Event);
 	}
 
 	/**
