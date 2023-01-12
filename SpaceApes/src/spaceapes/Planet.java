@@ -97,4 +97,11 @@ public class Planet extends Entity {
 		return ape;
 	}
 
+	public boolean hasApe() {
+		if (this.ape == null) {
+			return false;
+		}
+		return true;
+	}
+
 }

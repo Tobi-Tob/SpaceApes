@@ -206,13 +206,8 @@ public class GameplayState extends BasicGameState {
 
 		/* Controlpanel */
 
-		Entity controlpanel = new Entity("Controlpanel");
-		controlpanel.setPosition(new Vector2f(Launch.WIDTH / 6.5f, Launch.HEIGHT / 7.5f));
-		float controlpanelWidthInPixel = 1500;
-		float controlpanelWidthInWorldUnits = Utils.pixelLengthToWorldLength(controlpanelWidthInPixel);
-		float desiredControlpanelWidth = 4.5f;
-		controlpanel.setScale(desiredControlpanelWidth / controlpanelWidthInWorldUnits);
-		controlpanel.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
+		ControlPanel controlpanel = new ControlPanel("Controlpanel");
+		controlpanel.init(map);
 		entityManager.addEntity(stateID, controlpanel);
 
 	}

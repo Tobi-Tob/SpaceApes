@@ -127,12 +127,12 @@ public class Map {
 				}
 			}
 			if (positionIsValide) {
-				java.lang.System.out.println("Planet spawning after: n=" + n);
+				// java.lang.System.out.println("Planet spawning after: n=" + n);
 				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 			}
 		}
 		// Falls Such-Schleife bis zum Ende durch laeuft:
-		java.lang.System.out.println("Planet spawning after: null");
+		// java.lang.System.out.println("Planet spawning after: null");
 		return null;
 	}
 
