@@ -18,7 +18,7 @@ public class MoveOnPlanetAction implements Action {
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2, Component arg3) {
 		GameplayState gps = (GameplayState) arg1.getCurrentState();
 		Player activePlayer = gps.activePlayer;
-		if (gps.playerInteractionAllowed) {
+		if (gps.userInteractionAllowed) {
 			activePlayer.getApe().stepOnPlanet(direction);
 		}
 	}

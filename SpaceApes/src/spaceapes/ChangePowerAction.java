@@ -16,7 +16,7 @@ public class ChangePowerAction extends ButtonPressedAction {
 	protected void updateToPerform(GameContainer container, StateBasedGame game, int delta, Component event) {
 		GameplayState gps = (GameplayState) game.getCurrentState();
 		Player activePlayer = gps.activePlayer;
-		if (gps.playerInteractionAllowed) {
+		if (gps.userInteractionAllowed) {
 			activePlayer.getApe().changeThrowStrength(powerToChange);
 			java.lang.System.out.println("ThrowStrength = " + activePlayer.getApe().getThrowStrength());
 		}

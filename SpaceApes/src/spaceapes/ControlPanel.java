@@ -1,11 +1,19 @@
 package spaceapes;
 
+import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
 import eea.engine.component.render.ImageRenderComponent;
@@ -18,60 +26,86 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 public class ControlPanel extends Entity {
 
 	private Vector2f coordinates;
+	public List<Entity> listOfCorrespondingEntities;
 	public Player activePlayer;
+	float panelScaleFactor;
+	TrueTypeFont font;
+	ImageRenderComponent imageRenderComponent = null;
 
 	public ControlPanel(String entityID) {
 		super(entityID);
+		listOfCorrespondingEntities = new ArrayList<>();
 	}
 
-	public void initControlPanel(Map map, int stateID, StateBasedEntityManager entityManager) {
+	public void initControlPanel(Map map, Player player, int stateID, StateBasedEntityManager entityManager) {
+		this.activePlayer = player;
 		coordinates = findBestPosition(map);
 		this.setPosition(coordinates);
 		float controlpanelWidthInPixel = 1483;
 		float desiredControlpanelWidth = 0.3f; // im Verhaeltnis zur Fenster Breite
-		float panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
+		panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
 		this.setScale(panelScaleFactor);
 
+		// Font
+		int fontSize = Math.round(panelScaleFactor * 90);
+		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
+
 		// Arrows
-		float desiredArrowWidth = 0.8f; // im Verhaeltnis zum Control Panel
+		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
 
 		Entity arrow_Weapons = new Entity("ArrowForWeapons");
-		arrow_Weapons.setScale(panelScaleFactor * desiredArrowWidth);
-		Vector2f relativPos = new Vector2f(600, -230); // relative Position auf dem Control Panel
-		arrow_Weapons.setPosition(relativPos.scale(panelScaleFactor).add(coordinates));
+		arrow_Weapons.setScale(panelScaleFactor * desiredArrowScale);
+		arrow_Weapons.setPosition(relativPosOnPanelToPixelPos(600, -230));
+		listOfCorrespondingEntities.add(arrow_Weapons);
 
 		Entity arrow_Power_Right = new Entity("ArrowForPowerRight");
-		arrow_Power_Right.setScale(panelScaleFactor * desiredArrowWidth);
+		arrow_Power_Right.setScale(panelScaleFactor * desiredArrowScale);
 		arrow_Power_Right.setPosition(new Vector2f(-120, 200).scale(panelScaleFactor).add(coordinates));
+		listOfCorrespondingEntities.add(arrow_Power_Right);
 
 		Entity arrow_Power_Left = new Entity("ArrowForPowerLeft");
-		arrow_Power_Left.setScale(panelScaleFactor * desiredArrowWidth);
-		arrow_Power_Left.setPosition(new Vector2f(-620, 200).scale(panelScaleFactor).add(coordinates));
+		arrow_Power_Left.setScale(panelScaleFactor * desiredArrowScale);
+		arrow_Power_Left.setPosition(relativPosOnPanelToPixelPos(-620, 200));
+		listOfCorrespondingEntities.add(arrow_Power_Left);
 
 		Entity arrow_Angle_Right = new Entity("ArrowForAngleRight");
-		arrow_Angle_Right.setScale(panelScaleFactor * desiredArrowWidth);
-		arrow_Angle_Right.setPosition(new Vector2f(620, 200).scale(panelScaleFactor).add(coordinates));
+		arrow_Angle_Right.setScale(panelScaleFactor * desiredArrowScale);
+		arrow_Angle_Right.setPosition(relativPosOnPanelToPixelPos(620, 200));
+		listOfCorrespondingEntities.add(arrow_Angle_Right);
 
 		Entity arrow_Angle_Left = new Entity("ArrowForAngleLeft");
-		arrow_Angle_Left.setScale(panelScaleFactor * desiredArrowWidth);
-		arrow_Angle_Left.setPosition(new Vector2f(120, 200).scale(panelScaleFactor).add(coordinates));
+		arrow_Angle_Left.setScale(panelScaleFactor * desiredArrowScale);
+		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200));
+		listOfCorrespondingEntities.add(arrow_Angle_Left);
+
+		float desiredProjectilScale = 0.23f;
+		Entity shopProjectil_1 = new Entity("ShopProjectil_1");
+		shopProjectil_1.setScale(panelScaleFactor * desiredProjectilScale);
+		shopProjectil_1.setPosition(relativPosOnPanelToPixelPos(380, -230));
+		shopProjectil_1.setRotation(45);
+		listOfCorrespondingEntities.add(shopProjectil_1);
 
 		try {
+			imageRenderComponent = new ImageRenderComponent(new Image("/assets/panel.png"));
 			this.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
 			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
 			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
 			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
 			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
 			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
+			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
 		} catch (SlickException e) {
 			System.err.println("Problem with Controlpanel");
 		}
+		this.addComponent(imageRenderComponent);
+
 		entityManager.addEntity(stateID, this);
 		entityManager.addEntity(stateID, arrow_Weapons);
 		entityManager.addEntity(stateID, arrow_Power_Right);
 		entityManager.addEntity(stateID, arrow_Power_Left);
 		entityManager.addEntity(stateID, arrow_Angle_Right);
 		entityManager.addEntity(stateID, arrow_Angle_Left);
+		entityManager.addEntity(stateID, shopProjectil_1);
 
 		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
 
@@ -99,6 +133,19 @@ public class ControlPanel extends Entity {
 		Action decrease_Power_Action = new ChangePowerAction(-1f);
 		decrease_Power_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Event);
+
+		setPanelAndComponentsVisible(true);
+	}
+
+	public void setPanelAndComponentsVisible(boolean isVisible) {
+		this.setVisible(isVisible);
+		for (Entity e : listOfCorrespondingEntities) {
+			e.setVisible(isVisible);
+		}
+	}
+
+	private Vector2f relativPosOnPanelToPixelPos(float x, float y) {
+		return new Vector2f(x, y).scale(panelScaleFactor).add(coordinates);
 	}
 
 	/**
@@ -158,4 +205,34 @@ public class ControlPanel extends Entity {
 		return quality;
 	}
 
+	@Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g) {
+		if (this.isVisible() && !(imageRenderComponent == null)) {
+
+			imageRenderComponent.render(container, game, g);
+
+			// Render Text
+
+			Vector2f textPos_Power = relativPosOnPanelToPixelPos(-470, -30);
+			font.drawString(textPos_Power.x, textPos_Power.y, "Power", Color.black);
+
+			Vector2f textPos_Angle = relativPosOnPanelToPixelPos(250, -20);
+			font.drawString(textPos_Angle.x, textPos_Angle.y, "Angle", Color.black);
+
+			Vector2f textPos_ActivePlayer = relativPosOnPanelToPixelPos(-600, -290);
+			font.drawString(textPos_ActivePlayer.x, textPos_ActivePlayer.y, activePlayer.getName(), Color.black);
+
+			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-460, 150);
+			font.drawString(numberPos_Power.x, numberPos_Power.y, Float.toString(activePlayer.getApe().getThrowStrength()),
+					Color.black);
+
+			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(290, 150);
+			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
+					Float.toString(activePlayer.getApe().getAngleOfView_local()), Color.black);
+
+			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(40, -280);
+			font.drawString(numberPos_Coins.x, numberPos_Coins.y, Float.toString(activePlayer.getCoins()), Color.black);
+
+		}
+	}
 }

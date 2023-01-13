@@ -2,6 +2,7 @@ package spaceapes;
 
 public class Player {
 	public final String iD;
+	private String name;
 	private Ape ape;
 	private int coins = 0;
 	// private boolean isInteractionAllowed;
@@ -43,11 +44,16 @@ public class Player {
 		}
 	}
 
-	// public boolean isInteractionAllowed() {
-	// return isInteractionAllowed;
-	// }
+	public String getName() {
+		if (name == null) {
+			return iD;
+		} else {
+			return name;
+		}
+	}
 
-	// public void setInteractionAllowed(boolean isInteractionAllowed) {
-	// this.isInteractionAllowed = isInteractionAllowed;
-	// }
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

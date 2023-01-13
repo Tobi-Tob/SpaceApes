@@ -36,7 +36,8 @@ public class GameplayState extends BasicGameState {
 	public int stateID; // Identifier dieses BasicGameState
 	public List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
 	public Player activePlayer; // Spieler, der am Zug ist
-	public boolean playerInteractionAllowed = true;
+	public boolean userInteractionAllowed = true;
+	public ControlPanel controlPanel; // Menu fuer Benutzerinteraktion
 	public StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
 	GameplayState(int sid) {
@@ -109,6 +110,11 @@ public class GameplayState extends BasicGameState {
 
 		clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
 
+		/* Control Panel */
+
+		controlPanel = new ControlPanel("ControlPanel");
+		controlPanel.initControlPanel(map, activePlayer, stateID, entityManager);
+
 		/* Schiessen */
 
 		Entity space_bar_Listener = new Entity("Space_bar_Listener");
@@ -116,11 +122,12 @@ public class GameplayState extends BasicGameState {
 		space_bar_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (playerInteractionAllowed) {
+				if (userInteractionAllowed) {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
-					playerInteractionAllowed = false;
+					userInteractionAllowed = false;
 
 					removeAimeLine();
+					controlPanel.setPanelAndComponentsVisible(false);
 
 					// Abfragen von initialer Position und Geschwindigkeit
 					Ape activeApe = activePlayer.getApe();
@@ -205,23 +212,19 @@ public class GameplayState extends BasicGameState {
 		esc_Listener.addComponent(esc_pressed);
 		entityManager.addEntity(stateID, esc_Listener);
 
-		/* Control Panel */
-
-		ControlPanel controlPanel = new ControlPanel("ControlPanel");
-		controlPanel.initControlPanel(map, stateID, entityManager);
-
 	}
 
-	private void changeActivePlayerToNextPlayer() {
+	public void changeActivePlayerToNextPlayer() {
 		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
 		int indexNextPlayer = indexActivePlayer + 1;
 		if (indexNextPlayer >= listOfAllPlayers.size()) {
 			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
 		}
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
-		playerInteractionAllowed = true;
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
-		removeAimeLine();
+		controlPanel.activePlayer = activePlayer;
+		controlPanel.setPanelAndComponentsVisible(true);
+		userInteractionAllowed = true;
 	}
 
 	/**
@@ -237,7 +240,7 @@ public class GameplayState extends BasicGameState {
 	 * @param draw            true, wenn die Bahn durch Punkte gezeichnet werden
 	 *                        soll
 	 */
-	private void clacTrajectory(Ape ape, List<float[]> planetData, int flightTime, int updateFrequency, boolean draw) {
+	public void clacTrajectory(Ape ape, List<float[]> planetData, int flightTime, int updateFrequency, boolean draw) {
 		removeAimeLine();
 		Vector2f position = ape.getCoordinates();
 		float startDirection = ape.getAngleOfView_global();
@@ -272,7 +275,7 @@ public class GameplayState extends BasicGameState {
 	/**
 	 * Entfernt alle Hilfslinien Punkte
 	 */
-	private void removeAimeLine() {
+	public void removeAimeLine() {
 		for (int i = 0; i < 100; i++) {
 			Entity dot = entityManager.getEntity(stateID, "dot");
 			if (dot == null) {

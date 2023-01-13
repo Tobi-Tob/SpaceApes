@@ -1,11 +1,6 @@
 package spaceapes;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.StateBasedGame;
-
-import eea.engine.component.Component;
 import eea.engine.entity.Entity;
 
 public class Ape extends Entity {
