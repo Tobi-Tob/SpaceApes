@@ -107,7 +107,7 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
 
-		clacTrajectory(activePlayer.getApe(), planetData, 1000, true);
+		clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
 
 		/* Schiessen */
 
@@ -227,29 +227,30 @@ public class GameplayState extends BasicGameState {
 	/**
 	 * Berechnet eine vorhergesagte Trajektorie eines Projektils
 	 * 
-	 * @param ape        Affe von dem die Trajektorie berechnet werden soll
-	 * @param planetData Planetendaten fuer die Berechnung benoetigt
-	 * @param lineLenth  Laenge der vorhergesagten Flugbahn in ms
-	 * @param draw       true, wenn die Bahn durch Punkte gezeichnet werden soll
+	 * @param ape             Affe von dem die Trajektorie berechnet werden soll
+	 * @param planetData      Planetendaten fuer die Berechnung benoetigt
+	 * @param flightTime      Laenge der vorhergesagten Flugbahn in ms
+	 * @param updateFrequency Frequenz in ms in der die Euler Schritte ausgefuehrt
+	 *                        werden (sollte fuer gute Vorhersage nahe an der
+	 *                        Frequenz liegen, die bei der Echtzeit Berechnung
+	 *                        auftritt)
+	 * @param draw            true, wenn die Bahn durch Punkte gezeichnet werden
+	 *                        soll
 	 */
-	private void clacTrajectory(Ape ape, List<float[]> planetData, int lineLenth, boolean draw) {
+	private void clacTrajectory(Ape ape, List<float[]> planetData, int flightTime, int updateFrequency, boolean draw) {
 		removeAimeLine();
 		Vector2f position = ape.getCoordinates();
 		float startDirection = ape.getAngleOfView_global();
 		float startVelocity = ape.getThrowStrength();
 		Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 
-		int updateFrequency = 3; // Frequenz in ms in der die Euler Schritte ausgefuehrt werden (sollte fuer gute
-									// Vorhersage nahe an der Frequenz liegen, die bei der Echtzeit Berechnung
-									// auftritt)
-		int iterations = (int) lineLenth / updateFrequency;
+		int iterations = (int) flightTime / updateFrequency;
 
 		// Hilfsprojektil wird erzeugt
 		Projectile projectile = new Projectile("Help_Projectile", position, velocity, planetData);
 		for (int i = 1; i < iterations; i++) {
 			if (projectile.explizitEulerStep(updateFrequency) == false) {
 				// Wenn Kollision mit Planet
-				entityManager.removeEntity(stateID, projectile);
 				break;
 			}
 			if (draw && i % (100 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
@@ -265,7 +266,7 @@ public class GameplayState extends BasicGameState {
 				entityManager.addEntity(stateID, dot);
 			}
 		}
-
+		entityManager.removeEntity(stateID, projectile);
 	}
 
 	/**
