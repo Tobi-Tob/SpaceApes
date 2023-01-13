@@ -3,10 +3,9 @@ package spaceapes;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
-import eea.engine.action.Action;
 import eea.engine.component.Component;
 
-public class ChangePowerAction implements Action {
+public class ChangePowerAction extends ButtonPressedAction {
 	private float powerToChange;
 
 	public ChangePowerAction(float delta) {
@@ -14,13 +13,14 @@ public class ChangePowerAction implements Action {
 	}
 
 	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2, Component arg3) {
-
-		GameplayState gps = (GameplayState) arg1.getCurrentState();
+	protected void updateToPerform(GameContainer container, StateBasedGame game, int delta, Component event) {
+		GameplayState gps = (GameplayState) game.getCurrentState();
 		Player activePlayer = gps.activePlayer;
 		if (gps.playerInteractionAllowed) {
 			activePlayer.getApe().changeThrowStrength(powerToChange);
+			java.lang.System.out.println("ThrowStrength = " + activePlayer.getApe().getThrowStrength());
 		}
+		
 	}
 
 }

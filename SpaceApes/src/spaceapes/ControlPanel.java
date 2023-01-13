@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.action.Action;
-import eea.engine.action.basicactions.ChangeStateInitAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
@@ -76,23 +75,28 @@ public class ControlPanel extends Entity {
 
 		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
 
+		ANDEvent change_Weapon_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action change_Weapon_Action = new ChangeWeaponAction();
+		change_Weapon_Event.addAction(change_Weapon_Action);
+		arrow_Weapons.addComponent(change_Weapon_Event);
+
 		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Angle_Action = new ChangeAngleAction(1f);
+		Action increase_Angle_Action = new ChangeAngleAction(5f);
 		increase_Angle_Event.addAction(increase_Angle_Action);
 		arrow_Angle_Right.addComponent(increase_Angle_Event);
 
 		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Angle_Action = new ChangeAngleAction(-1f);
+		Action decrease_Angle_Action = new ChangeAngleAction(-5f);
 		decrease_Angle_Event.addAction(decrease_Angle_Action);
 		arrow_Angle_Left.addComponent(decrease_Angle_Event);
 
 		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Power_Action = new ChangePowerAction(0.1f);
+		Action increase_Power_Action = new ChangePowerAction(1f);
 		increase_Power_Event.addAction(increase_Power_Action);
 		arrow_Power_Right.addComponent(increase_Power_Event);
 
 		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-0.1f);
+		Action decrease_Power_Action = new ChangePowerAction(-1f);
 		decrease_Power_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Event);
 	}
