@@ -20,7 +20,5 @@ public class DisplayCoordinatesAction implements Action {
 		java.lang.System.out.println("World coords (" + formatter.format(mouseCoords.x) + ", "
 				+ formatter.format(mouseCoords.y) + "); Pixel pos (" + px + ", " + py + ")");
 	}
-	
-	//test comment
 
 }

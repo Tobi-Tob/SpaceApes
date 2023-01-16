@@ -103,12 +103,19 @@ public class GameplayState extends BasicGameState {
 		KeyDownEvent left_key_pressed = new KeyDownEvent(Input.KEY_LEFT);
 		left_key_pressed.addAction(new MoveOnPlanetAction(-1f));
 		right_key_pressed.addAction(new MoveOnPlanetAction(1f));
+		//MR: Mein Plan war die removeAimlineMethode in eine separate Klasse zu verlagern, aber das hat nur teilweise funktioniert...
+		//left_key_pressed.addAction(new RemoveAimlineAction(entityManager));
+		//right_key_pressed.addAction(new RemoveAimlineAction(entityManager));
+		AimlineAction leftAimlineAction = new AimlineAction(entityManager, planetData);
+		left_key_pressed.addAction(leftAimlineAction);
+		AimlineAction rightAimlineAction = new AimlineAction(entityManager, planetData);
+		right_key_pressed.addAction(rightAimlineAction);
 		right_Listener.addComponent(right_key_pressed);
 		left_Listener.addComponent(left_key_pressed);
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
 
-		clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
+		//clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
 
 		/* Control Panel */
 
@@ -126,6 +133,7 @@ public class GameplayState extends BasicGameState {
 					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
 					userInteractionAllowed = false;
 
+					//MR: removeAimline() sollte eigentlich nicht in GameplayState sein...
 					removeAimeLine();
 					controlPanel.setPanelAndComponentsVisible(false);
 
@@ -284,6 +292,13 @@ public class GameplayState extends BasicGameState {
 			entityManager.removeEntity(stateID, dot);
 		}
 
+	}
+	
+	/**
+	 * Liefert den Spieler zurück, der aktuell am Zug ist
+	 */
+	public Player getActivePlayer() {
+		return activePlayer;
 	}
 
 	/**
