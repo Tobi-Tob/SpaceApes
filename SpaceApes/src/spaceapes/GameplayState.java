@@ -38,7 +38,6 @@ public class GameplayState extends BasicGameState {
 	public int stateID; // Identifier dieses BasicGameState
 	public List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
 	public Player activePlayer; // Spieler, der am Zug ist
-	public boolean userInteractionAllowed = true;
 	public ControlPanel controlPanel; // Menu fuer Benutzerinteraktion
 	public StateBasedEntityManager entityManager; // zugehoeriger entityManager
 
@@ -154,80 +153,6 @@ public class GameplayState extends BasicGameState {
 		for (Player player : listOfAllPlayers) {
 			space_bar_pressed.addAction(new ShootAction(player, planetData, entityManager));
 		}
-		/*
-		space_bar_pressed.addAction(new Action() {
-			@Override
-			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-				if (userInteractionAllowed) {
-					// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
-					userInteractionAllowed = false;
-
-					//MR: removeAimline() sollte eigentlich nicht in GameplayState sein...
-					removeAimeLine();
-					controlPanel.setPanelAndComponentsVisible(false);
-
-					// Abfragen von initialer Position und Geschwindigkeit
-					Ape activeApe = activePlayer.getApe();
-					Vector2f position = activeApe.getCoordinates();
-					float startDirection = activeApe.getAngleOfView_global();
-					float startVelocity = activeApe.getThrowStrength();
-					Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-
-					// Projektil wird erzeugt
-					Projectile projectile = new Projectile("Projectile", position, velocity, planetData);
-					try {
-						projectile.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
-					} catch (SlickException e) {
-						System.err.println("Cannot find file assets/coconut.png");
-						e.printStackTrace();
-					}
-
-					// Loop Event
-					LoopEvent projectileLoop = new LoopEvent();
-					projectileLoop.addAction(new Action() {
-						// Action, die fortlaufend wiederholt werden soll:
-						@Override
-						public void update(GameContainer gc, StateBasedGame sb, int timeDelta, Component event) {
-							if (projectile.explizitEulerStep(timeDelta) == false) {
-								// Wenn Kollision mit Planet
-								entityManager.removeEntity(stateID, projectile);
-								changeActivePlayerToNextPlayer();
-								// Zeige Explosion
-								AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
-								Image[] images = new Image[4];
-								try {
-									images[0] = new Image("/assets/explosion/explosion1.png");
-									images[1] = new Image("/assets/explosion/explosion2.png");
-									images[2] = new Image("/assets/explosion/explosion3.png");
-									images[3] = new Image("/assets/explosion/explosion4.png");
-
-								} catch (SlickException e) {
-									System.err.println("Cannot find image for explosion");
-								}
-								explosion.setImages(images);
-								float explosionSizeInPixel = 300;
-								float explosionSizeInWorldUnits = Utils.pixelLengthToWorldLength(explosionSizeInPixel);
-								float desiredExplosionSize = 1f;
-								float explosionScalingFactor = desiredExplosionSize / explosionSizeInWorldUnits;
-								explosion.scaleAndRotateAnimation(explosionScalingFactor, Utils.randomFloat(0, 360));
-								explosion.addAnimation(0.012f, false);
-								entityManager.addEntity(stateID, explosion);
-
-							}
-							if (Math.abs(projectile.getCoordinates().x) > 1.3f * Utils.worldWidth / 2
-									|| Math.abs(projectile.getCoordinates().y) > 1.3f * Utils.worldHeight / 2) {
-								// Zu weit ausserhalb des Bildes
-								entityManager.removeEntity(stateID, projectile);
-								changeActivePlayerToNextPlayer();
-							}
-						}
-					});
-					projectile.addComponent(projectileLoop);
-					entityManager.addEntity(stateID, projectile);
-				}
-			}
-		});
-		*/
 		space_bar_Listener.addComponent(space_bar_pressed);
 		entityManager.addEntity(stateID, space_bar_Listener);
 
@@ -251,21 +176,6 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, esc_Listener);
 
 	}
-
-	/*
-	public void changeActivePlayerToNextPlayer() {
-		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
-		int indexNextPlayer = indexActivePlayer + 1;
-		if (indexNextPlayer >= listOfAllPlayers.size()) {
-			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
-		}
-		activePlayer = listOfAllPlayers.get(indexNextPlayer);
-		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
-		controlPanel.activePlayer = activePlayer;
-		controlPanel.setPanelAndComponentsVisible(true);
-		userInteractionAllowed = true;
-	}
-	*/
 	
 	public void changeActivePlayerToNextPlayer() {
 		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
@@ -278,7 +188,6 @@ public class GameplayState extends BasicGameState {
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 		controlPanel.activePlayer = activePlayer;
 		controlPanel.setPanelAndComponentsVisible(true);
-		userInteractionAllowed = true;
 	}
 
 	/**

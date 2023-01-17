@@ -32,7 +32,7 @@ public class AimlineAction implements Action {
 		removeAimeLine(gs);
 		
 		Player activePlayer = gs.getActivePlayer();
-		if (gs.userInteractionAllowed) {
+		if (activePlayer.isInteractionAllowed()) {
 			Ape ape = activePlayer.getApe();
 			Vector2f position = ape.getCoordinates();
 			float startDirection = ape.getAngleOfView_global();
