@@ -121,6 +121,17 @@ public class GameplayState extends BasicGameState {
 
 		controlPanel = new ControlPanel("ControlPanel");
 		controlPanel.initControlPanel(map, activePlayer, stateID, entityManager);
+		
+		/* Coin */
+
+		Entity coin = new Entity("Coin");
+		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
+		coin.addComponent(new ImageRenderComponent(new Image("assets/items/coin_gold.png")));
+		float coinWidthInPixel = 100;
+		float desiredCoinWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+		float panelScaleFactor = desiredCoinWidth * Launch.WIDTH / coinWidthInPixel;
+		coin.setScale(panelScaleFactor);
+		entityManager.addEntity(stateID, coin);
 
 		/* Schiessen */
 
