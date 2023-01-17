@@ -15,6 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
+import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -124,14 +125,17 @@ public class GameplayState extends BasicGameState {
 		
 		/* Coin */
 
-		Entity coin = new Entity("Coin");
-		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-		coin.addComponent(new ImageRenderComponent(new Image("assets/items/coin_gold.png")));
-		float coinWidthInPixel = 100;
-		float desiredCoinWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
-		float panelScaleFactor = desiredCoinWidth * Launch.WIDTH / coinWidthInPixel;
-		coin.setScale(panelScaleFactor);
-		entityManager.addEntity(stateID, coin);
+		Entity item = new Entity("Item");
+		item.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
+		item.addComponent(new ImageRenderComponent(new Image("assets/items/coin3.png")));
+		float itemWidthInPixel = 100;
+		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
+		item.setScale(itemScaleFactor);
+		LoopEvent itemLoop = new LoopEvent();
+		itemLoop.addAction(new RotateRightAction(0.03f));
+		item.addComponent(itemLoop);
+		entityManager.addEntity(stateID, item);
 
 		/* Schiessen */
 

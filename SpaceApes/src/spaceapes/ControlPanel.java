@@ -16,10 +16,12 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
+import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
+import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 
@@ -83,6 +85,9 @@ public class ControlPanel extends Entity {
 		shopProjectil_1.setScale(panelScaleFactor * desiredProjectilScale);
 		shopProjectil_1.setPosition(relativPosOnPanelToPixelPos(380, -230));
 		shopProjectil_1.setRotation(45);
+		// LoopEvent rotationLoop = new LoopEvent();
+		// rotationLoop.addAction(new RotateRightAction(0.03f));
+		// shopProjectil_1.addComponent(rotationLoop);
 		listOfCorrespondingEntities.add(shopProjectil_1);
 
 		try {
