@@ -108,13 +108,21 @@ public class GameplayState extends BasicGameState {
 		//left_key_pressed.addAction(new RemoveAimlineAction(entityManager));
 		//right_key_pressed.addAction(new RemoveAimlineAction(entityManager));
 		AimlineAction leftAimlineAction = new AimlineAction(entityManager, planetData);
-		left_key_pressed.addAction(leftAimlineAction);
+		//left_key_pressed.addAction(leftAimlineAction);
 		AimlineAction rightAimlineAction = new AimlineAction(entityManager, planetData);
-		right_key_pressed.addAction(rightAimlineAction);
+		//right_key_pressed.addAction(rightAimlineAction);
 		right_Listener.addComponent(right_key_pressed);
 		left_Listener.addComponent(left_key_pressed);
 		entityManager.addEntity(stateID, right_Listener);
 		entityManager.addEntity(stateID, left_Listener);
+		
+		/* Ziellinie */
+		Entity player = new Entity("Player");
+		LoopEvent aimLoop = new LoopEvent();
+		aimLoop.addAction(rightAimlineAction);
+		aimLoop.addAction(leftAimlineAction);
+		player.addComponent(aimLoop);
+		entityManager.addEntity(stateID, player);
 
 		//clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
 
