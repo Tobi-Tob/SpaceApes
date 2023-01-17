@@ -2,6 +2,7 @@ package spaceapes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -59,9 +60,9 @@ public class GameplayState extends BasicGameState {
 		/* Spieler */
 
 		Random r = new Random();
-		this.activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten
-																						// auswaehlen
-		// playerInteractionAllowed = true;
+		//this.activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten auswaehlen
+		this.activePlayer = listOfAllPlayers.get(0); //MR: Reihenfolge muss wegen ovrerst beachtet werden, sonst Schießt der falsche Ape
+		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 
 		/* Erzeugen des Objekts Map */
@@ -117,12 +118,12 @@ public class GameplayState extends BasicGameState {
 		entityManager.addEntity(stateID, left_Listener);
 		
 		/* Ziellinie */
-		Entity player = new Entity("Player");
+		Entity playerEntity = new Entity("Player");
 		LoopEvent aimLoop = new LoopEvent();
 		aimLoop.addAction(rightAimlineAction);
 		aimLoop.addAction(leftAimlineAction);
-		player.addComponent(aimLoop);
-		entityManager.addEntity(stateID, player);
+		playerEntity.addComponent(aimLoop);
+		entityManager.addEntity(stateID, playerEntity);
 
 		//clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
 
@@ -149,6 +150,11 @@ public class GameplayState extends BasicGameState {
 
 		Entity space_bar_Listener = new Entity("Space_bar_Listener");
 		KeyPressedEvent space_bar_pressed = new KeyPressedEvent(Input.KEY_SPACE);
+		// Fuer alle Spieler das Schießen ermoeglichen. Die Action prueft, ob der Spieler interagieren darf.
+		for (Player player : listOfAllPlayers) {
+			space_bar_pressed.addAction(new ShootAction(player, planetData, entityManager));
+		}
+		/*
 		space_bar_pressed.addAction(new Action() {
 			@Override
 			public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
@@ -221,6 +227,7 @@ public class GameplayState extends BasicGameState {
 				}
 			}
 		});
+		*/
 		space_bar_Listener.addComponent(space_bar_pressed);
 		entityManager.addEntity(stateID, space_bar_Listener);
 
@@ -245,6 +252,7 @@ public class GameplayState extends BasicGameState {
 
 	}
 
+	/*
 	public void changeActivePlayerToNextPlayer() {
 		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
 		int indexNextPlayer = indexActivePlayer + 1;
@@ -252,6 +260,21 @@ public class GameplayState extends BasicGameState {
 			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
 		}
 		activePlayer = listOfAllPlayers.get(indexNextPlayer);
+		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
+		controlPanel.activePlayer = activePlayer;
+		controlPanel.setPanelAndComponentsVisible(true);
+		userInteractionAllowed = true;
+	}
+	*/
+	
+	public void changeActivePlayerToNextPlayer() {
+		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
+		int indexNextPlayer = indexActivePlayer + 1;
+		if (indexNextPlayer >= listOfAllPlayers.size()) {
+			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
+		}
+		activePlayer = listOfAllPlayers.get(indexNextPlayer);
+		activePlayer.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
 		controlPanel.activePlayer = activePlayer;
 		controlPanel.setPanelAndComponentsVisible(true);

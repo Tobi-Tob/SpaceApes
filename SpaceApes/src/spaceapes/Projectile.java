@@ -90,6 +90,9 @@ public class Projectile extends Entity {
 		Vector2f ddx = new Vector2f(0, 0);
 		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 
+		//Prüfe auf Kollision mit einem Ape
+		
+		//Prüfe auf Kollision mit einem Planeten
 		for (int i = 0; i < planetData.size(); i++) {
 			float p_x = planetData.get(i)[0];
 			float p_y = planetData.get(i)[1];
@@ -103,6 +106,7 @@ public class Projectile extends Entity {
 
 			ddx.add(distanceVector.scale(G * p_mass * (float) Math.pow(distanceVector.length(), -3)));
 		}
+		
 		this.x = x_new;
 		this.y = y_new;
 		this.vx = vx + dt * ddx.x;
