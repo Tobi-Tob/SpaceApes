@@ -90,7 +90,8 @@ public class Projectile extends Entity {
 		Vector2f ddx = new Vector2f(0, 0);
 		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 
-		//Prüfe auf Kollision mit einem Ape
+		//Prüfe auf Kollision mit einem Ape -> hier wird eine einfache Kollision mit dem ApeObjekt getestet
+		
 		
 		//Prüfe auf Kollision mit einem Planeten
 		for (int i = 0; i < planetData.size(); i++) {

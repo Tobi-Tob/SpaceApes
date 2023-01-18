@@ -12,6 +12,7 @@ import eea.engine.action.Action;
 import eea.engine.action.basicactions.MoveDownAction;
 import eea.engine.component.Component;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.component.render.ImageRenderComponent;
 
@@ -55,7 +56,47 @@ public class ShootAction implements Action {
 			// Loop Event
 			LoopEvent projectileLoop = new LoopEvent();
 			projectileLoop.addAction(new ProjectileMovementAction(projectile, entityManager));
-			projectile.addComponent(projectileLoop);
+			projectile.addComponent(projectileLoop);			
+			
+			/*
+			CollisionEvent projectileCollisionEvent = new CollisionEvent();
+			projectileCollisionEvent.addAction(new Action() {
+					
+					@Override
+					public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+						
+						if (projectileCollisionEvent.getCollidedEntity() instanceof Projectile) {
+							// collidedEntity is a Projectile
+							
+							Projectile projectile = (Projectile) projectileCollisionEvent.getCollidedEntity();
+							entityManager.removeEntity(gs.getID(), projectile);
+							gs.changeActivePlayerToNextPlayer();
+							// Zeige Explosion
+							AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
+							Image[] images = new Image[4];
+							try {
+								images[0] = new Image("/assets/explosion/explosion1.png");
+								images[1] = new Image("/assets/explosion/explosion2.png");
+								images[2] = new Image("/assets/explosion/explosion3.png");
+								images[3] = new Image("/assets/explosion/explosion4.png");
+		
+							} catch (SlickException e) {
+								System.err.println("Cannot find image for explosion");
+							}
+							explosion.setImages(images);
+							explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
+							explosion.addAnimation(0.012f, false);
+							entityManager.addEntity(gs.getID(), explosion);
+							
+						    
+						} else {
+						    // collidedEntity is not a Projectile -> hier soll nichts gemacht werden
+						}
+					}
+			});
+			projectile.addComponent(projectileCollisionEvent);
+			*/
+			
 			entityManager.addEntity(gs.getID(), projectile);
 		}
 	}

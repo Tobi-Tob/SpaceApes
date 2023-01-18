@@ -15,18 +15,13 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
-import eea.engine.action.basicactions.ChangeStateAction;
-import eea.engine.action.basicactions.RotateRightAction;
+import eea.engine.action.basicactions.*;
 import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
-import eea.engine.event.basicevents.KeyDownEvent;
-import eea.engine.event.basicevents.KeyPressedEvent;
-import eea.engine.event.basicevents.LoopEvent;
-import eea.engine.event.basicevents.MouseClickedEvent;
-import eea.engine.event.basicevents.MouseEnteredEvent;
+import eea.engine.event.basicevents.*;
 
 /**
  * @author Timo Baehr
@@ -143,6 +138,8 @@ public class GameplayState extends BasicGameState {
 		LoopEvent itemLoop = new LoopEvent();
 		itemLoop.addAction(new RotateRightAction(0.03f));
 		item.addComponent(itemLoop);
+		//CollisionEvent collision = new CollisionEvent();
+		//collision.addAction(new CollectCoinAction());
 		entityManager.addEntity(stateID, item);
 
 		/* Schiessen */

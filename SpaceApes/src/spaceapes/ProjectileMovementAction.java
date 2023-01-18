@@ -25,7 +25,7 @@ public class ProjectileMovementAction implements Action {
 		
 		boolean noCollision = projectile.explizitEulerStep(delta);
 		if (!noCollision) {
-			// Wenn Kollision mit Planet
+			// Wenn Kollision mit einem Objekt, durch das es nicht hindurchfliegen kann (z.B. Planet/Ape/...)
 			entityManager.removeEntity(gs.getID(), projectile);
 			gs.changeActivePlayerToNextPlayer();
 			// Zeige Explosion
