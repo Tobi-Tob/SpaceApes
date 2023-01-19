@@ -13,6 +13,7 @@ public class DisplayPlanetInfoAction implements Action {
 		Planet planet = (Planet) event.getOwnerEntity();
 		java.lang.System.out.println(planet.getID());
 		java.lang.System.out.println("Mass: " + planet.getMass() + " Radius: " + planet.getRadius());
+		//test
 	}
 
 }
