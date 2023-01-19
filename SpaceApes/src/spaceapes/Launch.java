@@ -22,7 +22,7 @@ public class Launch extends StateBasedGame {
 	public static final int GAMEPLAY_STATE = 1;
 
 	public static int WIDTH = 1200;
-	public static int HEIGHT = 900; // Fenstergroeße wird ueberschrieben, wenn USE_FULL_SCREEN = true
+	public static int HEIGHT = 900; // Fenstergroeï¿½e wird ueberschrieben, wenn USE_FULL_SCREEN = true
 	public static boolean USE_FULL_SCREEN = true;
 
 	public Launch() {
