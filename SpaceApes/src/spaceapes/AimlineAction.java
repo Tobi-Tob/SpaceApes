@@ -15,25 +15,18 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 
 public class AimlineAction implements Action {
-	
-	private StateBasedEntityManager entityManager;
-	private List<float[]> planetData;
-
-	public AimlineAction(StateBasedEntityManager entityManager, List<float[]> planetData) {
-		this.entityManager = entityManager;
-		this.planetData = planetData;
-	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		// TODO Auto-generated method stub
-		GameplayState gs = (GameplayState) sb.getCurrentState();
 		
-		removeAimeLine(gs);
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+		Map map = Map.getInstance();
 		
-		Player activePlayer = gs.getActivePlayer();
-		if (activePlayer.isInteractionAllowed()) {
-			Ape ape = activePlayer.getApe();
+		// Alte Ziellinie entfernen
+		removeAimeLine(entityManager, sb);
+		Ape ape = (Ape) event.getOwnerEntity();
+		
+		if (ape.isInteractionAllowed()) {
 			Vector2f position = ape.getCoordinates();
 			float startDirection = ape.getAngleOfView_global();
 			float startVelocity = ape.getThrowStrength();
@@ -48,7 +41,7 @@ public class AimlineAction implements Action {
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile projectile = new Projectile("Help_Projectile", position, velocity, planetData);
+			Projectile projectile = new Projectile("Help_Projectile", position, velocity, map.getPlanetData());
 			for (int i = 1; i < iterations; i++) {
 				if (projectile.explizitEulerStep(updateFrequency) == false) {
 					// Wenn Kollision mit Planet
@@ -61,26 +54,28 @@ public class AimlineAction implements Action {
 					dot.setScale(1 - (i * 0.8f / iterations));
 					try {
 						dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
+						//System.out.println("add dot");
 					} catch (SlickException e) {
 						System.err.println("Cannot find image for dot");
 					}
-					entityManager.addEntity(gs.getID(), dot);
+					entityManager.addEntity(sb.getCurrentStateID(), dot);
 				}
 			}
-			entityManager.removeEntity(gs.getID(), projectile);
+			entityManager.removeEntity(sb.getCurrentStateID(), projectile);
 		}
 	}
 	
 	/**
 	 * Entfernt alle Hilfslinien Punkte
 	 */
-	public void removeAimeLine(GameplayState gs) {
+	public void removeAimeLine(StateBasedEntityManager entityManager, StateBasedGame sb) {
 		for (int i = 0; i < 100; i++) {
-			Entity dot = entityManager.getEntity(gs.getID(), "dot");
+			Entity dot = entityManager.getEntity(sb.getCurrentStateID(), "dot");
 			if (dot == null) {
 				break;
 			}
-			entityManager.removeEntity(gs.getID(), dot);
+			//System.out.println("remove dot");
+			entityManager.removeEntity(sb.getCurrentStateID(), dot);
 		}
 	}
 	

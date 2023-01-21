@@ -14,11 +14,10 @@ public class ChangeAngleAction extends ButtonPressedAction {
 
 	@Override
 	protected void updateToPerform(GameContainer container, StateBasedGame game, int delta, Component event) {
-		GameplayState gps = (GameplayState) game.getCurrentState();
-		Player activePlayer = gps.activePlayer;
-		if (activePlayer.isInteractionAllowed()) {
-			activePlayer.getApe().changeAngleOfView(angleToChange);
-			java.lang.System.out.println("AngleOfView = " + activePlayer.getApe().getAngleOfView_local());
+		Ape ape = Map.getInstance().getActiveApe();
+		if (ape.isInteractionAllowed()) {
+			ape.changeAngleOfView(angleToChange);
+			java.lang.System.out.println("AngleOfView = " + ape.getAngleOfView_local());
 		}
 
 	}

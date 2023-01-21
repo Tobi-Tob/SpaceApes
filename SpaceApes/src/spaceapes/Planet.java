@@ -11,26 +11,38 @@ public class Planet extends Entity {
 
 	private float radius;
 	private int mass;
-	private final Vector2f coordinates; // In Welt-Koordinaten
+	//private Vector2f coordinates; // In Welt-Koordinaten -> MR: redundant
 	private Ape ape;
 
-	/**
-	 * Konstruktor initialisiert Planet mit zufaelligen Eigenschaften: Groesse,
-	 * Masse, Ausrichtung
-	 * 
-	 * @param entityID String
-	 * @param x        in Welt-Koordinaten
-	 * @param y        in Welt-Koordinaten
-	 */
-	public Planet(String entityID, float x, float y) {
+	public Planet(String entityID) {
 		super(entityID);
-		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.75 und 1.5
-		mass = (int) (radius * Utils.randomFloat(0.91f, 1.1f) * 65); // Integer zwischen 44 und 107 (Im Mittel 73)
-		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
-
-		setPosition(Utils.toPixelCoordinates(coordinates));
-		setRotation(Utils.randomFloat(-30, 30));
+		radius = 0;
+		mass = 0;
+		//coordinates = new Vector2f(0, 0);
 	}
+	
+	
+	
+	
+	
+	
+//	/**
+//	 * Konstruktor initialisiert Planet mit zufaelligen Eigenschaften: Groesse,
+//	 * Masse, Ausrichtung
+//	 * 
+//	 * @param entityID String
+//	 * @param x        in Welt-Koordinaten
+//	 * @param y        in Welt-Koordinaten
+//	 */
+//	public Planet(String entityID, float x, float y) {
+//		super(entityID);
+//		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.75 und 1.5
+//		mass = (int) (radius * Utils.randomFloat(0.91f, 1.1f) * 65); // Integer zwischen 44 und 107 (Im Mittel 73)
+//		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
+//
+//		setPosition(Utils.toPixelCoordinates(coordinates));
+//		setRotation(Utils.randomFloat(-30, 30));
+//	}
 
 	/**
 	 * Bestimmt Abstand vom Mittelpunkt des Planeten zur Kreisbahn auf der sich die
@@ -48,10 +60,18 @@ public class Planet extends Entity {
 			throw new RuntimeException("Radius ist zu nah an null");
 	}
 
+	public void setRadius(float radius) {
+		this.radius = radius;
+	}
+	
 	public float getRadius() {
 		return radius;
 	}
 
+	public void setMass(int mass) {
+		this.mass = mass;
+	}
+	
 	public int getMass() {
 		return mass;
 	}
@@ -85,8 +105,8 @@ public class Planet extends Entity {
 	/**
 	 * Position in Welt-Koordinaten
 	 */
-	public Vector2f getCoordinates() {
-		return coordinates;
+	public Vector2f getPositionWorldCoordinates() {
+		return Utils.toWorldCoordinates(getPosition());
 	}
 
 	public void setApe(Ape a) {

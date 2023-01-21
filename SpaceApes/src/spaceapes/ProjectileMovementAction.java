@@ -22,12 +22,14 @@ public class ProjectileMovementAction implements Action {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		GameplayState gs = (GameplayState) sb.getCurrentState();
+		Map map = Map.getInstance();
 		
 		boolean noCollision = projectile.explizitEulerStep(delta);
 		if (!noCollision) {
 			// Wenn Kollision mit einem Objekt, durch das es nicht hindurchfliegen kann (z.B. Planet/Ape/...)
 			entityManager.removeEntity(gs.getID(), projectile);
-			gs.changeActivePlayerToNextPlayer();
+			map.changeActiveApeToNextApe();
+			//gs.changeActivePlayerToNextPlayer();
 			// Zeige Explosion
 			AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
 			Image[] images = new Image[4];
@@ -50,7 +52,8 @@ public class ProjectileMovementAction implements Action {
 				|| Math.abs(projectile.getCoordinates().y) > 8) {
 			// Zu weit ausserhalb des Bildes
 			entityManager.removeEntity(gs.getID(), projectile);
-			gs.changeActivePlayerToNextPlayer();
+			map.changeActiveApeToNextApe();
+			//gs.changeActivePlayerToNextPlayer();
 		}
 	}
 

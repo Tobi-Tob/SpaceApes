@@ -10,6 +10,8 @@ import eea.engine.entity.StateBasedEntityManager;
 
 public class RemoveAimlineAction implements Action {
 	
+	// WIRD MOMENTAN NICHT BENUTZT!!!
+	
 	private StateBasedEntityManager entityManager;
 
 	public RemoveAimlineAction(StateBasedEntityManager entityManager) {
@@ -18,14 +20,14 @@ public class RemoveAimlineAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		GameplayState gs = (GameplayState) sb.getCurrentState();
-		for (int i = 0; i < 100; i++) {
-			Entity dot = entityManager.getEntity(gs.getID(), "dot");
-			if (dot == null) {
-				break;
-			}
-			entityManager.removeEntity(gs.getID(), dot);
-		}
+//		GameplayState gs = (GameplayState) sb.getCurrentState();
+//		for (int i = 0; i < 100; i++) {
+//			Entity dot = entityManager.getEntity(gs.getID(), "dot");
+//			if (dot == null) {
+//				break;
+//			}
+//			entityManager.removeEntity(gs.getID(), dot);
+//		}
 	}
 
 }

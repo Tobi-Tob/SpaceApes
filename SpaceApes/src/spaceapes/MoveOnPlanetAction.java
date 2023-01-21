@@ -16,10 +16,9 @@ public class MoveOnPlanetAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		GameplayState gs = (GameplayState) sb.getCurrentState();
-		Player activePlayer = gs.activePlayer;
-		if (gs.getActivePlayer().isInteractionAllowed()) {
-			activePlayer.getApe().stepOnPlanet(direction);
+		Ape ape = Map.getInstance().getActiveApe();
+		if (ape.isInteractionAllowed()) {
+			ape.stepOnPlanet(direction);
 		}
 	}
 

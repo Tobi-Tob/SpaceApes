@@ -1,5 +1,8 @@
 package spaceapes;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
@@ -20,6 +23,8 @@ public class Launch extends StateBasedGame {
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
+	
+	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroe�e wird ueberschrieben, wenn USE_FULL_SCREEN = true
@@ -51,7 +56,9 @@ public class Launch extends StateBasedGame {
 			WIDTH = dm.getWidth();
 			HEIGHT = dm.getHeight();
 		}
-		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
+		//app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
+		app.setDisplayMode(WIDTH, HEIGHT, false);
+
 		app.start();
 	}
 

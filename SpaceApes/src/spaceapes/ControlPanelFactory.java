@@ -6,92 +6,85 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
-import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
-import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+import eea.engine.interfaces.IEntityFactory;
 
-public class ControlPanel extends Entity {
+public class ControlPanelFactory implements IEntityFactory {
+	
+	// WIRD MOMENTAN NICHT BENUTZT!!!
+	
+	//private List<Entity> listOfCorrespondingEntities = new ArrayList<>();
 
-	private Vector2f coordinates;
-	public List<Entity> listOfCorrespondingEntities;
-	//public Player activePlayer;
-	float panelScaleFactor;
-	TrueTypeFont font;
-	ImageRenderComponent imageRenderComponent = null;
-
-	public ControlPanel(String entityID) {
-		super(entityID);
-		listOfCorrespondingEntities = new ArrayList<>();
-	}
-
-	public void initControlPanel() {
-		coordinates = findBestPosition();
-		this.setPosition(coordinates);
+	@Override
+	public Entity createEntity() {
+		
+		ControlPanel controlPanel = new ControlPanel("ControlPanel");
+		
+		Vector2f coordinates = findBestPosition();
+		controlPanel.setPosition(coordinates);
 		float controlpanelWidthInPixel = 1483;
 		float desiredControlpanelWidth = 0.3f; // im Verhaeltnis zur Fenster Breite
-		panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
-		this.setScale(panelScaleFactor);
-
+		float panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
+		controlPanel.setScale(panelScaleFactor);
+		
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
-		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
-
-		// Arrows
+		controlPanel.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
+		
+		
+		// Erstellen der zugehörigen Entities (Pfeile)
 		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
 
 		Entity arrow_Weapons = new Entity("ArrowForWeapons");
 		arrow_Weapons.setScale(panelScaleFactor * desiredArrowScale);
-		arrow_Weapons.setPosition(relativPosOnPanelToPixelPos(600, -230));
-		listOfCorrespondingEntities.add(arrow_Weapons);
+		arrow_Weapons.setPosition(relativPosOnPanelToPixelPos(600, -230, panelScaleFactor, coordinates));
+		controlPanel.addToListOfCorrespondingEntities(arrow_Weapons);
 
 		Entity arrow_Power_Right = new Entity("ArrowForPowerRight");
 		arrow_Power_Right.setScale(panelScaleFactor * desiredArrowScale);
-		arrow_Power_Right.setPosition(new Vector2f(-120, 200).scale(panelScaleFactor).add(coordinates));
-		listOfCorrespondingEntities.add(arrow_Power_Right);
+		arrow_Power_Right.setPosition(relativPosOnPanelToPixelPos(-120, 200, panelScaleFactor, coordinates));
+		controlPanel.addToListOfCorrespondingEntities(arrow_Power_Right);
 
 		Entity arrow_Power_Left = new Entity("ArrowForPowerLeft");
 		arrow_Power_Left.setScale(panelScaleFactor * desiredArrowScale);
-		arrow_Power_Left.setPosition(relativPosOnPanelToPixelPos(-620, 200));
-		listOfCorrespondingEntities.add(arrow_Power_Left);
+		arrow_Power_Left.setPosition(relativPosOnPanelToPixelPos(-620, 200, panelScaleFactor, coordinates));
+		controlPanel.addToListOfCorrespondingEntities(arrow_Power_Left);
 
 		Entity arrow_Angle_Right = new Entity("ArrowForAngleRight");
 		arrow_Angle_Right.setScale(panelScaleFactor * desiredArrowScale);
-		arrow_Angle_Right.setPosition(relativPosOnPanelToPixelPos(620, 200));
-		listOfCorrespondingEntities.add(arrow_Angle_Right);
+		arrow_Angle_Right.setPosition(relativPosOnPanelToPixelPos(620, 200, panelScaleFactor, coordinates));
+		controlPanel.addToListOfCorrespondingEntities(arrow_Angle_Right);
 
 		Entity arrow_Angle_Left = new Entity("ArrowForAngleLeft");
 		arrow_Angle_Left.setScale(panelScaleFactor * desiredArrowScale);
-		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200));
-		listOfCorrespondingEntities.add(arrow_Angle_Left);
+		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200, panelScaleFactor, coordinates));
+		controlPanel.addToListOfCorrespondingEntities(arrow_Angle_Left);
 
 		float desiredProjectilScale = 0.23f;
 		Entity shopProjectil_1 = new Entity("ShopProjectil_1");
 		shopProjectil_1.setScale(panelScaleFactor * desiredProjectilScale);
-		shopProjectil_1.setPosition(relativPosOnPanelToPixelPos(380, -230));
+		shopProjectil_1.setPosition(relativPosOnPanelToPixelPos(380, -230, panelScaleFactor, coordinates));
 		shopProjectil_1.setRotation(45);
 		// LoopEvent rotationLoop = new LoopEvent();
 		// rotationLoop.addAction(new RotateRightAction(0.03f));
 		// shopProjectil_1.addComponent(rotationLoop);
-		listOfCorrespondingEntities.add(shopProjectil_1);
-
+		controlPanel.addToListOfCorrespondingEntities(shopProjectil_1);
+		
+		// Bilder für die Entities festlegen
 		try {
-			imageRenderComponent = new ImageRenderComponent(new Image("/assets/panel.png"));
-			this.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
+			//imageRenderComponent = new ImageRenderComponent(new Image("/assets/panel.png"));
+			controlPanel.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
 			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
 			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
 			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
@@ -101,18 +94,17 @@ public class ControlPanel extends Entity {
 		} catch (SlickException e) {
 			System.err.println("Problem with Controlpanel");
 		}
-		this.addComponent(imageRenderComponent);
-
+		//controlPanel.addComponent(imageRenderComponent);
+		
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		int stateID = Launch.GAMEPLAY_STATE; //MR kann man evtl schöner lösen...
-		entityManager.addEntity(stateID, this); // muss zuerst hinzugefügt werden, sonst ist das Panel über den Pfeilen...
-		entityManager.addEntity(stateID, arrow_Weapons);
-		entityManager.addEntity(stateID, arrow_Power_Right);
-		entityManager.addEntity(stateID, arrow_Power_Left);
-		entityManager.addEntity(stateID, arrow_Angle_Right);
-		entityManager.addEntity(stateID, arrow_Angle_Left);
-		entityManager.addEntity(stateID, shopProjectil_1);
-
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, arrow_Weapons);
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, arrow_Power_Right);
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, arrow_Power_Left);
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, arrow_Angle_Right);
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, arrow_Angle_Left);
+		entityManager.addEntity(Launch.GAMEPLAY_STATE, shopProjectil_1);
+		
+		
 		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
 
 		ANDEvent change_Weapon_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -139,33 +131,12 @@ public class ControlPanel extends Entity {
 		Action decrease_Power_Action = new ChangePowerAction(-1f);
 		decrease_Power_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Event);
-
-		setPanelAndComponentsVisible(true);
-	}
-
-	public void setPanelAndComponentsVisible(boolean isVisible) {
-		setVisible(isVisible);
-		for (Entity e : listOfCorrespondingEntities) {
-			e.setVisible(isVisible);
-		}
-	}
-
-	private Vector2f relativPosOnPanelToPixelPos(float x, float y) {
-		return new Vector2f(x, y).scale(panelScaleFactor).add(coordinates);
+		
+		
+		controlPanel.setPanelAndComponentsVisible(true);
+		return controlPanel;
 	}
 	
-	public void setFont(TrueTypeFont font) {
-		this.font = font;
-	}
-	
-	public List<Entity> getListOfCorrespondingEntities() {
-		return listOfCorrespondingEntities;
-	}
-	
-	public void addToListOfCorrespondingEntities(Entity entity) {
-		listOfCorrespondingEntities.add(entity);
-	}
-
 	/**
 	 * Bestimmt unter 4 vorgegebenen Eck-Positionen, diejenige, die den groessten
 	 * Qualitaetswert besitzt (Moeglichst keinen Planeten verdeckt)
@@ -174,7 +145,6 @@ public class ControlPanel extends Entity {
 	 * @return Vector2f Position, die am besten fuer das Control Panel geeignet ist.
 	 */
 	private Vector2f findBestPosition() {
-		Map map = Map.getInstance();
 		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f rightUpperCorner = new Vector2f(0.82f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f leftLowerCorner = new Vector2f(0.18f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
@@ -193,7 +163,7 @@ public class ControlPanel extends Entity {
 		Vector2f bestPosition = Collections.max(positionsToDistance.entrySet(), HashMap.Entry.comparingByValue()).getKey();
 		return bestPosition;
 	}
-
+	
 	/**
 	 * Berechnet einen Qualitaetswert fuer die uebergebene Pixelposition.
 	 * Ausschlaggebend fuer die Qualitaet ist der naeheste Planet. Die Qualitaet ist
@@ -224,36 +194,9 @@ public class ControlPanel extends Entity {
 		}
 		return quality;
 	}
-
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) {
-		if (this.isVisible() && !(imageRenderComponent == null)) {
-
-			imageRenderComponent.render(container, game, g);
-
-			// Render Text
-			Ape activeApe = Map.getInstance().getActiveApe();
-
-			Vector2f textPos_Power = relativPosOnPanelToPixelPos(-470, -30);
-			font.drawString(textPos_Power.x, textPos_Power.y, "Power", Color.black);
-
-			Vector2f textPos_Angle = relativPosOnPanelToPixelPos(250, -20);
-			font.drawString(textPos_Angle.x, textPos_Angle.y, "Angle", Color.black);
-
-			Vector2f textPos_ActivePlayer = relativPosOnPanelToPixelPos(-600, -290);
-			font.drawString(textPos_ActivePlayer.x, textPos_ActivePlayer.y, activeApe.getID(), Color.black);
-
-			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-460, 150);
-			font.drawString(numberPos_Power.x, numberPos_Power.y, Float.toString(activeApe.getThrowStrength()),
-					Color.black);
-
-			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(290, 150);
-			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
-					Float.toString(activeApe.getAngleOfView_local()), Color.black);
-
-			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(40, -280);
-			font.drawString(numberPos_Coins.x, numberPos_Coins.y, Float.toString(activeApe.getCoins()), Color.black);
-
-		}
+	
+	private Vector2f relativPosOnPanelToPixelPos(float x, float y, float panelScaleFactor, Vector2f coordinates) {
+		return new Vector2f(x, y).scale(panelScaleFactor).add(coordinates);
 	}
+
 }

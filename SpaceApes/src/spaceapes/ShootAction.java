@@ -18,29 +18,32 @@ import eea.engine.component.render.ImageRenderComponent;
 
 public class ShootAction implements Action {
 	
-	private Player activePlayer;
-	private List<float[]> planetData;
-	private StateBasedEntityManager entityManager;
+	//private Ape activeApe;
+	//private List<float[]> planetData;
+	//private StateBasedEntityManager entityManager;
 
-	public ShootAction(Player activePlayer, List<float[]> planetData, StateBasedEntityManager entityManager) {
-		this.activePlayer = activePlayer;
-		this.planetData = planetData;
-		this.entityManager = entityManager;
+	public ShootAction() {
+//		this.planetData = planetData;
+//		this.entityManager = entityManager;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		GameplayState gs = (GameplayState) sb.getCurrentState();
+		StateBasedEntityManager entityManager = gs.getEntityManager();
+		Map map = Map.getInstance();
+		List<float[]> planetData = map.getPlanetData();
 		
-		if (activePlayer.isInteractionAllowed()) {
+		Ape activeApe = map.getActiveApe();
+		if (activeApe.isInteractionAllowed()) {
 		//if (gs.userInteractionAllowed) {
 			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
-			activePlayer.setInteractionAllowed(false);
+			activeApe.setInteractionAllowed(false);
 			//gs.userInteractionAllowed = false;
 			
 			// Abfragen von initialer Position und Geschwindigkeit
-			Vector2f position = activePlayer.getApe().getCoordinates();
-			float startDirection = activePlayer.getApe().getAngleOfView_global();
+			Vector2f position = activeApe.getCoordinates();
+			float startDirection = activeApe.getAngleOfView_global();
 			float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			
