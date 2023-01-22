@@ -133,49 +133,49 @@ public class PlanetFactory implements IEntityFactory {
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet1.png")));
 			float planetRadiusInPixel = 235;
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 2:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet2.png")));
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 3:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet3.png")));
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 4:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet4.png")));
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 5:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/planet5.png")));
 			planetRadiusInPixel = 222;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 6:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet1.png")));
 			planetRadiusInPixel = 210;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 7:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet2.png")));
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		case 8:
 			planet.addComponent(new ImageRenderComponent(new Image("/assets/ring_planet3.png")));
 			planetRadiusInPixel = 245;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
+			planet.setScale(planet.getRadiusWorld() / planetRadiusInWorldUnits);
 			break;
 		}
 	}

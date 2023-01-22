@@ -37,7 +37,6 @@ public class ShootAction implements Action {
 		GameplayState gs = (GameplayState) sb.getCurrentState();
 		StateBasedEntityManager entityManager = gs.getEntityManager();
 		Map map = Map.getInstance();
-		List<float[]> planetData = map.getPlanetData();
 		
 		Ape activeApe = map.getActiveApe();
 		if (activeApe.isInteractionAllowed()) {
@@ -53,7 +52,7 @@ public class ShootAction implements Action {
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			
 			// Projektil wird erzeugt
-			Projectile projectile = new Projectile("Projectile", position, velocity, planetData);
+			Projectile projectile = new Projectile("Projectile", position, velocity);
 			try {
 				projectile.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
 			} catch (SlickException e) {
@@ -64,46 +63,7 @@ public class ShootAction implements Action {
 			// Loop Event
 			LoopEvent projectileLoop = new LoopEvent();
 			projectileLoop.addAction(new ProjectileMovementAction(projectile, entityManager));
-			projectile.addComponent(projectileLoop);			
-			
-			/*
-			CollisionEvent projectileCollisionEvent = new CollisionEvent();
-			projectileCollisionEvent.addAction(new Action() {
-					
-					@Override
-					public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-						
-						if (projectileCollisionEvent.getCollidedEntity() instanceof Projectile) {
-							// collidedEntity is a Projectile
-							
-							Projectile projectile = (Projectile) projectileCollisionEvent.getCollidedEntity();
-							entityManager.removeEntity(gs.getID(), projectile);
-							gs.changeActivePlayerToNextPlayer();
-							// Zeige Explosion
-							AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
-							Image[] images = new Image[4];
-							try {
-								images[0] = new Image("/assets/explosion/explosion1.png");
-								images[1] = new Image("/assets/explosion/explosion2.png");
-								images[2] = new Image("/assets/explosion/explosion3.png");
-								images[3] = new Image("/assets/explosion/explosion4.png");
-		
-							} catch (SlickException e) {
-								System.err.println("Cannot find image for explosion");
-							}
-							explosion.setImages(images);
-							explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
-							explosion.addAnimation(0.012f, false);
-							entityManager.addEntity(gs.getID(), explosion);
-							
-						    
-						} else {
-						    // collidedEntity is not a Projectile -> hier soll nichts gemacht werden
-						}
-					}
-			});
-			projectile.addComponent(projectileCollisionEvent);
-			*/
+			projectile.addComponent(projectileLoop);	
 			
 			entityManager.addEntity(gs.getID(), projectile);
 		}

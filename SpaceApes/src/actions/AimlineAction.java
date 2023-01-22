@@ -43,7 +43,7 @@ public class AimlineAction implements Action {
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile projectile = new Projectile("Help_Projectile", position, velocity, map.getPlanetData());
+			Projectile projectile = new Projectile("Help_Projectile", position, velocity);
 			for (int i = 1; i < iterations; i++) {
 				if (projectile.explizitEulerStep(updateFrequency) == false) {
 					// Wenn Kollision mit Planet

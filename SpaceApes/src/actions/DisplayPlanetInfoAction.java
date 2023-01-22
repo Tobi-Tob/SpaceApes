@@ -13,7 +13,7 @@ public class DisplayPlanetInfoAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		Planet planet = (Planet) event.getOwnerEntity();
 		java.lang.System.out.println(planet.getID());
-		java.lang.System.out.println("Mass: " + planet.getMass() + " Radius: " + planet.getRadius());
+		java.lang.System.out.println("Mass: " + planet.getMass() + " Radius: " + planet.getRadiusWorld());
 		//test
 	}
 

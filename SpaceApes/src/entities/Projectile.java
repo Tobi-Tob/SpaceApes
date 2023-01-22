@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import map.Map;
 import utils.Utils;
 
 public class Projectile extends Entity {
@@ -20,9 +21,6 @@ public class Projectile extends Entity {
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
 	public float desiredProjectileSize = 0.3f;
 
-	public final List<float[]> planetData; // Alle benoetigten Daten fuer die Bahnberechnung (x, y, Masse, Radius) sind
-											// hier gespeichert
-
 	/**
 	 * Konstruktor fuer ein Projektil
 	 * 
@@ -30,7 +28,7 @@ public class Projectile extends Entity {
 	 * @param position Startkoordinaten
 	 * @param velocity Startgeschwindigkeit
 	 */
-	public Projectile(String entityID, Vector2f position, Vector2f velocity, List<float[]> planetData) {
+	public Projectile(String entityID, Vector2f position, Vector2f velocity) {
 		super(entityID);
 		this.x = position.x;
 		this.y = position.y;
@@ -39,7 +37,6 @@ public class Projectile extends Entity {
 		this.direction = getMovementDirection();
 		this.rotationSpeed = 0f;
 		this.mass = 1f;
-		this.planetData = planetData;
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		float projectileSizeInPixel = 400;
@@ -90,23 +87,22 @@ public class Projectile extends Entity {
 		// V1 = V0 + dt * ddX
 		Vector2f ddx = new Vector2f(0, 0);
 		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
-
-		//Prüfe auf Kollision mit einem Ape -> hier wird eine einfache Kollision mit dem ApeObjekt getestet
 		
+		List<Planet> planets = Map.getInstance().getPlanets();
 		
 		//Prüfe auf Kollision mit einem Planeten
-		for (int i = 0; i < planetData.size(); i++) {
-			float p_x = planetData.get(i)[0];
-			float p_y = planetData.get(i)[1];
-			float p_mass = planetData.get(i)[2];
-			float p_radius = planetData.get(i)[3];
-			Vector2f distanceVector = new Vector2f(p_x - (float) x, p_y - (float) y);
+		for (int i = 0; i < planets.size(); i++) {
+			float planetX = planets.get(i).getXCoordinateWorld();
+			float planetY = planets.get(i).getYCoordinateWorld();
+			float planetMass = planets.get(i).getMass();
+			float planetRadius = planets.get(i).getRadiusWorld();
+			Vector2f distanceVector = new Vector2f(planetX - (float) x, planetY - (float) y);
 			// Test auf Kollision mit Planet i (durch Kreisgleichung)
-			if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(p_radius, 2)) {
+			if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(planetRadius, 2)) {
 				return false; // Bei Kollision Abbruch der weiteren Berechnung
 			}
 
-			ddx.add(distanceVector.scale(G * p_mass * (float) Math.pow(distanceVector.length(), -3)));
+			ddx.add(distanceVector.scale(G * planetMass * (float) Math.pow(distanceVector.length(), -3)));
 		}
 		
 		this.x = x_new;

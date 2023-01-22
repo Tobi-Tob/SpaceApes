@@ -7,7 +7,7 @@ import utils.Utils;
 
 public class Planet extends Entity {
 
-	private float radius;
+	private float radius; //Radius in Weltkoordinaten
 	private int mass;
 	private Ape ape;
 
@@ -26,7 +26,7 @@ public class Planet extends Entity {
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
 	public float distanceToApePosition() {
-		float dist = getRadius() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
+		float dist = getRadiusWorld() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
 		if (dist > 0.1f) {
 			return dist;
 		} else
@@ -37,7 +37,7 @@ public class Planet extends Entity {
 		this.radius = radius;
 	}
 	
-	public float getRadius() {
+	public float getRadiusWorld() {
 		return radius;
 	}
 
@@ -52,8 +52,16 @@ public class Planet extends Entity {
 	/**
 	 * Position in Welt-Koordinaten
 	 */
-	public Vector2f getPositionWorldCoordinates() {
+	public Vector2f getPositionWorld() {
 		return Utils.toWorldCoordinates(getPosition());
+	}
+	
+	public float getXCoordinateWorld() {
+		return Utils.toWorldCoordinates(getPosition()).x;
+	}
+	
+	public float getYCoordinateWorld() {
+		return Utils.toWorldCoordinates(getPosition()).y;
 	}
 
 	public void setApe(Ape a) {

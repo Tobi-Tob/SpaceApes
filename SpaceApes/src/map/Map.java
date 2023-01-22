@@ -18,7 +18,6 @@ import interfaces.IMap;
 public class Map implements IMap {
 	private static Map map = new Map();
 	private List<Entity> entities;
-	private List<float[]> planetData;
 	private List<Ape> apes;
 	private List<Planet> planets;
 
@@ -28,7 +27,6 @@ public class Map implements IMap {
 	 */
 	public Map() {
 		entities = new ArrayList<Entity>();
-		planetData = new ArrayList<float[]>();
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 	}
@@ -57,16 +55,8 @@ public class Map implements IMap {
 		entities.remove(entity);
 	}
 	
-	public List<float[]> getPlanetData() {
-		return planetData;
-	}
-	
 	public List<Planet> getPlanets() {
 		return planets;
-	}
-	
-	public void addPlanetData(float x, float y, int mass, float radius) {
-		planetData.add(new float[] {x, y, mass, radius});
 	}
 	
 	public void addPlanet(Planet planet) {

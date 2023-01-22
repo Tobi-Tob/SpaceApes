@@ -58,7 +58,6 @@ public class Parser {
 		// Spielerplaneten und für die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von überall darauf zugreifen
 		playerPlanets.add(planetOne);
-		map.addPlanetData(xPlanetOne, yPlanetOne, massPlanetOne, radiusPlanetOne);
 		map.addPlanet(planetOne);
 		map.addEntity(planetOne);
 		
@@ -73,7 +72,6 @@ public class Parser {
 		Planet planetTwo = (Planet) new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo,
 				coordinatesPlanetTwo, PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
-		map.addPlanetData(xPlanetTwo, yPlanetTwo, massPlanetTwo, radiusPlanetTwo);
 		map.addPlanet(planetTwo);
 		map.addEntity(planetTwo);
 		
@@ -89,7 +87,6 @@ public class Parser {
 				
 				Planet blackHole = (Planet) new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole,
 						blackHolePosition, PlanetType.BLACKHOLE).createEntity();
-				map.addPlanetData(blackHolePosition.x, blackHolePosition.y, massBlackHole, radiusBlackHole);
 				map.addPlanet(blackHole);
 				map.addEntity(blackHole);
 			}
@@ -106,7 +103,6 @@ public class Parser {
 				
 				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
 						antiPlanetPosition, PlanetType.ANTI).createEntity();
-				map.addPlanetData(antiPlanetPosition.x, antiPlanetPosition.y, massAntiPlanet, radiusAntiPlanet);
 				map.addPlanet(antiPlanet);
 				map.addEntity(antiPlanet);
 			}
@@ -121,11 +117,10 @@ public class Parser {
 			if (validePosition != null) {
 				String namePlanet = "Planet" + (i + 3);
 				float radiusPlanet = Utils.randomFloat(0.4f, 0.5f);
-				int massPlanet = (int) (radiusPlanet * 250);
+				int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);
 				
 				Planet planet = (Planet) new PlanetFactory(namePlanet, radiusPlanet, massPlanet,
 						validePosition, PlanetType.NORMAL).createEntity();
-				map.addPlanetData(validePosition.x, validePosition.y, massPlanet, radiusPlanet);
 				map.addPlanet(planet);
 				map.addEntity(planet);
 			}
@@ -155,7 +150,7 @@ public class Parser {
 			float pixelfromFeetToCenter = 130;
 			float desiredApeSizeInWorldUnits = 0.6f;
 			float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
-			float distancePlanetCenter = homePlanet.getRadius() + Utils.pixelLengthToWorldLength(pixelfromFeetToCenter * scalingFactor);
+			float distancePlanetCenter = homePlanet.getRadiusWorld() + Utils.pixelLengthToWorldLength(pixelfromFeetToCenter * scalingFactor);
 			if (distancePlanetCenter > 0.1f) {
 				//nichts
 			} else
@@ -204,8 +199,8 @@ public class Parser {
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < plantes.size(); i++) {
 				Planet p_i = plantes.get(i);
-				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getPositionWorldCoordinates().x - randomPosition.x,
-						p_i.getPositionWorldCoordinates().y - randomPosition.y);
+				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getXCoordinateWorld() - randomPosition.x,
+						p_i.getYCoordinateWorld() - randomPosition.y);
 				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
 				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
 						.pow(marginToNextPlanetCenter, 2)) {
