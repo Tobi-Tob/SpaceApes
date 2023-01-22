@@ -1,13 +1,6 @@
 package spaceapes;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,14 +11,11 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import eea.engine.action.Action;
 import eea.engine.action.basicactions.*;
-import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.*;
 
 /**
@@ -86,249 +76,9 @@ public class GameplayState extends BasicGameState {
 		dummyEntity.addComponent(escPressed);
 		
 		//Hier kommen alle weiteren Events hinzu...
-//		Event mouseAndShiftPressed = new ANDEvent(new KeyPressedEvent(Input.KEY_LSHIFT), new MouseClickedEvent());
-//		mouseAndShiftPressed.addAction(new DisplayCoordinatesAction());
-//		dummyEntity.addComponent(mouseAndShiftPressed);
 		
 		entityManager.addEntity(stateID, dummyEntity);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-//	public int stateID; // Identifier dieses BasicGameState
-//	public List<Player> listOfAllPlayers = new ArrayList<>(); // Liste die alle Spieler enthaelt
-//	public Player activePlayer; // Spieler, der am Zug ist
-//	public ControlPanel controlPanel; // Menu fuer Benutzerinteraktion
-//	public StateBasedEntityManager entityManager; // zugehoeriger entityManager
-//
-//	GameplayState(int sid) {
-//		stateID = sid; // GAMEPLAY_STATE = 1
-//		entityManager = StateBasedEntityManager.getInstance();
-//		listOfAllPlayers.add(new Player("Player1"));
-//		listOfAllPlayers.add(new Player("Player2"));
-//		// listOfAllPlayers.add(new Player("Player3"));
-//		// listOfAllPlayers.add(new Player("Player4"));
-//	}
-//
-//	/**
-//	 * Wird vor dem (erstmaligen) Starten dieses States ausgefuehrt
-//	 */
-//	@Override
-//	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-//
-//		/* Spieler */
-//
-//		Random r = new Random();
-//		//this.activePlayer = listOfAllPlayers.get(r.nextInt(listOfAllPlayers.size())); // Zuaelligen Spieler zum Starten auswaehlen
-//		this.activePlayer = listOfAllPlayers.get(0); //MR: Reihenfolge muss wegen ovrerst beachtet werden, sonst Schießt der falsche Ape
-//		activePlayer.setInteractionAllowed(true);
-//		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
-//
-//		/* Erzeugen des Objekts Map */
-//
-//		Map map = new Map(); // Objekt zum Speichern von Hintergrund, Planeten, etc
-//
-//		/* Hintergrund */
-//
-//		map.initBackground();
-//		entityManager.addEntity(stateID, map.background); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
-//
-//		/* Planeten */
-//
-//		map.spawnPlanets(0.3f, 0.2f);
-//		List<float[]> planetData = map.generatePlanetData();
-//
-//		// Alle Planeten erhalten ein Click_Event als Componente, welches Informationen
-//		// ueber sie ausgibt
-//		for (Planet planet : map.listOfPlanets) {
-//			ANDEvent clicked_On_Planet_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-//			clicked_On_Planet_Event.addAction(new DisplayPlanetInfoAction());
-//			planet.addComponent(clicked_On_Planet_Event);
-//			entityManager.addEntity(stateID, planet);
-//		}
-//		/* Affen */
-//
-//		map.initApes(listOfAllPlayers);
-//		for (Ape ape : map.listOfApes) {
-//			ANDEvent clicked_On_Ape_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-//			clicked_On_Ape_Event.addAction(new DisplayApeInfoAction());
-//			ape.addComponent(clicked_On_Ape_Event);
-//			entityManager.addEntity(stateID, ape);
-//		}
-//
-//		/* Affenbewegung */
-//		// Bei Druecken der Pfeiltasten Taste soll Affe nach rechts/links laufen
-//		Entity right_Listener = new Entity("Right_Listener");
-//		Entity left_Listener = new Entity("Left_Listener");
-//		KeyDownEvent right_key_pressed = new KeyDownEvent(Input.KEY_RIGHT);
-//		KeyDownEvent left_key_pressed = new KeyDownEvent(Input.KEY_LEFT);
-//		left_key_pressed.addAction(new MoveOnPlanetAction(-1f));
-//		right_key_pressed.addAction(new MoveOnPlanetAction(1f));
-//		//MR: Mein Plan war die removeAimlineMethode in eine separate Klasse zu verlagern, aber das hat nur teilweise funktioniert...
-//		//left_key_pressed.addAction(new RemoveAimlineAction(entityManager));
-//		//right_key_pressed.addAction(new RemoveAimlineAction(entityManager));
-//		AimlineAction leftAimlineAction = new AimlineAction(entityManager, planetData);
-//		//left_key_pressed.addAction(leftAimlineAction);
-//		AimlineAction rightAimlineAction = new AimlineAction(entityManager, planetData);
-//		//right_key_pressed.addAction(rightAimlineAction);
-//		right_Listener.addComponent(right_key_pressed);
-//		left_Listener.addComponent(left_key_pressed);
-//		entityManager.addEntity(stateID, right_Listener);
-//		entityManager.addEntity(stateID, left_Listener);
-//		
-//		/* Ziellinie */
-//		Entity playerEntity = new Entity("Player");
-//		LoopEvent aimLoop = new LoopEvent();
-//		aimLoop.addAction(rightAimlineAction);
-//		aimLoop.addAction(leftAimlineAction);
-//		playerEntity.addComponent(aimLoop);
-//		entityManager.addEntity(stateID, playerEntity);
-//
-//		//clacTrajectory(activePlayer.getApe(), planetData, 1000, 3, true);
-//
-//		/* Control Panel */
-//
-//		controlPanel = new ControlPanel("ControlPanel");
-//		controlPanel.initControlPanel(map, activePlayer, stateID, entityManager);
-//		
-//		/* Coin */
-//
-//		Entity item = new Entity("Item");
-//		item.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-//		item.addComponent(new ImageRenderComponent(new Image("assets/items/coin3.png")));
-//		float itemWidthInPixel = 100;
-//		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
-//		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-//		item.setScale(itemScaleFactor);
-//		LoopEvent itemLoop = new LoopEvent();
-//		itemLoop.addAction(new RotateRightAction(0.03f));
-//		item.addComponent(itemLoop);
-//		//CollisionEvent collision = new CollisionEvent();
-//		//collision.addAction(new CollectCoinAction());
-//		entityManager.addEntity(stateID, item);
-//
-//		/* Schiessen */
-//
-//		Entity space_bar_Listener = new Entity("Space_bar_Listener");
-//		KeyPressedEvent space_bar_pressed = new KeyPressedEvent(Input.KEY_SPACE);
-//		// Fuer alle Spieler das Schießen ermoeglichen. Die Action prueft, ob der Spieler interagieren darf.
-//		for (Player player : listOfAllPlayers) {
-//			space_bar_pressed.addAction(new ShootAction(player, planetData, entityManager));
-//		}
-//		space_bar_Listener.addComponent(space_bar_pressed);
-//		entityManager.addEntity(stateID, space_bar_Listener);
-//
-//		/* Koordinatenabfrage */
-//
-//		// Bei Mausklick und druecken der Shift-Taste sollen Koordinaten an der
-//		// Mausposition abgefragt werden
-//		Entity mouse_Clicked_With_Shift_Listener = new Entity("Mouse_Clicked_With_Shift_Listener");
-//		ANDEvent mouse_Clicked_With_Shift = new ANDEvent(new KeyDownEvent(Input.KEY_LSHIFT), new MouseClickedEvent());
-//		mouse_Clicked_With_Shift.addAction(new DisplayCoordinatesAction());
-//		mouse_Clicked_With_Shift_Listener.addComponent(mouse_Clicked_With_Shift);
-//		entityManager.addEntity(stateID, mouse_Clicked_With_Shift_Listener);
-//
-//		/* ESC-Taste */
-//
-//		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
-//		Entity esc_Listener = new Entity("ESC_Listener");
-//		KeyPressedEvent esc_pressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-//		esc_pressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
-//		esc_Listener.addComponent(esc_pressed);
-//		entityManager.addEntity(stateID, esc_Listener);
-//
-//	}
-//	
-//	public void changeActivePlayerToNextPlayer() {
-//		int indexActivePlayer = listOfAllPlayers.indexOf(activePlayer);
-//		int indexNextPlayer = indexActivePlayer + 1;
-//		if (indexNextPlayer >= listOfAllPlayers.size()) {
-//			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
-//		}
-//		activePlayer = listOfAllPlayers.get(indexNextPlayer);
-//		activePlayer.setInteractionAllowed(true);
-//		java.lang.System.out.println("Am Zug: " + activePlayer.iD);
-//		controlPanel.activePlayer = activePlayer;
-//		controlPanel.setPanelAndComponentsVisible(true);
-//	}
-//
-//	/**
-//	 * Berechnet eine vorhergesagte Trajektorie eines Projektils
-//	 * 
-//	 * @param ape             Affe von dem die Trajektorie berechnet werden soll
-//	 * @param planetData      Planetendaten fuer die Berechnung benoetigt
-//	 * @param flightTime      Laenge der vorhergesagten Flugbahn in ms
-//	 * @param updateFrequency Frequenz in ms in der die Euler Schritte ausgefuehrt
-//	 *                        werden (sollte fuer gute Vorhersage nahe an der
-//	 *                        Frequenz liegen, die bei der Echtzeit Berechnung
-//	 *                        auftritt)
-//	 * @param draw            true, wenn die Bahn durch Punkte gezeichnet werden
-//	 *                        soll
-//	 */
-//	public void clacTrajectory(Ape ape, List<float[]> planetData, int flightTime, int updateFrequency, boolean draw) {
-//		removeAimeLine();
-//		Vector2f position = ape.getCoordinates();
-//		float startDirection = ape.getAngleOfView_global();
-//		float startVelocity = ape.getThrowStrength();
-//		Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-//
-//		int iterations = (int) flightTime / updateFrequency;
-//
-//		// Hilfsprojektil wird erzeugt
-//		Projectile projectile = new Projectile("Help_Projectile", position, velocity, planetData);
-//		for (int i = 1; i < iterations; i++) {
-//			if (projectile.explizitEulerStep(updateFrequency) == false) {
-//				// Wenn Kollision mit Planet
-//				break;
-//			}
-//			if (draw && i % (100 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
-//															// gesetzt
-//				Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
-//				dot.setPosition(Utils.toPixelCoordinates(projectile.getCoordinates()));
-//				dot.setScale(1 - (i * 0.8f / iterations));
-//				try {
-//					dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
-//				} catch (SlickException e) {
-//					System.err.println("Cannot find image for dot");
-//				}
-//				entityManager.addEntity(stateID, dot);
-//			}
-//		}
-//		entityManager.removeEntity(stateID, projectile);
-//	}
-//
-//	/**
-//	 * Entfernt alle Hilfslinien Punkte
-//	 */
-//	public void removeAimeLine() {
-//		for (int i = 0; i < 100; i++) {
-//			Entity dot = entityManager.getEntity(stateID, "dot");
-//			if (dot == null) {
-//				break;
-//			}
-//			entityManager.removeEntity(stateID, dot);
-//		}
-//
-//	}
-//	
-//	/**
-//	 * Liefert den Spieler zurück, der aktuell am Zug ist
-//	 */
-//	public Player getActivePlayer() {
-//		return activePlayer;
-//	}	
 	
 	/**
 	 * Wird vor dem Frame ausgefuehrt

@@ -1,7 +1,5 @@
 package spaceapes;
 
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -28,7 +26,7 @@ public class AimlineAction implements Action {
 		
 		if (ape.isInteractionAllowed()) {
 			Vector2f position = ape.getCoordinates();
-			float startDirection = ape.getAngleOfView_global();
+			float startDirection = ape.getGlobalAngleOfView();
 			float startVelocity = ape.getThrowStrength();
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 

@@ -1,11 +1,13 @@
 package spaceapes;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.entity.Entity;
+import spaceapes.PlanetFactory.PlanetType;
 
 public class Parser {
 	
@@ -42,15 +44,13 @@ public class Parser {
 		float radiusPlanetOne = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetOne = (int) (radiusPlanetOne * Utils.randomFloat(0.91f, 1.1f) * 65);
 		
-		Entity planetOne = new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne,
-				coordinatesPlanetOne).createEntity();
-		System.out.println("Planet1 Entity: " + planetOne.toString());
+		Planet planetOne = (Planet) new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne,
+				coordinatesPlanetOne, PlanetType.PLAYER).createEntity();
 		// Spielerplaneten und für die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von überall darauf zugreifen
 		playerPlanets.add(planetOne);
 		map.addPlanetData(xPlanetOne, yPlanetOne, massPlanetOne, radiusPlanetOne);
-		map.addPlanet((Planet) planetOne);
-		System.out.println("Planet1 Data: " + map.getPlanetData().get(0).toString());
+		map.addPlanet(planetOne);
 		map.addEntity(planetOne);
 		
 		//Planet 2 für Spieler 2 in der rechten Hälfte platzieren
@@ -61,14 +61,66 @@ public class Parser {
 		float radiusPlanetTwo = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetTwo = (int) (radiusPlanetTwo * Utils.randomFloat(0.91f, 1.1f) * 65);
 		
-		Entity planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo,
-				coordinatesPlanetTwo).createEntity();
+		Planet planetTwo = (Planet) new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo,
+				coordinatesPlanetTwo, PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanetData(xPlanetTwo, yPlanetTwo, massPlanetTwo, radiusPlanetTwo);
-		map.addPlanet((Planet) planetTwo);
+		map.addPlanet(planetTwo);
 		map.addEntity(planetTwo);
 		
-		//Weitere Planeten...
+		
+		// Versuche Schwarzes Loch zu platzieren#
+		float blackHoleProbability = 1f;  //0.3f;
+		if (Utils.randomFloat(0, 1) < blackHoleProbability) {
+			Vector2f blackHolePosition = findValidePositionForPlanetSpawning(5, 30);
+			if (blackHolePosition != null) {
+				String nameBlackHole = "BlackHole";
+				float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
+				int massBlackHole = (int) (radiusBlackHole * 250);
+				
+				Planet blackHole = (Planet) new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole,
+						blackHolePosition, PlanetType.BLACKHOLE).createEntity();
+				map.addPlanetData(blackHolePosition.x, blackHolePosition.y, massBlackHole, radiusBlackHole);
+				map.addPlanet(blackHole);
+				map.addEntity(blackHole);
+			}
+		}
+
+		// Versuche Anti Planet zu platzieren
+		float antiPlanetProbability = 0.2f;
+		if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
+			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
+			if (antiPlanetPosition != null) {
+				String nameAntiPlanet = "AntiPlanet";
+				float radiusAntiPlanet = Utils.randomFloat(0.6f, 0.8f);
+				int massAntiPlanet = (int) (-0.3f * radiusAntiPlanet * 250);
+				
+				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
+						antiPlanetPosition, PlanetType.ANTI).createEntity();
+				map.addPlanetData(antiPlanetPosition.x, antiPlanetPosition.y, massAntiPlanet, radiusAntiPlanet);
+				map.addPlanet(antiPlanet);
+				map.addEntity(antiPlanet);
+			}
+		}
+
+		// Restliche Planeten
+		Random r = new Random();
+		int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
+		for (int i = 0; i < morePlanetsToAdd; i++) {
+			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 10);
+			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten hinzu
+			if (validePosition != null) {
+				String namePlanet = "Planet" + (i + 3);
+				float radiusPlanet = Utils.randomFloat(0.4f, 0.5f);
+				int massPlanet = (int) (radiusPlanet * 250);
+				
+				Planet planet = (Planet) new PlanetFactory(namePlanet, radiusPlanet, massPlanet,
+						validePosition, PlanetType.NORMAL).createEntity();
+				map.addPlanetData(validePosition.x, validePosition.y, massPlanet, radiusPlanet);
+				map.addPlanet(planet);
+				map.addEntity(planet);
+			}
+		}
 		
 		return map;
 	}
@@ -119,6 +171,47 @@ public class Parser {
 		//map.addEntity(new ControlPanelFactory().createEntity()); -> MR: Factory für Panel benutzen?
 		
 		return map;
+	}
+	
+	/**
+	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
+	 * von allen anderen Planeten entfernt ist
+	 * 
+	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
+	 *                                 mindestens entfernt sein muss
+	 * @param iterations               Wie oft soll maximal nach einer gueltigen
+	 *                                 Position gesucht werden
+	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
+	 *         ueberschritten wurde
+	 */
+	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
+		float xBorder = Utils.worldWidth / 2;
+		float yBorder = Utils.worldHeight / 2;
+		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
+			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
+					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
+			boolean positionIsValide = true;
+			List<Planet> plantes = Map.getInstance().getPlanets();
+			// Iteriere ueber alle Planeten
+			for (int i = 0; i < plantes.size(); i++) {
+				Planet p_i = plantes.get(i);
+				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getPositionWorldCoordinates().x - randomPosition.x,
+						p_i.getPositionWorldCoordinates().y - randomPosition.y);
+				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
+				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
+						.pow(marginToNextPlanetCenter, 2)) {
+					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
+					break;
+				}
+			}
+			if (positionIsValide) {
+				// java.lang.System.out.println("Planet spawning after: n=" + n);
+				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
+			}
+		}
+		// Falls Such-Schleife bis zum Ende durch laeuft:
+		// java.lang.System.out.println("Planet spawning after: null");
+		return null;
 	}
 	
 }

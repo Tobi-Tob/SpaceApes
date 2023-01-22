@@ -43,7 +43,7 @@ public class ShootAction implements Action {
 			
 			// Abfragen von initialer Position und Geschwindigkeit
 			Vector2f position = activeApe.getCoordinates();
-			float startDirection = activeApe.getAngleOfView_global();
+			float startDirection = activeApe.getGlobalAngleOfView();
 			float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			

@@ -10,7 +10,6 @@ import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
-import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 
 public class BackgroundFactory implements IEntityFactory {
@@ -30,6 +29,7 @@ public class BackgroundFactory implements IEntityFactory {
 			System.err.println("Cannot find image for background");
 		}
 		
+		//MR Warum funktioniert die Scheisse nicht!!???
 		Event mouseAndShiftPressed = new ANDEvent(new KeyPressedEvent(Input.KEY_LSHIFT), new MouseClickedEvent());
 		mouseAndShiftPressed.addAction(new DisplayCoordinatesAction());
 		background.addComponent(mouseAndShiftPressed);

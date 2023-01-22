@@ -17,7 +17,7 @@ public class ChangeAngleAction extends ButtonPressedAction {
 		Ape ape = Map.getInstance().getActiveApe();
 		if (ape.isInteractionAllowed()) {
 			ape.changeAngleOfView(angleToChange);
-			java.lang.System.out.println("AngleOfView = " + ape.getAngleOfView_local());
+			java.lang.System.out.println("AngleOfView = " + ape.getLocalAngleOfView());
 		}
 
 	}

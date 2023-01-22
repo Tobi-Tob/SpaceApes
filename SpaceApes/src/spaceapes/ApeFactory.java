@@ -23,12 +23,12 @@ public class ApeFactory implements IEntityFactory {
 	private final int apeImage;
 	private final boolean isActive;
 	private final boolean isInteractionAllowed;
-	private final float angleOnPlanet; // Einheit Grad, Drehsinn im Uhrzeigersinn, 0 enspricht Osten
-	private final float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
-	private final float throwStrength; // Abwurfgeschwindigkeit fuer Projektile
-	private final float movementSpeed; // Faktor fuer die Schrittweite des Affen
-	private final float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
-												// bewegt
+	private final float angleOnPlanet; 
+	private final float angleOfView; 
+	private final float throwStrength; 
+	private final float movementSpeed; 
+	private final float distancePlanetCenter; 
+		
 	public final float apePixelHeight = 300;
 	public final float pixelfromFeetToCenter = 130;
 	public final float desiredApeSizeInWorldUnits = 0.6f;

@@ -1,48 +1,20 @@
 package spaceapes;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 
 public class Planet extends Entity {
 
 	private float radius;
 	private int mass;
-	//private Vector2f coordinates; // In Welt-Koordinaten -> MR: redundant
 	private Ape ape;
 
 	public Planet(String entityID) {
 		super(entityID);
 		radius = 0;
 		mass = 0;
-		//coordinates = new Vector2f(0, 0);
 	}
-	
-	
-	
-	
-	
-	
-//	/**
-//	 * Konstruktor initialisiert Planet mit zufaelligen Eigenschaften: Groesse,
-//	 * Masse, Ausrichtung
-//	 * 
-//	 * @param entityID String
-//	 * @param x        in Welt-Koordinaten
-//	 * @param y        in Welt-Koordinaten
-//	 */
-//	public Planet(String entityID, float x, float y) {
-//		super(entityID);
-//		radius = Utils.randomFloat(0.75f, 1.5f); // Float zwischen 0.75 und 1.5
-//		mass = (int) (radius * Utils.randomFloat(0.91f, 1.1f) * 65); // Integer zwischen 44 und 107 (Im Mittel 73)
-//		coordinates = new Vector2f(x, y); // Gespeichert als Welt-Koordinaten
-//
-//		setPosition(Utils.toPixelCoordinates(coordinates));
-//		setRotation(Utils.randomFloat(-30, 30));
-//	}
 
 	/**
 	 * Bestimmt Abstand vom Mittelpunkt des Planeten zur Kreisbahn auf der sich die
@@ -52,7 +24,7 @@ public class Planet extends Entity {
 	 * @return float in Welt-Koordinaten
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
-	public float distanceToApePosition() throws RuntimeException {
+	public float distanceToApePosition() {
 		float dist = getRadius() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
 		if (dist > 0.1f) {
 			return dist;
@@ -74,32 +46,6 @@ public class Planet extends Entity {
 	
 	public int getMass() {
 		return mass;
-	}
-
-	public void changeToBlackHole() {
-		radius = Utils.randomFloat(0.4f, 0.5f);
-		mass = (int) (radius * 250);
-		float blackHoleRadiusInPixel = 60;
-		float blackHoleRadiusInWorldUnits = Utils.pixelLengthToWorldLength(blackHoleRadiusInPixel);
-		this.setScale(radius / blackHoleRadiusInWorldUnits);
-		try {
-			this.addComponent(new ImageRenderComponent(new Image("/assets/blackhole1.png")));
-		} catch (SlickException e) {
-			System.err.println("Cannot find image for black hole");
-		}
-		setRotation(0);
-	}
-
-	public void changeToAntiPlanet() {
-		mass = (int) (-0.3f * mass);
-		float planetRadiusInPixel = 230;
-		float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
-		this.setScale(radius / planetRadiusInWorldUnits);
-		try {
-			this.addComponent(new ImageRenderComponent(new Image("/assets/planet_anti1.png")));
-		} catch (SlickException e) {
-			System.err.println("Cannot find image for planet");
-		}
 	}
 
 	/**

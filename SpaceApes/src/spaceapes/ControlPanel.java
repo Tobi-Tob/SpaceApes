@@ -249,7 +249,7 @@ public class ControlPanel extends Entity {
 
 			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(290, 150);
 			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
-					Float.toString(activeApe.getAngleOfView_local()), Color.black);
+					Float.toString(activeApe.getLocalAngleOfView()), Color.black);
 
 			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(40, -280);
 			font.drawString(numberPos_Coins.x, numberPos_Coins.y, Float.toString(activeApe.getCoins()), Color.black);

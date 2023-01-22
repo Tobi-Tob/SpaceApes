@@ -15,21 +15,25 @@ import eea.engine.event.*;
 
 public class PlanetFactory implements IEntityFactory {
 
+	public enum PlanetType {PLAYER, BLACKHOLE, ANTI, NORMAL};
+	
 	private final String name;
 	private final float radius;
 	private final int mass;
 	private final Vector2f coordinates; // In Welt-Koordinaten
 	private final boolean ringImagePossible;
+	private final PlanetType type;
 	
-	public PlanetFactory(String name, float radius, int mass, Vector2f coordinates) {
+	public PlanetFactory(String name, float radius, int mass, Vector2f coordinates, PlanetType type) {
 		this.name = name;
 		this.radius = radius;
 		this.mass = mass;
 		this.coordinates = coordinates;
-		if(name.equals("Planet1")) {
-			this.ringImagePossible = false;
-		} else {
+		this.type = type;
+		if(type == PlanetType.NORMAL) {
 			this.ringImagePossible = true;
+		} else {
+			this.ringImagePossible = false;
 		}
 	}
 	
@@ -40,15 +44,62 @@ public class PlanetFactory implements IEntityFactory {
 		
 		planet.setPassable(false);
 		planet.setPosition(Utils.toPixelCoordinates(coordinates));
-		planet.setRotation(Utils.randomFloat(-30, 30));
-		planet.setRadius(radius);
 		planet.setMass(mass);
+		planet.setRadius(radius);
+		planet.setRotation(Utils.randomFloat(-30, 30));
 		
-		try {
-			addRandomImageToPlanet(planet, ringImagePossible);
-		} catch (SlickException e) {
-			System.err.println("Cannot find image for planet");
+		if (type == PlanetType.PLAYER) {
+			
+			try {
+				addRandomImageToPlanet(planet, ringImagePossible);
+			} catch (SlickException e) {
+				System.err.println("Cannot find image for planet");
+			}
+			
+			
+		} else if (type == PlanetType.BLACKHOLE) {
+			
+			float blackHoleRadiusInPixel = 60;
+			float blackHoleRadiusInWorldUnits = Utils.pixelLengthToWorldLength(blackHoleRadiusInPixel);
+			planet.setScale(radius / blackHoleRadiusInWorldUnits);
+			planet.setRotation(0);
+			
+			try {
+				planet.addComponent(new ImageRenderComponent(new Image("/assets/blackhole1.png")));
+			} catch (SlickException e) {
+				System.err.println("Cannot find image for black hole");
+			}
+			
+			
+		} else if (type == PlanetType.ANTI) {
+			
+			float planetRadiusInPixel = 230;
+			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
+			planet.setScale(radius / planetRadiusInWorldUnits);
+			
+			try {
+				planet.addComponent(new ImageRenderComponent(new Image("/assets/planet_anti1.png")));
+			} catch (SlickException e) {
+				System.err.println("Cannot find image for planet");
+			}
+			
+			
+		} else if (type == PlanetType.NORMAL) {
+			
+			try {
+				addRandomImageToPlanet(planet, ringImagePossible);
+			} catch (SlickException e) {
+				System.err.println("Cannot find image for planet");
+			}
+			
+			
+		} else { // weitere normale Planeten
+			
+			throw new IllegalArgumentException("Invalid planet type: " + type.toString());
 		}
+		
+		
+		
 		
 		// Zeige Planeteninformationen, wenn auf ihn geklickt wird
 		Event clickOnPlanetEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());

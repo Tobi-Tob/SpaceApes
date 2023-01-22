@@ -5,19 +5,17 @@ import eea.engine.entity.Entity;
 
 public class Ape extends Entity {
 
-//	private final Player belongsToPlayer; // Zugehoeriger Spieler
-	private Planet homePlanet = new Planet(""); // Planet auf dem sich der Affe befindet
-
+	private Planet homePlanet; // Planet auf dem sich der Affe befindet
 	private float angleOnPlanet; // Einheit Grad, Drehsinn im Uhrzeigersinn, 0 enspricht Osten
-	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts)
+	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts) fuer den Schuss
 	private float throwStrength; // Abwurfgeschwindigkeit fuer Projektile
 	private float movementSpeed; // Faktor fuer die Schrittweite des Affen
-	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe
-												// bewegt
+	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe bewegt
+	
 	public float apePixelHeight = 300;
 	public float pixelfromFeetToCenter = 130;
 	public float desiredApeSizeInWorldUnits = 0.6f;
-	public float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
+	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
 
 	private int health = 100;
 	private float energy = 50;
@@ -45,32 +43,6 @@ public class Ape extends Entity {
 	public boolean isInteractionAllowed() {
 		return isInteractionAllowed;
 	}
-	
-//	/**
-//	 * Konstruktor fuegt einem Planet einen Affen hinzu, der zufaellig auf der
-//	 * Oberflaeche platziert wird. Ebenso wird der Spieler mit seinem Affen
-//	 * verknuepft
-//	 * 
-//	 * @param entityID String
-//	 * @param planet   Zugehoeriger Planet
-//	 * @param player   Zugehoeriger Spieler
-//	 */
-//	public Ape(String entityID, Planet planet, Player player) {
-//		super(entityID);
-//		belongsToPlayer = player;
-//		player.setApe(this); // Bidirektionaler Zugriff moeglich: Affe kennt seinen Spieler und umgekehrt.
-//		homePlanet = planet;
-//		planet.setApe(this); // Affe kennt seinen Planeten und Planet wei� welcher Affe auf ihm sitzt.
-//		angleOnPlanet = Utils.randomFloat(0, 360);
-//		angleOfView = 0;
-//		throwStrength = 5f;
-//		distancePlanetCenter = homePlanet.distanceToApePosition();
-//
-//		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
-//		setScale(scalingFactor);
-//		setRotation(angleOnPlanet + 90f); // Entity Rotation ist nach oben Zeigend als 0 definiert
-//
-//	}
 
 	/**
 	 * Berechnet die Welt-Koordinaten des Affen, abhaengig von seinem Winkel auf dem
@@ -94,14 +66,6 @@ public class Ape extends Entity {
 		angleOnPlanet += direction * movementSpeed / distancePlanetCenter; // Update des Winkels
 		setPosition(Utils.toPixelCoordinates(this.getCoordinates()));
 		setRotation(angleOnPlanet + 90f);
-	}
-
-//	public Player belongsToPlayer() {
-//		return belongsToPlayer;
-//	}
-
-	public Planet getHomePlanet() {
-		return homePlanet;
 	}
 
 	public float getAngleOnPlanet() {
@@ -129,11 +93,11 @@ public class Ape extends Entity {
 		}
 	}
 
-	public float getAngleOfView_local() {
+	public float getLocalAngleOfView() {
 		return angleOfView;
 	}
 
-	public float getAngleOfView_global() {
+	public float getGlobalAngleOfView() {
 		return angleOnPlanet + angleOfView;
 	}
 
@@ -195,6 +159,9 @@ public class Ape extends Entity {
 	}
 	
 	public Planet getPlanet() {
+		if (homePlanet == null) {
+			System.out.println("homePlanet not set yet!");
+		}
 		return homePlanet;
 	}
 	
@@ -204,6 +171,10 @@ public class Ape extends Entity {
 	
 	public int getCoins() {
 		return coins;
+	}
+	
+	public float getApePixelHeight() {
+		return apePixelHeight;
 	}
 
 }
