@@ -17,6 +17,9 @@ import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
+import entities.Coin;
+import entities.ControlPanel;
+import map.Map;
 
 /**
  * @author Timo Baehr

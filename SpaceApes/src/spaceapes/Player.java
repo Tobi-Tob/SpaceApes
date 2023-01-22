@@ -1,5 +1,7 @@
 package spaceapes;
 
+import entities.Ape;
+
 public class Player {
 	public final String iD;
 	private String name;
