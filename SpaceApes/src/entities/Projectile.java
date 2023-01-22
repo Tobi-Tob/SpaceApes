@@ -28,12 +28,8 @@ public class Projectile extends Entity {
 	 * @param position Startkoordinaten
 	 * @param velocity Startgeschwindigkeit
 	 */
-	public Projectile(String entityID, Vector2f position, Vector2f velocity) {
+	public Projectile(String entityID) {
 		super(entityID);
-		this.x = position.x;
-		this.y = position.y;
-		this.vx = velocity.x;
-		this.vy = velocity.y;
 		this.direction = getMovementDirection();
 		this.rotationSpeed = 0f;
 		this.mass = 1f;
@@ -42,6 +38,16 @@ public class Projectile extends Entity {
 		float projectileSizeInPixel = 400;
 		float projectileSizeInWorldUnits = Utils.pixelLengthToWorldLength(projectileSizeInPixel);
 		this.setScale(desiredProjectileSize / projectileSizeInWorldUnits);
+	}
+	
+	public void setCoordinatesWorld(Vector2f position) {
+		this.x = position.x;
+		this.y = position.y;
+	}
+	
+	public void setVelocity(Vector2f velocity) {
+		this.vx = velocity.x;
+		this.vy = velocity.y;
 	}
 
 	public Vector2f getCoordinates() {

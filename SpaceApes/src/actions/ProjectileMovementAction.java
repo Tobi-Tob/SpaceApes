@@ -16,17 +16,16 @@ import utils.Utils;
 
 public class ProjectileMovementAction implements Action {
 
-	private StateBasedEntityManager entityManager;
 	private Projectile projectile;
 	
-	public ProjectileMovementAction(Projectile projectile, StateBasedEntityManager entityManager) {
+	public ProjectileMovementAction(Projectile projectile) {
 		this.projectile = projectile;
-		this.entityManager = entityManager;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		GameplayState gs = (GameplayState) sb.getCurrentState();
+		StateBasedEntityManager entityManager = gs.getEntityManager();
 		Map map = Map.getInstance();
 		
 		boolean noCollision = projectile.explizitEulerStep(delta);

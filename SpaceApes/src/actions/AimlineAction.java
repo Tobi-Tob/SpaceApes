@@ -13,6 +13,7 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.Projectile;
+import factories.ProjectileFactory;
 import map.Map;
 import utils.Utils;
 
@@ -39,11 +40,12 @@ public class AimlineAction implements Action {
 			int updateFrequency = 3;
 			boolean draw = true;
 			int numberOfDots = 5;
+			boolean visible = false;
 			
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile projectile = new Projectile("Help_Projectile", position, velocity);
+			Projectile projectile = (Projectile) new ProjectileFactory("Help_Projectile", position, velocity, visible).createEntity();
 			for (int i = 1; i < iterations; i++) {
 				if (projectile.explizitEulerStep(updateFrequency) == false) {
 					// Wenn Kollision mit Planet
