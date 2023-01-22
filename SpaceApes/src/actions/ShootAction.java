@@ -8,10 +8,12 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
+import entities.ControlPanel;
 import entities.Projectile;
 import factories.ProjectileFactory;
 import map.Map;
 import spaceapes.GameplayState;
+import spaceapes.Launch;
 import utils.Utils;
 
 public class ShootAction implements Action {
@@ -20,19 +22,21 @@ public class ShootAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		GameplayState gs = (GameplayState) sb.getCurrentState();
 		StateBasedEntityManager entityManager = gs.getEntityManager();
-		
-		Ape activeApe = Map.getInstance().getActiveApe();
+		Map map = Map.getInstance();
+
+		Ape activeApe = map.getActiveApe();
 		if (activeApe.isInteractionAllowed()) {
-		//if (gs.userInteractionAllowed) {
-			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt
+			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
 			activeApe.setInteractionAllowed(false);
-			//gs.userInteractionAllowed = false;
+			((ControlPanel) entityManager.getEntity(gs.getID(), "ControlPanel")).setPanelAndComponentsVisible(false);
 			
 			// Abfragen von initialer Position und Geschwindigkeit
-			Vector2f position = activeApe.getCoordinates();
 			float startDirection = activeApe.getGlobalAngleOfView();
 			float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+			Vector2f positionOfApe = activeApe.getCoordinates();
+			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
+			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(activeApe.getRadiusWorld() * 1.05f, startDirection));
 			boolean visible = true;
 			
 			// Projektil wird erzeugt

@@ -87,32 +87,41 @@ public class Projectile extends Entity {
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
 		// Positionsupdate:
 		// X1 = X0 + dt * V0
-		double x_new = x + dt * vx;
-		double y_new = y + dt * vy;
+		double xNew = x + dt * vx;
+		double yNew = y + dt * vy;
 		// Geschwindigkeitsupdate:
 		// V1 = V0 + dt * ddX
 		Vector2f ddx = new Vector2f(0, 0);
 		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 		
 		List<Planet> planets = Map.getInstance().getPlanets();
+		List<Ape> apes = Map.getInstance().getApes();
 		
-		//Prüfe auf Kollision mit einem Planeten
-		for (int i = 0; i < planets.size(); i++) {
-			float planetX = planets.get(i).getXCoordinateWorld();
-			float planetY = planets.get(i).getYCoordinateWorld();
-			float planetMass = planets.get(i).getMass();
-			float planetRadius = planets.get(i).getRadiusWorld();
-			Vector2f distanceVector = new Vector2f(planetX - (float) x, planetY - (float) y);
-			// Test auf Kollision mit Planet i (durch Kreisgleichung)
-			if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(planetRadius, 2)) {
-				return false; // Bei Kollision Abbruch der weiteren Berechnung
+		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des png-files, da auch
+		// transparente Ecken in die Hitbox einfließen...
+		
+//		// Prüfe auf Kollision mit einem Planeten
+//		for (Ape ape : apes) {
+//			if (ape.checkCollision((float) xNew, (float) yNew)) {
+//				if (!ape.isActive()) { // das ist nur temporär hier -> spaeter soll der Affe sich auch selbst treffen koennen...
+//					return false;
+//				}
+//			}
+//		}
+		
+		// Prüfe auf Kollision mit einem Planeten
+		for (Planet planet : planets) {
+			Vector2f distanceVector = new Vector2f(planet.getXCoordinateWorld() - (float) x, planet.getYCoordinateWorld() - (float) y);
+			if (planet.checkCollision((float) xNew, (float) yNew)) {
+				return false;
 			}
 
-			ddx.add(distanceVector.scale(G * planetMass * (float) Math.pow(distanceVector.length(), -3)));
+			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des Planeten
+			ddx.add(distanceVector.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
 		}
 		
-		this.x = x_new;
-		this.y = y_new;
+		this.x = xNew;
+		this.y = yNew;
 		this.vx = vx + dt * ddx.x;
 		this.vy = vy + dt * ddx.y;
 		// Aendern der direction in Richtung der Beschleunigung

@@ -57,11 +57,11 @@ public class Planet extends Entity {
 	}
 	
 	public float getXCoordinateWorld() {
-		return Utils.toWorldCoordinates(getPosition()).x;
+		return getPositionWorld().x;
 	}
 	
 	public float getYCoordinateWorld() {
-		return Utils.toWorldCoordinates(getPosition()).y;
+		return getPositionWorld().y;
 	}
 
 	public void setApe(Ape a) {
@@ -77,6 +77,21 @@ public class Planet extends Entity {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Diese Methode prueft, ob die uebergebenen Koordinaten innerhab des Planeten liegen und somit eine Kollision vorliegt
+	 * @param x x-Koordinate des zu pruefenden Punktes
+	 * @param y y-Koordinate des zu pruefenden Punktes
+	 * @return true, wenn eine Kollision vorliegt, ansonsten false
+	 */
+	public boolean checkCollision(float x, float y) {
+		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - (float) x, getYCoordinateWorld() - (float) y);
+		// Test auf Kollision mit Planet i (durch Kreisgleichung)
+		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusWorld(), 2)) {
+			return true;
+		}
+		return false;
 	}
 
 }

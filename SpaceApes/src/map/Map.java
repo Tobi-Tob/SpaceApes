@@ -11,9 +11,12 @@ import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
+import entities.ControlPanel;
 import entities.Planet;
 import interfaces.IMap;
+import spaceapes.Launch;
 
 public class Map implements IMap {
 	private static Map map = new Map();
@@ -93,6 +96,8 @@ public class Map implements IMap {
 		nextApe.setActive(true);
 		nextApe.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + nextApe.getID());
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+		((ControlPanel) entityManager.getEntity(Launch.GAMEPLAY_STATE, "ControlPanel")).setPanelAndComponentsVisible(true);
 	}
 	
 }

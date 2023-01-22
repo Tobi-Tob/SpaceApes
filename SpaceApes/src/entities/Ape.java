@@ -11,7 +11,7 @@ public class Ape extends Entity {
 	private float angleOfView; // Blickwinkel zischen -90 grad (links) und 90 grad (rechts) fuer den Schuss
 	private float throwStrength; // Abwurfgeschwindigkeit fuer Projektile
 	private float movementSpeed; // Faktor fuer die Schrittweite des Affen
-	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe bewegt
+	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe bewegt	
 	
 	public float apePixelHeight = 300;
 	public float pixelfromFeetToCenter = 130;
@@ -176,6 +176,40 @@ public class Ape extends Entity {
 	
 	public float getApePixelHeight() {
 		return apePixelHeight;
+	}
+	
+	public float getRadiusWorld() {
+		return Utils.pixelLengthToWorldLength(apePixelHeight) / 2;
+	}
+	
+	/**
+	 * Position in Welt-Koordinaten
+	 */
+	public Vector2f getPositionWorld() {
+		return Utils.toWorldCoordinates(getPosition());
+	}
+	
+	public float getXCoordinateWorld() {
+		return Utils.toWorldCoordinates(getPosition()).x;
+	}
+	
+	public float getYCoordinateWorld() {
+		return Utils.toWorldCoordinates(getPosition()).y;
+	}
+	
+	/**
+	 * Diese Methode prueft, ob die uebergebenen Koordinaten innerhab des Apes liegen und somit eine Kollision vorliegt
+	 * @param x x-Koordinate des zu pruefenden Punktes
+	 * @param y y-Koordinate des zu pruefenden Punktes
+	 * @return true, wenn eine Kollision vorliegt, ansonsten false
+	 */
+	public boolean checkCollision(float x, float y) {
+		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - (float) x, getYCoordinateWorld() - (float) y);
+		// Test auf Kollision mit Planet i (durch Kreisgleichung)
+		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getApePixelHeight() / 2, 2)) {
+			return true;
+		}
+		return false;
 	}
 
 }

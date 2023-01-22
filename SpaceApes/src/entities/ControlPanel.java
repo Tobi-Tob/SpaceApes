@@ -35,7 +35,6 @@ public class ControlPanel extends Entity {
 
 	private Vector2f coordinates;
 	public List<Entity> listOfCorrespondingEntities;
-	//public Player activePlayer;
 	float panelScaleFactor;
 	TrueTypeFont font;
 	ImageRenderComponent imageRenderComponent = null;

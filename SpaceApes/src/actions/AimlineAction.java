@@ -30,10 +30,12 @@ public class AimlineAction implements Action {
 		Ape ape = (Ape) event.getOwnerEntity();
 		
 		if (ape.isInteractionAllowed()) {
-			Vector2f position = ape.getCoordinates();
 			float startDirection = ape.getGlobalAngleOfView();
 			float startVelocity = ape.getThrowStrength();
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+			Vector2f positionOfApe = ape.getCoordinates();
+			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
+			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(ape.getRadiusWorld() * 1.05f, startDirection));
 
 			//TODO Variablen!!
 			int flightTime = 1000;
@@ -47,8 +49,8 @@ public class AimlineAction implements Action {
 			// Hilfsprojektil wird erzeugt
 			Projectile projectile = (Projectile) new ProjectileFactory("Help_Projectile", position, velocity, visible).createEntity();
 			for (int i = 1; i < iterations; i++) {
-				if (projectile.explizitEulerStep(updateFrequency) == false) {
-					// Wenn Kollision mit Planet
+				if (!projectile.explizitEulerStep(updateFrequency)) {
+					// Wenn Kollision mit einem Objekt
 					break;
 				}
 				if (draw && i % (100 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie

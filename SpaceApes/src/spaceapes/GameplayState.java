@@ -53,7 +53,7 @@ public class GameplayState extends BasicGameState {
 			entityManager.addEntity(stateID,it.next());
 		}
 		
-		// Control Panel hinzufügen
+		// Control Panel hinzufügen -> MR das muss eigentlich in Map, damit man besser darauf zugreifen kann
 		ControlPanel controlPanel = new ControlPanel("ControlPanel");
 		controlPanel.initControlPanel();
 		
