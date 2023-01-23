@@ -8,6 +8,7 @@ import actions.AimlineAction;
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
+import actions.UpdateHealthAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
@@ -19,6 +20,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
+import events.ProjectileExplodedEvent;
 import utils.Utils;
 
 public class ApeFactory implements IEntityFactory {
@@ -105,14 +107,19 @@ public class ApeFactory implements IEntityFactory {
 		ape.addComponent(leftKeyPressed);
 		
 		// Konfigiriere je nach Interaktion die Ziellinie des Affen (nur wenn der Spieler am Zug ist!)
-//		LoopEvent aimLoop = new LoopEvent();
-//		aimLoop.addAction(new AimlineAction());
-//		ape.addComponent(aimLoop);
+		LoopEvent aimLoop = new LoopEvent();
+		aimLoop.addAction(new AimlineAction());
+		ape.addComponent(aimLoop);
 		
 		// Schieße mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction());
 		ape.addComponent(spaceKeyPressed);
+		
+		// Aktualisiere den Gesundheitszustand, wenn ein Projektil explodiert ist
+		Event projectileExplodedEvent = new ProjectileExplodedEvent();
+		projectileExplodedEvent.addAction(new UpdateHealthAction());
+		ape.addComponent(projectileExplodedEvent);
 				
 		return ape;
 	}

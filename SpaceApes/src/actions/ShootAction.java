@@ -11,9 +11,9 @@ import entities.Ape;
 import entities.ControlPanel;
 import entities.Projectile;
 import factories.ProjectileFactory;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.GameplayState;
-import spaceapes.Launch;
 import utils.Utils;
 
 public class ShootAction implements Action {
@@ -41,10 +41,13 @@ public class ShootAction implements Action {
 			float offset = 0.02f;
 			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(activeApe.getRadiusWorld() + projectileRadius + offset, startDirection));
 			boolean visible = true;
+			ProjectileType type = ProjectileType.COCONUT;
 			
 			// Projektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", position, velocity, visible).createEntity();
+			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", position, velocity, visible, type).createEntity();
 			
+			map.clearLivingProjectiles();
+			map.addLivingProjectile(projectile);
 			entityManager.addEntity(gs.getID(), projectile);
 		}
 	}

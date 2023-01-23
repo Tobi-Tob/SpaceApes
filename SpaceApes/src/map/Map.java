@@ -15,15 +15,18 @@ import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.ControlPanel;
 import entities.Planet;
+import entities.Projectile;
 import interfaces.IMap;
 import spaceapes.Launch;
 
 public class Map implements IMap {
 	private static Map map = new Map();
-	private List<Entity> entities;
+	private List<Entity> entities; // Brauchen wird das wirklich?
 	private List<Ape> apes;
 	private List<Planet> planets;
-
+	private List<Projectile> livingProjectiles; // alle lebenden Projektile (ohne DummyProjectiles der Aimline)
+	private boolean hasProjectileExploded;
+	
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
 	 * hinzugefuegt werden.
@@ -32,6 +35,8 @@ public class Map implements IMap {
 		entities = new ArrayList<Entity>();
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
+		livingProjectiles = new ArrayList<Projectile>();
+		hasProjectileExploded = false;
 	}
 
 	public static Map getInstance() {
@@ -56,6 +61,26 @@ public class Map implements IMap {
 	@Override
 	public void removeEntity(Entity entity) {
 		entities.remove(entity);
+	}
+	
+	public boolean hasProjectileExploded() {
+		return hasProjectileExploded;
+	}
+	
+	public void setProjectileExploded(boolean hasExploded) {
+		hasProjectileExploded = hasExploded;
+	}
+	
+	public List<Projectile> getLivingProjectiles() {
+		return livingProjectiles;
+	}
+	
+	public void addLivingProjectile(Projectile projectile) {
+		livingProjectiles.add(projectile);
+	}
+	
+	public void clearLivingProjectiles() {
+		livingProjectiles.clear();
 	}
 	
 	public List<Planet> getPlanets() {

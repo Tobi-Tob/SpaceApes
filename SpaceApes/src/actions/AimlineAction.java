@@ -14,6 +14,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.Projectile;
 import factories.ProjectileFactory;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import utils.Utils;
 
@@ -27,6 +28,7 @@ public class AimlineAction implements Action {
 		
 		// Alte Ziellinie entfernen
 		removeAimeLine(entityManager, sb);
+		
 		Ape ape = (Ape) event.getOwnerEntity();
 		
 		if (ape.isInteractionAllowed()) {
@@ -35,7 +37,10 @@ public class AimlineAction implements Action {
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			Vector2f positionOfApe = ape.getCoordinates();
 			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
-			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(ape.getRadiusWorld() * 1.05f, startDirection));
+			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse Projectile
+											// spaeter soll das ueber den Konstruktor belegt werden koennen!
+			float offset = 0.02f;
+			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(ape.getRadiusWorld() + projectileRadius + offset, startDirection));
 
 			//TODO Variablen!!
 			int flightTime = 1000;
@@ -43,13 +48,14 @@ public class AimlineAction implements Action {
 			boolean draw = true;
 			int numberOfDots = 5;
 			boolean visible = false;
+			ProjectileType type = ProjectileType.COCONUT;
 			
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("Help_Projectile", position, velocity, visible).createEntity();
+			Projectile projectile = (Projectile) new ProjectileFactory("DummyProjectile", position, velocity, visible, type).createEntity();
 			for (int i = 1; i < iterations; i++) {
-				if (!projectile.explizitEulerStep(updateFrequency)) {
+				if (projectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
 					break;
 				}
@@ -67,7 +73,6 @@ public class AimlineAction implements Action {
 					entityManager.addEntity(sb.getCurrentStateID(), dot);
 				}
 			}
-			entityManager.removeEntity(sb.getCurrentStateID(), projectile);
 		}
 	}
 	
@@ -80,7 +85,6 @@ public class AimlineAction implements Action {
 			if (dot == null) {
 				break;
 			}
-			//System.out.println("remove dot");
 			entityManager.removeEntity(sb.getCurrentStateID(), dot);
 		}
 	}

@@ -19,6 +19,7 @@ public class Projectile extends Entity {
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
 	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
+	private float maxDamageDistance;
 	public float desiredProjectileSize = 0.3f;
 
 	/**
@@ -57,6 +58,14 @@ public class Projectile extends Entity {
 	public float getRadiusWorld() {
 		return desiredProjectileSize / 2;
 	}
+	
+	public void setMaxDamageDistance(float dist) {
+		this.maxDamageDistance = dist;
+	}
+	
+	public float getMaxDamageDistance() {
+		return maxDamageDistance;
+	}
 
 	/*
 	 * Gibt Ausrichtung des Projektils als Winkel zurueck
@@ -84,7 +93,7 @@ public class Projectile extends Entity {
 	 * ms
 	 * 
 	 * @param timeDelta int in Millisekunden
-	 * @return true, falls keine Kollision mit einem Planeten in diesem Schritt
+	 * @return true, falls eine Kollision mit einem Planeten/Affen in diesem Schritt
 	 *         vorliegt
 	 */
 	public boolean explizitEulerStep(int timeDelta) {
@@ -107,7 +116,7 @@ public class Projectile extends Entity {
 		// Prüfe auf Kollision mit einem Planeten
 		for (Ape ape : apes) {
 			if (ape.checkCollision(this)) {
-				return false;
+				return true;
 			}
 		}
 		
@@ -115,7 +124,7 @@ public class Projectile extends Entity {
 		for (Planet planet : planets) {
 			Vector2f distanceVector = new Vector2f(planet.getXCoordinateWorld() - (float) x, planet.getYCoordinateWorld() - (float) y);
 			if (planet.checkCollision((float) xNew, (float) yNew)) {
-				return false;
+				return true;
 			}
 
 			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des Planeten
@@ -131,7 +140,7 @@ public class Projectile extends Entity {
 		setRotation(direction + 90f);
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
-		return true; // Keine Kollision
+		return false; // Keine Kollision
 	}
 
 }
