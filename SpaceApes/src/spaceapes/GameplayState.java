@@ -52,16 +52,6 @@ public class GameplayState extends BasicGameState {
 		
 		// Map parsen
 		map.parse();
-
-    	// Alle Mapentities dem Entitiymanager uebergeben
-		Iterator<Entity> it = map.getEntities().iterator();
-		while(it.hasNext()){
-			entityManager.addEntity(stateID,it.next());
-		}
-		
-		// Control Panel hinzufügen -> MR das muss eigentlich in Map, damit man besser darauf zugreifen kann
-		ControlPanel controlPanel = new ControlPanel("ControlPanel");
-		controlPanel.initControlPanel();
 		
 		Entity coin = new Coin();
 		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));

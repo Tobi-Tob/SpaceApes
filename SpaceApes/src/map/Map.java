@@ -16,26 +16,25 @@ import entities.Planet;
 import entities.Projectile;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.ProjectileType;
-import interfaces.IMap;
 import spaceapes.GameplayState;
 import spaceapes.Launch;
 import utils.Utils;
 
-public class Map implements IMap {
-	private static Map map = new Map(); //TODO
-	private List<Entity> entities; //TODO Brauchen wird das wirklich?
+//public class Map implements IMap {
+public class Map {
+	private static Map map = new Map(); //TODO soll Map static werden?
 	private List<Ape> apes;
 	private List<Planet> planets;
 	private List<Projectile> livingProjectiles; // alle lebenden Projektile (ohne DummyProjectiles der Aimline)
 	private boolean hasProjectileExploded;
 	private StateBasedEntityManager entityManager;
+	private ControlPanel controlPanel;
 	
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
 	 * hinzugefuegt werden.
 	 */
 	public Map() {
-		entities = new ArrayList<Entity>();
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		livingProjectiles = new ArrayList<Projectile>();
@@ -50,21 +49,13 @@ public class Map implements IMap {
 	public void parse() {
 		Parser parser = new Parser();
 		parser.parseMap();
+		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser darauf zugreifen kann
+		this.controlPanel = new ControlPanel("ControlPanel");
+		controlPanel.initControlPanel();
 	}
 	
-	@Override
-	public List<Entity> getEntities() {
-		return entities;
-	}
-	
-	@Override
-	public void addEntity(Entity entity) {
-		entities.add(entity);
-	}
-	
-	@Override
-	public void removeEntity(Entity entity) {
-		entities.remove(entity);
+	public StateBasedEntityManager getEntityManager() {
+		return entityManager;
 	}
 	
 	public boolean hasProjectileExploded() {
@@ -135,7 +126,7 @@ public class Map implements IMap {
 		nextApe.setInteractionAllowed(true);
 		updateAimline();
 		java.lang.System.out.println("Am Zug: " + nextApe.getID());
-		((ControlPanel) entityManager.getEntity(Launch.GAMEPLAY_STATE, "ControlPanel")).setPanelAndComponentsVisible(true); //TODO
+		controlPanel.setPanelAndComponentsVisible(true); //TODO
 	}
 	
 	/**

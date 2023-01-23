@@ -14,7 +14,6 @@ import factories.ApeFactory;
 import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
-import interfaces.IMap;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -22,24 +21,20 @@ public class Parser {
 
 	private List<Entity> playerPlanets = new ArrayList<Entity>();
 
-	public IMap parseMap() {
+	public void parseMap() {
 
+		Map map = Map.getInstance();
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
-		Map map = initBackground(Map.getInstance());
-		map = parsePlanet(map);
-		map = parseApe(map); // parsePlanets() muss unbedingt davor ausgeführt werden!
-		// map = parseControlPanel(map); -> MR: Das passt hier schlecht hin, wegen dem
-		// Render der korresponiderenden Entities...
-
-		return map;
+		initBackground(map);
+		parsePlanet(map);
+		parseApe(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
 	}
 
-	protected Map initBackground(Map map) {
-		map.addEntity(new BackgroundFactory().createEntity());
-		return map;
+	protected void initBackground(Map map) {
+		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected Map parsePlanet(Map map) {
+	protected void parsePlanet(Map map) {
 
 		float xBorder = Utils.worldWidth / 2;
 		float yBorder = Utils.worldHeight / 2;
@@ -60,7 +55,7 @@ public class Parser {
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
 		playerPlanets.add(planetOne);
 		map.addPlanet(planetOne);
-		map.addEntity(planetOne);
+		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetOne);
 
 		// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
 		String namePlanetTwo = "Planet2";
@@ -74,7 +69,7 @@ public class Parser {
 				PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
-		map.addEntity(planetTwo);
+		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetTwo);
 
 		// Versuche Schwarzes Loch zu platzieren
 		float blackHoleProbability = 0.3f;
@@ -88,7 +83,7 @@ public class Parser {
 				Planet blackHole = (Planet) new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole,
 						blackHolePosition, PlanetType.BLACKHOLE).createEntity();
 				map.addPlanet(blackHole);
-				map.addEntity(blackHole);
+				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, blackHole);
 			}
 		}
 
@@ -104,7 +99,7 @@ public class Parser {
 				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
 						antiPlanetPosition, PlanetType.ANTI).createEntity();
 				map.addPlanet(antiPlanet);
-				map.addEntity(antiPlanet);
+				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, antiPlanet);
 			}
 		}
 
@@ -123,14 +118,12 @@ public class Parser {
 				Planet planet = (Planet) new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition,
 						PlanetType.NORMAL).createEntity();
 				map.addPlanet(planet);
-				map.addEntity(planet);
+				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planet);
 			}
 		}
-
-		return map;
 	}
 
-	protected Map parseApe(Map map) {
+	protected void parseApe(Map map) {
 
 		for (int i = 0; i < Launch.players.size(); i++) {
 
@@ -149,17 +142,15 @@ public class Parser {
 			Entity ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
 					movementSpeed, angleOnPlanet, angleOfView, throwStrength).createEntity();
 			map.addApe((Ape) ape);
-			map.addEntity(ape);
+			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);
 		}
-
-		return map;
 	}
 
 	protected Map parseControlPanel(Map map) {
 
 		ControlPanel controlPanel = new ControlPanel("ControlPanel");
 		controlPanel.initControlPanel();
-		map.addEntity(controlPanel);
+		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, controlPanel);
 
 		// map.addEntity(new ControlPanelFactory().createEntity()); -> MR: Factory fuer
 		// Panel benutzen?

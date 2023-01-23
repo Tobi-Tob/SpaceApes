@@ -5,7 +5,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-import actions.AimlineAction;
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
@@ -114,12 +113,6 @@ public class ApeFactory implements IEntityFactory {
 		Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
 		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f)); // MR: float durch bool ersetzen!
 		ape.addComponent(leftKeyPressed);
-
-		// Konfigiriere je nach Interaktion die Ziellinie des Affen (nur wenn der
-		// Spieler am Zug ist!)
-		LoopEvent aimLoop = new LoopEvent();
-		aimLoop.addAction(new AimlineAction());
-		ape.addComponent(aimLoop);
 
 		// Schieße mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);
