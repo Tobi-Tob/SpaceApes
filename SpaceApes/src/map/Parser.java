@@ -146,18 +146,8 @@ public class Parser {
 			float angleOfView = 0;
 			float throwStrength = 5f;
 
-			// MR folgende Zeilen ueberarbeiten!!
-			float apePixelHeight = 300;
-			float pixelfromFeetToCenter = 130;
-			float desiredApeSizeInWorldUnits = 0.6f;
-			float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
-			float distancePlanetCenter = homePlanet.getRadiusWorld()
-					+ Utils.pixelLengthToWorldLength(pixelfromFeetToCenter * scalingFactor);
-			if (distancePlanetCenter < 0.1f) {
-				throw new RuntimeException("Radius ist zu nah an null");
-			}
 			Entity ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
-					movementSpeed, angleOnPlanet, angleOfView, throwStrength, distancePlanetCenter).createEntity();
+					movementSpeed, angleOnPlanet, angleOfView, throwStrength).createEntity();
 			map.addApe((Ape) ape);
 			map.addEntity(ape);
 		}
@@ -199,8 +189,8 @@ public class Parser {
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < plantes.size(); i++) {
 				Planet p_i = plantes.get(i);
-				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getXCoordinateWorld() - randomPosition.x,
-						p_i.getYCoordinateWorld() - randomPosition.y);
+				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
+						p_i.getCoordinates().y - randomPosition.y);
 				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
 				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
 						.pow(marginToNextPlanetCenter, 2)) {

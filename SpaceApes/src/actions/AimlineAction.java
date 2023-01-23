@@ -35,15 +35,11 @@ public class AimlineAction implements Action {
 			float startDirection = ape.getGlobalAngleOfView();
 			float startVelocity = ape.getThrowStrength();
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-			Vector2f positionOfApe = ape.getCoordinates();
+			Vector2f positionOfApe = ape.getWorldCoordinates();
 			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
 			// eine Kollision eintritt...
-			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse
-											// Projectile
-											// spaeter soll das ueber den Konstruktor belegt werden koennen!
-			float offset = 0.02f;
-			Vector2f position = positionOfApe
-					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits() + projectileRadius + offset, startDirection));
+			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
+					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
 			// TODO Variablen!!
 			int flightTime = 500; // in ms
@@ -56,8 +52,8 @@ public class AimlineAction implements Action {
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", position, velocity, visible,
-					type).createEntity();
+			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
+					velocity, visible, type).createEntity();
 			dummyProjectile.setVisible(false);
 			for (int i = 1; i < iterations; i++) {
 				if (dummyProjectile.explizitEulerStep(updateFrequency)) {

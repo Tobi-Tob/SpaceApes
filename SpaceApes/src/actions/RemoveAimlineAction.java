@@ -9,9 +9,9 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 
 public class RemoveAimlineAction implements Action {
-	
+
 	// WIRD MOMENTAN NICHT BENUTZT!!!
-	
+
 	private StateBasedEntityManager entityManager;
 
 	public RemoveAimlineAction(StateBasedEntityManager entityManager) {

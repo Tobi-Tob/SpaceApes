@@ -35,21 +35,16 @@ public class ShootAction implements Action {
 			float startDirection = activeApe.getGlobalAngleOfView();
 			float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-			Vector2f positionOfApe = activeApe.getCoordinates();
+			Vector2f positionOfApe = activeApe.getWorldCoordinates();
 			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
 			// eine Kollision eintritt...
-			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse
-											// Projectile
-											// spaeter soll das ueber den Konstruktor belegt werden koennen!
-			float offset = 0.02f;
-			Vector2f position = new Vector2f(positionOfApe).add(
-					Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits() + projectileRadius + offset, startDirection));
-			boolean visible = true;
+			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
+					.add(Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
 			ProjectileType type = ProjectileType.COCONUT;
 
 			// Projektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", position, velocity, visible, type)
-					.createEntity();
+			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch, velocity,
+					true, type).createEntity();
 
 			map.clearLivingProjectiles();
 			map.addLivingProjectile(projectile);

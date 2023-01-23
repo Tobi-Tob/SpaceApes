@@ -7,14 +7,13 @@ import utils.Utils;
 
 public class Planet extends Entity {
 
-	private float radius; //Radius in Weltkoordinaten
+	private float radius; // Radius in Weltkoordinaten
 	private int mass;
+	private Vector2f coordinates; // in Weltkoordinaten
 	private Ape ape;
 
 	public Planet(String entityID) {
 		super(entityID);
-		radius = 0;
-		mass = 0;
 	}
 
 	/**
@@ -26,7 +25,7 @@ public class Planet extends Entity {
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
 	public float distanceToApePosition() {
-		float dist = getRadiusWorld() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
+		float dist = getRadius() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
 		if (dist > 0.1f) {
 			return dist;
 		} else
@@ -36,15 +35,15 @@ public class Planet extends Entity {
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
-	
-	public float getRadiusWorld() {
+
+	public float getRadius() {
 		return radius;
 	}
 
 	public void setMass(int mass) {
 		this.mass = mass;
 	}
-	
+
 	public int getMass() {
 		return mass;
 	}
@@ -52,16 +51,20 @@ public class Planet extends Entity {
 	/**
 	 * Position in Welt-Koordinaten
 	 */
-	public Vector2f getPositionWorld() {
-		return Utils.toWorldCoordinates(getPosition());
+	public Vector2f getCoordinates() {
+		return coordinates;
 	}
-	
-	public float getXCoordinateWorld() {
-		return getPositionWorld().x;
+
+	public float getX() {
+		return coordinates.x;
 	}
-	
-	public float getYCoordinateWorld() {
-		return getPositionWorld().y;
+
+	public float getY() {
+		return coordinates.y;
+	}
+
+	public void setCoordinates(Vector2f coordinates) {
+		this.coordinates = coordinates;
 	}
 
 	public void setApe(Ape a) {
@@ -78,17 +81,19 @@ public class Planet extends Entity {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Diese Methode prueft, ob die uebergebenen Koordinaten innerhab des Planeten liegen und somit eine Kollision vorliegt
-	 * @param x x-Koordinate des zu pruefenden Punktes
-	 * @param y y-Koordinate des zu pruefenden Punktes
+	 * Diese Methode prueft, ob die uebergebene Position innerhalb des Planeten plus
+	 * eine frei waehlbare Margin liegt und somit Kollision vorliegt (Test durch
+	 * Kreisgleichung mit dem Radius: getRadius() + margin)
+	 * 
+	 * @param pos    Koordinaten des zu pruefenden Punktes
+	 * @param margin manuelle vergoesserung der Kollisionsflaeche
 	 * @return true, wenn eine Kollision vorliegt, ansonsten false
 	 */
-	public boolean checkCollision(float x, float y) {
-		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - x, getYCoordinateWorld() - y);
-		// Test auf Kollision mit Planet i (durch Kreisgleichung)
-		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusWorld(), 2)) {
+	public boolean checkCollision(Vector2f pos, float margin) {
+		Vector2f distanceVector = new Vector2f(getCoordinates()).sub(pos);
+		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadius() + margin, 2)) {
 			return true;
 		}
 		return false;

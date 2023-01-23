@@ -3,6 +3,7 @@ package factories;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 import actions.AimlineAction;
 import actions.DisplayApeInfoAction;
@@ -32,20 +33,21 @@ public class ApeFactory implements IEntityFactory {
 	private final int apeImage;
 	private final boolean isActive;
 	private final boolean isInteractionAllowed;
-	private final float angleOnPlanet; 
-	private final float angleOfView; 
-	private final float throwStrength; 
-	private final float movementSpeed; 
-	private final float distancePlanetCenter; 
-		
+	private final float angleOnPlanet;
+	private final float angleOfView;
+	private Vector2f worldCoordinates;
+	private final float throwStrength;
+	private final float movementSpeed;
+
 	public final float apePixelHeight = 300;
 	public final float pixelfromFeetToCenter = 130;
 	public final float desiredApeSizeInWorldUnits = 0.6f;
 	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
-	
-	public ApeFactory(String name, Planet homePlanet, int health, int energy,
-			int apeImage, boolean isActive, boolean isInteractionAllowed, float movementSpeed,
-			float angleOnPlanet, float angleOfView, float throwStrength, float distancePlanetCenter) {
+	private final float distancePlanetCenter;
+
+	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImage, boolean isActive,
+			boolean isInteractionAllowed, float movementSpeed, float angleOnPlanet, float angleOfView,
+			float throwStrength) {
 		this.name = name;
 		this.homePlanet = homePlanet;
 		this.health = health;
@@ -57,29 +59,33 @@ public class ApeFactory implements IEntityFactory {
 		this.angleOnPlanet = angleOnPlanet;
 		this.angleOfView = angleOfView;
 		this.throwStrength = throwStrength;
-		this.distancePlanetCenter = distancePlanetCenter;
+		this.distancePlanetCenter = homePlanet.getRadius()
+				+ Utils.pixelLengthToWorldLength(pixelfromFeetToCenter * scalingFactor);
+		if (distancePlanetCenter < 0.1f) {
+			throw new RuntimeException("Radius ist zu nah an null");
+		}
 	}
-	
+
 	@Override
 	public Entity createEntity() {
-		
+
 		Ape ape = new Ape(name);
-		
+
 		ape.setPlanet(homePlanet);
 		homePlanet.setApe(ape);
-		ape.setHealth(health);
-		ape.setEnergy(energy);
-		ape.setActive(isActive);
-		ape.setInteractionAllowed(isInteractionAllowed);
-		ape.setMovementSpeed(movementSpeed);
+		ape.setDistanceToPlanetCenter(distancePlanetCenter);
 		ape.setAngleOnPlanet(angleOnPlanet);
 		ape.setAngleOfView(angleOfView);
+		ape.setHealth(health);
+		ape.setEnergy(energy);
+		ape.setMovementSpeed(movementSpeed);
 		ape.setThrowStrength(throwStrength);
-		ape.setDistanceToPlanetCenter(distancePlanetCenter);
-		ape.setPosition(Utils.toPixelCoordinates(ape.getCoordinates()));
+		ape.setActive(isActive);
+		ape.setInteractionAllowed(isInteractionAllowed);
+		ape.setPosition(Utils.toPixelCoordinates(ape.getWorldCoordinates()));
 		ape.setScale(scalingFactor);
 		ape.setRotation(angleOnPlanet + 90f);
-		
+
 		try {
 			ape.addComponent(new ImageRenderComponent(new Image("/assets/ape" + apeImage + ".png")));
 		} catch (SlickException | RuntimeException e) {
@@ -89,38 +95,42 @@ public class ApeFactory implements IEntityFactory {
 				System.err.println("Cannot find image for ape");
 			}
 		}
-		
-		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler am Zug ist!)
+
+		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
+		// am Zug ist!)
 		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		clickOnApeEvent.addAction(new DisplayApeInfoAction());
 		ape.addComponent(clickOnApeEvent);
-		
-		// Bewege den Affen mit der rechten Pfeiltaste nach rechts (nur wenn der Spieler am Zug ist!)
+
+		// Bewege den Affen mit der rechten Pfeiltaste nach rechts (nur wenn der Spieler
+		// am Zug ist!)
 		Event rightKeyPressed = new KeyDownEvent(Input.KEY_RIGHT);
 		rightKeyPressed.addAction(new MoveOnPlanetAction(1.0f));
 		ape.addComponent(rightKeyPressed);
-		
-		// Bewege den Affen mit der linken Pfeiltaste nach links... (nur wenn der Spieler am Zug ist!)
+
+		// Bewege den Affen mit der linken Pfeiltaste nach links... (nur wenn der
+		// Spieler am Zug ist!)
 		// und erzeuge eine Ziellinie
 		Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
-		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f)); //MR: float durch bool ersetzen!
+		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f)); // MR: float durch bool ersetzen!
 		ape.addComponent(leftKeyPressed);
-		
-		// Konfigiriere je nach Interaktion die Ziellinie des Affen (nur wenn der Spieler am Zug ist!)
+
+		// Konfigiriere je nach Interaktion die Ziellinie des Affen (nur wenn der
+		// Spieler am Zug ist!)
 		LoopEvent aimLoop = new LoopEvent();
 		aimLoop.addAction(new AimlineAction());
 		ape.addComponent(aimLoop);
-		
+
 		// Schieße mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction());
 		ape.addComponent(spaceKeyPressed);
-		
+
 		// Aktualisiere den Gesundheitszustand, wenn ein Projektil explodiert ist
 		Event projectileExplodedEvent = new ProjectileExplodedEvent();
 		projectileExplodedEvent.addAction(new UpdateHealthAction());
 		ape.addComponent(projectileExplodedEvent);
-				
+
 		return ape;
 	}
 

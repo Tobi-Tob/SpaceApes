@@ -11,7 +11,7 @@ import map.Map;
 public class MoveOnPlanetAction implements Action {
 
 	private float direction; // Bewegung nach links -1 und Bewegung nach rechts +1
-	
+
 	public MoveOnPlanetAction(float direction) {
 		this.direction = direction;
 	}

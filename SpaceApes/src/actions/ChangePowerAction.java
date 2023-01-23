@@ -21,7 +21,7 @@ public class ChangePowerAction extends ButtonPressedAction {
 			ape.changeThrowStrength(powerToChange);
 			java.lang.System.out.println("ThrowStrength = " + ape.getThrowStrength());
 		}
-		
+
 	}
 
 }

@@ -215,7 +215,7 @@ public class ControlPanel extends Entity {
 		float quality = Float.POSITIVE_INFINITY;
 		// Iteriert ueber alle Planeten und bestimmt den Abstand zu pos
 		for (Planet planet : map.getPlanets()) {
-			Vector2f positionPlanet_i = new Vector2f(planet.getPositionWorld());
+			Vector2f positionPlanet_i = new Vector2f(planet.getCoordinates());
 			Vector2f distanceVector = positionPlanet_i.sub(pos);
 			// Verzerrte Maximum Norm
 			float quality_i = Math.max(Math.abs(distanceVector.x), Math.abs(distanceVector.y * 2.12f));
