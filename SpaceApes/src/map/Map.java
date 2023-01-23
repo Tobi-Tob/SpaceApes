@@ -2,14 +2,6 @@ package map;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
-
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
@@ -100,24 +92,33 @@ public class Map implements IMap {
 	}
 	
 	public Ape getActiveApe() {
+		Ape activeApe = null;
+		int amountOfActiveApes = 0;
 		for(Ape ape : apes) {
 			if(ape.isActive()) {
-				return ape;
+				activeApe = ape;
+				amountOfActiveApes ++;	
 			}
 		}
-		return apes.get(0); // Hier sollte er nie hinkommen
+		if (amountOfActiveApes == 0) {
+			throw new RuntimeException("No ape is active");
+		}
+		if (amountOfActiveApes > 1) {
+			throw new RuntimeException("More than one ape is active");
+		}
+		return activeApe;
 	}
 	
 	public void changeActiveApeToNextApe() {
 		int indexActiveApe = apes.indexOf(getActiveApe());
-		int indexNextPlayer = indexActiveApe + 1;
-		if (indexNextPlayer >= apes.size()) {
-			indexNextPlayer = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
+		int indexNextApe = indexActiveApe + 1;
+		if (indexNextApe >= apes.size()) {
+			indexNextApe = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
 		}
 		Ape activeApe = apes.get(indexActiveApe);
 		activeApe.setActive(false);
 		activeApe.setInteractionAllowed(false);
-		Ape nextApe = apes.get(indexNextPlayer);
+		Ape nextApe = apes.get(indexNextApe);
 		nextApe.setActive(true);
 		nextApe.setInteractionAllowed(true);
 		java.lang.System.out.println("Am Zug: " + nextApe.getID());

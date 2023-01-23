@@ -97,7 +97,7 @@ public class PlanetFactory implements IEntityFactory {
 			}
 			
 			
-		} else { // weitere normale Planeten
+		} else {
 			
 			throw new IllegalArgumentException("Invalid planet type: " + type.toString());
 		}

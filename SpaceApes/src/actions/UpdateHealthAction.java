@@ -19,7 +19,7 @@ public class UpdateHealthAction implements Action {
 		for (Ape ape : map.getApes()) {
 			for (Projectile projectile : map.getLivingProjectiles()) {
 				float distanceApeToExplosion = ape.getPositionWorld().distance(projectile.getCoordinates());
-				float distanceApeHitboxToExplosion = distanceApeToExplosion - ape.getRadiusWorld();
+				float distanceApeHitboxToExplosion = distanceApeToExplosion - ape.getRadiusInWorldUnits();
 				
 				if (distanceApeHitboxToExplosion > projectile.getMaxDamageDistance()) {
 					

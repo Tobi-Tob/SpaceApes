@@ -178,7 +178,7 @@ public class Ape extends Entity {
 		return apePixelHeight;
 	}
 	
-	public float getRadiusWorld() {
+	public float getRadiusInWorldUnits() {
 		return desiredApeSizeInWorldUnits / 2;
 	}
 	
@@ -205,7 +205,7 @@ public class Ape extends Entity {
 	 */
 	public boolean checkCollision(Projectile projectile) {
 		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - projectile.getCoordinates().x, getYCoordinateWorld() - projectile.getCoordinates().y);		
-		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusWorld() + projectile.getRadiusWorld() , 2)) {
+		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusInWorldUnits() + projectile.getRadiusWorld() , 2)) {
 			return true;
 		}
 		return false;

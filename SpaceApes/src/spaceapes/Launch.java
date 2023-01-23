@@ -28,7 +28,7 @@ public class Launch extends StateBasedGame {
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
-	public static boolean USE_FULL_SCREEN = true;
+	public static boolean USE_FULL_SCREEN = false;
 
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
@@ -56,8 +56,8 @@ public class Launch extends StateBasedGame {
 			WIDTH = dm.getWidth();
 			HEIGHT = dm.getHeight();
 		}
-		//app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
-		app.setDisplayMode(WIDTH, HEIGHT, false);
+		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
+		//app.setDisplayMode(WIDTH, HEIGHT, false);
 
 		app.start();
 	}

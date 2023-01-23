@@ -26,26 +26,31 @@ public class ShootAction implements Action {
 
 		Ape activeApe = map.getActiveApe();
 		if (activeApe.isInteractionAllowed()) {
-			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
+			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
+			// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
 			activeApe.setInteractionAllowed(false);
 			((ControlPanel) entityManager.getEntity(gs.getID(), "ControlPanel")).setPanelAndComponentsVisible(false);
-			
+
 			// Abfragen von initialer Position und Geschwindigkeit
 			float startDirection = activeApe.getGlobalAngleOfView();
-			float startVelocity = 5f; // Einheit: Koordinaten/Sekunde
+			float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			Vector2f positionOfApe = activeApe.getCoordinates();
-			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
-			float projectileRadius = 0.15f; // Diese Variable muss geau so sein, wie desiredProjectileSize/2 in der Klasse Projectile
+			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
+			// eine Kollision eintritt...
+			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse
+											// Projectile
 											// spaeter soll das ueber den Konstruktor belegt werden koennen!
 			float offset = 0.02f;
-			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(activeApe.getRadiusWorld() + projectileRadius + offset, startDirection));
+			Vector2f position = new Vector2f(positionOfApe).add(
+					Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits() + projectileRadius + offset, startDirection));
 			boolean visible = true;
 			ProjectileType type = ProjectileType.COCONUT;
-			
+
 			// Projektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", position, velocity, visible, type).createEntity();
-			
+			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", position, velocity, visible, type)
+					.createEntity();
+
 			map.clearLivingProjectiles();
 			map.addLivingProjectile(projectile);
 			entityManager.addEntity(gs.getID(), projectile);

@@ -22,51 +22,56 @@ public class AimlineAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		
+
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		Map map = Map.getInstance();
-		
+		Map map = Map.getInstance(); // nicht benutzt
+
 		// Alte Ziellinie entfernen
 		removeAimeLine(entityManager, sb);
-		
+
 		Ape ape = (Ape) event.getOwnerEntity();
-		
+
 		if (ape.isInteractionAllowed()) {
 			float startDirection = ape.getGlobalAngleOfView();
 			float startVelocity = ape.getThrowStrength();
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			Vector2f positionOfApe = ape.getCoordinates();
-			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
-			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse Projectile
+			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
+			// eine Kollision eintritt...
+			float projectileRadius = 0.15f; // Diese Variable muss genau so sein, wie desiredProjectileSize/2 in der Klasse
+											// Projectile
 											// spaeter soll das ueber den Konstruktor belegt werden koennen!
 			float offset = 0.02f;
-			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(ape.getRadiusWorld() + projectileRadius + offset, startDirection));
+			Vector2f position = positionOfApe
+					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits() + projectileRadius + offset, startDirection));
 
-			//TODO Variablen!!
-			int flightTime = 1000;
-			int updateFrequency = 3;
+			// TODO Variablen!!
+			int flightTime = 500; // in ms
+			int updateFrequency = 3; // in ms
 			boolean draw = true;
 			int numberOfDots = 5;
 			boolean visible = false;
 			ProjectileType type = ProjectileType.COCONUT;
-			
+
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("DummyProjectile", position, velocity, visible, type).createEntity();
+			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", position, velocity, visible,
+					type).createEntity();
+			dummyProjectile.setVisible(false);
 			for (int i = 1; i < iterations; i++) {
-				if (projectile.explizitEulerStep(updateFrequency)) {
+				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
 					break;
 				}
-				if (draw && i % (100 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
+				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
 																// gesetzt
 					Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
-					dot.setPosition(Utils.toPixelCoordinates(projectile.getCoordinates()));
+					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations));
 					try {
 						dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
-						//System.out.println("add dot");
+						// System.out.println("add dot");
 					} catch (SlickException e) {
 						System.err.println("Cannot find image for dot");
 					}
@@ -75,7 +80,7 @@ public class AimlineAction implements Action {
 			}
 		}
 	}
-	
+
 	/**
 	 * Entfernt alle Hilfslinien Punkte
 	 */
@@ -88,5 +93,5 @@ public class AimlineAction implements Action {
 			entityManager.removeEntity(sb.getCurrentStateID(), dot);
 		}
 	}
-	
+
 }
