@@ -179,7 +179,7 @@ public class Ape extends Entity {
 	}
 	
 	public float getRadiusWorld() {
-		return Utils.pixelLengthToWorldLength(apePixelHeight) / 2;
+		return desiredApeSizeInWorldUnits / 2;
 	}
 	
 	/**
@@ -190,11 +190,11 @@ public class Ape extends Entity {
 	}
 	
 	public float getXCoordinateWorld() {
-		return Utils.toWorldCoordinates(getPosition()).x;
+		return getPositionWorld().x;
 	}
 	
 	public float getYCoordinateWorld() {
-		return Utils.toWorldCoordinates(getPosition()).y;
+		return getPositionWorld().y;
 	}
 	
 	/**
@@ -203,10 +203,12 @@ public class Ape extends Entity {
 	 * @param y y-Koordinate des zu pruefenden Punktes
 	 * @return true, wenn eine Kollision vorliegt, ansonsten false
 	 */
-	public boolean checkCollision(float x, float y) {
-		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - (float) x, getYCoordinateWorld() - (float) y);
-		// Test auf Kollision mit Planet i (durch Kreisgleichung)
-		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getApePixelHeight() / 2, 2)) {
+	public boolean checkCollision(Projectile projectile) {
+		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - projectile.getCoordinates().x, getYCoordinateWorld() - projectile.getCoordinates().y);		
+		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusWorld() + projectile.getRadiusWorld() , 2)) {
+//			System.out.println("distance to ape: " + this.getID() + " x = " + distanceVector.x + " y = " + distanceVector.y);
+//			System.out.println("radius = " + getRadiusWorld());
+//			System.out.println("height in world coord. = " + Utils.pixelLengthToWorldLength(apePixelHeight)); 
 			return true;
 		}
 		return false;

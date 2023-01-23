@@ -105,9 +105,9 @@ public class ApeFactory implements IEntityFactory {
 		ape.addComponent(leftKeyPressed);
 		
 		// Konfigiriere je nach Interaktion die Ziellinie des Affen (nur wenn der Spieler am Zug ist!)
-		LoopEvent aimLoop = new LoopEvent();
-		aimLoop.addAction(new AimlineAction());
-		ape.addComponent(aimLoop);
+//		LoopEvent aimLoop = new LoopEvent();
+//		aimLoop.addAction(new AimlineAction());
+//		ape.addComponent(aimLoop);
 		
 		// Schieße mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);

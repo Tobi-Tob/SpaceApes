@@ -86,7 +86,7 @@ public class Planet extends Entity {
 	 * @return true, wenn eine Kollision vorliegt, ansonsten false
 	 */
 	public boolean checkCollision(float x, float y) {
-		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - (float) x, getYCoordinateWorld() - (float) y);
+		Vector2f distanceVector = new Vector2f(getXCoordinateWorld() - x, getYCoordinateWorld() - y);
 		// Test auf Kollision mit Planet i (durch Kreisgleichung)
 		if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(getRadiusWorld(), 2)) {
 			return true;

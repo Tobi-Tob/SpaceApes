@@ -36,7 +36,10 @@ public class ShootAction implements Action {
 			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
 			Vector2f positionOfApe = activeApe.getCoordinates();
 			// Das Projektil wird leicht außerhalb des Apes gestartet, damit nicht sofort eine Kollision eintritt...
-			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(activeApe.getRadiusWorld() * 1.05f, startDirection));
+			float projectileRadius = 0.15f; // Diese Variable muss geau so sein, wie desiredProjectileSize/2 in der Klasse Projectile
+											// spaeter soll das ueber den Konstruktor belegt werden koennen!
+			float offset = 0.02f;
+			Vector2f position = positionOfApe.add(Utils.toCartesianCoordinates(activeApe.getRadiusWorld() + projectileRadius + offset, startDirection));
 			boolean visible = true;
 			
 			// Projektil wird erzeugt

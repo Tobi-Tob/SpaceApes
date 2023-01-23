@@ -53,6 +53,10 @@ public class Projectile extends Entity {
 	public Vector2f getCoordinates() {
 		return new Vector2f((float) x, (float) y);
 	}
+	
+	public float getRadiusWorld() {
+		return desiredProjectileSize / 2;
+	}
 
 	/*
 	 * Gibt Ausrichtung des Projektils als Winkel zurueck
@@ -100,14 +104,12 @@ public class Projectile extends Entity {
 		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des png-files, da auch
 		// transparente Ecken in die Hitbox einfließen...
 		
-//		// Prüfe auf Kollision mit einem Planeten
-//		for (Ape ape : apes) {
-//			if (ape.checkCollision((float) xNew, (float) yNew)) {
-//				if (!ape.isActive()) { // das ist nur temporär hier -> spaeter soll der Affe sich auch selbst treffen koennen...
-//					return false;
-//				}
-//			}
-//		}
+		// Prüfe auf Kollision mit einem Planeten
+		for (Ape ape : apes) {
+			if (ape.checkCollision(this)) {
+				return false;
+			}
+		}
 		
 		// Prüfe auf Kollision mit einem Planeten
 		for (Planet planet : planets) {
