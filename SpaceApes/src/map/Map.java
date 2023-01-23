@@ -26,7 +26,6 @@ public class Map {
 	private List<Ape> apes;
 	private List<Planet> planets;
 	private List<Projectile> livingProjectiles; // alle lebenden Projektile (ohne DummyProjectiles der Aimline)
-	private boolean hasProjectileExploded;
 	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
 	
@@ -38,7 +37,6 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		livingProjectiles = new ArrayList<Projectile>();
-		hasProjectileExploded = false;
 		this.entityManager = StateBasedEntityManager.getInstance();
 	}
 
@@ -56,14 +54,6 @@ public class Map {
 	
 	public StateBasedEntityManager getEntityManager() {
 		return entityManager;
-	}
-	
-	public boolean hasProjectileExploded() {
-		return hasProjectileExploded;
-	}
-	
-	public void setProjectileExploded(boolean hasExploded) {
-		hasProjectileExploded = hasExploded;
 	}
 	
 	public List<Projectile> getLivingProjectiles() {

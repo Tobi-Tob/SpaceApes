@@ -93,7 +93,7 @@ public class Parser {
 			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
 			if (antiPlanetPosition != null) {
 				String nameAntiPlanet = "AntiPlanet";
-				float radiusAntiPlanet = Utils.randomFloat(0.6f, 0.8f);
+				float radiusAntiPlanet = Utils.randomFloat(0.75f, 1.5f);
 				int massAntiPlanet = (int) (-0.3f * radiusAntiPlanet * 250);
 
 				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,

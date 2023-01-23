@@ -8,19 +8,16 @@ import org.newdawn.slick.geom.Vector2f;
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
-import actions.UpdateHealthAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
-import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
-import events.ProjectileExplodedEvent;
 import utils.Utils;
 
 public class ApeFactory implements IEntityFactory {
@@ -34,7 +31,6 @@ public class ApeFactory implements IEntityFactory {
 	private final boolean isInteractionAllowed;
 	private final float angleOnPlanet;
 	private final float angleOfView;
-	private Vector2f worldCoordinates;
 	private final float throwStrength;
 	private final float movementSpeed;
 
@@ -114,15 +110,10 @@ public class ApeFactory implements IEntityFactory {
 		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f)); // MR: float durch bool ersetzen!
 		ape.addComponent(leftKeyPressed);
 
-		// Schieße mit der Leertaste (nur wenn der Spieler am Zug ist!)
+		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction());
 		ape.addComponent(spaceKeyPressed);
-
-		// Aktualisiere den Gesundheitszustand, wenn ein Projektil explodiert ist
-		Event projectileExplodedEvent = new ProjectileExplodedEvent();
-		projectileExplodedEvent.addAction(new UpdateHealthAction());
-		ape.addComponent(projectileExplodedEvent);
 
 		return ape;
 	}
