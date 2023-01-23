@@ -12,14 +12,20 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.basicactions.*;
+import eea.engine.component.Component;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
+import entities.Ape;
 import entities.Coin;
 import entities.ControlPanel;
+import entities.Projectile;
+import factories.ProjectileFactory;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
+import utils.Utils;
 
 /**
  * @author Timo Baehr
@@ -59,7 +65,7 @@ public class GameplayState extends BasicGameState {
 		
 		Entity coin = new Coin();
 		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-		coin.addComponent(new ImageRenderComponent(new Image("assets/items/coin3.png")));
+		coin.addComponent(new ImageRenderComponent(new Image("assets/items/coin2.png")));
 		float itemWidthInPixel = 100;
 		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
@@ -81,6 +87,9 @@ public class GameplayState extends BasicGameState {
 		//Hier kommen alle weiteren Events hinzu...
 		
 		entityManager.addEntity(stateID, dummyEntity);
+		
+		// Initialisierung der Aimline
+		map.updateAimline();
 	}
 	
 	/**

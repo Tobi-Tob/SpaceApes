@@ -5,8 +5,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
 import eea.engine.component.Component;
+import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import map.Map;
+import spaceapes.GameplayState;
 
 public class MoveOnPlanetAction implements Action {
 
@@ -21,6 +23,7 @@ public class MoveOnPlanetAction implements Action {
 		Ape ape = Map.getInstance().getActiveApe();
 		if (ape.isInteractionAllowed()) {
 			ape.stepOnPlanet(direction);
+			Map.getInstance().updateAimline();
 		}
 	}
 

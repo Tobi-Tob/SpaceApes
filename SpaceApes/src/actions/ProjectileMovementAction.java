@@ -33,7 +33,7 @@ public class ProjectileMovementAction implements Action {
 			// Wenn Kollision mit einem Objekt, durch das es nicht hindurchfliegen kann
 			// (z.B. Planet/Ape/...)
 			entityManager.removeEntity(gs.getID(), projectile);
-			map.changeActiveApeToNextApe();
+			map.changeTurn();
 			map.setProjectileExploded(true);
 
 			// Zeige Explosion
@@ -57,7 +57,7 @@ public class ProjectileMovementAction implements Action {
 		if (Math.abs(projectile.getCoordinates().x) > 10 || Math.abs(projectile.getCoordinates().y) > 8) {
 			// Zu weit ausserhalb des Bildes
 			entityManager.removeEntity(gs.getID(), projectile);
-			map.changeActiveApeToNextApe();
+			map.changeTurn();
 		}
 	}
 

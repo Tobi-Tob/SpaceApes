@@ -20,16 +20,19 @@ public class ShootAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		GameplayState gs = (GameplayState) sb.getCurrentState();
-		StateBasedEntityManager entityManager = gs.getEntityManager();
+		
 		Map map = Map.getInstance();
-
 		Ape activeApe = map.getActiveApe();
+		
 		if (activeApe.isInteractionAllowed()) {
+			GameplayState gs = (GameplayState) sb.getCurrentState();
+			StateBasedEntityManager entityManager = gs.getEntityManager();
+			
 			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 			// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
-			activeApe.setInteractionAllowed(false);
+			activeApe.setInteractionAllowed(false);			
 			((ControlPanel) entityManager.getEntity(gs.getID(), "ControlPanel")).setPanelAndComponentsVisible(false);
+			map.removeAimeLine();
 
 			// Abfragen von initialer Position und Geschwindigkeit
 			float startDirection = activeApe.getGlobalAngleOfView();

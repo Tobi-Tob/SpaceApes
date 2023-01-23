@@ -2,22 +2,33 @@ package map;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
+
+import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.ControlPanel;
 import entities.Planet;
 import entities.Projectile;
+import factories.ProjectileFactory;
+import factories.ProjectileFactory.ProjectileType;
 import interfaces.IMap;
+import spaceapes.GameplayState;
 import spaceapes.Launch;
+import utils.Utils;
 
 public class Map implements IMap {
-	private static Map map = new Map();
-	private List<Entity> entities; // Brauchen wird das wirklich?
+	private static Map map = new Map(); //TODO
+	private List<Entity> entities; //TODO Brauchen wird das wirklich?
 	private List<Ape> apes;
 	private List<Planet> planets;
 	private List<Projectile> livingProjectiles; // alle lebenden Projektile (ohne DummyProjectiles der Aimline)
 	private boolean hasProjectileExploded;
+	private StateBasedEntityManager entityManager;
 	
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
@@ -29,6 +40,7 @@ public class Map implements IMap {
 		planets = new ArrayList<Planet>();
 		livingProjectiles = new ArrayList<Projectile>();
 		hasProjectileExploded = false;
+		this.entityManager = StateBasedEntityManager.getInstance();
 	}
 
 	public static Map getInstance() {
@@ -109,7 +121,7 @@ public class Map implements IMap {
 		return activeApe;
 	}
 	
-	public void changeActiveApeToNextApe() {
+	public void changeTurn() {
 		int indexActiveApe = apes.indexOf(getActiveApe());
 		int indexNextApe = indexActiveApe + 1;
 		if (indexNextApe >= apes.size()) {
@@ -121,9 +133,76 @@ public class Map implements IMap {
 		Ape nextApe = apes.get(indexNextApe);
 		nextApe.setActive(true);
 		nextApe.setInteractionAllowed(true);
+		updateAimline();
 		java.lang.System.out.println("Am Zug: " + nextApe.getID());
-		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		((ControlPanel) entityManager.getEntity(Launch.GAMEPLAY_STATE, "ControlPanel")).setPanelAndComponentsVisible(true);
+		((ControlPanel) entityManager.getEntity(Launch.GAMEPLAY_STATE, "ControlPanel")).setPanelAndComponentsVisible(true); //TODO
+	}
+	
+	/**
+	 * Entfernt alle Hilfslinien Punkte
+	 */
+	public void removeAimeLine() {
+		for (int i = 0; i < 100; i++) { //MR: 100 ist gehardcoded!
+			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, "dot");
+			if (dot == null) {
+				break;
+			}
+			entityManager.removeEntity(Launch.GAMEPLAY_STATE, dot);
+		}
+	}
+	
+	public void updateAimline() {
+
+		Ape ape = Map.getInstance().getActiveApe();
+
+		if (ape.isInteractionAllowed()) { //TODO brauchen wir die abfrage wirklcih?
+			
+			removeAimeLine();
+			
+			float startDirection = ape.getGlobalAngleOfView();
+			float startVelocity = ape.getThrowStrength();
+			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+			Vector2f positionOfApe = ape.getWorldCoordinates();
+			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
+			// eine Kollision eintritt...
+			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
+					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
+
+			// TODO Variablen!!
+			int flightTime = 500; // in ms
+			int updateFrequency = 3; // in ms 
+			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
+			boolean draw = true;
+			int numberOfDots = 5;
+			boolean visible = false;
+			ProjectileType type = ProjectileType.COCONUT;
+
+			int iterations = (int) flightTime / updateFrequency;
+
+			// Hilfsprojektil wird erzeugt
+			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
+					velocity, visible, type).createEntity();
+			dummyProjectile.setVisible(false);
+			for (int i = 1; i < iterations; i++) {
+				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
+					// Wenn Kollision mit einem Objekt
+					break;
+				}
+				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
+																// gesetzt
+					Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
+					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
+					dot.setScale(1 - (i * 0.8f / iterations));
+					try {
+						dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
+						//System.out.println("add dot");
+					} catch (SlickException e) {
+						System.err.println("Cannot find image for dot");
+					}
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); //TODO
+				}
+			}
+		}
 	}
 	
 }
