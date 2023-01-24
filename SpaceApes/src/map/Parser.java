@@ -72,7 +72,7 @@ public class Parser {
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetTwo);
 
 		// Versuche Schwarzes Loch zu platzieren
-		float blackHoleProbability = 0.3f;
+		float blackHoleProbability = 0.4f;
 		if (Utils.randomFloat(0, 1) < blackHoleProbability) {
 			Vector2f blackHolePosition = findValidePositionForPlanetSpawning(5, 30);
 			if (blackHolePosition != null) {
@@ -88,7 +88,7 @@ public class Parser {
 		}
 
 		// Versuche Anti Planet zu platzieren
-		float antiPlanetProbability = 0.9f;
+		float antiPlanetProbability = 0.3f;
 		if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
 			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
 			if (antiPlanetPosition != null) {
