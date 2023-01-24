@@ -26,6 +26,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+import events.MouseDownEvent;
 import map.Map;
 import spaceapes.Launch;
 import utils.Utils;
@@ -55,7 +56,7 @@ public class ControlPanel extends Entity {
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
 		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
-		formatter = new DecimalFormat("#,##0.#");
+		formatter = new DecimalFormat("0.##");
 
 		// Arrows
 		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
@@ -126,23 +127,23 @@ public class ControlPanel extends Entity {
 		change_Weapon_Event.addAction(change_Weapon_Action);
 		arrow_Weapons.addComponent(change_Weapon_Event);
 
-		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Angle_Action = new ChangeAngleAction(1f);
+		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action increase_Angle_Action = new ChangeAngleAction(0.1f);
 		increase_Angle_Event.addAction(increase_Angle_Action);
 		arrow_Angle_Right.addComponent(increase_Angle_Event);
 
-		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Angle_Action = new ChangeAngleAction(-1f);
+		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action decrease_Angle_Action = new ChangeAngleAction(-0.1f);
 		decrease_Angle_Event.addAction(decrease_Angle_Action);
 		arrow_Angle_Left.addComponent(decrease_Angle_Event);
 
-		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Power_Action = new ChangePowerAction(0.1f);
+		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action increase_Power_Action = new ChangePowerAction(0.01f);
 		increase_Power_Event.addAction(increase_Power_Action);
 		arrow_Power_Right.addComponent(increase_Power_Event);
 
-		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-0.1f);
+		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action decrease_Power_Action = new ChangePowerAction(-0.01f);
 		decrease_Power_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Event);
 
@@ -248,11 +249,11 @@ public class ControlPanel extends Entity {
 			Vector2f textPos_ActivePlayer = relativPosOnPanelToPixelPos(-600, -290);
 			font.drawString(textPos_ActivePlayer.x, textPos_ActivePlayer.y, activeApe.getID(), Color.black);
 
-			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-430, 150);
+			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-450, 150);
 			font.drawString(numberPos_Power.x, numberPos_Power.y, formatter.format(activeApe.getThrowStrength()),
 					Color.black);
 
-			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(330, 150);
+			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(300, 150);
 			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
 					formatter.format(activeApe.getLocalAngleOfView()), Color.black);
 

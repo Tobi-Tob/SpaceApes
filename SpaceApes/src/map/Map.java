@@ -150,7 +150,7 @@ public class Map {
 					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
 			// TODO Variablen!!
-			int flightTime = 5000; // in ms
+			int flightTime = 1000; // in ms
 			int updateFrequency = 3; // in ms 
 			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
 			boolean draw = true;

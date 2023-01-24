@@ -4,7 +4,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.Movement;
 
-// wird nicht benoetigt
+// TODO wird nicht benoetigt
 public class MoveInDirectionAction extends Movement implements Action {
 
 	public MoveInDirectionAction(float currentSpeed) {

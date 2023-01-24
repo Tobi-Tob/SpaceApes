@@ -88,13 +88,13 @@ public class Parser {
 		}
 
 		// Versuche Anti Planet zu platzieren
-		float antiPlanetProbability = 0.2f;
+		float antiPlanetProbability = 0.9f;
 		if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
 			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
 			if (antiPlanetPosition != null) {
 				String nameAntiPlanet = "AntiPlanet";
-				float radiusAntiPlanet = Utils.randomFloat(0.75f, 1.5f);
-				int massAntiPlanet = (int) (-0.3f * radiusAntiPlanet * 250);
+				float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
+				int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
 
 				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
 						antiPlanetPosition, PlanetType.ANTI).createEntity();
