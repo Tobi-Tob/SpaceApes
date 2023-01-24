@@ -128,7 +128,13 @@ public class Parser {
 		for (int i = 0; i < Launch.players.size(); i++) {
 
 			String nameApe = "ape" + (i + 1);
-			Planet homePlanet = (Planet) playerPlanets.get(i);
+			Planet homePlanet;
+			if (i > playerPlanets.size() - 1) { // Fall es gibt nicht genug PlayerPlanets
+				int randomIndex = new Random().nextInt(map.getPlanets().size());
+				homePlanet = map.getPlanets().get(randomIndex);
+			} else {
+				homePlanet = (Planet) playerPlanets.get(i);
+			}
 			int health = 100;
 			int energy = 50;
 			int apeImage = i + 1;

@@ -24,11 +24,11 @@ public class Launch extends StateBasedGame {
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
 	
-	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
+	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2", "Player3"));
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
-	public static boolean USE_FULL_SCREEN = false;
+	public static boolean USE_FULL_SCREEN = true;
 
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
@@ -57,7 +57,6 @@ public class Launch extends StateBasedGame {
 			HEIGHT = dm.getHeight();
 		}
 		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
-		//app.setDisplayMode(WIDTH, HEIGHT, false);
 
 		app.start();
 	}

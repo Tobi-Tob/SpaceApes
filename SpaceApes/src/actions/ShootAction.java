@@ -20,17 +20,17 @@ public class ShootAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		
+
 		Map map = Map.getInstance();
 		Ape activeApe = map.getActiveApe();
-		
+
 		if (activeApe.isInteractionAllowed()) {
 			GameplayState gs = (GameplayState) sb.getCurrentState();
 			StateBasedEntityManager entityManager = gs.getEntityManager();
-			
+
 			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 			// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
-			activeApe.setInteractionAllowed(false);			
+			activeApe.setInteractionAllowed(false);
 			((ControlPanel) entityManager.getEntity(gs.getID(), "ControlPanel")).setPanelAndComponentsVisible(false);
 			map.removeAimeLine();
 
@@ -49,8 +49,6 @@ public class ShootAction implements Action {
 			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch, velocity,
 					true, type).createEntity();
 
-			map.clearLivingProjectiles();
-			map.addLivingProjectile(projectile);
 			entityManager.addEntity(gs.getID(), projectile);
 		}
 	}

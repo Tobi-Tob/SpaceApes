@@ -2,6 +2,7 @@ package entities;
 
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
+import map.Map;
 import utils.Utils;
 
 public class Ape extends Entity {
@@ -150,8 +151,20 @@ public class Ape extends Entity {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
+	public void setHealth(int newHealth) {
+		this.health = newHealth;
+		if(health < 0) {
+			this.health = 0;
+			Map.getInstance().apeDied(this);
+		}
+	}
+	
+	public void changeHealth(int damage) {
+		this.health = health - damage;
+		if(health < 0) {
+			this.health = 0;
+			Map.getInstance().apeDied(this);
+		}
 	}
 
 	public float getMovementSpeed() {

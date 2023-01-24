@@ -41,14 +41,15 @@ public class ProjectileMovementAction implements Action {
 
 				if (distanceApeHitboxToExplosion <= projectile.getMaxDamageDistance()) {
 
-					float damageFactor = 20f; // TODO hardcoded
+					float damageFactor = 60f; // TODO hardcoded
 					int damage = (int) (damageFactor
 							* (1 - distanceApeHitboxToExplosion / projectile.getMaxDamageDistance()));
-
-					ape.setHealth(ape.getHealth() - damage);
-					System.out.println(
-							"new healt of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
-
+					ape.changeHealth(damage);
+					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
+					if (ape.getHealth() <= 0) {
+						break; // Schleife darf nicht weiter durchlaufen werden, da die Liste der Affen kleiner
+								// geworden ist
+					}
 				}
 			}
 
@@ -68,7 +69,7 @@ public class ProjectileMovementAction implements Action {
 			}
 			explosion.setImages(images);
 			explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
-			explosion.addAnimation(0.012f, false);
+			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			entityManager.addEntity(gs.getID(), explosion);
 
 		}

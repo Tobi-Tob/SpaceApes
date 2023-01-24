@@ -9,8 +9,6 @@ import spaceapes.Launch;
 
 public class MouseDownEvent extends Event {
 
-	// WIRD MOMENTAN NICHT BENUTZT!!!
-
 	public MouseDownEvent() {
 		super("MouseDownEvent");
 	}
