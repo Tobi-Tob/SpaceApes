@@ -1,11 +1,8 @@
 package factories;
 
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
@@ -51,7 +48,7 @@ public class ControlPanelFactory implements IEntityFactory {
 		controlPanel.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
 		
 		
-		// Erstellen der zugehörigen Entities (Pfeile)
+		// Erstellen der zugehoerigen Entities (Pfeile)
 		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
 
 		Entity arrow_Weapons = new Entity("ArrowForWeapons");
@@ -89,18 +86,17 @@ public class ControlPanelFactory implements IEntityFactory {
 		// shopProjectil_1.addComponent(rotationLoop);
 		controlPanel.addToListOfCorrespondingEntities(shopProjectil_1);
 		
-		// Bilder für die Entities festlegen
+		// Bilder fuer die Entities festlegen
 		try {
-			//imageRenderComponent = new ImageRenderComponent(new Image("/assets/panel.png"));
-			controlPanel.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
-			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
-			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
-			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
+			controlPanel.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
+			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("img/projectile/coconut.png")));
 		} catch (SlickException e) {
-			System.err.println("Problem with Controlpanel");
+			System.err.println("Problem with Controlpanel images");
 		}
 		//controlPanel.addComponent(imageRenderComponent);
 		

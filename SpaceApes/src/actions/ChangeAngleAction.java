@@ -6,7 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.component.Component;
 import entities.Ape;
 import map.Map;
-import spaceapes.GameplayState;
 
 public class ChangeAngleAction extends ButtonPressedAction {
 	private float angleToChange;

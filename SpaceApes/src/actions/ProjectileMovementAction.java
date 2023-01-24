@@ -58,13 +58,13 @@ public class ProjectileMovementAction implements Action {
 			AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
 			Image[] images = new Image[4];
 			try {
-				images[0] = new Image("/assets/explosion/explosion1.png");
-				images[1] = new Image("/assets/explosion/explosion2.png");
-				images[2] = new Image("/assets/explosion/explosion3.png");
-				images[3] = new Image("/assets/explosion/explosion4.png");
+				images[0] = new Image("img/explosions/explosion1.png");
+				images[1] = new Image("img/explosions/explosion2.png");
+				images[2] = new Image("img/explosions/explosion3.png");
+				images[3] = new Image("img/explosions/explosion4.png");
 
 			} catch (SlickException e) {
-				System.err.println("Cannot find image for explosion");
+				System.err.println("Problem with image for explosion");
 			}
 			explosion.setImages(images);
 			explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));

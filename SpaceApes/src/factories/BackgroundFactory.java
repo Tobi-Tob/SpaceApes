@@ -25,11 +25,11 @@ public class BackgroundFactory implements IEntityFactory {
 		// Startposition des Hintergrunds (Mitte des Fensters)
 		background.setPosition(Utils.toPixelCoordinates(0, 0));
 		try {
-			Image image = new Image("/assets/space1.jpg");
-			background.addComponent(new ImageRenderComponent(new Image("/assets/space1.jpg")));
+			Image image = new Image("img/assets/space1.jpg");
+			background.addComponent(new ImageRenderComponent(image));
 			background.setScale((float) Launch.HEIGHT / image.getHeight());
 		} catch (SlickException e) {
-			System.err.println("Cannot find image for background");
+			System.err.println("Problem with image for background");
 		}
 
 		// Zeige Koordinateninformationen, wenn Shift + Linksklick auf den Hintergrund

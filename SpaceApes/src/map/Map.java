@@ -16,7 +16,6 @@ import entities.Planet;
 import entities.Projectile;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.ProjectileType;
-import spaceapes.GameplayState;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -175,10 +174,10 @@ public class Map {
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations));
 					try {
-						dot.addComponent(new ImageRenderComponent(new Image("/assets/dot.png")));
+						dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
 						//System.out.println("add dot");
 					} catch (SlickException e) {
-						System.err.println("Cannot find image for dot");
+						System.err.println("Problem with dot image");
 					}
 					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); //TODO
 				}

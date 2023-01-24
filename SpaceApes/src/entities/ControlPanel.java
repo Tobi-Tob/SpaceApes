@@ -97,16 +97,16 @@ public class ControlPanel extends Entity {
 		listOfCorrespondingEntities.add(shopProjectil_1);
 
 		try {
-			imageRenderComponent = new ImageRenderComponent(new Image("/assets/panel.png"));
-			this.addComponent(new ImageRenderComponent(new Image("/assets/panel.png")));
-			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
-			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("/assets/arrow_right.png")));
-			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("/assets/arrow_left.png")));
-			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
+			imageRenderComponent = new ImageRenderComponent(new Image("img/assets/panel.png"));
+			this.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
+			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 		} catch (SlickException e) {
-			System.err.println("Problem with Controlpanel");
+			System.err.println("Problem with controlpanel images");
 		}
 		this.addComponent(imageRenderComponent);
 

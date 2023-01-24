@@ -3,8 +3,6 @@ package factories;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
-
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
@@ -82,12 +80,12 @@ public class ApeFactory implements IEntityFactory {
 		ape.setRotation(angleOnPlanet + 90f);
 
 		try {
-			ape.addComponent(new ImageRenderComponent(new Image("/assets/ape" + apeImage + ".png")));
+			ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImage + ".png")));
 		} catch (SlickException | RuntimeException e) {
 			try {
-				ape.addComponent(new ImageRenderComponent(new Image("/assets/ape1.png")));
+				ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape1.png")));
 			} catch (SlickException e1) {
-				System.err.println("Cannot find image for ape");
+				System.err.println("Problem with image for ape");
 			}
 		}
 

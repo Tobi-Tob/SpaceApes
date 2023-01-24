@@ -10,7 +10,6 @@ import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Projectile;
-import factories.PlanetFactory.PlanetType;
 
 public class ProjectileFactory implements IEntityFactory {
 	
@@ -49,9 +48,9 @@ public class ProjectileFactory implements IEntityFactory {
 		
 		if (visible) {
 			try {
-				projectile.addComponent(new ImageRenderComponent(new Image("/assets/coconut.png")));
+				projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 			} catch (SlickException e) {
-				System.err.println("Cannot find file assets/coconut.png");
+				System.err.println("Problem with projectile image");
 				e.printStackTrace();
 			}
 		}

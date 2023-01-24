@@ -6,7 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.component.Component;
 import entities.Ape;
 import map.Map;
-import spaceapes.GameplayState;
 
 public class ChangePowerAction extends ButtonPressedAction {
 	private float powerToChange;

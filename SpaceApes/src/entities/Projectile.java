@@ -2,10 +2,7 @@ package entities;
 
 import java.util.List;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import map.Map;
 import utils.Utils;

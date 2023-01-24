@@ -44,7 +44,7 @@ public class MainMenuState extends BasicGameState {
 
 		Entity menuBackground = new Entity("menu"); // Entitaet fuer Hintergrund erzeugen
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		Image image = new Image("/assets/menuSP.png");
+		Image image = new Image("img/assets/menuSP.png");
 		menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
 		menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
@@ -55,7 +55,7 @@ public class MainMenuState extends BasicGameState {
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
 		newGameEntity.setScale((float) Launch.HEIGHT / 3200);
-		newGameEntity.addComponent(new ImageRenderComponent(new Image("assets/button_start.png")));
+		newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent start_Game_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -70,7 +70,7 @@ public class MainMenuState extends BasicGameState {
 		// Setze Position und Bildkomponente
 		quitEntity.setPosition(new Vector2f(Launch.WIDTH / 4.4f, Launch.HEIGHT / 1.4f));
 		quitEntity.setScale((float) Launch.HEIGHT / 3200);
-		quitEntity.addComponent(new ImageRenderComponent(new Image("assets/button_beenden.png")));
+		quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent quit_Game_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
