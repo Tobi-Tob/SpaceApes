@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,12 +20,10 @@ import actions.ChangeAngleAction;
 import actions.ChangePowerAction;
 import actions.ChangeWeaponAction;
 import eea.engine.action.Action;
-import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
-import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import map.Map;
@@ -37,6 +36,7 @@ public class ControlPanel extends Entity {
 	public List<Entity> listOfCorrespondingEntities;
 	float panelScaleFactor;
 	TrueTypeFont font;
+	DecimalFormat formatter;
 	ImageRenderComponent imageRenderComponent = null;
 
 	public ControlPanel(String entityID) {
@@ -55,6 +55,7 @@ public class ControlPanel extends Entity {
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
 		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
+		formatter = new DecimalFormat("#,##0.#");
 
 		// Arrows
 		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
@@ -126,22 +127,22 @@ public class ControlPanel extends Entity {
 		arrow_Weapons.addComponent(change_Weapon_Event);
 
 		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Angle_Action = new ChangeAngleAction(5f);
+		Action increase_Angle_Action = new ChangeAngleAction(1f);
 		increase_Angle_Event.addAction(increase_Angle_Action);
 		arrow_Angle_Right.addComponent(increase_Angle_Event);
 
 		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Angle_Action = new ChangeAngleAction(-5f);
+		Action decrease_Angle_Action = new ChangeAngleAction(-1f);
 		decrease_Angle_Event.addAction(decrease_Angle_Action);
 		arrow_Angle_Left.addComponent(decrease_Angle_Event);
 
 		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action increase_Power_Action = new ChangePowerAction(1f);
+		Action increase_Power_Action = new ChangePowerAction(0.1f);
 		increase_Power_Event.addAction(increase_Power_Action);
 		arrow_Power_Right.addComponent(increase_Power_Event);
 
 		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-1f);
+		Action decrease_Power_Action = new ChangePowerAction(-0.1f);
 		decrease_Power_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Event);
 
@@ -179,7 +180,6 @@ public class ControlPanel extends Entity {
 	 * @return Vector2f Position, die am besten fuer das Control Panel geeignet ist.
 	 */
 	private Vector2f findBestPosition() {
-		Map map = Map.getInstance();
 		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f rightUpperCorner = new Vector2f(0.82f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f leftLowerCorner = new Vector2f(0.18f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
@@ -248,16 +248,16 @@ public class ControlPanel extends Entity {
 			Vector2f textPos_ActivePlayer = relativPosOnPanelToPixelPos(-600, -290);
 			font.drawString(textPos_ActivePlayer.x, textPos_ActivePlayer.y, activeApe.getID(), Color.black);
 
-			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-460, 150);
-			font.drawString(numberPos_Power.x, numberPos_Power.y, Float.toString(activeApe.getThrowStrength()),
+			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-430, 150);
+			font.drawString(numberPos_Power.x, numberPos_Power.y, formatter.format(activeApe.getThrowStrength()),
 					Color.black);
 
-			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(290, 150);
+			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(330, 150);
 			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
-					Float.toString(activeApe.getLocalAngleOfView()), Color.black);
+					formatter.format(activeApe.getLocalAngleOfView()), Color.black);
 
-			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(40, -280);
-			font.drawString(numberPos_Coins.x, numberPos_Coins.y, Float.toString(activeApe.getCoins()), Color.black);
+			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(70, -280);
+			font.drawString(numberPos_Coins.x, numberPos_Coins.y, formatter.format(activeApe.getCoins()), Color.black);
 
 		}
 	}
