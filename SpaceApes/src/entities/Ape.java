@@ -161,7 +161,7 @@ public class Ape extends Entity {
 	
 	public void changeHealth(int damage) {
 		this.health = health - damage;
-		if(health < 0) {
+		if(health <= 0) {
 			this.health = 0;
 			Map.getInstance().apeDied(this);
 		}

@@ -117,7 +117,7 @@ public class Map {
 
 		// Ape faellt nach unten
 		LoopEvent deathLoop = new LoopEvent();
-		deathLoop.addAction(new MoveDownAction(0.5f));
+		deathLoop.addAction(new MoveDownAction(0.8f));
 		ape.addComponent(deathLoop);
 
 		// Wenn der Bildschirm verlassen wird, dann ...

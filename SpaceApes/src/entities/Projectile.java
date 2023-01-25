@@ -16,7 +16,7 @@ public class Projectile extends Entity {
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
 	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
-	private float maxDamage = 10; // default
+	private int maxDamage = 10; // default
 	private float damageRadius = 0.5f; // default
 	public float desiredProjectileSize = 0.5f; // default
 
@@ -58,11 +58,11 @@ public class Projectile extends Entity {
 		return desiredProjectileSize / 2;
 	}
 
-	public void setMaxDamage(float damage) {
+	public void setMaxDamage(int damage) {
 		this.maxDamage = damage;
 	}
 	
-	public float getMaxDamage() {
+	public int getMaxDamage() {
 		return maxDamage;
 	}
 

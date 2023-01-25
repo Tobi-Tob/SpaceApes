@@ -38,12 +38,17 @@ public class ProjectileMovementAction implements Action {
 				float distanceApeToExplosion = ape.getWorldCoordinates().distance(projectile.getCoordinates());
 				float distanceApeHitboxToExplosion = distanceApeToExplosion - ape.getRadiusInWorldUnits(); // bei direktem
 																											// Treffer = 0
-				float maxDamage = projectile.getMaxDamage();
+				int maxDamage = projectile.getMaxDamage();
 				float damageRadius = projectile.getDamageRadius();
+				System.out.println(ape.getID() + " distanceApeHitbox: " + distanceApeHitboxToExplosion);
 				if (distanceApeHitboxToExplosion <= damageRadius) { // Test ob die Explosion nah genug
 																	// am Affen ist
 					int damage = Math.round(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
 																												// Interpolation
+					if (distanceApeHitboxToExplosion < 0.1f) {
+						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer immer maximaler Schaden
+											// verursacht wird
+					}
 					ape.changeHealth(damage);
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
 					if (ape.getHealth() <= 0) {
