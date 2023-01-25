@@ -43,7 +43,7 @@ public class ShootAction implements Action {
 			// eine Kollision eintritt...
 			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
 					.add(Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
-			ProjectileType type = ProjectileType.COCONUT;
+			ProjectileType type = ProjectileType.BOMB;
 
 			// Projektil wird erzeugt
 			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch, velocity,

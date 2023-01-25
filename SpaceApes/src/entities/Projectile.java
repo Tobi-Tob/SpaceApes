@@ -16,8 +16,9 @@ public class Projectile extends Entity {
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
 	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
-	private float maxDamageDistance;
-	public float desiredProjectileSize = 0.3f;
+	private float maxDamage = 10; // default
+	private float damageRadius = 0.5f; // default
+	public float desiredProjectileSize = 0.5f; // default
 
 	/**
 	 * Konstruktor fuer ein Projektil
@@ -33,9 +34,6 @@ public class Projectile extends Entity {
 		this.mass = 1f;
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
-		float projectileSizeInPixel = 400;
-		float projectileSizeInWorldUnits = Utils.pixelLengthToWorldLength(projectileSizeInPixel);
-		this.setScale(desiredProjectileSize / projectileSizeInWorldUnits);
 	}
 
 	public void setCoordinatesWorld(Vector2f position) {
@@ -52,16 +50,28 @@ public class Projectile extends Entity {
 		return new Vector2f((float) x, (float) y);
 	}
 
+	public void setDesiredProjectileSize(float size) {
+		this.desiredProjectileSize = size;
+	}
+
 	public float getRadiusInWorldUnits() {
 		return desiredProjectileSize / 2;
 	}
 
-	public void setMaxDamageDistance(float dist) {
-		this.maxDamageDistance = dist;
+	public void setMaxDamage(float damage) {
+		this.maxDamage = damage;
+	}
+	
+	public float getMaxDamage() {
+		return maxDamage;
 	}
 
-	public float getMaxDamageDistance() {
-		return maxDamageDistance;
+	public void setDamageRadius(float radius) {
+		this.damageRadius = radius;
+	}
+
+	public float getDamageRadius() {
+		return damageRadius;
 	}
 
 	/*

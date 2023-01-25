@@ -29,26 +29,26 @@ public class ProjectileMovementAction implements Action {
 		StateBasedEntityManager entityManager = gs.getEntityManager();
 		Map map = Map.getInstance();
 
-		if (projectile.explizitEulerStep(delta)) {
-
-			// Wenn Kollision mit einem Objekt, durch das es nicht hindurchfliegen kann
-			// (z.B. Planet/Ape/...)
+		if (projectile.explizitEulerStep(delta)) { // Berechnet so lange den naechsten Schritt, bis Kollision auftritt und
+													// explizitEulerStep true zurueck gibt
+			// Im Kollisionsfall:
 			entityManager.removeEntity(gs.getID(), projectile);
 
 			for (Ape ape : map.getApes()) {
 				float distanceApeToExplosion = ape.getWorldCoordinates().distance(projectile.getCoordinates());
-				float distanceApeHitboxToExplosion = distanceApeToExplosion - ape.getRadiusInWorldUnits();
-
-				if (distanceApeHitboxToExplosion <= projectile.getMaxDamageDistance()) {
-
-					float damageFactor = 60f; // TODO hardcoded
-					int damage = (int) (damageFactor
-							* (1 - distanceApeHitboxToExplosion / projectile.getMaxDamageDistance()));
+				float distanceApeHitboxToExplosion = distanceApeToExplosion - ape.getRadiusInWorldUnits(); // bei direktem
+																											// Treffer = 0
+				float maxDamage = projectile.getMaxDamage();
+				float damageRadius = projectile.getDamageRadius();
+				if (distanceApeHitboxToExplosion <= damageRadius) { // Test ob die Explosion nah genug
+																	// am Affen ist
+					int damage = Math.round(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
+																												// Interpolation
 					ape.changeHealth(damage);
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
 					if (ape.getHealth() <= 0) {
-						break; // Schleife darf nicht weiter durchlaufen werden, da die Liste der Affen kleiner
-								// geworden ist
+						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da
+								// sich die momentan zu durchlaufende Liste veraendert hat
 					}
 				}
 			}
