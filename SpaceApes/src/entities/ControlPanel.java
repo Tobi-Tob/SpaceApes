@@ -27,6 +27,8 @@ import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import events.MouseDownEvent;
+import factories.ProjectileFactory;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Launch;
 import utils.Utils;
@@ -35,6 +37,7 @@ public class ControlPanel extends Entity {
 
 	private Vector2f coordinates;
 	public List<Entity> listOfCorrespondingEntities;
+	public List<Projectile> listOfShopProjectiles;
 	float panelScaleFactor;
 	TrueTypeFont font;
 	DecimalFormat formatter;
@@ -43,6 +46,7 @@ public class ControlPanel extends Entity {
 	public ControlPanel(String entityID) {
 		super(entityID);
 		listOfCorrespondingEntities = new ArrayList<>();
+		listOfShopProjectiles = new ArrayList<>();
 	}
 
 	public void initControlPanel() {
@@ -86,16 +90,6 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200));
 		listOfCorrespondingEntities.add(arrow_Angle_Left);
 
-		float desiredProjectilScale = 0.23f;
-		Entity shopProjectil_1 = new Entity("ShopProjectil_1");
-		shopProjectil_1.setScale(panelScaleFactor * desiredProjectilScale);
-		shopProjectil_1.setPosition(relativPosOnPanelToPixelPos(380, -230));
-		shopProjectil_1.setRotation(45);
-		// LoopEvent rotationLoop = new LoopEvent();
-		// rotationLoop.addAction(new RotateRightAction(0.03f));
-		// shopProjectil_1.addComponent(rotationLoop);
-		listOfCorrespondingEntities.add(shopProjectil_1);
-
 		try {
 			imageRenderComponent = new ImageRenderComponent(new Image("img/assets/panel.png"));
 			this.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
@@ -104,21 +98,24 @@ public class ControlPanel extends Entity {
 			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
 			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
 			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
-			shopProjectil_1.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 		} catch (SlickException e) {
 			System.err.println("Problem with controlpanel images");
 		}
 		this.addComponent(imageRenderComponent);
 
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		int stateID = Launch.GAMEPLAY_STATE; //MR kann man evtl schoener loesen...
-		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den Pfeilen...
+		int stateID = Launch.GAMEPLAY_STATE; // MR kann man evtl schoener loesen...
+		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den
+												// Pfeilen...
 		entityManager.addEntity(stateID, arrow_Weapons);
 		entityManager.addEntity(stateID, arrow_Power_Right);
 		entityManager.addEntity(stateID, arrow_Power_Left);
 		entityManager.addEntity(stateID, arrow_Angle_Right);
 		entityManager.addEntity(stateID, arrow_Angle_Left);
-		entityManager.addEntity(stateID, shopProjectil_1);
+
+		// ShopProjectiles
+		this.initShopProjectiles(List.of(ProjectileType.COCONUT, ProjectileType.SPIKEBALL, ProjectileType.BOMB,
+				ProjectileType.SHARD, ProjectileType.CRYSTAL, ProjectileType.TURTLE));
 
 		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
 
@@ -155,22 +152,115 @@ public class ControlPanel extends Entity {
 		for (Entity e : listOfCorrespondingEntities) {
 			e.setVisible(isVisible);
 		}
+		if (isVisible) {
+			makeFirstShopProjectileVisible();
+		} else {
+			for (Projectile p : listOfShopProjectiles) {
+				p.setVisible(false);
+			}
+		}
 	}
 
 	private Vector2f relativPosOnPanelToPixelPos(float x, float y) {
 		return new Vector2f(x, y).scale(panelScaleFactor).add(coordinates);
 	}
-	
+
 	public void setFont(TrueTypeFont font) {
 		this.font = font;
 	}
-	
+
 	public List<Entity> getListOfCorrespondingEntities() {
 		return listOfCorrespondingEntities;
 	}
-	
+
 	public void addToListOfCorrespondingEntities(Entity entity) {
 		listOfCorrespondingEntities.add(entity);
+	}
+
+	private void initShopProjectiles(List<ProjectileType> types) {
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+		for (ProjectileType type : types) {
+			Projectile shopProjectile = (Projectile) new ProjectileFactory("ShopProjectile", new Vector2f(),
+					new Vector2f(), true, false, type).createEntity();
+			shopProjectile.setPosition(relativPosOnPanelToPixelPos(380, -230));
+			shopProjectile.setVisible(false);
+
+			switch (type) {
+
+			default: // entspricht Case COCONUT
+				shopProjectile.setScale(shopProjectile.getScale() * 1.2f);
+				shopProjectile.setRotation(45);
+				break;
+
+			case SPIKEBALL:
+				shopProjectile.setScale(shopProjectile.getScale() * 1.3f);
+				shopProjectile.setRotation(0);
+				break;
+
+			case BOMB:
+				shopProjectile.setScale(shopProjectile.getScale() * 1.2f);
+				shopProjectile.setRotation(225);
+				break;
+
+			case SHARD:
+				shopProjectile.setScale(shopProjectile.getScale() * 1.5f);
+				shopProjectile.setRotation(65);
+				break;
+
+			case CRYSTAL:
+				shopProjectile.setScale(shopProjectile.getScale() * 1.1f);
+				shopProjectile.setRotation(45);
+				break;
+
+			case TURTLE:
+				shopProjectile.setScale(shopProjectile.getScale() * 1.3f);
+				shopProjectile.setRotation(0);
+				break;
+			}
+
+			listOfShopProjectiles.add(shopProjectile);
+			entityManager.addEntity(Launch.GAMEPLAY_STATE, shopProjectile);
+		}
+		makeFirstShopProjectileVisible();
+	}
+
+	private void makeFirstShopProjectileVisible() {
+		if (!listOfShopProjectiles.isEmpty()) {
+			listOfShopProjectiles.get(0).setVisible(true);
+		}
+
+	}
+
+	public void nextShopProjectil() {
+		int indexOfVisibleProjectile = getIndexOfVisibleShopProjectile();
+		listOfShopProjectiles.get(indexOfVisibleProjectile).setVisible(false); // Altes Shop Projektil unsichtbar machen
+		int indexOfNextProjectile = indexOfVisibleProjectile + 1;
+		if (indexOfNextProjectile >= listOfShopProjectiles.size()) { // Wenn letztes Listenelement erreicht
+			makeFirstShopProjectileVisible();
+		} else {
+			listOfShopProjectiles.get(indexOfNextProjectile).setVisible(true);
+		}
+
+	}
+
+	private int getIndexOfVisibleShopProjectile() {
+		Integer indexOfVisibleProjectile = null;
+		for (int i = 0; i < listOfShopProjectiles.size(); i++) {
+			if (listOfShopProjectiles.get(i).isVisible()) {
+				if (indexOfVisibleProjectile != null) {
+					throw new RuntimeException("More than one shop projectile is visible");
+				}
+				indexOfVisibleProjectile = i;
+			}
+		}
+		if (indexOfVisibleProjectile == null) {
+			throw new RuntimeException("No shop projectile is visible");
+		}
+		return indexOfVisibleProjectile;
+	}
+
+	public Projectile getSelectedProjectile() {
+		return listOfShopProjectiles.get(getIndexOfVisibleShopProjectile());
 	}
 
 	/**
@@ -254,12 +344,20 @@ public class ControlPanel extends Entity {
 					Color.black);
 
 			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(300, 150);
-			font.drawString(numberPos_Angle.x, numberPos_Angle.y,
-					formatter.format(activeApe.getLocalAngleOfView()), Color.black);
+			font.drawString(numberPos_Angle.x, numberPos_Angle.y, formatter.format(activeApe.getLocalAngleOfView()),
+					Color.black);
 
-			Vector2f numberPos_Coins = relativPosOnPanelToPixelPos(70, -280);
-			font.drawString(numberPos_Coins.x, numberPos_Coins.y, formatter.format(activeApe.getCoins()), Color.black);
+			Vector2f numberPos_Price = relativPosOnPanelToPixelPos(50, -280);
+			int price = getSelectedProjectile().getPrice();
+			if (price <= activeApe.getCoins()) {
+				font.drawString(numberPos_Price.x, numberPos_Price.y, Integer.toString(price) + "$",
+						Color.green.darker(0.5f));
+			} else {
+				font.drawString(numberPos_Price.x, numberPos_Price.y, Integer.toString(price) + "$",
+						Color.red.darker(0.3f));
+			}
 
 		}
 	}
+
 }

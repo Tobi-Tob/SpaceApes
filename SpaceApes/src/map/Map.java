@@ -73,6 +73,10 @@ public class Map {
 	public void addApe(Ape ape) {
 		apes.add(ape);
 	}
+	
+	public ControlPanel getControlPanel() {
+		return controlPanel;
+	}
 
 	public Ape getActiveApe() {
 		Ape activeApe = null;
@@ -170,15 +174,11 @@ public class Map {
 			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
 			boolean draw = true;
 			int numberOfDots = 5;
-			boolean visible = false;
-			ProjectileType type = ProjectileType.COCONUT;
-
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
 			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
-					velocity, visible, type).createEntity();
-			dummyProjectile.setVisible(false);
+					velocity, false, true, ProjectileType.COCONUT).createEntity();
 			for (int i = 1; i < iterations; i++) {
 				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt

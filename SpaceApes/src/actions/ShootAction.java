@@ -8,7 +8,6 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
-import entities.ControlPanel;
 import entities.Projectile;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.ProjectileType;
@@ -28,10 +27,13 @@ public class ShootAction implements Action {
 			GameplayState gs = (GameplayState) sb.getCurrentState();
 			StateBasedEntityManager entityManager = gs.getEntityManager();
 
+			// Abfragen der ausgewaehlten Waffe
+			ProjectileType selectedType = map.getControlPanel().getSelectedProjectile().getType();
+
 			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 			// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
 			activeApe.setInteractionAllowed(false);
-			((ControlPanel) entityManager.getEntity(gs.getID(), "ControlPanel")).setPanelAndComponentsVisible(false);
+			map.getControlPanel().setPanelAndComponentsVisible(false);
 			map.removeAimeLine();
 
 			// Abfragen von initialer Position und Geschwindigkeit
@@ -43,11 +45,10 @@ public class ShootAction implements Action {
 			// eine Kollision eintritt...
 			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
 					.add(Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
-			ProjectileType type = ProjectileType.TURTLE;
 
 			// Projektil wird erzeugt
 			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch, velocity,
-					true, type).createEntity();
+					true, true, selectedType).createEntity();
 
 			entityManager.addEntity(gs.getID(), projectile);
 		}

@@ -28,6 +28,8 @@ import utils.Utils;
 public class ControlPanelFactory implements IEntityFactory {
 	
 	// WIRD MOMENTAN NICHT BENUTZT!!!
+	// WIRD MOMENTAN NICHT BENUTZT!!!
+	// WIRD MOMENTAN NICHT BENUTZT!!!
 	
 	//private List<Entity> listOfCorrespondingEntities = new ArrayList<>();
 

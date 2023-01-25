@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import utils.Utils;
 
@@ -16,6 +17,8 @@ public class Projectile extends Entity {
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
 	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
 	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
+	private ProjectileType type;
+	private int price = 0; // default
 	private int maxDamage = 10; // default
 	private float damageRadius = 0.5f; // default
 	public float desiredProjectileSize = 0.5f; // default
@@ -27,8 +30,10 @@ public class Projectile extends Entity {
 	 * @param position Startkoordinaten
 	 * @param velocity Startgeschwindigkeit
 	 */
-	public Projectile(String entityID) {
+	public Projectile(String entityID, Vector2f position, Vector2f velocity) {
 		super(entityID);
+		this.setCoordinatesWorld(position);
+		this.setVelocity(velocity);
 		this.direction = getMovementDirection();
 		this.rotationSpeed = 0f;
 		this.mass = 1f;
@@ -58,10 +63,26 @@ public class Projectile extends Entity {
 		return desiredProjectileSize / 2;
 	}
 
+	public ProjectileType getType() {
+		return type;
+	}
+
+	public void setType(ProjectileType type) {
+		this.type = type;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 	public void setMaxDamage(int damage) {
 		this.maxDamage = damage;
 	}
-	
+
 	public int getMaxDamage() {
 		return maxDamage;
 	}
