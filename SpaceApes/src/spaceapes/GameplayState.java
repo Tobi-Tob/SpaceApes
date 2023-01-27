@@ -4,6 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -28,6 +29,7 @@ public class GameplayState extends BasicGameState {
 	private int stateID; // Identifier dieses BasicGameState
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 	private Map map;
+	private Music music; // Musik dieses GameStates
 	
 	GameplayState( int stateID ) {
 	       this.stateID = stateID;

@@ -7,7 +7,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.StateBasedEntityManager;
@@ -57,7 +59,7 @@ public class Launch extends StateBasedGame {
 			HEIGHT = dm.getHeight();
 		}
 		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
-
+		
 		app.start();
 	}
 
@@ -72,6 +74,5 @@ public class Launch extends StateBasedGame {
 		// Fuege dem StateBasedEntityManager die States hinzu
 		StateBasedEntityManager.getInstance().addState(MAINMENU_STATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
-
 	}
 }

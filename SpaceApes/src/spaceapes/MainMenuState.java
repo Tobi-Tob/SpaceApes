@@ -3,6 +3,7 @@ package spaceapes;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -28,10 +29,16 @@ public class MainMenuState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
+	private Music music; // Musik dieses GameStates
 
 	MainMenuState(int sid) {
 		stateID = sid; // MAINMENU_STATE = 0
 		entityManager = StateBasedEntityManager.getInstance();
+		try {
+			this.music = new Music("snd/song1.ogg");
+		} catch (SlickException e) {
+			System.err.println("Problem with main menu music");
+		}
 	}
 
 	/**
@@ -81,6 +88,11 @@ public class MainMenuState extends BasicGameState {
 
 	}
 
+	private void startMusic(float pitch, float volume, int fadeInTime) {
+		music.loop(pitch, 0);
+		music.fade(fadeInTime, volume, false);
+	}
+
 	/**
 	 * Wird vor dem Frame ausgefuehrt
 	 */
@@ -95,6 +107,9 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
+		if(!music.playing()) {
+			this.startMusic(1, 0.15f, 1000);
+		}
 	}
 
 	@Override
