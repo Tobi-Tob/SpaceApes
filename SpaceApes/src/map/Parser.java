@@ -74,7 +74,7 @@ public class Parser {
 		// Versuche Schwarzes Loch zu platzieren
 		float blackHoleProbability = 0.4f;
 		if (Utils.randomFloat(0, 1) < blackHoleProbability) {
-			Vector2f blackHolePosition = findValidePositionForPlanetSpawning(5, 30);
+			Vector2f blackHolePosition = map.findValidPosition(5, 30);
 			if (blackHolePosition != null) {
 				String nameBlackHole = "BlackHole";
 				float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
@@ -90,7 +90,7 @@ public class Parser {
 		// Versuche Anti Planet zu platzieren
 		float antiPlanetProbability = 0.3f;
 		if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
-			Vector2f antiPlanetPosition = findValidePositionForPlanetSpawning(4, 30);
+			Vector2f antiPlanetPosition = map.findValidPosition(4, 30);
 			if (antiPlanetPosition != null) {
 				String nameAntiPlanet = "AntiPlanet";
 				float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
@@ -107,7 +107,7 @@ public class Parser {
 		Random r = new Random();
 		int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
 		for (int i = 0; i < morePlanetsToAdd; i++) {
-			Vector2f validePosition = findValidePositionForPlanetSpawning(4, 10);
+			Vector2f validePosition = map.findValidPosition(4, 10);
 			// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
 			// hinzu
 			if (validePosition != null) {
@@ -164,45 +164,45 @@ public class Parser {
 		return map;
 	}
 
-	/**
-	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
-	 * von allen anderen Planeten entfernt ist
-	 * 
-	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
-	 *                                 mindestens entfernt sein muss
-	 * @param iterations               Wie oft soll maximal nach einer gueltigen
-	 *                                 Position gesucht werden
-	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
-	 *         ueberschritten wurde
-	 */
-	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
-		float xBorder = Utils.worldWidth / 2;
-		float yBorder = Utils.worldHeight / 2;
-		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
-			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
-					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
-			boolean positionIsValide = true;
-			List<Planet> plantes = Map.getInstance().getPlanets();
-			// Iteriere ueber alle Planeten
-			for (int i = 0; i < plantes.size(); i++) {
-				Planet p_i = plantes.get(i);
-				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
-						p_i.getCoordinates().y - randomPosition.y);
-				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
-				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
-						.pow(marginToNextPlanetCenter, 2)) {
-					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
-					break;
-				}
-			}
-			if (positionIsValide) {
-				// java.lang.System.out.println("Planet spawning after: n=" + n);
-				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
-			}
-		}
-		// Falls Such-Schleife bis zum Ende durch laeuft:
-		// java.lang.System.out.println("Planet spawning after: null");
-		return null;
-	}
+//	/**
+//	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
+//	 * von allen anderen Planeten entfernt ist
+//	 * 
+//	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
+//	 *                                 mindestens entfernt sein muss
+//	 * @param iterations               Wie oft soll maximal nach einer gueltigen
+//	 *                                 Position gesucht werden
+//	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
+//	 *         ueberschritten wurde
+//	 */
+//	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
+//		float xBorder = Utils.worldWidth / 2;
+//		float yBorder = Utils.worldHeight / 2;
+//		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
+//			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
+//					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
+//			boolean positionIsValide = true;
+//			List<Planet> plantes = Map.getInstance().getPlanets();
+//			// Iteriere ueber alle Planeten
+//			for (int i = 0; i < plantes.size(); i++) {
+//				Planet p_i = plantes.get(i);
+//				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
+//						p_i.getCoordinates().y - randomPosition.y);
+//				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
+//				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
+//						.pow(marginToNextPlanetCenter, 2)) {
+//					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
+//					break;
+//				}
+//			}
+//			if (positionIsValide) {
+//				// java.lang.System.out.println("Planet spawning after: n=" + n);
+//				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
+//			}
+//		}
+//		// Falls Such-Schleife bis zum Ende durch laeuft:
+//		// java.lang.System.out.println("Planet spawning after: null");
+//		return null;
+//	}
 
 }
