@@ -46,17 +46,17 @@ public class GameplayState extends BasicGameState {
 		// Map parsen
 		map.parse();
 		
-		Entity coin = new Coin();
-		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-		coin.addComponent(new ImageRenderComponent(new Image("img/items/coin2.png")));
-		float itemWidthInPixel = 100;
-		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
-		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-		coin.setScale(itemScaleFactor);
-		LoopEvent itemLoop = new LoopEvent();
-		itemLoop.addAction(new RotateRightAction(0.03f));
-		coin.addComponent(itemLoop);
-		entityManager.addEntity(stateID, coin);
+//		Entity coin = new Coin();
+//		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
+//		coin.addComponent(new ImageRenderComponent(new Image("img/items/coin2.png")));
+//		float itemWidthInPixel = 100;
+//		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+//		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
+//		coin.setScale(itemScaleFactor);
+//		LoopEvent itemLoop = new LoopEvent();
+//		itemLoop.addAction(new RotateRightAction(0.03f));
+//		coin.addComponent(itemLoop);
+//		entityManager.addEntity(stateID, coin);
 		
 		// Die dummyEntity steuert die Wechsel der States
 		Entity dummyEntity = new Entity("Dummy");

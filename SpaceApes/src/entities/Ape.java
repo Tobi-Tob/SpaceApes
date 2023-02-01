@@ -153,18 +153,14 @@ public class Ape extends Entity {
 
 	public void setHealth(int newHealth) {
 		this.health = newHealth;
-		if(health < 0) {
-			this.health = 0;
-			Map.getInstance().apeDied(this);
-		}
 	}
 	
 	public void changeHealth(int damage) {
 		this.health = health - damage;
-		if(health <= 0) {
-			this.health = 0;
-			Map.getInstance().apeDied(this);
-		}
+	}
+	
+	public boolean isAlive() {
+		return health > 0;
 	}
 
 	public float getMovementSpeed() {

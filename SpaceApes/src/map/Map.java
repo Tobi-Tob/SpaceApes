@@ -15,10 +15,15 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import entities.Ape;
+import entities.Coin;
 import entities.ControlPanel;
 import entities.Planet;
 import entities.Projectile;
+import factories.ItemFactory;
+import factories.ItemFactory.ItemType;
+import factories.PlanetFactory;
 import factories.ProjectileFactory;
+import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Launch;
 import utils.Utils;
@@ -28,6 +33,7 @@ public class Map {
 	private static Map map = new Map(); // TODO soll Map static werden?
 	private List<Ape> apes; // Liste aller lebenden Affen
 	private List<Planet> planets; // Liste aller Planeten
+	private List<Entity> items; // Liste aller Items
 	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
 
@@ -38,7 +44,8 @@ public class Map {
 	public Map() {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
-		this.entityManager = StateBasedEntityManager.getInstance();
+		items = new ArrayList<Entity>();
+		this.entityManager = StateBasedEntityManager.getInstance(); // TODO das ist unnötig
 	}
 
 	public static Map getInstance() {
@@ -66,6 +73,14 @@ public class Map {
 		planets.add(planet);
 	}
 
+	public List<Entity> getItems() {
+		return items;
+	}
+
+	public void addItem(Entity item) {
+		items.add(item);
+	}
+
 	public List<Ape> getApes() {
 		return apes;
 	}
@@ -73,7 +88,7 @@ public class Map {
 	public void addApe(Ape ape) {
 		apes.add(ape);
 	}
-	
+
 	public ControlPanel getControlPanel() {
 		return controlPanel;
 	}
@@ -88,7 +103,8 @@ public class Map {
 			}
 		}
 		if (amountOfActiveApes == 0) {
-			throw new RuntimeException("No ape is active");
+			//throw new RuntimeException("No ape is active");
+			System.out.println("No ape is active");
 		}
 		if (amountOfActiveApes > 1) {
 			throw new RuntimeException("More than one ape is active");
@@ -97,48 +113,109 @@ public class Map {
 	}
 
 	public void changeTurn() {
-		int indexActiveApe = apes.indexOf(getActiveApe());
-		int indexNextApe = indexActiveApe + 1;
-		if (indexNextApe >= apes.size()) {
-			indexNextApe = 0; // Nach dem letzten Spieler in der Liste, ist wieder der erste dran
+		Ape activeApe = getActiveApe();
+		Ape nextApe = findNextLivingApe();
+		if (nextApe == null) {
+			System.out.println("findNextLivingApe returned null");
 		}
-		Ape activeApe = apes.get(indexActiveApe);
-		activeApe.setActive(false);
-		activeApe.setInteractionAllowed(false);
-		Ape nextApe = apes.get(indexNextApe);
-		nextApe.setActive(true);
-		nextApe.setInteractionAllowed(true);
-		updateAimline();
-		java.lang.System.out.println("Am Zug: " + nextApe.getID());
-		controlPanel.setPanelAndComponentsVisible(true); // TODO
-		//TODO random spawner
-		spawnItem(0.5f);
+		List<Ape> livingApes = new ArrayList<Ape>();
+		for (Ape ape : apes) {
+			if (ape.isAlive()) { 
+				livingApes.add(ape);
+			} else { // tote Affen aus Liste entfernen
+				ape.setActive(false); // Wird zwar eh aus der Liste entfernt aber safty first
+				ape.setInteractionAllowed(false);
+				System.out.println(ape.getID() + " is dead");
+
+				// Ape faellt nach unten
+				LoopEvent deathLoop = new LoopEvent();
+				deathLoop.addAction(new MoveDownAction(0.8f));
+				ape.addComponent(deathLoop);
+
+				// Wenn der Bildschirm verlassen wird, dann ...
+				LeavingScreenEvent lse = new LeavingScreenEvent(); // TODO lse sorgt fuer rote Kommandozeilenausgabe
+																	// (Eigenes
+																	// LeavingWorlsEvent muss erstellt werden)
+
+				// ... zerstoere den Ape
+				lse.addAction(new DestroyEntityAction());
+
+				ape.addComponent(lse);
+			}
+		}
+		apes = livingApes;
+		System.out.println("Size of livingApes list: " + livingApes.size());
+		// TODO Unfertig
+		if (apes.isEmpty()) {
+			System.out.println(activeApe.getID() + " has killed all apes");
+			// TODO Change State
+		} else if (apes.size() == 1) {
+			System.out.println(apes.get(0).getID() + " has won!!!!!!!!!!!!!!!!! SUIII");
+			// TODO Change State
+		} else {
+			activeApe.setActive(false);
+			activeApe.setInteractionAllowed(false);
+			nextApe.setActive(true);
+			nextApe.setInteractionAllowed(true);
+			updateAimline();
+			java.lang.System.out.println("Am Zug: " + nextApe.getID());
+			controlPanel.setPanelAndComponentsVisible(true); // TODO
+			// TODO random spawner
+			spawnItem(1f, 1f, 1f);
+		}
 	}
-	
-	public void spawnItem(float probability) {
-		
+
+	private Ape findNextLivingApe() {
+		int indexActiveApe = apes.indexOf(getActiveApe());
+		int i = indexActiveApe + 1;
+		while (i != indexActiveApe) {
+			if (i >= apes.size()) { // Ende der Liste
+				i = 0;
+			}
+			if (apes.get(i).isAlive()) {
+				return apes.get(i);
+			}
+			i++;
+		}
+		return null;
+
 	}
 
-	public void apeDied(Ape ape) {
-		ape.setActive(false);
-		ape.setInteractionAllowed(false);
-		apes.remove(ape);
-		java.lang.System.out.println(ape.getID() + " is dead");
+	public void spawnItem(float probCoin, float probHealth, float probEnergy) {
+		if (Utils.randomFloat(0, 1) < probCoin) {
+			Vector2f itemPosition = map.findValidPosition(2, 10);
+			System.out.println("Coin soll erzeugt werden!");
+			if (itemPosition != null) {
+				System.out.println("Position gefunden: " + itemPosition.toString());
+				String itemName = "Coin";
+				ItemType itemType = ItemType.COPPER_COIN;
 
-		// Ape faellt nach unten
-		LoopEvent deathLoop = new LoopEvent();
-		deathLoop.addAction(new MoveDownAction(0.8f));
-		ape.addComponent(deathLoop);
-
-		// Wenn der Bildschirm verlassen wird, dann ...
-		LeavingScreenEvent lse = new LeavingScreenEvent(); // TODO lse sorgt fuer rote Kommandozeilenausgabe (Eigenes
-															// LeavingWorlsEvent muss erstellt werden)
-
-		// ... zerstoere den Ape
-		lse.addAction(new DestroyEntityAction());
-
-		ape.addComponent(lse);
+				Coin coin = (Coin) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				map.addItem(coin);
+			}
+		}
 	}
+
+//	public void apeDied(Ape ape) {
+//		ape.setActive(false);
+//		ape.setInteractionAllowed(false);
+//		apes.remove(ape);
+//		java.lang.System.out.println(ape.getID() + " is dead");
+//
+//		// Ape faellt nach unten
+//		LoopEvent deathLoop = new LoopEvent();
+//		deathLoop.addAction(new MoveDownAction(0.8f));
+//		ape.addComponent(deathLoop);
+//
+//		// Wenn der Bildschirm verlassen wird, dann ...
+//		LeavingScreenEvent lse = new LeavingScreenEvent(); // TODO lse sorgt fuer rote Kommandozeilenausgabe (Eigenes
+//															// LeavingWorlsEvent muss erstellt werden)
+//
+//		// ... zerstoere den Ape
+//		lse.addAction(new DestroyEntityAction());
+//
+//		ape.addComponent(lse);
+//	}
 
 	/**
 	 * Entfernt alle Hilfslinien Punkte
@@ -183,8 +260,8 @@ public class Map {
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
-					velocity, false, true, ProjectileType.COCONUT).createEntity();
+			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile",
+					positionOfProjectileLaunch, velocity, false, true, ProjectileType.COCONUT).createEntity();
 			for (int i = 1; i < iterations; i++) {
 				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
@@ -206,7 +283,7 @@ public class Map {
 			}
 		}
 	}
-	
+
 	/**
 	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
 	 * von allen anderen Planeten entfernt ist
@@ -225,7 +302,7 @@ public class Map {
 			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
 					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
 			boolean positionIsValide = true;
-			//List<Planet> plantes = Map.getInstance().getPlanets();
+			// List<Planet> plantes = Map.getInstance().getPlanets();
 			// Iteriere ueber alle Planeten
 			for (int i = 0; i < planets.size(); i++) {
 				Planet p_i = planets.get(i);

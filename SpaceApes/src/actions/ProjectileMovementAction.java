@@ -52,10 +52,11 @@ public class ProjectileMovementAction implements Action {
 					}
 					ape.changeHealth(damage);
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
-					if (ape.getHealth() <= 0) {
-						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da
-								// sich die momentan zu durchlaufende Liste veraendert hat
-					}
+//					if (ape.getHealth() <= 0) {
+//						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da
+//								// sich die momentan zu durchlaufende Liste veraendert hat
+//					//MR jetzt darf das nicht mehr abgefangen werden!! sonst bekommt nur ein Affe Schaden
+//					}
 				}
 			}
 

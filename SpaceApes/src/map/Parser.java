@@ -164,45 +164,4 @@ public class Parser {
 		return map;
 	}
 
-//	/**
-//	 * Findet mithilfe von Random-Search einen Koordinaten-Vektor, der weit genug
-//	 * von allen anderen Planeten entfernt ist
-//	 * 
-//	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
-//	 *                                 mindestens entfernt sein muss
-//	 * @param iterations               Wie oft soll maximal nach einer gueltigen
-//	 *                                 Position gesucht werden
-//	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
-//	 *         ueberschritten wurde
-//	 */
-//	private Vector2f findValidePositionForPlanetSpawning(float marginToNextPlanetCenter, int iterations) {
-//		float xBorder = Utils.worldWidth / 2;
-//		float yBorder = Utils.worldHeight / 2;
-//		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
-//			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
-//					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
-//			boolean positionIsValide = true;
-//			List<Planet> plantes = Map.getInstance().getPlanets();
-//			// Iteriere ueber alle Planeten
-//			for (int i = 0; i < plantes.size(); i++) {
-//				Planet p_i = plantes.get(i);
-//				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
-//						p_i.getCoordinates().y - randomPosition.y);
-//				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
-//				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
-//						.pow(marginToNextPlanetCenter, 2)) {
-//					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
-//					break;
-//				}
-//			}
-//			if (positionIsValide) {
-//				// java.lang.System.out.println("Planet spawning after: n=" + n);
-//				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
-//			}
-//		}
-//		// Falls Such-Schleife bis zum Ende durch laeuft:
-//		// java.lang.System.out.println("Planet spawning after: null");
-//		return null;
-//	}
-
 }
