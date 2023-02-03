@@ -4,9 +4,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import actions.CollisionAction;
 import actions.ProjectileMovementAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Projectile;
@@ -150,6 +152,12 @@ public class ProjectileFactory implements IEntityFactory {
 			projectileLoop.addAction(new ProjectileMovementAction(projectile));
 			projectile.addComponent(projectileLoop);
 		}
+		
+		// Collision Event
+		CollisionEvent projectileCollision = new CollisionEvent();
+		projectileCollision.addAction(new CollisionAction());
+		projectile.addComponent(projectileCollision);
+		
 		return projectile;
 	}
 

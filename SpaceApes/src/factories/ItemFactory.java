@@ -4,10 +4,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import actions.CollisionAction;
 import eea.engine.action.basicactions.RotateRightAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Coin;
@@ -54,7 +56,6 @@ public class ItemFactory implements IEntityFactory {
 				//TODO move this to constants class
 				value = 20; 
 				imageRenderComponent = new ImageRenderComponent(new Image("img/items/energy.png"));
-				System.out.println("create ENERGY_PACK");
 				break;
 				
 			case HEALTH_PACK:
@@ -64,7 +65,6 @@ public class ItemFactory implements IEntityFactory {
 				//TODO move this to constants class
 				value = 50;
 				imageRenderComponent = new ImageRenderComponent(new Image("img/items/health.png"));
-				System.out.println("create HEALTH_PACK");
 				break;
 
 			case COPPER_COIN:
@@ -74,7 +74,6 @@ public class ItemFactory implements IEntityFactory {
 				//TODO move this to constants class
 				value = 1;
 				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin1.png"));
-				System.out.println("create COPPER_COIN");
 				break;
 
 			case GOLD_COIN:
@@ -84,7 +83,6 @@ public class ItemFactory implements IEntityFactory {
 				//TODO move this to constants class
 				value = 3;
 				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin2.png"));
-				System.out.println("create GOLD_COIN");
 				break;
 
 			default: // ansonsten erzeugt er immer einen DIAMANT_COIN
@@ -94,7 +92,6 @@ public class ItemFactory implements IEntityFactory {
 				//TODO move this to constants class
 				value = 5;
 				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin3.png"));
-				System.out.println("create DIAMOND_COIN");
 				break;
 				
 			}
@@ -111,10 +108,9 @@ public class ItemFactory implements IEntityFactory {
 		// Events des Items
 		LoopEvent itemLoop = new LoopEvent();
 		itemLoop.addAction(new RotateRightAction(0.03f));
-		
-		// Komponenten des Items
-		item.addComponent(imageRenderComponent);
 		item.addComponent(itemLoop);
+		
+		item.addComponent(imageRenderComponent);
 		
 		// Füge das Item dem EntityManager hinzu
 		StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, item);

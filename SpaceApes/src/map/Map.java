@@ -145,8 +145,7 @@ public class Map {
 			}
 		}
 		apes = livingApes;
-		System.out.println("Size of livingApes list: " + livingApes.size());
-		// TODO Unfertig
+		// TODO Unfertig -> beschreiben was genau!
 		if (apes.isEmpty()) {
 			System.out.println(activeApe.getID() + " has killed all apes");
 			// TODO Change State
@@ -191,18 +190,14 @@ public class Map {
 		if (Utils.randomFloat(0, 1) < probCoin) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				System.out.println("Position gefunden: " + itemPosition.toString());
 				itemName = "Coin";
 				
 				float probForCoinType = Utils.randomFloat(0, 1);
 				if (probForCoinType < 0.6f) { //TODO move 0.6f to constants class
-					System.out.println("Copper Coin soll erzeugt werden!");
 					itemType = ItemType.COPPER_COIN;
 				} else if (probForCoinType < 0.9f) { //TODO move 0.9f to constants class
-					System.out.println("Gold Coin soll erzeugt werden!");
 					itemType = ItemType.GOLD_COIN;
 				} else {
-					System.out.println("Diamant Coin soll erzeugt werden!");
 					itemType = ItemType.DIAMOND_COIN;
 				}
 
@@ -215,8 +210,6 @@ public class Map {
 		if (Utils.randomFloat(0, 1) < probHealth) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				System.out.println("Position gefunden: " + itemPosition.toString());
-				System.out.println("Healthpack soll erzeugt werden!");
 				itemName = "Healthpack";
 				itemType = ItemType.HEALTH_PACK;
 
@@ -230,8 +223,6 @@ public class Map {
 		if (Utils.randomFloat(0, 1) < probEnergy) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				System.out.println("Position gefunden: " + itemPosition.toString());
-				System.out.println("Energypack soll erzeugt werden!");
 				itemName = "Energypack";
 				itemType = ItemType.ENERGY_PACK;
 

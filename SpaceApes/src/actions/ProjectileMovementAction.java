@@ -50,7 +50,7 @@ public class ProjectileMovementAction implements Action {
 						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer immer maximaler Schaden
 											// verursacht wird
 					}
-					ape.changeHealth(damage);
+					ape.reduceHealth(damage);
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
 //					if (ape.getHealth() <= 0) {
 //						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da

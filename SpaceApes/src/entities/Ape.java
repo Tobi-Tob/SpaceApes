@@ -20,8 +20,10 @@ public class Ape extends Entity {
 	public float desiredApeSizeInWorldUnits = 0.6f;
 	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
 
-	private int health = 100;
-	private float energy = 50;
+	private final int maxHealth = 100; // TODO move to constants class!
+	private final int maxEnergy = 100; // TODO move to constants class!
+	private int health = maxHealth;
+	private float energy = maxEnergy;
 	private int coins = 0;
 
 	private boolean isActive;
@@ -151,14 +153,32 @@ public class Ape extends Entity {
 		return health;
 	}
 
-	public void setHealth(int newHealth) {
-		this.health = newHealth;
+	public void setHealth(int value) {
+		if (value > maxHealth) {
+			health = maxHealth;
+		} else if (value < 0) {
+			health = 0;
+		} else {
+			health = value;
+		}
 	}
-	
-	public void changeHealth(int damage) {
-		this.health = health - damage;
+
+	public void reduceHealth(int value) {
+		if (health - value >= 0) {
+			health -= value;
+		} else {
+			health = 0;
+		}
 	}
-	
+
+	public void increaseHealth(int value) {
+		if (health + value <= 100) {
+			health += value;
+		} else {
+			health = maxHealth;
+		}
+	}
+
 	public boolean isAlive() {
 		return health > 0;
 	}
@@ -175,8 +195,30 @@ public class Ape extends Entity {
 		return energy;
 	}
 
-	public void setEnergy(float energy) {
-		this.energy = energy;
+	public void setEnergy(float value) {
+		if (value > maxEnergy) {
+			energy = maxEnergy;
+		} else if (value < 0) {
+			energy = 0;
+		} else {
+			energy = value;
+		}
+	}
+
+	public void reduceEnergy(int value) {
+		if (energy - value >= 0) {
+			energy -= value;
+		} else {
+			energy = 0;
+		}
+	}
+
+	public void increaseEnergy(int value) {
+		if (energy + value <= 100) {
+			energy += value;
+		} else {
+			energy = maxEnergy;
+		}
 	}
 
 	public float getDistanceToPlanetCenter() {
@@ -204,6 +246,14 @@ public class Ape extends Entity {
 
 	public int getCoins() {
 		return coins;
+	}
+
+	public void reduceCoins(int value) {
+		coins -= value;
+	}
+
+	public void increaseCoins(int value) {
+		coins += value;
 	}
 
 	public float getApePixelHeight() {
