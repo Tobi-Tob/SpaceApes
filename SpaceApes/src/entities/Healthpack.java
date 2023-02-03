@@ -2,11 +2,11 @@ package entities;
 
 import eea.engine.entity.Entity;
 
-public class Coin extends Entity { //TODO Elternklasse Item von Coin erzeugen? -> JA
+public class Healthpack extends Entity {
 	
 	private int value;
 
-	public Coin(String iD, int value) {
+	public Healthpack(String iD) {
 		super(iD);
 	}
 

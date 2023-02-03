@@ -17,6 +17,7 @@ import eea.engine.event.basicevents.LoopEvent;
 import entities.Ape;
 import entities.Coin;
 import entities.ControlPanel;
+import entities.Item;
 import entities.Planet;
 import entities.Projectile;
 import factories.ItemFactory;
@@ -182,40 +183,64 @@ public class Map {
 	}
 
 	public void spawnItem(float probCoin, float probHealth, float probEnergy) {
+		
+		String itemName;
+		ItemType itemType;
+		
+		// Coin Spawnen
 		if (Utils.randomFloat(0, 1) < probCoin) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
-			System.out.println("Coin soll erzeugt werden!");
 			if (itemPosition != null) {
 				System.out.println("Position gefunden: " + itemPosition.toString());
-				String itemName = "Coin";
-				ItemType itemType = ItemType.COPPER_COIN;
+				itemName = "Coin";
+				
+				float probForCoinType = Utils.randomFloat(0, 1);
+				if (probForCoinType < 0.6f) { //TODO move 0.6f to constants class
+					System.out.println("Copper Coin soll erzeugt werden!");
+					itemType = ItemType.COPPER_COIN;
+				} else if (probForCoinType < 0.9f) { //TODO move 0.9f to constants class
+					System.out.println("Gold Coin soll erzeugt werden!");
+					itemType = ItemType.GOLD_COIN;
+				} else {
+					System.out.println("Diamant Coin soll erzeugt werden!");
+					itemType = ItemType.DIAMOND_COIN;
+				}
 
-				Coin coin = (Coin) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				Item coin = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
 				map.addItem(coin);
 			}
 		}
-	}
+		
+		// Healthpack Spawnen
+		if (Utils.randomFloat(0, 1) < probHealth) {
+			Vector2f itemPosition = map.findValidPosition(2, 10);
+			if (itemPosition != null) {
+				System.out.println("Position gefunden: " + itemPosition.toString());
+				System.out.println("Healthpack soll erzeugt werden!");
+				itemName = "Healthpack";
+				itemType = ItemType.HEALTH_PACK;
 
-//	public void apeDied(Ape ape) {
-//		ape.setActive(false);
-//		ape.setInteractionAllowed(false);
-//		apes.remove(ape);
-//		java.lang.System.out.println(ape.getID() + " is dead");
-//
-//		// Ape faellt nach unten
-//		LoopEvent deathLoop = new LoopEvent();
-//		deathLoop.addAction(new MoveDownAction(0.8f));
-//		ape.addComponent(deathLoop);
-//
-//		// Wenn der Bildschirm verlassen wird, dann ...
-//		LeavingScreenEvent lse = new LeavingScreenEvent(); // TODO lse sorgt fuer rote Kommandozeilenausgabe (Eigenes
-//															// LeavingWorlsEvent muss erstellt werden)
-//
-//		// ... zerstoere den Ape
-//		lse.addAction(new DestroyEntityAction());
-//
-//		ape.addComponent(lse);
-//	}
+				//TODO Healthpack erzeugen!!
+				Item healthpack = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				map.addItem(healthpack);
+			}
+		}
+		
+		// Energypack Spawnen
+		if (Utils.randomFloat(0, 1) < probEnergy) {
+			Vector2f itemPosition = map.findValidPosition(2, 10);
+			if (itemPosition != null) {
+				System.out.println("Position gefunden: " + itemPosition.toString());
+				System.out.println("Energypack soll erzeugt werden!");
+				itemName = "Energypack";
+				itemType = ItemType.ENERGY_PACK;
+
+				// TODO Energypack erzeugen!!
+				Item energypack = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				map.addItem(energypack);
+			}
+		}
+	}
 
 	/**
 	 * Entfernt alle Hilfslinien Punkte

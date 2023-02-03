@@ -11,6 +11,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Coin;
+import entities.Item;
 import factories.PlanetFactory.PlanetType;
 import map.Map;
 import spaceapes.Launch;
@@ -19,7 +20,7 @@ import utils.Utils;
 public class ItemFactory implements IEntityFactory {
 
 	public enum ItemType {
-		COPPER_COIN, GOLD_COIN, DIAMANT_COIN, HEALTH_PACK, ENERGY_PACK
+		COPPER_COIN, GOLD_COIN, DIAMOND_COIN, HEALTH_PACK, ENERGY_PACK
 	};
 
 	private final String name;
@@ -34,73 +35,91 @@ public class ItemFactory implements IEntityFactory {
 
 	@Override
 	public Entity createEntity() {
-
-		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		int stateID = Launch.GAMEPLAY_STATE;
-
-		LoopEvent itemLoop = new LoopEvent();
-		itemLoop.addAction(new RotateRightAction(0.03f));
-
+		
+		Item item = new Item(name, type);
+		
+		float itemWidthInPixel;
+		float desiredItemWidth;
+		float itemScaleFactor=999; // just init values
+		int value=999; // just init values
+		ImageRenderComponent imageRenderComponent=null; // just init values
 		try {
+			
 			switch (type) {
+			
+			case ENERGY_PACK:
+				itemWidthInPixel = 100;
+				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
+				//TODO move this to constants class
+				value = 20; 
+				imageRenderComponent = new ImageRenderComponent(new Image("img/items/energy.png"));
+				System.out.println("create ENERGY_PACK");
+				break;
+				
+			case HEALTH_PACK:
+				itemWidthInPixel = 100;
+				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
+				//TODO move this to constants class
+				value = 50;
+				imageRenderComponent = new ImageRenderComponent(new Image("img/items/health.png"));
+				System.out.println("create HEALTH_PACK");
+				break;
 
 			case COPPER_COIN:
-				Coin copperCoin = new Coin(name);
-
-				float itemWidthInPixel = 100;
-				float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
-				float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-
-				copperCoin.setScale(itemScaleFactor);
-				copperCoin.setPosition(Utils.toPixelCoordinates(coordinates));
-				copperCoin.setValue(1);
-
-				copperCoin.addComponent(new ImageRenderComponent(new Image("img/items/coin1.png")));
-				copperCoin.addComponent(itemLoop);
-				entityManager.addEntity(stateID, copperCoin);
-
-				return copperCoin;
+				itemWidthInPixel = 100;
+				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
+				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
+				//TODO move this to constants class
+				value = 1;
+				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin1.png"));
+				System.out.println("create COPPER_COIN");
+				break;
 
 			case GOLD_COIN:
-				Coin goldCoin = new Coin(name);
-
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-
-				goldCoin.setScale(itemScaleFactor);
-				goldCoin.setPosition(Utils.toPixelCoordinates(coordinates));
-				goldCoin.setValue(1);
-
-				goldCoin.addComponent(new ImageRenderComponent(new Image("img/items/coin1.png")));
-				goldCoin.addComponent(itemLoop);
-				entityManager.addEntity(stateID, goldCoin);
-
-				return goldCoin;
+				//TODO move this to constants class
+				value = 3;
+				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin2.png"));
+				System.out.println("create GOLD_COIN");
+				break;
 
 			default: // ansonsten erzeugt er immer einen DIAMANT_COIN
-				Coin diamondCoin = new Coin(name);
-
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-
-				diamondCoin.setScale(itemScaleFactor);
-				diamondCoin.setPosition(Utils.toPixelCoordinates(coordinates));
-				diamondCoin.setValue(1);
-
-				diamondCoin.addComponent(new ImageRenderComponent(new Image("img/items/coin1.png")));
-				diamondCoin.addComponent(itemLoop);
-				entityManager.addEntity(stateID, diamondCoin);
-
-				return diamondCoin;
-
+				//TODO move this to constants class
+				value = 5;
+				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin3.png"));
+				System.out.println("create DIAMOND_COIN");
+				break;
+				
 			}
+			
 		} catch (SlickException e) {
 			System.err.println("Problem with item image");
 		}
+		
+		// Setze alle Parameter des Items
+		item.setScale(itemScaleFactor);
+		item.setPosition(Utils.toPixelCoordinates(coordinates));
+		item.setValue(value);
+		
+		// Events des Items
+		LoopEvent itemLoop = new LoopEvent();
+		itemLoop.addAction(new RotateRightAction(0.03f));
+		
+		// Komponenten des Items
+		item.addComponent(imageRenderComponent);
+		item.addComponent(itemLoop);
+		
+		// Füge das Item dem EntityManager hinzu
+		StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, item);
 
-		return null;
+		return item;
 	}
 
 }
