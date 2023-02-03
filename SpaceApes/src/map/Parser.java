@@ -136,7 +136,7 @@ public class Parser {
 				homePlanet = (Planet) playerPlanets.get(i);
 			}
 			int health = 100;
-			int energy = 50;
+			int energy = 100;
 			int apeImage = i + 1;
 			boolean apeActive = (i == 0);
 			boolean apeInteraction = (i == 0);

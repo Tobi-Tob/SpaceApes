@@ -9,9 +9,6 @@ import map.Map;
 
 public class ChangeWeaponAction extends ButtonPressedAction {
 
-	public ChangeWeaponAction() {
-	}
-
 	@Override
 	protected void updateToPerform(GameContainer container, StateBasedGame game, int delta, Component event) {
 		Ape ape = Map.getInstance().getActiveApe();

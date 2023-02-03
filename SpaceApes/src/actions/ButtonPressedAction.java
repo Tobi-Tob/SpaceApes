@@ -11,12 +11,10 @@ public abstract class ButtonPressedAction implements Action {
 	private boolean buttonPressed = false;
 	private float buttonScaleNotPressed;
 
-	public ButtonPressedAction() {
-	}
-
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta, Component event) {
 		Entity button = event.getOwnerEntity();
+		//System.out.println("buttonPressed: " + buttonPressed);
 		if (!buttonPressed) {
 			buttonScaleNotPressed = button.getScale();
 			button.setScale(buttonScaleNotPressed * 0.9f);

@@ -13,6 +13,7 @@ import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Projectile;
 import utils.Utils;
+import spaceapes.Constants;
 
 public class ProjectileFactory implements IEntityFactory {
 
@@ -49,94 +50,64 @@ public class ProjectileFactory implements IEntityFactory {
 				switch (type) {
 
 				default: // entspricht Case COCONUT
-					int price = 0;
-					int maxDamage = 20;
-					float damageRadius = 0.5f;
-					float desiredProjectileSize = 0.32f;
-					float projectileSizeInPixel = 490;
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.COCONUT_PRIZE);
+					projectile.setMaxDamage(Constants.COCONUT_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.COCONUT_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.COCONUT_DESIRED_SIZE);
+					projectile.setScale(Constants.COCONUT_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.COCONUT_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 					break;
 
 				case SPIKEBALL:
-					// 3 Projektile hinter einander
-					price = 3;
-					maxDamage = 30;
-					damageRadius = 0.4f;
-					desiredProjectileSize = 0.3f;
-					projectileSizeInPixel = 625;
+					//TODO 3 Projektile hinter einander
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.SPIKEBALL_PRIZE);
+					projectile.setMaxDamage(Constants.SPIKEBALL_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.SPIKEBALL_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.SPIKEBALL_SIZE_IN_COORDINATES);
+					projectile.setScale(Constants.SPIKEBALL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SPIKEBALL_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/spikeball.png")));
 					break;
 
 				case BOMB:
-					price = 4;
-					maxDamage = 60;
-					damageRadius = 0.8f;
-					desiredProjectileSize = 0.35f;
-					projectileSizeInPixel = 650;
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.BOMB_PRIZE);
+					projectile.setMaxDamage(Constants.BOMB_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.BOMB_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.BOMB_SIZE_IN_COORDINATES);
+					projectile.setScale(Constants.BOMB_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.BOMB_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/bomb.png")));
 					break;
 
 				case SHARD:
-					// 10 Projektile in gleichzeitig in alle Richtungen
-					price = 1;
-					maxDamage = 10;
-					damageRadius = 0.2f;
-					desiredProjectileSize = 0.22f;
-					projectileSizeInPixel = 500;
+					//TODO 10 Projektile in gleichzeitig in alle Richtungen
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.SHARD_PRIZE);
+					projectile.setMaxDamage(Constants.SHARD_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.SHARD_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.SHARD_SIZE_IN_COORDINATES);
+					projectile.setScale(Constants.SHARD_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SHARD_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/shard.png")));
 					break;
 
 				case CRYSTAL:
-					price = 8;
-					maxDamage = 100;
-					damageRadius = 0.2f;
-					desiredProjectileSize = 0.4f;
-					projectileSizeInPixel = 510;
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.CRYSTAL_PRIZE);
+					projectile.setMaxDamage(Constants.CRYSTAL_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.CRYSTAL_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.CRYSTAL_SIZE_IN_COORDINATES);
+					projectile.setScale(Constants.CRYSTAL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.CRYSTAL_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/crystal.png")));
 					break;
 
 				case TURTLE:
-					price = 2;
-					maxDamage = 40;
-					damageRadius = 0.5f;
-					desiredProjectileSize = 0.35f;
-					projectileSizeInPixel = 530;
 
-					projectile.setPrice(price);
-					projectile.setMaxDamage(maxDamage);
-					projectile.setDamageRadius(damageRadius);
-					projectile.setDesiredProjectileSize(desiredProjectileSize);
-					projectile.setScale(desiredProjectileSize / Utils.pixelLengthToWorldLength(projectileSizeInPixel));
+					projectile.setPrice(Constants.TURTLE_PRIZE);
+					projectile.setMaxDamage(Constants.TURTLE_MAX_DAMAGE);
+					projectile.setDamageRadius(Constants.TURTLE_DAMAGE_RADIUS);
+					projectile.setDesiredProjectileSize(Constants.TURTLE_SIZE_IN_COORDINATES);
+					projectile.setScale(Constants.TURTLE_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.TURTLE_SIZE_IN_PIXEL));
 					projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/turtle.png")));
 					break;
 

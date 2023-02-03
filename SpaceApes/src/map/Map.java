@@ -158,10 +158,10 @@ public class Map {
 			nextApe.setActive(true);
 			nextApe.setInteractionAllowed(true);
 			updateAimline();
-			java.lang.System.out.println("Am Zug: " + nextApe.getID());
+			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy() +  " | health = " + nextApe.getHealth() +  " | coins = " + nextApe.getCoins());
 			controlPanel.setPanelAndComponentsVisible(true); // TODO
 			// TODO random spawner
-			spawnItem(1f, 1f, 1f);
+			spawnItem(0.5f, 0.3f, 0.3f); // TODO move probabilities to constants class
 		}
 	}
 

@@ -21,6 +21,7 @@ public class MoveOnPlanetAction implements Action {
 		Ape ape = Map.getInstance().getActiveApe();
 		if (ape.isInteractionAllowed()) {
 			ape.stepOnPlanet(direction);
+			ape.changeEnergy(-0.01f);
 			Map.getInstance().updateAimline();
 		}
 	}

@@ -3,6 +3,8 @@ package factories;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
+
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
@@ -11,6 +13,7 @@ import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
+import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
@@ -109,7 +112,7 @@ public class ApeFactory implements IEntityFactory {
 		ape.addComponent(leftKeyPressed);
 
 		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
-		Event spaceKeyPressed = new KeyDownEvent(Input.KEY_SPACE);
+		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction());
 		ape.addComponent(spaceKeyPressed);
 

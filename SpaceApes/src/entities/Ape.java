@@ -163,19 +163,13 @@ public class Ape extends Entity {
 		}
 	}
 
-	public void reduceHealth(int value) {
-		if (health - value >= 0) {
-			health -= value;
-		} else {
-			health = 0;
-		}
-	}
-
-	public void increaseHealth(int value) {
-		if (health + value <= 100) {
-			health += value;
-		} else {
+	public void changeHealth(int value) {
+		if (health + value > maxHealth) {
 			health = maxHealth;
+		} else if (health + value < 0) {
+			health = 0;
+		} else {
+			health += value;
 		}
 	}
 
@@ -205,19 +199,13 @@ public class Ape extends Entity {
 		}
 	}
 
-	public void reduceEnergy(int value) {
-		if (energy - value >= 0) {
-			energy -= value;
-		} else {
-			energy = 0;
-		}
-	}
-
-	public void increaseEnergy(int value) {
-		if (energy + value <= 100) {
-			energy += value;
-		} else {
+	public void changeEnergy(float value) {
+		if (energy + value > maxEnergy) {
 			energy = maxEnergy;
+		} else if (energy - value < 0) {
+			energy = 0;
+		} else {
+			energy += value;
 		}
 	}
 

@@ -28,29 +28,37 @@ public class ShootAction implements Action {
 			StateBasedEntityManager entityManager = gs.getEntityManager();
 
 			// Abfragen der ausgewaehlten Waffe
-			ProjectileType selectedType = map.getControlPanel().getSelectedProjectile().getType();
+			Projectile selectedProjectile = map.getControlPanel().getSelectedProjectile();
+			ProjectileType selectedType = selectedProjectile.getType();
+			if (selectedProjectile.getPrice() > activeApe.getCoins()) {
+				
+				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
+				
+			} else {
+				
+				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
+				// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
+				activeApe.setInteractionAllowed(false);
+				map.getControlPanel().setPanelAndComponentsVisible(false);
+				map.removeAimeLine();
 
-			// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
-			// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
-			activeApe.setInteractionAllowed(false);
-			map.getControlPanel().setPanelAndComponentsVisible(false);
-			map.removeAimeLine();
+				// Abfragen von initialer Position und Geschwindigkeit
+				float startDirection = activeApe.getGlobalAngleOfView();
+				float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
+				Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
+				Vector2f positionOfApe = activeApe.getWorldCoordinates();
+				// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
+				// eine Kollision eintritt...
+				Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe).add(
+						Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
 
-			// Abfragen von initialer Position und Geschwindigkeit
-			float startDirection = activeApe.getGlobalAngleOfView();
-			float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
-			Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-			Vector2f positionOfApe = activeApe.getWorldCoordinates();
-			// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
-			// eine Kollision eintritt...
-			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
-					.add(Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
+				// Projektil wird erzeugt
+				Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch,
+						velocity, true, true, selectedType).createEntity();
 
-			// Projektil wird erzeugt
-			Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch, velocity,
-					true, true, selectedType).createEntity();
-
-			entityManager.addEntity(gs.getID(), projectile);
+				entityManager.addEntity(gs.getID(), projectile);
+				
+			}
 		}
 	}
 }
