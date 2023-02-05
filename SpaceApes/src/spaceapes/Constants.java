@@ -2,7 +2,12 @@ package spaceapes;
 
 public final class Constants {
 
-	// Projectile Constants
+	/////////////// Ape Constants //////////////////////////////
+
+	public static final int APE_MAX_HEALTH = 100;
+	public static final int APE_MAX_ENERGY = 100;
+
+	/////////////// Projectile Constants //////////////////////////////
 
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;
@@ -46,5 +51,36 @@ public final class Constants {
 	public static final float TURTLE_SIZE_IN_COORDINATES = 0.35f;
 	public static final float TURTLE_SIZE_IN_PIXEL = 530;
 
+	/////////////// Item Constants //////////////////////////////
+
+	// Energy Pack
+	public static final int ENERGY_PACK_VALUE = 20;
+	public static final String ENERGY_IMAGE_PATH = "img/items/energy.png";
+	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.3f;
+
+	// Health Pack
+	public static final int HEALTH_PACK_VALUE = 20;
+	public static final String HEALTH_IMAGE_PATH = "img/items/health.png";
+	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.3f;
+
+	// Coins general
+	public static final float COIN_SPAWN_POSSIBILITY = 0.5f;
+	
+	// Copper Coin
+	public static final int COPPER_COIN_VALUE = 1;
+	public static final String COPPER_COIN_IMAGE_PATH = "img/items/coin1.png";
+	// this is the possibility if any coin is spawned. This is determined by COIN_SPAWN_POSSIBILITY.
+	public static final float COPPER_COIN_SPAWN_POSSIBILITY = 0.6f;
+
+	// Gold Coin
+	public static final int GOLD_COIN_VALUE = 3;
+	public static final String GOLD_COIN_IMAGE_PATH = "img/items/coin2.png";
+	// this is the possibility if any coin is spawned. This is determined by COIN_SPAWN_POSSIBILITY.
+	public static final float GOLD_COIN_SPAWN_POSSIBILITY = 0.3f;
+
+	// Copper Coin
+	public static final int DIAMOND_COIN_VALUE = 5;
+	public static final String DIAMOND_COIN_IMAGE_PATH = "img/items/coin3.png";
+	// DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY + GOLD_COIN_SPAWN_POSSIBILITY)
 
 }

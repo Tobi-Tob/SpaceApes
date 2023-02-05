@@ -26,6 +26,7 @@ import factories.PlanetFactory;
 import factories.ProjectileFactory;
 import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.ProjectileType;
+import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -161,7 +162,7 @@ public class Map {
 			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy() +  " | health = " + nextApe.getHealth() +  " | coins = " + nextApe.getCoins());
 			controlPanel.setPanelAndComponentsVisible(true); // TODO
 			// TODO random spawner
-			spawnItem(0.5f, 0.3f, 0.3f); // TODO move probabilities to constants class
+			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY, Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
 		}
 	}
 
@@ -193,9 +194,9 @@ public class Map {
 				itemName = "Coin";
 				
 				float probForCoinType = Utils.randomFloat(0, 1);
-				if (probForCoinType < 0.6f) { //TODO move 0.6f to constants class
+				if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY) {
 					itemType = ItemType.COPPER_COIN;
-				} else if (probForCoinType < 0.9f) { //TODO move 0.9f to constants class
+				} else if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY + Constants.GOLD_COIN_SPAWN_POSSIBILITY) {
 					itemType = ItemType.GOLD_COIN;
 				} else {
 					itemType = ItemType.DIAMOND_COIN;
@@ -294,7 +295,7 @@ public class Map {
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO Warum steht hier TODO?? mehr Beschreibung bitte
 				}
 			}
 		}

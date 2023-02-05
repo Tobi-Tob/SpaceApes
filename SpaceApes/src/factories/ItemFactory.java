@@ -16,6 +16,7 @@ import entities.Coin;
 import entities.Item;
 import factories.PlanetFactory.PlanetType;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -53,45 +54,40 @@ public class ItemFactory implements IEntityFactory {
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-				//TODO move this to constants class
-				value = 20; 
-				imageRenderComponent = new ImageRenderComponent(new Image("img/items/energy.png"));
+				value = Constants.ENERGY_PACK_VALUE; 
+				imageRenderComponent = new ImageRenderComponent(new Image(Constants.ENERGY_IMAGE_PATH));
 				break;
 				
 			case HEALTH_PACK:
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-				//TODO move this to constants class
-				value = 50;
-				imageRenderComponent = new ImageRenderComponent(new Image("img/items/health.png"));
+				value = Constants.HEALTH_PACK_VALUE;
+				imageRenderComponent = new ImageRenderComponent(new Image(Constants.HEALTH_IMAGE_PATH));
 				break;
 
 			case COPPER_COIN:
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-				//TODO move this to constants class
-				value = 1;
-				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin1.png"));
+				value = Constants.COPPER_COIN_VALUE;
+				imageRenderComponent = new ImageRenderComponent(new Image(Constants.COPPER_COIN_IMAGE_PATH));
 				break;
 
 			case GOLD_COIN:
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-				//TODO move this to constants class
-				value = 3;
-				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin2.png"));
+				value = Constants.GOLD_COIN_VALUE;
+				imageRenderComponent = new ImageRenderComponent(new Image(Constants.GOLD_COIN_IMAGE_PATH));
 				break;
 
 			default: // ansonsten erzeugt er immer einen DIAMANT_COIN
 				itemWidthInPixel = 100;
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-				//TODO move this to constants class
-				value = 5;
-				imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin3.png"));
+				value = Constants.DIAMOND_COIN_VALUE;
+				imageRenderComponent = new ImageRenderComponent(new Image(Constants.DIAMOND_COIN_IMAGE_PATH));
 				break;
 				
 			}

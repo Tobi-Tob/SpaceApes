@@ -3,6 +3,7 @@ package entities;
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import map.Map;
+import spaceapes.Constants;
 import utils.Utils;
 
 public class Ape extends Entity {
@@ -20,8 +21,8 @@ public class Ape extends Entity {
 	public float desiredApeSizeInWorldUnits = 0.6f;
 	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
 
-	private final int maxHealth = 100; // TODO move to constants class!
-	private final int maxEnergy = 100; // TODO move to constants class!
+	private final int maxHealth = Constants.APE_MAX_HEALTH;
+	private final int maxEnergy = Constants.APE_MAX_ENERGY;
 	private int health = maxHealth;
 	private float energy = maxEnergy;
 	private int coins = 0;
