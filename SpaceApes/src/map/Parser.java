@@ -16,6 +16,7 @@ import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
 import factories.PlanetPanelFactory;
+import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -39,8 +40,8 @@ public class Parser {
 
 	protected void parsePlanets(Map map) {
 
-		float xBorder = Utils.worldWidth / 2;
-		float yBorder = Utils.worldHeight / 2;
+		float xBorder = Constants.WORLD_WIDTH / 2;
+		float yBorder = Constants.WORLD_HEIGHT / 2;
 
 		// MR: die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
 		// wenn es mehr als 2 Spieler geben koennen soll...

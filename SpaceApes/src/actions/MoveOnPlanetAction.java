@@ -19,11 +19,10 @@ public class MoveOnPlanetAction implements Action {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		Ape ape = Map.getInstance().getActiveApe();
-		if (ape.isInteractionAllowed()) {
+		if (ape.isInteractionAllowed() && ape.hasEnergy()) {
 			ape.stepOnPlanet(direction);
-			ape.changeEnergy(-0.01f);
+			ape.changeEnergy(-0.005f);
 			Map.getInstance().updateAimline();
 		}
 	}
-
 }

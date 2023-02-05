@@ -20,6 +20,7 @@ import entities.ControlPanel;
 import entities.Item;
 import entities.Planet;
 import entities.Projectile;
+import events.LeavingWorldEvent;
 import factories.ItemFactory;
 import factories.ItemFactory.ItemType;
 import factories.PlanetFactory;
@@ -134,15 +135,10 @@ public class Map {
 				deathLoop.addAction(new MoveDownAction(0.8f));
 				ape.addComponent(deathLoop);
 
-				// Wenn der Bildschirm verlassen wird, dann ...
-				LeavingScreenEvent lse = new LeavingScreenEvent(); // TODO lse sorgt fuer rote Kommandozeilenausgabe
-																	// (Eigenes
-																	// LeavingWorlsEvent muss erstellt werden)
-
-				// ... zerstoere den Ape
-				lse.addAction(new DestroyEntityAction());
-
-				ape.addComponent(lse);
+				// Wenn der Bildschirm verlassen wird, dann zerstoere den Ape
+				LeavingWorldEvent leavingWorldEvent = new LeavingWorldEvent(ape);
+				leavingWorldEvent.addAction(new DestroyEntityAction());
+				ape.addComponent(leavingWorldEvent);
 			}
 		}
 		apes = livingApes;
@@ -313,8 +309,8 @@ public class Map {
 	 *         ueberschritten wurde
 	 */
 	public Vector2f findValidPosition(float marginToNextPlanetCenter, int iterations) {
-		float xBorder = Utils.worldWidth / 2;
-		float yBorder = Utils.worldHeight / 2;
+		float xBorder = Constants.WORLD_WIDTH / 2;
+		float yBorder = Constants.WORLD_HEIGHT / 2;
 		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
 			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
 					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));

@@ -1,6 +1,11 @@
 package spaceapes;
 
 public final class Constants {
+	
+	//////////////////// World Constants /////////////////////////
+	
+	public static final float WORLD_WIDTH = 16;
+	public static final float WORLD_HEIGHT = WORLD_WIDTH * Launch.HEIGHT / Launch.WIDTH;
 
 	/////////////// Ape Constants //////////////////////////////
 

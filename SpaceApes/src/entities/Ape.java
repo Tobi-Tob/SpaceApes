@@ -177,6 +177,10 @@ public class Ape extends Entity {
 	public boolean isAlive() {
 		return health > 0;
 	}
+	
+	public boolean hasEnergy() {
+		return energy > 0;
+	}
 
 	public float getMovementSpeed() {
 		return movementSpeed;
