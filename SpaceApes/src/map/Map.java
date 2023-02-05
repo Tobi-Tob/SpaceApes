@@ -266,10 +266,10 @@ public class Map {
 
 			// TODO Variablen!!
 			int flightTime = 1000; // in ms
-			int updateFrequency = 3; // in ms
+			int updateFrequency = 30; // in ms
 			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
 			boolean draw = true;
-			int numberOfDots = 5;
+			int numberOfDots = 16;
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
@@ -278,10 +278,11 @@ public class Map {
 			for (int i = 1; i < iterations; i++) {
 				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
-					break;
+					//break; -> laufe trotzdem durch die schleife, damit es nicht so wirkt als würde es laggen
 				}
-				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie
-																// gesetzt
+//				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie gesetzt
+				if (draw && i % (iterations / numberOfDots) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie gesetzt
+					
 					Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations));
@@ -291,7 +292,7 @@ public class Map {
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO Warum steht hier TODO?? mehr Beschreibung bitte
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO --> Warum steht hier TODO?? mehr Beschreibung bitte
 				}
 			}
 		}
