@@ -43,8 +43,9 @@ public class Parser {
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
 
-		// MR: die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
+		// TODO die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
 		// wenn es mehr als 2 Spieler geben koennen soll...
+		
 		// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
 		String namePlanetOne = "Planet1";
 		float xPlanetOne = Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f);
@@ -163,7 +164,7 @@ public class Parser {
 			Planet planet = map.getApes().get(i).getPlanet();
 			String entityID = "PlanetPanel" + i;
 			Vector2f panelCoordinates = planet.getCoordinates();
-			float panelScale = planet.getScale() * 0.4f;
+			float panelScale = planet.getScale() * 0.4f; //TODO es wäre schlauer den Scale über den Radius zu ermitteln (wegen den Ringplaneten)
 			
 			Entity planetPanel = new PlanetPanelFactory(entityID, panelCoordinates, panelScale, map.getApes().get(i)).createEntity();
 			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, planetPanel);

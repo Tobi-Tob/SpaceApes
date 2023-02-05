@@ -31,7 +31,7 @@ public class GameplayState extends BasicGameState {
 	private Map map;
 	private Music music; // Musik dieses GameStates
 	
-	GameplayState( int stateID ) {
+	GameplayState(int stateID) {
 	       this.stateID = stateID;
 	       this.entityManager = StateBasedEntityManager.getInstance();
 	       this.map = Map.getInstance();
@@ -46,25 +46,13 @@ public class GameplayState extends BasicGameState {
 		// Map parsen
 		map.parse();
 		
-//		Entity coin = new Coin();
-//		coin.setPosition(new Vector2f(Launch.WIDTH / 2, Launch.HEIGHT / 2));
-//		coin.addComponent(new ImageRenderComponent(new Image("img/items/coin2.png")));
-//		float itemWidthInPixel = 100;
-//		float desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
-//		float itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
-//		coin.setScale(itemScaleFactor);
-//		LoopEvent itemLoop = new LoopEvent();
-//		itemLoop.addAction(new RotateRightAction(0.03f));
-//		coin.addComponent(itemLoop);
-//		entityManager.addEntity(stateID, coin);
-		
 		// Die dummyEntity steuert die Wechsel der States
 		Entity dummyEntity = new Entity("Dummy");
 		
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
+		escPressed.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
 		dummyEntity.addComponent(escPressed);
 		
 		//Hier kommen alle weiteren Events hinzu...

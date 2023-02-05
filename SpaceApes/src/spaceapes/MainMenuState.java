@@ -49,7 +49,7 @@ public class MainMenuState extends BasicGameState {
 
 		/* Menu Hintergrund */
 
-		Entity menuBackground = new Entity("menu"); // Entitaet fuer Hintergrund erzeugen
+		Entity menuBackground = new Entity("Menu"); // Entitaet fuer Hintergrund erzeugen
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
 		Image image = new Image("img/assets/menuSP.png");
 		menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
@@ -58,17 +58,17 @@ public class MainMenuState extends BasicGameState {
 
 		/* Neues Spiel starten-Entitaet */
 
-		Entity newGameEntity = new Entity("Spiel starten");
+		Entity newGameEntity = new Entity("SpielStarten");
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
 		newGameEntity.setScale((float) Launch.HEIGHT / 3200);
 		newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent start_Game_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action start_Game_Action = new ChangeStateAction(Launch.GAMEPLAY_STATE);
-		start_Game_Event.addAction(start_Game_Action);
-		newGameEntity.addComponent(start_Game_Event);
+		ANDEvent startGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action startGameAction = new ChangeStateAction(Launch.GAMEPLAY_STATE);
+		startGameEvent.addAction(startGameAction);
+		newGameEntity.addComponent(startGameEvent);
 		entityManager.addEntity(this.stateID, newGameEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
 
 		/* Beenden-Entitaet */
@@ -80,10 +80,10 @@ public class MainMenuState extends BasicGameState {
 		quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent quit_Game_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		ANDEvent quitGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		Action quit_Action = new QuitAction();
-		quit_Game_Event.addAction(quit_Action);
-		quitEntity.addComponent(quit_Game_Event);
+		quitGameEvent.addAction(quit_Action);
+		quitEntity.addComponent(quitGameEvent);
 		entityManager.addEntity(this.stateID, quitEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
 
 	}
