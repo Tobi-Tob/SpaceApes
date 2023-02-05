@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.ControlPanel;
 import entities.Planet;
@@ -14,6 +15,7 @@ import factories.ApeFactory;
 import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
+import factories.PlanetPanelFactory;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -26,15 +28,16 @@ public class Parser {
 		Map map = Map.getInstance();
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground(map);
-		parsePlanet(map);
-		parseApe(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
+		parsePlanets(map);
+		parseApes(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
+		parsePlanetPanels(map); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
 	}
 
 	protected void initBackground(Map map) {
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void parsePlanet(Map map) {
+	protected void parsePlanets(Map map) {
 
 		float xBorder = Utils.worldWidth / 2;
 		float yBorder = Utils.worldHeight / 2;
@@ -123,11 +126,11 @@ public class Parser {
 		}
 	}
 
-	protected void parseApe(Map map) {
+	protected void parseApes(Map map) {
 
 		for (int i = 0; i < Launch.players.size(); i++) {
 
-			String nameApe = "ape" + (i + 1);
+			String nameApe = "Ape" + (i + 1);
 			Planet homePlanet;
 			if (i > playerPlanets.size() - 1) { // Fall es gibt nicht genug PlayerPlanets
 				int randomIndex = new Random().nextInt(map.getPlanets().size());
@@ -151,17 +154,18 @@ public class Parser {
 			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);
 		}
 	}
-
-	protected Map parseControlPanel(Map map) {
-
-		ControlPanel controlPanel = new ControlPanel("ControlPanel");
-		controlPanel.initControlPanel();
-		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, controlPanel);
-
-		// map.addEntity(new ControlPanelFactory().createEntity()); -> MR: Factory fuer
-		// Panel benutzen?
-
-		return map;
+	
+	protected void parsePlanetPanels(Map map) {
+		
+		
+		for (int i = 0; i < map.getApes().size(); i++) {
+			Planet planet = map.getApes().get(i).getPlanet();
+			String entityID = "PlanetPanel" + i;
+			Vector2f panelCoordinates = planet.getCoordinates();
+			float panelScale = planet.getScale() * 0.4f;
+			
+			Entity planetPanel = new PlanetPanelFactory(entityID, panelCoordinates, panelScale, map.getApes().get(i)).createEntity();
+			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, planetPanel);
+		}
 	}
-
 }

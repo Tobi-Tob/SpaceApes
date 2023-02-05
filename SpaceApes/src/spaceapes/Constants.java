@@ -81,6 +81,6 @@ public final class Constants {
 	// Copper Coin
 	public static final int DIAMOND_COIN_VALUE = 5;
 	public static final String DIAMOND_COIN_IMAGE_PATH = "img/items/coin3.png";
-	// DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY + GOLD_COIN_SPAWN_POSSIBILITY)
+	// note: DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY + GOLD_COIN_SPAWN_POSSIBILITY)
 
 }
