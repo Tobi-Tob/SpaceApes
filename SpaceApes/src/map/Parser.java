@@ -9,13 +9,12 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
-import entities.ControlPanel;
 import entities.Planet;
 import factories.ApeFactory;
 import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
-import factories.PlanetPanelFactory;
+import factories.ApeInfoSignFactory;
 import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
@@ -24,21 +23,21 @@ public class Parser {
 
 	private List<Entity> playerPlanets = new ArrayList<Entity>();
 
-	public void parseMap() {
+	public void initMap() {
 
 		Map map = Map.getInstance();
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground(map);
-		parsePlanets(map);
-		parseApes(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
-		parsePlanetPanels(map); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
+		initPlanets(map);
+		initApes(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
+		initApeInfoSigns(map); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
 	}
 
 	protected void initBackground(Map map) {
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void parsePlanets(Map map) {
+	protected void initPlanets(Map map) {
 
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
@@ -128,7 +127,7 @@ public class Parser {
 		}
 	}
 
-	protected void parseApes(Map map) {
+	protected void initApes(Map map) {
 
 		for (int i = 0; i < Launch.players.size(); i++) {
 
@@ -157,7 +156,7 @@ public class Parser {
 		}
 	}
 	
-	protected void parsePlanetPanels(Map map) {
+	protected void initApeInfoSigns(Map map) {
 		
 		
 		for (int i = 0; i < map.getApes().size(); i++) {
@@ -166,7 +165,7 @@ public class Parser {
 			Vector2f panelCoordinates = planet.getCoordinates();
 			float panelScale = planet.getScale() * 0.4f; //TODO es wäre schlauer den Scale über den Radius zu ermitteln (wegen den Ringplaneten)
 			
-			Entity planetPanel = new PlanetPanelFactory(entityID, panelCoordinates, panelScale, map.getApes().get(i)).createEntity();
+			Entity planetPanel = new ApeInfoSignFactory(entityID, panelCoordinates, panelScale, map.getApes().get(i)).createEntity();
 			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, planetPanel);
 		}
 	}

@@ -8,7 +8,7 @@ import eea.engine.entity.Entity;
 import entities.Ape;
 import map.Map;
 
-public class ChangeAngleAction extends ButtonPressedAction {
+public class ChangeAngleAction extends ButtonAnimationAction {
 	private float angleToChange;
 
 	public ChangeAngleAction(float angleToChange, Entity button) {

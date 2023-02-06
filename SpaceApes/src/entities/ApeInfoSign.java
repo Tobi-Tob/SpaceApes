@@ -1,7 +1,5 @@
 package entities;
 
-import java.awt.Font;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -11,16 +9,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
-import map.Map;
 
-public class PlanetPanel extends Entity {
+public class ApeInfoSign extends Entity {
 
 	private ImageRenderComponent imageRenderComponent = null;
 	private TrueTypeFont fontApe;
 	private TrueTypeFont fontStats;
 	private Ape ape;
 
-	public PlanetPanel(String entityID) {
+	public ApeInfoSign(String entityID) {
 		super(entityID);
 	}
 	

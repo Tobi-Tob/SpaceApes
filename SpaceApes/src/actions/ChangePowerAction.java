@@ -8,7 +8,7 @@ import eea.engine.entity.Entity;
 import entities.Ape;
 import map.Map;
 
-public class ChangePowerAction extends ButtonPressedAction {
+public class ChangePowerAction extends ButtonAnimationAction {
 	private float powerToChange;
 
 	public ChangePowerAction(float powerToChange, Entity button) {

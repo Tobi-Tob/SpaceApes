@@ -57,7 +57,7 @@ public class Map {
 
 	public void parse() {
 		Parser parser = new Parser();
-		parser.parseMap();
+		parser.initMap();
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel("ControlPanel");
@@ -291,7 +291,7 @@ public class Map {
 
 					Entity dot = new Entity(Constants.AIMLINE_DOT); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
-					dot.setScale(1 - (i * 0.8f / iterations));
+					dot.setScale(1 - (i * 0.8f / iterations)); // TODO Scalingfactor abhaengig von Bildschirmgroesse
 					try {
 						dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
 						// System.out.println("add dot");

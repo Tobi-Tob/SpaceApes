@@ -11,17 +11,17 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
-import entities.PlanetPanel;
+import entities.ApeInfoSign;
 import utils.Utils;
 
-public class PlanetPanelFactory implements IEntityFactory {
+public class ApeInfoSignFactory implements IEntityFactory {
 	
 	private final String entityID;
 	private final Vector2f coordinates;
 	private final float scale;
 	private Ape ape;
 	
-	public PlanetPanelFactory(String entityID, Vector2f coordiantes, float scale, Ape ape) {
+	public ApeInfoSignFactory(String entityID, Vector2f coordiantes, float scale, Ape ape) {
 		this.entityID = entityID;
 		this.coordinates = coordiantes;
 		this.scale = scale;
@@ -31,7 +31,7 @@ public class PlanetPanelFactory implements IEntityFactory {
 	@Override
 	public Entity createEntity() {
 
-		PlanetPanel planetPanel = new PlanetPanel(entityID);
+		ApeInfoSign planetPanel = new ApeInfoSign(entityID);
 		
 		planetPanel.setPosition(Utils.toPixelCoordinates(coordinates));
 		planetPanel.setRotation(0);

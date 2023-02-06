@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 import actions.CollisionAction;
-import actions.ProjectileMovementAction;
+import actions.ProjectileBehaviorAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.CollisionEvent;
@@ -120,7 +120,7 @@ public class ProjectileFactory implements IEntityFactory {
 		if (isAffectedByEnvironment) {
 			// Loop Event
 			LoopEvent projectileLoop = new LoopEvent();
-			projectileLoop.addAction(new ProjectileMovementAction(projectile));
+			projectileLoop.addAction(new ProjectileBehaviorAction(projectile));
 			projectile.addComponent(projectileLoop);
 		}
 		

@@ -12,11 +12,11 @@ import eea.engine.entity.Entity;
  * @author Tobi
  *
  */
-public abstract class ButtonPressedAction implements Action {
+public abstract class ButtonAnimationAction implements Action {
 	private Entity button;
 	private float buttonScaleIfNotPressed;
 	
-	public ButtonPressedAction(Entity button) {
+	public ButtonAnimationAction(Entity button) {
 		this.button = button;
 		this.buttonScaleIfNotPressed = button.getScale();
 	}

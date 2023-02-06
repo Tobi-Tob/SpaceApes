@@ -15,11 +15,11 @@ import map.Map;
 import spaceapes.GameplayState;
 import utils.Utils;
 
-public class ProjectileMovementAction implements Action {
+public class ProjectileBehaviorAction implements Action {
 
 	private Projectile projectile;
 
-	public ProjectileMovementAction(Projectile projectile) {
+	public ProjectileBehaviorAction(Projectile projectile) {
 		this.projectile = projectile;
 	}
 

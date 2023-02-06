@@ -8,7 +8,7 @@ import eea.engine.entity.Entity;
 import entities.Ape;
 import map.Map;
 
-public class ChangeWeaponAction extends ButtonPressedAction {
+public class ChangeWeaponAction extends ButtonAnimationAction {
 	
 	public ChangeWeaponAction(Entity button) {
 		super(button);
