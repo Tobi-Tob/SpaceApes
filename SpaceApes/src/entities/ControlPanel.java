@@ -127,7 +127,7 @@ public class ControlPanel extends Entity {
 		arrow_Weapons.addComponent(change_Weapon_Event);
 
 		ANDEvent increase_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Angle_Fast_Action = new ChangeAngleAction(1f, arrow_Angle_Right);
+		Action increase_Angle_Fast_Action = new ChangeAngleAction(0.03f * Launch.UPDATE_INTERVAL, arrow_Angle_Right);
 		increase_Angle_Fast_Event.addAction(increase_Angle_Fast_Action);
 		arrow_Angle_Right.addComponent(increase_Angle_Fast_Event);
 		ANDEvent increase_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -136,7 +136,7 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Right.addComponent(increase_Angle_Slow_Event);
 
 		ANDEvent decrease_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Angle_Fast_Action = new ChangeAngleAction(-1f, arrow_Angle_Left);
+		Action decrease_Angle_Fast_Action = new ChangeAngleAction(-0.03f * Launch.UPDATE_INTERVAL, arrow_Angle_Left);
 		decrease_Angle_Fast_Event.addAction(decrease_Angle_Fast_Action);
 		arrow_Angle_Left.addComponent(decrease_Angle_Fast_Event);
 		ANDEvent decrease_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -145,7 +145,7 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Left.addComponent(decrease_Angle_Slow_Event);
 
 		ANDEvent increase_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Power_Action = new ChangePowerAction(0.05f, arrow_Power_Right);
+		Action increase_Power_Action = new ChangePowerAction(0.002f * Launch.UPDATE_INTERVAL, arrow_Power_Right);
 		increase_Power_Fast_Event.addAction(increase_Power_Action);
 		arrow_Power_Right.addComponent(increase_Power_Fast_Event);
 		ANDEvent increase_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -154,7 +154,7 @@ public class ControlPanel extends Entity {
 		arrow_Power_Right.addComponent(increase_Power_Slow_Event);
 
 		ANDEvent decrease_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-0.05f, arrow_Power_Left);
+		Action decrease_Power_Action = new ChangePowerAction(-0.002f * Launch.UPDATE_INTERVAL, arrow_Power_Left);
 		decrease_Power_Fast_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Fast_Event);
 		ANDEvent decrease_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());

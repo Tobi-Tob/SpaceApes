@@ -24,13 +24,17 @@ public class Launch extends StateBasedGame {
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HIGHSCORE_STATE = 2;
-	
+
 	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2", "Player3"));
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
-	public static boolean USE_FULL_SCREEN = false;
+	public static boolean USE_FULL_SCREEN = true;
+	
 	public static boolean PLAY_MUSIC = false;
+	
+	// Sollte das Spiel anfangen zu laggen, vergroessere das Update Intervall
+	public static final int UPDATE_INTERVAL = 20; // Updatefrequenz der Gameloop in ms
 
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
@@ -49,8 +53,8 @@ public class Launch extends StateBasedGame {
 
 		// Setze dieses StateBasedGame in einen App Container (oder Fenster)
 		AppGameContainer app = new AppGameContainer(new Launch());
-		app.setMinimumLogicUpdateInterval(20);
-		app.setMaximumLogicUpdateInterval(30);
+		app.setMinimumLogicUpdateInterval(UPDATE_INTERVAL);
+		app.setMaximumLogicUpdateInterval(UPDATE_INTERVAL);
 		app.setShowFPS(true);
 
 		// Lege die Einstellungen des Fensters fest und starte das Fenster
@@ -62,7 +66,7 @@ public class Launch extends StateBasedGame {
 			HEIGHT = dm.getHeight();
 		}
 		app.setDisplayMode(WIDTH, HEIGHT, USE_FULL_SCREEN);
-		
+
 		app.start();
 	}
 

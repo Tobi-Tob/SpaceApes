@@ -238,7 +238,7 @@ public class Map {
 	 */
 	public void removeAimeLine() {
 		for (int i = 0; i < 100; i++) { // MR: 100 ist gehardcoded!
-			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, "dot");
+			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, Constants.AIMLINE_DOT);
 			if (dot == null) {
 				break;
 			}
@@ -254,7 +254,7 @@ public class Map {
 
 		Ape ape = Map.getInstance().getActiveApe();
 
-		if (ape.isInteractionAllowed()) { // TODO brauchen wir die abfrage wirklcih?
+		if (ape.isInteractionAllowed()) { // TODO brauchen wir die abfrage wirklich?
 
 			removeAimeLine();
 
@@ -269,28 +269,27 @@ public class Map {
 
 			// TODO Variablen!!
 			int flightTime = 500; // in ms
-			int updateFrequency = 20; // in ms
-			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
+			float updateFrequency = Launch.UPDATE_INTERVAL;
 			boolean draw = true;
 			// int numberOfDots = 16; // TL: Wird nicht benoetigt (numberOfDots ergibt sich
 			// aus der Laenge der Linie und ist nicht fix)
-			int iterations = (int) flightTime / updateFrequency;
+			int iterations = Math.round(flightTime / updateFrequency);
 
 			// Hilfsprojektil wird erzeugt
 			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
 					velocity, false, true, ProjectileType.COCONUT).createEntity();
-			for (int i = 1; i < iterations; i++) {
-				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
+			for (int i = 0; i <= iterations; i++) {
+				if (dummyProjectile.explizitEulerStep((int) updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
 					break; // -> laufe trotzdem durch die schleife, damit es nicht so wirkt als wuerde es
 							// laggen TL: laggt jz nicht mehr
 				}
-				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden
+				if (draw && i % Math.round(60 / updateFrequency) == 0) { // In bestimmten Abstaenden
 					// werden Punkte der Hilfslinie gesetzt
 					// if (draw && i % (iterations / numberOfDots) == 0) { // In bestimmten
 					// Abstaenden werden Punkte der Hilfslinie gesetzt
 
-					Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
+					Entity dot = new Entity(Constants.AIMLINE_DOT); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations));
 					try {
@@ -299,8 +298,7 @@ public class Map {
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO --> Warum steht hier TODO?? mehr
-																			// Beschreibung bitte
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot);
 				}
 			}
 		}

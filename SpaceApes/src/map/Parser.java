@@ -145,7 +145,7 @@ public class Parser {
 			int apeImage = i + 1;
 			boolean apeActive = (i == 0);
 			boolean apeInteraction = (i == 0);
-			float movementSpeed = 0.4f;
+			float movementSpeed = 0.05f;
 			float angleOnPlanet = Utils.randomFloat(0, 360);
 			float angleOfView = 0;
 			float throwStrength = 5f;

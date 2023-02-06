@@ -4,6 +4,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import map.Map;
 import spaceapes.Constants;
+import spaceapes.Launch;
 import utils.Utils;
 
 public class Ape extends Entity {
@@ -55,7 +56,7 @@ public class Ape extends Entity {
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
 	public void stepOnPlanet(float direction) {
-		this.angleOnPlanet += direction * movementSpeed / distancePlanetCenter; // Update des Winkels
+		this.angleOnPlanet += direction * movementSpeed * Launch.UPDATE_INTERVAL / distancePlanetCenter; // Update des Winkels
 		this.worldCoordinates = calcWorldCoordinates(); // Update der Koordinaten
 		setPosition(Utils.toPixelCoordinates(getWorldCoordinates()));
 		setRotation(angleOnPlanet + 90f);

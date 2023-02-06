@@ -3,8 +3,6 @@ package factories;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
-
 import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
@@ -101,14 +99,14 @@ public class ApeFactory implements IEntityFactory {
 		// Bewege den Affen mit der rechten Pfeiltaste nach rechts (nur wenn der Spieler
 		// am Zug ist!)
 		Event rightKeyPressed = new KeyDownEvent(Input.KEY_RIGHT);
-		rightKeyPressed.addAction(new MoveOnPlanetAction(1.0f));
+		rightKeyPressed.addAction(new MoveOnPlanetAction(1.0f, ape));
 		ape.addComponent(rightKeyPressed);
 
 		// Bewege den Affen mit der linken Pfeiltaste nach links... (nur wenn der
 		// Spieler am Zug ist!)
 		// und erzeuge eine Ziellinie
 		Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
-		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f)); // MR: float durch bool ersetzen!
+		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape)); // MR: float durch bool ersetzen!
 		ape.addComponent(leftKeyPressed);
 
 		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)

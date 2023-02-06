@@ -70,7 +70,7 @@ public class GameplayState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		// StatedBasedEntityManager soll alle Entities aktualisieren
 		entityManager.updateEntities(container, game, delta);
-		System.out.println("Gameplaystate Updatefrequenz: " + delta + " ms");
+		// System.out.println("Gameplaystate Updatefrequenz: " + delta + " ms");
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class GameplayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		// StatedBasedEntityManager soll alle Entities rendern
 		entityManager.renderEntities(container, game, g);
-		System.out.println("Gameplaystate Render");
+		// System.out.println("Gameplaystate Render");
 	}
 
 	@Override
