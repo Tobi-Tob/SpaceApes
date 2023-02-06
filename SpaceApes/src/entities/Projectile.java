@@ -136,7 +136,7 @@ public class Projectile extends Entity {
 		Vector2f ddx = new Vector2f(0, 0);
 		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 
-		List<Planet> planets = Map.getInstance().getPlanets();
+		List<Planet> planets = Map.getInstance().getPlanets(); // TODO vllt schnelleren Datenzugriff einbauen
 		List<Ape> apes = Map.getInstance().getApes();
 
 		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
@@ -171,7 +171,7 @@ public class Projectile extends Entity {
 		this.vx = vx + dt * ddx.x;
 		this.vy = vy + dt * ddx.y;
 		// Aendern der direction in Richtung der Beschleunigung
-		if (projectileIsVisible) {
+		if (projectileIsVisible) { // TODO muss das hier gemacht werden?
 			this.direction = Utils.angleInPolarCoordinates(ddx.x, ddx.y);
 			setRotation(direction + 90f);
 			setPosition(Utils.toPixelCoordinates((float) x, (float) y));

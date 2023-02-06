@@ -40,7 +40,8 @@ public class ControlPanel extends Entity {
 	public List<Projectile> listOfShopProjectiles;
 	float panelScaleFactor;
 	TrueTypeFont font;
-	DecimalFormat formatter;
+	DecimalFormat powerFormatter;
+	DecimalFormat angleFormatter;
 	ImageRenderComponent imageRenderComponent = null;
 
 	public ControlPanel(String entityID) {
@@ -60,7 +61,8 @@ public class ControlPanel extends Entity {
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
 		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
-		formatter = new DecimalFormat("0.##");
+		powerFormatter = new DecimalFormat("0.00");
+		angleFormatter = new DecimalFormat("00.0");
 
 		// Arrows
 		float desiredArrowScale = 0.8f; // im Verhaeltnis zum Control Panel
@@ -120,29 +122,45 @@ public class ControlPanel extends Entity {
 		// Erstellen der Knopfdruck-Events und die zugehoerige Actions
 
 		ANDEvent change_Weapon_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action change_Weapon_Action = new ChangeWeaponAction();
+		Action change_Weapon_Action = new ChangeWeaponAction(arrow_Weapons);
 		change_Weapon_Event.addAction(change_Weapon_Action);
 		arrow_Weapons.addComponent(change_Weapon_Event);
 
-		ANDEvent increase_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Angle_Action = new ChangeAngleAction(0.1f);
-		increase_Angle_Event.addAction(increase_Angle_Action);
-		arrow_Angle_Right.addComponent(increase_Angle_Event);
+		ANDEvent increase_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action increase_Angle_Fast_Action = new ChangeAngleAction(1f, arrow_Angle_Right);
+		increase_Angle_Fast_Event.addAction(increase_Angle_Fast_Action);
+		arrow_Angle_Right.addComponent(increase_Angle_Fast_Event);
+		ANDEvent increase_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action increase_Angle_Slow_Action = new ChangeAngleAction(0.1f, arrow_Angle_Right);
+		increase_Angle_Slow_Event.addAction(increase_Angle_Slow_Action);
+		arrow_Angle_Right.addComponent(increase_Angle_Slow_Event);
 
-		ANDEvent decrease_Angle_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Angle_Action = new ChangeAngleAction(-0.1f);
-		decrease_Angle_Event.addAction(decrease_Angle_Action);
-		arrow_Angle_Left.addComponent(decrease_Angle_Event);
+		ANDEvent decrease_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action decrease_Angle_Fast_Action = new ChangeAngleAction(-1f, arrow_Angle_Left);
+		decrease_Angle_Fast_Event.addAction(decrease_Angle_Fast_Action);
+		arrow_Angle_Left.addComponent(decrease_Angle_Fast_Event);
+		ANDEvent decrease_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action decrease_Angle_Slow_Action = new ChangeAngleAction(-0.1f, arrow_Angle_Left);
+		decrease_Angle_Slow_Event.addAction(decrease_Angle_Slow_Action);
+		arrow_Angle_Left.addComponent(decrease_Angle_Slow_Event);
 
-		ANDEvent increase_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Power_Action = new ChangePowerAction(0.01f);
-		increase_Power_Event.addAction(increase_Power_Action);
-		arrow_Power_Right.addComponent(increase_Power_Event);
+		ANDEvent increase_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action increase_Power_Action = new ChangePowerAction(0.05f, arrow_Power_Right);
+		increase_Power_Fast_Event.addAction(increase_Power_Action);
+		arrow_Power_Right.addComponent(increase_Power_Fast_Event);
+		ANDEvent increase_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action increase_Power_Slow_Action = new ChangePowerAction(0.01f, arrow_Power_Right);
+		increase_Power_Slow_Event.addAction(increase_Power_Slow_Action);
+		arrow_Power_Right.addComponent(increase_Power_Slow_Event);
 
-		ANDEvent decrease_Power_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-0.01f);
-		decrease_Power_Event.addAction(decrease_Power_Action);
-		arrow_Power_Left.addComponent(decrease_Power_Event);
+		ANDEvent decrease_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
+		Action decrease_Power_Action = new ChangePowerAction(-0.05f, arrow_Power_Left);
+		decrease_Power_Fast_Event.addAction(decrease_Power_Action);
+		arrow_Power_Left.addComponent(decrease_Power_Fast_Event);
+		ANDEvent decrease_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		Action decrease_Power_Slow_Action = new ChangePowerAction(-0.01f, arrow_Power_Left);
+		decrease_Power_Slow_Event.addAction(decrease_Power_Slow_Action);
+		arrow_Power_Left.addComponent(decrease_Power_Slow_Event);
 
 		setPanelAndComponentsVisible(true);
 	}
@@ -333,18 +351,18 @@ public class ControlPanel extends Entity {
 			Vector2f textPos_Power = relativPosOnPanelToPixelPos(-470, -30);
 			font.drawString(textPos_Power.x, textPos_Power.y, "Power", Color.black);
 
-			Vector2f textPos_Angle = relativPosOnPanelToPixelPos(250, -20);
+			Vector2f textPos_Angle = relativPosOnPanelToPixelPos(230, -20);
 			font.drawString(textPos_Angle.x, textPos_Angle.y, "Angle", Color.black);
 
 			Vector2f textPos_ActivePlayer = relativPosOnPanelToPixelPos(-600, -290);
 			font.drawString(textPos_ActivePlayer.x, textPos_ActivePlayer.y, activeApe.getID(), Color.black);
 
 			Vector2f numberPos_Power = relativPosOnPanelToPixelPos(-450, 150);
-			font.drawString(numberPos_Power.x, numberPos_Power.y, formatter.format(activeApe.getThrowStrength()),
+			font.drawString(numberPos_Power.x, numberPos_Power.y, powerFormatter.format(activeApe.getThrowStrength()),
 					Color.black);
 
-			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(300, 150);
-			font.drawString(numberPos_Angle.x, numberPos_Angle.y, formatter.format(activeApe.getLocalAngleOfView()),
+			Vector2f numberPos_Angle = relativPosOnPanelToPixelPos(280, 150);
+			font.drawString(numberPos_Angle.x, numberPos_Angle.y, angleFormatter.format(activeApe.getLocalAngleOfView()),
 					Color.black);
 
 			Vector2f numberPos_Price = relativPosOnPanelToPixelPos(50, -280);

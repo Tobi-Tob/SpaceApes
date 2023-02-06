@@ -133,20 +133,27 @@ public class Ape extends Entity {
 		return throwStrength;
 	}
 
+	/**
+	 * throwStrength of ape between 1 and 7
+	 */
 	public void setThrowStrength(float power) {
-		if (power < 0 || power > 10) {
+		if (power < 1 || power > 7) {
 			throw new RuntimeException("Invalide Throw Strength");
 		}
 		throwStrength = power;
 	}
 
+	/**
+	 * throwStrength of ape between 1 and 7
+	 * @param power amount to change
+	 */
 	public void changeThrowStrength(float power) {
 		throwStrength = throwStrength + power;
-		if (throwStrength < 0) {
-			throwStrength = 0;
+		if (throwStrength < 1) {
+			throwStrength = 1;
 		}
-		if (throwStrength > 10) {
-			throwStrength = 10;
+		if (throwStrength > 7) {
+			throwStrength = 7;
 		}
 	}
 

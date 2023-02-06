@@ -17,7 +17,7 @@ public class MoveOnPlanetAction implements Action {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) { // TODO laufen ist noch nicht performant
 		Ape ape = Map.getInstance().getActiveApe();
 		if (ape.isInteractionAllowed() && ape.hasEnergy()) {
 			ape.stepOnPlanet(direction);

@@ -7,9 +7,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.StateBasedEntityManager;
@@ -32,6 +30,7 @@ public class Launch extends StateBasedGame {
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
 	public static boolean USE_FULL_SCREEN = false;
+	public static boolean PLAY_MUSIC = false;
 
 	public Launch() {
 		super("Space Apes"); // Name des Spiels
@@ -50,6 +49,9 @@ public class Launch extends StateBasedGame {
 
 		// Setze dieses StateBasedGame in einen App Container (oder Fenster)
 		AppGameContainer app = new AppGameContainer(new Launch());
+		app.setMinimumLogicUpdateInterval(20);
+		app.setMaximumLogicUpdateInterval(30);
+		app.setShowFPS(true);
 
 		// Lege die Einstellungen des Fensters fest und starte das Fenster
 		// (nicht aber im Vollbildmodus)

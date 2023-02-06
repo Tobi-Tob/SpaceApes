@@ -99,6 +99,7 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		entityManager.updateEntities(container, game, delta);
+		// System.out.println("Main Menu Updatefrequenz: " + delta + " ms");
 	}
 
 	/**
@@ -107,9 +108,10 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
-		if(!music.playing()) {
+		if(Launch.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
+		// System.out.println("Main Menu Render");
 	}
 
 	@Override

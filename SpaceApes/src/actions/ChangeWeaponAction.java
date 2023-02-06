@@ -4,10 +4,15 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.Component;
+import eea.engine.entity.Entity;
 import entities.Ape;
 import map.Map;
 
 public class ChangeWeaponAction extends ButtonPressedAction {
+	
+	public ChangeWeaponAction(Entity button) {
+		super(button);
+	}
 
 	@Override
 	protected void updateToPerform(GameContainer container, StateBasedGame game, int delta, Component event) {

@@ -7,21 +7,26 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import eea.engine.entity.Entity;
 
+/**
+ * This class is responsible for animating entities that act as buttons
+ * @author Tobi
+ *
+ */
 public abstract class ButtonPressedAction implements Action {
-	private boolean buttonPressed = false;
-	private float buttonScaleNotPressed;
+	private Entity button;
+	private float buttonScaleIfNotPressed;
+	
+	public ButtonPressedAction(Entity button) {
+		this.button = button;
+		this.buttonScaleIfNotPressed = button.getScale();
+	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta, Component event) {
-		Entity button = event.getOwnerEntity();
-		//System.out.println("buttonPressed: " + buttonPressed);
-		if (!buttonPressed) {
-			buttonScaleNotPressed = button.getScale();
-			button.setScale(buttonScaleNotPressed * 0.9f);
-			buttonPressed = true;
+		if (button.getScale() == buttonScaleIfNotPressed) {
+			button.setScale(buttonScaleIfNotPressed * 0.9f);
 		} else {
-			button.setScale(buttonScaleNotPressed);
-			buttonPressed = false;
+			button.setScale(buttonScaleIfNotPressed);
 		}
 		updateToPerform(container, game, delta, event);
 	}

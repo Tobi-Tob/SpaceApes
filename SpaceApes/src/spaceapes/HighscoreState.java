@@ -74,7 +74,7 @@ public class HighscoreState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
-		if (!music.playing()) {
+		if (Launch.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
 	}

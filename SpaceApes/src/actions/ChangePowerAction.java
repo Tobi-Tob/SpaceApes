@@ -4,14 +4,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.Component;
+import eea.engine.entity.Entity;
 import entities.Ape;
 import map.Map;
 
 public class ChangePowerAction extends ButtonPressedAction {
 	private float powerToChange;
 
-	public ChangePowerAction(float delta) {
-		powerToChange = delta;
+	public ChangePowerAction(float powerToChange, Entity button) {
+		super(button);
+		this.powerToChange = powerToChange;
 	}
 
 	@Override

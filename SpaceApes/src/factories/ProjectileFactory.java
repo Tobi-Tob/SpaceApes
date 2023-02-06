@@ -60,7 +60,7 @@ public class ProjectileFactory implements IEntityFactory {
 					break;
 
 				case SPIKEBALL:
-					//TODO 3 Projektile hinter einander
+					//TODO 2 Projektile hinter einander
 
 					projectile.setPrice(Constants.SPIKEBALL_PRIZE);
 					projectile.setMaxDamage(Constants.SPIKEBALL_MAX_DAMAGE);
@@ -81,7 +81,7 @@ public class ProjectileFactory implements IEntityFactory {
 					break;
 
 				case SHARD:
-					//TODO 10 Projektile in gleichzeitig in alle Richtungen
+					//TODO 5 Projektile gleichzeitig in alle Richtungen
 
 					projectile.setPrice(Constants.SHARD_PRIZE);
 					projectile.setMaxDamage(Constants.SHARD_MAX_DAMAGE);

@@ -106,7 +106,7 @@ public class Map {
 			}
 		}
 		if (amountOfActiveApes == 0) {
-			//throw new RuntimeException("No ape is active");
+			// throw new RuntimeException("No ape is active");
 			System.out.println("No ape is active");
 		}
 		if (amountOfActiveApes > 1) {
@@ -123,7 +123,7 @@ public class Map {
 		}
 		List<Ape> livingApes = new ArrayList<Ape>();
 		for (Ape ape : apes) {
-			if (ape.isAlive()) { 
+			if (ape.isAlive()) {
 				livingApes.add(ape);
 			} else { // tote Affen aus Liste entfernen
 				ape.setActive(false); // Wird zwar eh aus der Liste entfernt aber safty first
@@ -155,10 +155,12 @@ public class Map {
 			nextApe.setActive(true);
 			nextApe.setInteractionAllowed(true);
 			updateAimline();
-			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy() +  " | health = " + nextApe.getHealth() +  " | coins = " + nextApe.getCoins());
+			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy()
+					+ " | health = " + nextApe.getHealth() + " | coins = " + nextApe.getCoins());
 			controlPanel.setPanelAndComponentsVisible(true); // TODO
 			// TODO random spawner
-			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY, Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
+			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
+					Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
 		}
 	}
 
@@ -179,20 +181,21 @@ public class Map {
 	}
 
 	public void spawnItem(float probCoin, float probHealth, float probEnergy) {
-		
+
 		String itemName;
 		ItemType itemType;
-		
+
 		// Coin Spawnen
 		if (Utils.randomFloat(0, 1) < probCoin) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
 				itemName = "Coin";
-				
+
 				float probForCoinType = Utils.randomFloat(0, 1);
 				if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY) {
 					itemType = ItemType.COPPER_COIN;
-				} else if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY + Constants.GOLD_COIN_SPAWN_POSSIBILITY) {
+				} else if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY
+						+ Constants.GOLD_COIN_SPAWN_POSSIBILITY) {
 					itemType = ItemType.GOLD_COIN;
 				} else {
 					itemType = ItemType.DIAMOND_COIN;
@@ -202,7 +205,7 @@ public class Map {
 				map.addItem(coin);
 			}
 		}
-		
+
 		// Healthpack Spawnen
 		if (Utils.randomFloat(0, 1) < probHealth) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
@@ -210,12 +213,12 @@ public class Map {
 				itemName = "Healthpack";
 				itemType = ItemType.HEALTH_PACK;
 
-				//TODO Healthpack erzeugen!!
+				// TODO Healthpack erzeugen!!
 				Item healthpack = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
 				map.addItem(healthpack);
 			}
 		}
-		
+
 		// Energypack Spawnen
 		if (Utils.randomFloat(0, 1) < probEnergy) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
@@ -265,24 +268,28 @@ public class Map {
 					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
 			// TODO Variablen!!
-			int flightTime = 1000; // in ms
-			int updateFrequency = 30; // in ms
+			int flightTime = 500; // in ms
+			int updateFrequency = 20; // in ms
 			// sollte moeglichst nahe an der tatsaechlichen Updatefrequenz liegen
 			boolean draw = true;
-			int numberOfDots = 16;
+			// int numberOfDots = 16; // TL: Wird nicht benoetigt (numberOfDots ergibt sich
+			// aus der Laenge der Linie und ist nicht fix)
 			int iterations = (int) flightTime / updateFrequency;
 
 			// Hilfsprojektil wird erzeugt
-			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile",
-					positionOfProjectileLaunch, velocity, false, true, ProjectileType.COCONUT).createEntity();
+			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
+					velocity, false, true, ProjectileType.COCONUT).createEntity();
 			for (int i = 1; i < iterations; i++) {
 				if (dummyProjectile.explizitEulerStep(updateFrequency)) {
 					// Wenn Kollision mit einem Objekt
-					//break; -> laufe trotzdem durch die schleife, damit es nicht so wirkt als würde es laggen
+					break; // -> laufe trotzdem durch die schleife, damit es nicht so wirkt als wuerde es
+							// laggen TL: laggt jz nicht mehr
 				}
-//				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie gesetzt
-				if (draw && i % (iterations / numberOfDots) == 0) { // In bestimmten Abstaenden werden Punkte der Hilfslinie gesetzt
-					
+				if (draw && i % (60 / updateFrequency) == 0) { // In bestimmten Abstaenden
+					// werden Punkte der Hilfslinie gesetzt
+					// if (draw && i % (iterations / numberOfDots) == 0) { // In bestimmten
+					// Abstaenden werden Punkte der Hilfslinie gesetzt
+
 					Entity dot = new Entity("dot"); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations));
@@ -292,7 +299,8 @@ public class Map {
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO --> Warum steht hier TODO?? mehr Beschreibung bitte
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot); // TODO --> Warum steht hier TODO?? mehr
+																			// Beschreibung bitte
 				}
 			}
 		}
