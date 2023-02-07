@@ -12,6 +12,7 @@ import entities.AnimatedEntity;
 import entities.Ape;
 import entities.Projectile;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.GameplayState;
 import utils.Utils;
 
@@ -63,7 +64,7 @@ public class ProjectileBehaviorAction implements Action {
 			map.changeTurn();
 
 			// Zeige Explosion
-			AnimatedEntity explosion = new AnimatedEntity("Explosion", projectile.getCoordinates());
+			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION, projectile.getCoordinates());
 			Image[] images = new Image[4];
 			try {
 				images[0] = new Image("img/explosions/explosion1.png");
@@ -77,7 +78,7 @@ public class ProjectileBehaviorAction implements Action {
 			explosion.setImages(images);
 			explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
 			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
-			entityManager.addEntity(gs.getID(), explosion);
+			entityManager.addEntity(gs.getID(), explosion); // TODO Explosions Entitaeten muessen wieder entfernt werden
 
 		}
 		if (Math.abs(projectile.getCoordinates().x) > 10 || Math.abs(projectile.getCoordinates().y) > 8) {

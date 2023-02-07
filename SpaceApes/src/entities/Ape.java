@@ -2,7 +2,6 @@ package entities;
 
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
-import map.Map;
 import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;

@@ -12,47 +12,44 @@ import eea.engine.entity.Entity;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.ApeInfoSign;
+import spaceapes.Constants;
 import utils.Utils;
 
 public class ApeInfoSignFactory implements IEntityFactory {
 	
-	private final String entityID;
 	private final Vector2f coordinates;
-	private final float scale;
 	private Ape ape;
 	
-	public ApeInfoSignFactory(String entityID, Vector2f coordiantes, float scale, Ape ape) {
-		this.entityID = entityID;
+	public ApeInfoSignFactory(Vector2f coordiantes, Ape ape) {
 		this.coordinates = coordiantes;
-		this.scale = scale;
 		this.ape = ape;
 	}
 
 	@Override
 	public Entity createEntity() {
 
-		ApeInfoSign planetPanel = new ApeInfoSign(entityID);
+		ApeInfoSign apeInfoSign = new ApeInfoSign(Constants.APE_INFO_SIGN);
 		
-		planetPanel.setPosition(Utils.toPixelCoordinates(coordinates));
-		planetPanel.setRotation(0);
-		planetPanel.setScale(scale);
-		planetPanel.setApe(ape);
+		apeInfoSign.setPosition(Utils.toPixelCoordinates(coordinates));
+		apeInfoSign.setRotation(0);
+		float apeInfoSignInPixel = 700;
+		float desiredapeInfoSignInWorldUnits = 1.1f;
+		float signScalingFactor = desiredapeInfoSignInWorldUnits / Utils.pixelLengthToWorldLength(apeInfoSignInPixel);
+		apeInfoSign.setScale(signScalingFactor);
+		apeInfoSign.setApe(ape);
 		
-		int fontSize = Math.round(scale * 160);
-		planetPanel.setFontApe(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
-		
-		fontSize = Math.round(scale * 140);
-		planetPanel.setFontStats(new TrueTypeFont(new Font("Times New Roman", Font.PLAIN, fontSize), true));
+		int fontSize = Math.round(signScalingFactor * 200);
+		apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
 		
 		try {
-			ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/planet_panel.png"));
-			planetPanel.addComponent(imageRenderComponent);
-			planetPanel.setImageRenderComponent(imageRenderComponent);
+			ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/ape_info_sign.png"));
+			apeInfoSign.addComponent(imageRenderComponent);
+			apeInfoSign.setImageRenderComponent(imageRenderComponent);
 		} catch (SlickException e) {
 			System.err.println("Problem with planet panel image");
 		}
 		
-		return planetPanel;
+		return apeInfoSign;
 	}
 
 }

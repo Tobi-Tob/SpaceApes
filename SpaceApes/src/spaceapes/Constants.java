@@ -94,7 +94,11 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 
 ////////////////////// More Constants //////////////////////////////
 
-	// Id fuer Hilfslinien Punkte
+	// ID fuer Hilfslinien Punkte
 	public static final String AIMLINE_DOT = "AIMLINE_DOT";
+	// ID fuer ApeInfoSign
+	public static final String APE_INFO_SIGN = "APE_INFO_SIGN";
+	// ID fuer Explosionen
+	public static final String EXPLOSION = "EXPLOSION";
 
 }

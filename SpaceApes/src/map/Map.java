@@ -15,6 +15,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import entities.Ape;
+import entities.ApeInfoSign;
 import entities.Coin;
 import entities.ControlPanel;
 import entities.Item;
@@ -48,7 +49,7 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Entity>();
-		this.entityManager = StateBasedEntityManager.getInstance(); // TODO das ist unnötig
+		this.entityManager = StateBasedEntityManager.getInstance(); // TODO das ist unnoetig
 	}
 
 	public static Map getInstance() {
@@ -60,7 +61,7 @@ public class Map {
 		parser.initMap();
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
-		this.controlPanel = new ControlPanel("ControlPanel");
+		this.controlPanel = new ControlPanel("ControlPanel"); // TODO vllt in initMap?
 		controlPanel.initControlPanel();
 	}
 
@@ -128,6 +129,17 @@ public class Map {
 			} else { // tote Affen aus Liste entfernen
 				ape.setActive(false); // Wird zwar eh aus der Liste entfernt aber safty first
 				ape.setInteractionAllowed(false);
+				
+				// Entferne zugehoeriges ApeInfoSign
+				for (Entity e : entityManager.getEntitiesByState(Launch.GAMEPLAY_STATE)) {
+					if (e.getID() == Constants.APE_INFO_SIGN) {
+						if (((ApeInfoSign) e).getApe().equals(ape)) {
+							entityManager.removeEntity(Launch.GAMEPLAY_STATE, e);
+							System.out.println("ApeInfoSign removed");
+							break;
+						}
+					}
+				}
 				System.out.println(ape.getID() + " is dead");
 
 				// Ape faellt nach unten
@@ -158,7 +170,6 @@ public class Map {
 			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy()
 					+ " | health = " + nextApe.getHealth() + " | coins = " + nextApe.getCoins());
 			controlPanel.setPanelAndComponentsVisible(true); // TODO
-			// TODO random spawner
 			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
 					Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
 		}

@@ -19,32 +19,33 @@ import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
-public class Parser {
+public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird ja noch keine Datei
+						// gelesen)
 
 	private List<Entity> playerPlanets = new ArrayList<Entity>();
 
 	public void initMap() {
-
-		Map map = Map.getInstance();
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
-		initBackground(map);
-		initPlanets(map);
-		initApes(map); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
-		initApeInfoSigns(map); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
+		initBackground();
+		initPlanets();
+		initApes(); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
+		initApeInfoSigns(); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
 	}
 
-	protected void initBackground(Map map) {
+	protected void initBackground() {
+		Map map = Map.getInstance();
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void initPlanets(Map map) {
+	protected void initPlanets() {
+		Map map = Map.getInstance();
 
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
 
 		// TODO die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
 		// wenn es mehr als 2 Spieler geben koennen soll...
-		
+
 		// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
 		String namePlanetOne = "Planet1";
 		float xPlanetOne = Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f);
@@ -127,7 +128,8 @@ public class Parser {
 		}
 	}
 
-	protected void initApes(Map map) {
+	protected void initApes() {
+		Map map = Map.getInstance();
 
 		for (int i = 0; i < Launch.players.size(); i++) {
 
@@ -155,18 +157,21 @@ public class Parser {
 			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);
 		}
 	}
-	
-	protected void initApeInfoSigns(Map map) {
-		
-		
+
+	protected void initApeInfoSigns() {
+		Map map = Map.getInstance();
+
 		for (int i = 0; i < map.getApes().size(); i++) {
-			Planet planet = map.getApes().get(i).getPlanet();
-			String entityID = "PlanetPanel" + i;
-			Vector2f panelCoordinates = planet.getCoordinates();
-			float panelScale = planet.getScale() * 0.4f; //TODO es wäre schlauer den Scale über den Radius zu ermitteln (wegen den Ringplaneten)
-			
-			Entity planetPanel = new ApeInfoSignFactory(entityID, panelCoordinates, panelScale, map.getApes().get(i)).createEntity();
-			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, planetPanel);
+			Ape ape = map.getApes().get(i);
+			Planet planet = ape.getPlanet();
+			Vector2f panelCoordinates = planet.getCoordinates(); // Uebergibt man das der Factory oder machtr die das
+																	// intern selbst?
+//			float ApeInfoSignScale = planet.getScale() * 0.4f; // TODO es waere schlauer den Scale ueber den Radius zu
+//																// ermitteln
+//																// (wegen den Ringplaneten)
+
+			Entity apeInfoSign = new ApeInfoSignFactory(panelCoordinates, ape).createEntity();
+			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, apeInfoSign);
 		}
 	}
 }

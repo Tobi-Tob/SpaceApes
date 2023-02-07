@@ -13,32 +13,23 @@ import eea.engine.entity.Entity;
 public class ApeInfoSign extends Entity {
 
 	private ImageRenderComponent imageRenderComponent = null;
-	private TrueTypeFont fontApe;
-	private TrueTypeFont fontStats;
+	private TrueTypeFont font;
 	private Ape ape;
 
 	public ApeInfoSign(String entityID) {
 		super(entityID);
 	}
-	
+
 	public void setImageRenderComponent(ImageRenderComponent imageRenderComponent) {
 		this.imageRenderComponent = imageRenderComponent;
 	}
-	
-	public TrueTypeFont getFontApe() {
-		return fontApe;
+
+	public TrueTypeFont getFont() {
+		return font;
 	}
 
-	public void setFontApe(TrueTypeFont font) {
-		this.fontApe = font;
-	}
-	
-	public TrueTypeFont getFontStats() {
-		return fontStats;
-	}
-
-	public void setFontStats(TrueTypeFont font) {
-		this.fontStats = font;
+	public void setFont(TrueTypeFont font) {
+		this.font = font;
 	}
 
 	public Ape getApe() {
@@ -51,24 +42,21 @@ public class ApeInfoSign extends Entity {
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
-		if (!(imageRenderComponent == null)) {
+		if (this.isVisible() && !(imageRenderComponent == null)) {
 
 			imageRenderComponent.render(container, game, g);
 
-			Vector2f textPos = relativPosOnPanelToPixelPos(-180, -400);
-			fontApe.drawString(textPos.x, textPos.y, ape.getID(), Color.black);
-			
-			textPos = relativPosOnPanelToPixelPos(-350, -200);
-			fontStats.drawString(textPos.x, textPos.y, "Health: " + ape.getHealth(), Color.black);
-			
-			textPos = relativPosOnPanelToPixelPos(-350, 0);
-			fontStats.drawString(textPos.x, textPos.y, "Energy: " + (int) ape.getEnergy(), Color.black);
-			
-			textPos = relativPosOnPanelToPixelPos(-250, 200);
-			fontStats.drawString(textPos.x, textPos.y, "Coins: " + ape.getCoins(), Color.black);
+			Vector2f healthPos = relativPosOnPanelToPixelPos(0, -310);
+			font.drawString(healthPos.x, healthPos.y, Integer.toString(ape.getHealth()), Color.black);
+
+			Vector2f energyPos = relativPosOnPanelToPixelPos(0, -100);
+			font.drawString(energyPos.x, energyPos.y, Integer.toString(Math.round(ape.getEnergy())), Color.black);
+
+			Vector2f coinPos = relativPosOnPanelToPixelPos(0, 100);
+			font.drawString(coinPos.x, coinPos.y, Integer.toString(ape.getCoins()), Color.black);
 		}
 	}
-	
+
 	private Vector2f relativPosOnPanelToPixelPos(float x, float y) {
 		return new Vector2f(x, y).scale(getScale()).add(getPosition());
 	}
