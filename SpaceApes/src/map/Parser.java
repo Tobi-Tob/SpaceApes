@@ -28,8 +28,8 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground();
 		initPlanets();
-		initApes(); // parsePlanets() muss unbedingt davor ausgefuehrt werden!
-		initApeInfoSigns(); // parsePlanets() und parseApes() müssen unbedingt davor ausgefuehrt werden!
+		initApes(); // initPlanets() muss unbedingt davor ausgefuehrt werden!
+		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 	}
 
 	protected void initBackground() {

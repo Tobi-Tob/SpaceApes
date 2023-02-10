@@ -98,16 +98,17 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 
 ////////////////////// More Constants //////////////////////////////
 
-	// ID fuer Hilfslinien Punkte
+	// ID Hilfslinien Punkte
 	public static final String AIMLINE_DOT = "AIMLINE_DOT";
-	// ID fuer ApeInfoSign
+	// ID ApeInfoSign
 	public static final String APE_INFO_SIGN = "APE_INFO_SIGN";
-	// ID fuer Explosionen
+	// ID Explosionen
 	public static final String EXPLOSION = "EXPLOSION";
-	// ID fuer Damage Display Entity
+	// Damage Display Entity
 	public static final String DAMAGE_DISPLAY = "DAMAGE_DISPLAY";
-
 	public static final TrueTypeFont DAMAGE_FONT = new TrueTypeFont(
 			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * Launch.WIDTH)), true);
+	// ID Control Panel
+	public static final String CONTROL_PANEL = "CONTROL_PANEL";
 
 }

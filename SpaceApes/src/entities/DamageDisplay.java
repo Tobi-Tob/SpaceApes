@@ -6,7 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 import spaceapes.Constants;
+import spaceapes.Launch;
 import utils.Utils;
 
 /**
@@ -18,6 +20,7 @@ import utils.Utils;
 public class DamageDisplay extends Entity {
 
 	private Ape ape;
+	private Color color;
 	private String damageString;
 
 	private float posX; // In Pixel Koordinaten
@@ -29,6 +32,7 @@ public class DamageDisplay extends Entity {
 	public DamageDisplay(Ape ape, int damage, int displayTime) {
 		super(Constants.DAMAGE_DISPLAY);
 		this.ape = ape;
+		this.color = this.colorFunction(damage);
 		this.damageString = Integer.toString(-damage);
 
 		Vector2f pos = getPositionAboveApe(0.6f);
@@ -54,6 +58,19 @@ public class DamageDisplay extends Entity {
 		return Utils.toPixelCoordinates(relativPos.add(ape.getPlanet().getCoordinates()));
 	}
 
+	private Color colorFunction(int damage) {
+		int r, g, b;
+		r = g = b = 255;
+		b -= (int) (12f * (damage - 10)); // mit groesserem damage wird die Farbe gelblicher
+		g -= (int) (8f * (damage - 30)); // noch groesserer damage und die Farbe wird roetlicher
+		if (damage >= 100) {
+			r = 100; // dei damage ueber 100 blau
+			g = b = 255;
+		}
+
+		return new Color(r, g, b);
+	}
+
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		timer += delta;
@@ -62,7 +79,9 @@ public class DamageDisplay extends Entity {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
 		if (timer < displayTime) {
-			Constants.DAMAGE_FONT.drawString(posX, posY, damageString, Color.red);
+			Constants.DAMAGE_FONT.drawString(posX, posY, damageString, color);
+		} else {
+			StateBasedEntityManager.getInstance().removeEntity(Launch.GAMEPLAY_STATE, this);
 		}
 	}
 

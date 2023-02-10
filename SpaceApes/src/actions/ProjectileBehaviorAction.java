@@ -1,8 +1,12 @@
 package actions;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
@@ -27,13 +31,14 @@ public class ProjectileBehaviorAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		
+
 		if (projectile.explizitEulerStep(delta)) { // Berechnet so lange den naechsten Schritt, bis Kollision auftritt und
 													// explizitEulerStep true zurueck gibt
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
 			// Im Kollisionsfall:
 			entityManager.removeEntity(Launch.GAMEPLAY_STATE, projectile);
+			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>();
 
 			for (Ape ape : map.getApes()) {
 				float distanceApeToExplosion = ape.getWorldCoordinates().distance(projectile.getCoordinates());
@@ -48,22 +53,24 @@ public class ProjectileBehaviorAction implements Action {
 					int damage = Math.round(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
 																												// Interpolation
 					if (distanceApeHitboxToExplosion < 0.1f) {
-						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer immer maximaler Schaden
-											// verursacht wird
+						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer maximaler Schaden verursacht
+											// wird
 					}
 					ape.changeHealth(-damage); // damage muss negativ uebergeben werden, da in der Methode addiert wird
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
-					DamageDisplay display = new DamageDisplay(ape, damage, 1500);
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
-//					if (ape.getHealth() <= 0) {
-//						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da
-//								// sich die momentan zu durchlaufende Liste veraendert hat
-//					//MR jetzt darf das nicht mehr abgefangen werden!! sonst bekommt nur ein Affe Schaden
-//					}
+					damageApeTable.put(damage, ape);
 				}
 			}
 
 			map.changeTurn();
+			
+			// Erzeuge DamageDisplays zur Schadens Visualisierung
+			for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
+			    Integer damage = entry.getKey();
+			    Ape damagedApe = entry.getValue();
+			    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
+				entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
+			}
 
 			// Zeige Explosion
 			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION, projectile.getCoordinates());
@@ -78,7 +85,7 @@ public class ProjectileBehaviorAction implements Action {
 				System.err.println("Problem with image for explosion");
 			}
 			explosion.setImages(images);
-			explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
+			explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder
 																		// entfernt werden

@@ -21,6 +21,7 @@ import entities.ControlPanel;
 import entities.Item;
 import entities.Planet;
 import entities.Projectile;
+import entities.ControlPanel.Location;
 import events.LeavingWorldEvent;
 import factories.ItemFactory;
 import factories.ItemFactory.ItemType;
@@ -61,7 +62,7 @@ public class Map {
 		parser.initMap();
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
-		this.controlPanel = new ControlPanel("ControlPanel"); // TODO vllt in initMap?
+		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
 		controlPanel.initControlPanel();
 	}
 

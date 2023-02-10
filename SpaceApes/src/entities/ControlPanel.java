@@ -30,11 +30,17 @@ import events.MouseDownEvent;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
 public class ControlPanel extends Entity {
 
+	public enum Location {
+		TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, FREE
+	};
+
+	private Location location;
 	private Vector2f coordinates; // Pixel Position
 	public List<Entity> listOfCorrespondingEntities;
 	public List<Projectile> listOfShopProjectiles;
@@ -44,14 +50,15 @@ public class ControlPanel extends Entity {
 	DecimalFormat angleFormatter;
 	ImageRenderComponent imageRenderComponent = null;
 
-	public ControlPanel(String entityID) {
-		super(entityID);
+	public ControlPanel(Location location) {
+		super(Constants.CONTROL_PANEL);
+		this.location = location;
 		listOfCorrespondingEntities = new ArrayList<>();
 		listOfShopProjectiles = new ArrayList<>();
 	}
 
 	public void initControlPanel() {
-		coordinates = findBestPosition();
+		coordinates = calcPosition();
 		this.setPosition(coordinates);
 		float controlpanelWidthInPixel = 1483;
 		float desiredControlpanelWidth = 0.3f; // im Verhaeltnis zur Fenster Breite
@@ -282,29 +289,42 @@ public class ControlPanel extends Entity {
 	}
 
 	/**
-	 * Bestimmt unter 4 vorgegebenen Eck-Positionen, diejenige, die den groessten
-	 * Qualitaetswert besitzt (Moeglichst keinen Planeten verdeckt)
+	 * Bestimmt, wenn location = FREE, unter 4 vorgegebenen Eck-Positionen,
+	 * diejenige, die den groessten Qualitaetswert besitzt (Moeglichst keinen
+	 * Planeten verdeckt) Anderenfalls wird die Position fuer die erzwungene
+	 * location zurueckgegeben
 	 * 
-	 * @param planetData Planetenpositionen
-	 * @return Vector2f Pixel Position, die am besten fuer das Control Panel geeignet ist.
+	 * @return Vector2f Pixel Position
 	 */
-	private Vector2f findBestPosition() {
+	private Vector2f calcPosition() {
 		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f rightUpperCorner = new Vector2f(0.82f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
 		Vector2f leftLowerCorner = new Vector2f(0.18f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
 		Vector2f rightLowerCorner = new Vector2f(0.82f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
+		if (location == Location.TOP_LEFT) {
+			return leftUpperCorner;
+		}
+		if (location == Location.TOP_RIGHT) {
+			return rightUpperCorner;
+		}
+		if (location == Location.BOTTOM_LEFT) {
+			return leftLowerCorner;
+		}
+		if (location == Location.BOTTOM_RIGHT) {
+			return rightLowerCorner;
+		}
 
-		HashMap<Vector2f, Float> positionsToDistance = new HashMap<Vector2f, Float>();
+		HashMap<Vector2f, Float> positionQualityTable = new HashMap<Vector2f, Float>();
 		// Die HashMap speichtert als Key die 4 moeglichen Positionen und als Value die
 		// Qualitaet der entsprechenden Position
-		positionsToDistance.put(leftUpperCorner, getQuality(leftUpperCorner));
-		positionsToDistance.put(rightUpperCorner, getQuality(rightUpperCorner));
-		positionsToDistance.put(leftLowerCorner, getQuality(leftLowerCorner));
-		positionsToDistance.put(rightLowerCorner, getQuality(rightLowerCorner));
+		positionQualityTable.put(leftUpperCorner, getQuality(leftUpperCorner));
+		positionQualityTable.put(rightUpperCorner, getQuality(rightUpperCorner));
+		positionQualityTable.put(leftLowerCorner, getQuality(leftLowerCorner));
+		positionQualityTable.put(rightLowerCorner, getQuality(rightLowerCorner));
 
 		// Durchsucht die HashMap nach dem groessten Value und gibt den entsprechenden
 		// Key zurueck.
-		Vector2f bestPosition = Collections.max(positionsToDistance.entrySet(), HashMap.Entry.comparingByValue()).getKey();
+		Vector2f bestPosition = Collections.max(positionQualityTable.entrySet(), HashMap.Entry.comparingByValue()).getKey();
 		return bestPosition;
 	}
 
