@@ -35,7 +35,7 @@ import utils.Utils;
 
 public class ControlPanel extends Entity {
 
-	private Vector2f coordinates;
+	private Vector2f coordinates; // Pixel Position
 	public List<Entity> listOfCorrespondingEntities;
 	public List<Projectile> listOfShopProjectiles;
 	float panelScaleFactor;
@@ -286,7 +286,7 @@ public class ControlPanel extends Entity {
 	 * Qualitaetswert besitzt (Moeglichst keinen Planeten verdeckt)
 	 * 
 	 * @param planetData Planetenpositionen
-	 * @return Vector2f Position, die am besten fuer das Control Panel geeignet ist.
+	 * @return Vector2f Pixel Position, die am besten fuer das Control Panel geeignet ist.
 	 */
 	private Vector2f findBestPosition() {
 		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);

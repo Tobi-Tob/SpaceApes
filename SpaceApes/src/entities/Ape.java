@@ -1,6 +1,14 @@
 package entities;
 
+import java.awt.Font;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
+
 import eea.engine.entity.Entity;
 import spaceapes.Constants;
 import spaceapes.Launch;
@@ -55,7 +63,8 @@ public class Ape extends Entity {
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
 	public void stepOnPlanet(float direction) {
-		this.angleOnPlanet += direction * movementSpeed * Launch.UPDATE_INTERVAL / distancePlanetCenter; // Update des Winkels
+		this.angleOnPlanet += direction * movementSpeed * Launch.UPDATE_INTERVAL / distancePlanetCenter; // Update des
+																											// Winkels
 		this.worldCoordinates = calcWorldCoordinates(); // Update der Koordinaten
 		setPosition(Utils.toPixelCoordinates(getWorldCoordinates()));
 		setRotation(angleOnPlanet + 90f);
@@ -145,6 +154,7 @@ public class Ape extends Entity {
 
 	/**
 	 * throwStrength of ape between 1 and 7
+	 * 
 	 * @param power amount to change
 	 */
 	public void changeThrowStrength(float power) {
@@ -184,7 +194,7 @@ public class Ape extends Entity {
 	public boolean isAlive() {
 		return health > 0;
 	}
-	
+
 	public boolean hasEnergy() {
 		return energy > 0;
 	}

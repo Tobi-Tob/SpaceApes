@@ -10,10 +10,11 @@ import eea.engine.component.Component;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.AnimatedEntity;
 import entities.Ape;
+import entities.DamageDisplay;
 import entities.Projectile;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.GameplayState;
+import spaceapes.Launch;
 import utils.Utils;
 
 public class ProjectileBehaviorAction implements Action {
@@ -26,14 +27,13 @@ public class ProjectileBehaviorAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		GameplayState gs = (GameplayState) sb.getCurrentState();
-		StateBasedEntityManager entityManager = gs.getEntityManager();
-		Map map = Map.getInstance();
-
+		
 		if (projectile.explizitEulerStep(delta)) { // Berechnet so lange den naechsten Schritt, bis Kollision auftritt und
 													// explizitEulerStep true zurueck gibt
+			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+			Map map = Map.getInstance();
 			// Im Kollisionsfall:
-			entityManager.removeEntity(gs.getID(), projectile);
+			entityManager.removeEntity(Launch.GAMEPLAY_STATE, projectile);
 
 			for (Ape ape : map.getApes()) {
 				float distanceApeToExplosion = ape.getWorldCoordinates().distance(projectile.getCoordinates());
@@ -51,8 +51,10 @@ public class ProjectileBehaviorAction implements Action {
 						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer immer maximaler Schaden
 											// verursacht wird
 					}
-					ape.changeHealth(-damage); //damage muss negativ uebergeben werden, da in der Methode addiert wird
+					ape.changeHealth(-damage); // damage muss negativ uebergeben werden, da in der Methode addiert wird
 					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
+					DamageDisplay display = new DamageDisplay(ape, damage, 1500);
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
 //					if (ape.getHealth() <= 0) {
 //						break; // Schleife darf nicht weiter durchlaufen werden wenn ein Affe gestorben ist, da
 //								// sich die momentan zu durchlaufende Liste veraendert hat
@@ -78,12 +80,15 @@ public class ProjectileBehaviorAction implements Action {
 			explosion.setImages(images);
 			explosion.scaleAndRotateAnimation(0.3f, Utils.randomFloat(0, 360));
 			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
-			entityManager.addEntity(gs.getID(), explosion); // TODO Explosions Entitaeten muessen wieder entfernt werden
+			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder
+																		// entfernt werden
 
 		}
 		if (Math.abs(projectile.getCoordinates().x) > 10 || Math.abs(projectile.getCoordinates().y) > 8) {
 			// Zu weit ausserhalb des Bildes
-			entityManager.removeEntity(gs.getID(), projectile);
+			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+			Map map = Map.getInstance();
+			entityManager.removeEntity(Launch.GAMEPLAY_STATE, projectile);
 			map.changeTurn();
 		}
 	}
