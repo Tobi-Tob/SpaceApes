@@ -7,7 +7,6 @@ import org.newdawn.slick.geom.Vector2f;
 import actions.CollisionAction;
 import actions.ProjectileBehaviorAction;
 import eea.engine.component.render.ImageRenderComponent;
-import eea.engine.entity.Entity;
 import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.interfaces.IEntityFactory;
@@ -21,16 +20,16 @@ public class ProjectileFactory implements IEntityFactory {
 		COCONUT, SPIKEBALL, BOMB, SHARD, CRYSTAL, TURTLE
 	};
 
-	private final String name;
+	private final String iD;
 	private final Vector2f position;
 	private final Vector2f velocity;
 	private final boolean visible;
 	private final boolean isAffectedByEnvironment;
 	private final ProjectileType type;
 
-	public ProjectileFactory(String name, Vector2f position, Vector2f velocity, boolean visible,
+	public ProjectileFactory(String iD, Vector2f position, Vector2f velocity, boolean visible,
 			boolean isAffectedByEnvironment, ProjectileType type) {
-		this.name = name;
+		this.iD = iD;
 		this.position = position;
 		this.velocity = velocity;
 		this.visible = visible;
@@ -39,9 +38,9 @@ public class ProjectileFactory implements IEntityFactory {
 	}
 
 	@Override
-	public Entity createEntity() {
+	public Projectile createEntity() {
 
-		Projectile projectile = new Projectile(name, position, velocity);
+		Projectile projectile = new Projectile(iD, position, velocity);
 		projectile.setType(type);
 		projectile.setVisible(visible);
 

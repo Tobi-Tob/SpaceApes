@@ -1,7 +1,6 @@
 package spaceapes;
 
 import java.util.List;
-import java.awt.Font;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.Display;
@@ -9,7 +8,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.StateBasedEntityManager;
@@ -20,7 +18,7 @@ import eea.engine.entity.StateBasedEntityManager;
  *         Diese Klasse startet das Spiel "Space Apes". Sie enthaelt zwei
  *         State's fuer das Menue und das eigentliche Spiel.
  */
-public class Launch extends StateBasedGame {
+public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;

@@ -8,7 +8,6 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.component.render.ImageRenderComponent;
-import eea.engine.entity.Entity;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.ApeInfoSign;
@@ -26,9 +25,9 @@ public class ApeInfoSignFactory implements IEntityFactory {
 	}
 
 	@Override
-	public Entity createEntity() {
+	public ApeInfoSign createEntity() {
 
-		ApeInfoSign apeInfoSign = new ApeInfoSign(Constants.APE_INFO_SIGN);
+		ApeInfoSign apeInfoSign = new ApeInfoSign(Constants.APE_INFO_SIGN_ID);
 		
 		apeInfoSign.setPosition(Utils.toPixelCoordinates(coordinates));
 		apeInfoSign.setRotation(0);

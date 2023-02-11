@@ -6,6 +6,8 @@ import org.newdawn.slick.TrueTypeFont;
 
 public final class Constants { // TODO Constants vllt ins package utils verschieben? und package spaceapes in
 								// gamestates umbennen?
+	// TODO vllt zum Interface machen. Alle klassen die zugriff auf die konstanten
+	// benoetigen koennen das dann implementieren
 
 //////////////////////// World Constants //////////////////////////
 
@@ -16,6 +18,7 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 
 	public static final int APE_MAX_HEALTH = 100;
 	public static final int APE_MAX_ENERGY = 100;
+	public static final float APE_MOVMENT_SPEED = 0.05f;
 
 ////////////////////// Projectile Constants //////////////////////////////
 
@@ -64,16 +67,19 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 ////////////////////// Item Constants //////////////////////////////
 
 	// Energy Pack
+	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
 	public static final int ENERGY_PACK_VALUE = 20;
 	public static final String ENERGY_IMAGE_PATH = "img/items/energy.png";
 	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.3f;
 
 	// Health Pack
+	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
 	public static final int HEALTH_PACK_VALUE = 20;
 	public static final String HEALTH_IMAGE_PATH = "img/items/health.png";
 	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.3f;
 
 	// Coins general
+	public static final String COIN_ID = "COIN";
 	public static final float COIN_SPAWN_POSSIBILITY = 0.5f;
 
 	// Copper Coin
@@ -98,17 +104,23 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 
 ////////////////////// More Constants //////////////////////////////
 
+	// ID Hintergrund
+	public static final String BACKGROUND_ID = "BACKGROUND";
+	// ID Projektil
+	public static final String PROJECTILE_ID = "PROJECTILE";
+	public static final String SHOP_PROJECTILE_ID = "SHOP_PROJECTILE";
+	public static final String DUMMY_PROJECTILE_ID = "DUMMY_PROJECTILE";
 	// ID Hilfslinien Punkte
-	public static final String AIMLINE_DOT = "AIMLINE_DOT";
+	public static final String AIMLINE_DOT_ID = "AIMLINE_DOT";
 	// ID ApeInfoSign
-	public static final String APE_INFO_SIGN = "APE_INFO_SIGN";
+	public static final String APE_INFO_SIGN_ID = "APE_INFO_SIGN";
 	// ID Explosionen
-	public static final String EXPLOSION = "EXPLOSION";
+	public static final String EXPLOSION_ID = "EXPLOSION";
 	// Damage Display Entity
-	public static final String DAMAGE_DISPLAY = "DAMAGE_DISPLAY";
+	public static final String DAMAGE_DISPLAY_ID = "DAMAGE_DISPLAY";
 	public static final TrueTypeFont DAMAGE_FONT = new TrueTypeFont(
 			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * Launch.WIDTH)), true);
 	// ID Control Panel
-	public static final String CONTROL_PANEL = "CONTROL_PANEL";
+	public static final String CONTROL_PANEL_ID = "CONTROL_PANEL";
 
 }

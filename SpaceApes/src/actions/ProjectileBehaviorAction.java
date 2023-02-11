@@ -73,7 +73,7 @@ public class ProjectileBehaviorAction implements Action {
 			}
 
 			// Zeige Explosion
-			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION, projectile.getCoordinates());
+			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
 			Image[] images = new Image[4];
 			try {
 				images[0] = new Image("img/explosions/explosion1.png");

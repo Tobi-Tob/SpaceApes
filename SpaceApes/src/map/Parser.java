@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
+import entities.ApeInfoSign;
 import entities.Planet;
 import factories.ApeFactory;
 import factories.BackgroundFactory;
@@ -54,7 +55,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		float radiusPlanetOne = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetOne = (int) (radiusPlanetOne * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-		Planet planetOne = (Planet) new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne, coordinatesPlanetOne,
+		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne, coordinatesPlanetOne,
 				PlanetType.PLAYER).createEntity();
 		// Spielerplaneten und fuer die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
@@ -70,7 +71,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		float radiusPlanetTwo = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetTwo = (int) (radiusPlanetTwo * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-		Planet planetTwo = (Planet) new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo, coordinatesPlanetTwo,
+		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo, coordinatesPlanetTwo,
 				PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
@@ -85,8 +86,8 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 				float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
 				int massBlackHole = (int) (radiusBlackHole * 250);
 
-				Planet blackHole = (Planet) new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole,
-						blackHolePosition, PlanetType.BLACKHOLE).createEntity();
+				Planet blackHole = new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole, blackHolePosition,
+						PlanetType.BLACKHOLE).createEntity();
 				map.addPlanet(blackHole);
 				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, blackHole);
 			}
@@ -101,8 +102,8 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 				float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
 				int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
 
-				Planet antiPlanet = (Planet) new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
-						antiPlanetPosition, PlanetType.ANTI).createEntity();
+				Planet antiPlanet = new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet, antiPlanetPosition,
+						PlanetType.ANTI).createEntity();
 				map.addPlanet(antiPlanet);
 				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, antiPlanet);
 			}
@@ -120,8 +121,8 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 				float radiusPlanet = Utils.randomFloat(0.75f, 1.5f);
 				int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-				Planet planet = (Planet) new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition,
-						PlanetType.NORMAL).createEntity();
+				Planet planet = new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition, PlanetType.NORMAL)
+						.createEntity();
 				map.addPlanet(planet);
 				map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planet);
 			}
@@ -141,19 +142,20 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 			} else {
 				homePlanet = (Planet) playerPlanets.get(i);
 			}
-			int health = 100;
-			int energy = 100;
+			int health = Constants.APE_MAX_HEALTH;
+			int energy = Constants.APE_MAX_ENERGY;
 			int apeImage = i + 1;
 			boolean apeActive = (i == 0);
 			boolean apeInteraction = (i == 0);
-			float movementSpeed = 0.05f;
+			float movementSpeed = Constants.APE_MOVMENT_SPEED;
 			float angleOnPlanet = Utils.randomFloat(0, 360);
 			float angleOfView = 0;
 			float throwStrength = 5f;
 
-			Entity ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
+			Ape ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
 					movementSpeed, angleOnPlanet, angleOfView, throwStrength).createEntity();
-			map.addApe((Ape) ape);
+			// TODO eine Apefactory fuer alle Apes?
+			map.addApe(ape);
 			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);
 		}
 	}
@@ -170,7 +172,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 //																// ermitteln
 //																// (wegen den Ringplaneten)
 
-			Entity apeInfoSign = new ApeInfoSignFactory(panelCoordinates, ape).createEntity();
+			ApeInfoSign apeInfoSign = new ApeInfoSignFactory(panelCoordinates, ape).createEntity();
 			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, apeInfoSign);
 		}
 	}

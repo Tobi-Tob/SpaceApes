@@ -25,7 +25,7 @@ public class ApeFactory implements IEntityFactory {
 	private final Planet homePlanet;
 	private final int health;
 	private final int energy;
-	private final int apeImage;
+	private final int apeImageIndex;
 	private final boolean isActive;
 	private final boolean isInteractionAllowed;
 	private final float angleOnPlanet;
@@ -39,14 +39,14 @@ public class ApeFactory implements IEntityFactory {
 	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
 	private final float distancePlanetCenter;
 
-	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImage, boolean isActive,
+	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImageIndex, boolean isActive,
 			boolean isInteractionAllowed, float movementSpeed, float angleOnPlanet, float angleOfView,
 			float throwStrength) {
 		this.name = name;
 		this.homePlanet = homePlanet;
 		this.health = health;
 		this.energy = energy;
-		this.apeImage = apeImage;
+		this.apeImageIndex = apeImageIndex;
 		this.isActive = isActive;
 		this.isInteractionAllowed = isInteractionAllowed;
 		this.movementSpeed = movementSpeed;
@@ -61,7 +61,7 @@ public class ApeFactory implements IEntityFactory {
 	}
 
 	@Override
-	public Entity createEntity() {
+	public Ape createEntity() {
 
 		Ape ape = new Ape(name);
 
@@ -81,7 +81,7 @@ public class ApeFactory implements IEntityFactory {
 		ape.setRotation(angleOnPlanet + 90f);
 
 		try {
-			ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImage + ".png")));
+			ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImageIndex + ".png")));
 		} catch (SlickException | RuntimeException e) {
 			try {
 				ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape1.png")));

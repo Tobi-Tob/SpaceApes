@@ -30,7 +30,7 @@ public class DamageDisplay extends Entity {
 	private int displayTime; // in ms
 
 	public DamageDisplay(Ape ape, int damage, int displayTime) {
-		super(Constants.DAMAGE_DISPLAY);
+		super(Constants.DAMAGE_DISPLAY_ID);
 		this.ape = ape;
 		this.color = this.colorFunction(damage);
 		this.damageString = Integer.toString(-damage);

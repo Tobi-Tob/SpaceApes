@@ -51,7 +51,7 @@ public class ControlPanel extends Entity {
 	ImageRenderComponent imageRenderComponent = null;
 
 	public ControlPanel(Location location) {
-		super(Constants.CONTROL_PANEL);
+		super(Constants.CONTROL_PANEL_ID);
 		this.location = location;
 		listOfCorrespondingEntities = new ArrayList<>();
 		listOfShopProjectiles = new ArrayList<>();
@@ -205,8 +205,8 @@ public class ControlPanel extends Entity {
 	private void initShopProjectiles(List<ProjectileType> types) {
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		for (ProjectileType type : types) {
-			Projectile shopProjectile = (Projectile) new ProjectileFactory("ShopProjectile", new Vector2f(),
-					new Vector2f(), true, false, type).createEntity();
+			Projectile shopProjectile = new ProjectileFactory(Constants.SHOP_PROJECTILE_ID, new Vector2f(), new Vector2f(),
+					true, false, type).createEntity();
 			shopProjectile.setPosition(relativPosOnPanelToPixelPos(380, -230));
 			shopProjectile.setVisible(false);
 
@@ -324,7 +324,8 @@ public class ControlPanel extends Entity {
 
 		// Durchsucht die HashMap nach dem groessten Value und gibt den entsprechenden
 		// Key zurueck.
-		Vector2f bestPosition = Collections.max(positionQualityTable.entrySet(), HashMap.Entry.comparingByValue()).getKey();
+		Vector2f bestPosition = Collections.max(positionQualityTable.entrySet(), HashMap.Entry.comparingByValue())
+				.getKey();
 		return bestPosition;
 	}
 

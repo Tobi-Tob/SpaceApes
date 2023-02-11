@@ -10,7 +10,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import eea.engine.component.render.ImageRenderComponent;
-import eea.engine.entity.Entity;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Planet;
 import utils.Utils;
@@ -42,7 +41,7 @@ public class PlanetFactory implements IEntityFactory {
 	}
 	
 	@Override
-	public Entity createEntity() {
+	public Planet createEntity() {
 		
 		Planet planet = new Planet(name);
 		

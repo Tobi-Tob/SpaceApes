@@ -12,6 +12,7 @@ import entities.Projectile;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.GameplayState;
 import utils.Utils;
 
@@ -53,7 +54,7 @@ public class ShootAction implements Action {
 						Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
 
 				// Projektil wird erzeugt
-				Projectile projectile = (Projectile) new ProjectileFactory("Projectile", positionOfProjectileLaunch,
+				Projectile projectile = new ProjectileFactory(Constants.PROJECTILE_ID, positionOfProjectileLaunch,
 						velocity, true, true, selectedType).createEntity();
 
 				entityManager.addEntity(gs.getID(), projectile);

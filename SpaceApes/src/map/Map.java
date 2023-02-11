@@ -12,11 +12,9 @@ import eea.engine.action.basicactions.MoveDownAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.event.basicevents.LeavingScreenEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import entities.Ape;
 import entities.ApeInfoSign;
-import entities.Coin;
 import entities.ControlPanel;
 import entities.Item;
 import entities.Planet;
@@ -25,9 +23,7 @@ import entities.ControlPanel.Location;
 import events.LeavingWorldEvent;
 import factories.ItemFactory;
 import factories.ItemFactory.ItemType;
-import factories.PlanetFactory;
 import factories.ProjectileFactory;
-import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Constants;
 import spaceapes.Launch;
@@ -130,10 +126,10 @@ public class Map {
 			} else { // tote Affen aus Liste entfernen
 				ape.setActive(false); // Wird zwar eh aus der Liste entfernt aber safty first
 				ape.setInteractionAllowed(false);
-				
+
 				// Entferne zugehoeriges ApeInfoSign
 				for (Entity e : entityManager.getEntitiesByState(Launch.GAMEPLAY_STATE)) {
-					if (e.getID() == Constants.APE_INFO_SIGN) {
+					if (e.getID() == Constants.APE_INFO_SIGN_ID) {
 						if (((ApeInfoSign) e).getApe().equals(ape)) {
 							entityManager.removeEntity(Launch.GAMEPLAY_STATE, e);
 							System.out.println("ApeInfoSign removed");
@@ -194,14 +190,12 @@ public class Map {
 
 	public void spawnItem(float probCoin, float probHealth, float probEnergy) {
 
-		String itemName;
 		ItemType itemType;
 
 		// Coin Spawnen
 		if (Utils.randomFloat(0, 1) < probCoin) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				itemName = "Coin";
 
 				float probForCoinType = Utils.randomFloat(0, 1);
 				if (probForCoinType < Constants.COPPER_COIN_SPAWN_POSSIBILITY) {
@@ -213,7 +207,7 @@ public class Map {
 					itemType = ItemType.DIAMOND_COIN;
 				}
 
-				Item coin = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				Item coin = new ItemFactory(itemType, itemPosition).createEntity();
 				map.addItem(coin);
 			}
 		}
@@ -222,11 +216,9 @@ public class Map {
 		if (Utils.randomFloat(0, 1) < probHealth) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				itemName = "Healthpack";
 				itemType = ItemType.HEALTH_PACK;
 
-				// TODO Healthpack erzeugen!!
-				Item healthpack = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				Item healthpack = new ItemFactory(itemType, itemPosition).createEntity();
 				map.addItem(healthpack);
 			}
 		}
@@ -235,11 +227,9 @@ public class Map {
 		if (Utils.randomFloat(0, 1) < probEnergy) {
 			Vector2f itemPosition = map.findValidPosition(2, 10);
 			if (itemPosition != null) {
-				itemName = "Energypack";
 				itemType = ItemType.ENERGY_PACK;
 
-				// TODO Energypack erzeugen!!
-				Item energypack = (Item) new ItemFactory(itemName, itemType, itemPosition).createEntity();
+				Item energypack = new ItemFactory(itemType, itemPosition).createEntity();
 				map.addItem(energypack);
 			}
 		}
@@ -250,7 +240,7 @@ public class Map {
 	 */
 	public void removeAimeLine() {
 		for (int i = 0; i < 100; i++) { // MR: 100 ist gehardcoded!
-			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, Constants.AIMLINE_DOT);
+			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, Constants.AIMLINE_DOT_ID);
 			if (dot == null) {
 				break;
 			}
@@ -288,7 +278,7 @@ public class Map {
 			int iterations = Math.round(flightTime / updateFrequency);
 
 			// Hilfsprojektil wird erzeugt
-			Projectile dummyProjectile = (Projectile) new ProjectileFactory("DummyProjectile", positionOfProjectileLaunch,
+			Projectile dummyProjectile = new ProjectileFactory(Constants.DUMMY_PROJECTILE_ID, positionOfProjectileLaunch,
 					velocity, false, true, ProjectileType.COCONUT).createEntity();
 			for (int i = 0; i <= iterations; i++) {
 				if (dummyProjectile.explizitEulerStep((int) updateFrequency)) {
@@ -301,7 +291,7 @@ public class Map {
 					// if (draw && i % (iterations / numberOfDots) == 0) { // In bestimmten
 					// Abstaenden werden Punkte der Hilfslinie gesetzt
 
-					Entity dot = new Entity(Constants.AIMLINE_DOT); // Entitaet fuer einen Punkt der Linie
+					Entity dot = new Entity(Constants.AIMLINE_DOT_ID); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations)); // TODO Scalingfactor abhaengig von Bildschirmgroesse
 					try {
