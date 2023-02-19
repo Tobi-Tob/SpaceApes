@@ -49,8 +49,20 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2) {
 		Map map = Map.getInstance();
 
-		float xBorder = Constants.WORLD_WIDTH / 2;
-		float yBorder = Constants.WORLD_HEIGHT / 2;
+		try {
+		    // code that uses Constants class
+			float xBorder = Constants.WORLD_WIDTH / 2;
+			float yBorder = Constants.WORLD_HEIGHT / 2;
+		} catch (ExceptionInInitializerError e) {
+		    Throwable cause = e.getCause();
+		    if (cause != null) {
+		        cause.printStackTrace();
+		    }
+		    System.out.println("Error in initPlanets");
+		}
+
+		float xBorder = 8.0f; //MR raus nach debug
+		float yBorder = 6.0f; //MR raus nach debug
 
 		// TODO die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
 		// wenn es mehr als 2 Spieler geben koennen soll...

@@ -7,8 +7,19 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import tests.tutoren.suites.TestsuiteAll;
 
+//MR use this when JUnit5 is used
 @RunWith(Suite.class)
 @SuiteClasses(TestsuiteAll.class)
 public class RunTests {
 
 }
+
+
+//MR use this whe JUnit4 is used
+//@RunWith(Suite.class)
+//@Suite.SuiteClasses({
+//   TestsuiteAll.class
+//})
+//public class RunTests {
+//    // leave this class empty
+//}

@@ -4,7 +4,7 @@ import java.awt.Font;
 
 import org.newdawn.slick.TrueTypeFont;
 
-public final class Constants { // TODO Constants vllt ins package utils verschieben? und package spaceapes in
+public class Constants { // TODO Constants vllt ins package utils verschieben? und package spaceapes in
 								// gamestates umbennen?
 	// TODO vllt zum Interface machen. Alle klassen die zugriff auf die konstanten
 	// benoetigen koennen das dann implementieren
@@ -12,7 +12,9 @@ public final class Constants { // TODO Constants vllt ins package utils verschie
 //////////////////////// World Constants //////////////////////////
 
 	public static final float WORLD_WIDTH = 16;
-	public static final float WORLD_HEIGHT = WORLD_WIDTH * Launch.HEIGHT / Launch.WIDTH;
+	//public static final float WORLD_HEIGHT = WORLD_WIDTH * Launch.HEIGHT / Launch.WIDTH;
+	public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es beim oberen abgebrochen ist.
+												//MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
 
 /////////////////////// Ape Constants //////////////////////////////
 

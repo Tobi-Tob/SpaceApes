@@ -67,7 +67,11 @@ public class ControlPanel extends Entity {
 
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
-		font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
+		if (Launch.renderImages) {
+			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
+		} else {
+			System.out.println("noRenderImages: assign control panel font.");
+		}
 		powerFormatter = new DecimalFormat("0.00");
 		angleFormatter = new DecimalFormat("00.0");
 

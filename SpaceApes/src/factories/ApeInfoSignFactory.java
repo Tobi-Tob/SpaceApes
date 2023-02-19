@@ -39,7 +39,12 @@ public class ApeInfoSignFactory implements IEntityFactory {
 		apeInfoSign.setApe(ape);
 		
 		int fontSize = Math.round(signScalingFactor * 200);
-		apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
+		
+		if (Launch.renderImages) {
+			apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
+		} else {
+			System.out.println("noRenderImages: assign apeInfoSign font.");
+		}
 		
 		if (Launch.renderImages) {
 			try {

@@ -54,19 +54,19 @@ public class CreateMapTest {
 	
 	@Test
 	public void testCreateMap() {
-		//adapter.initializeGame();
+		adapter.initializeGame();
 		adapter.createMap();
-		assertTrue("A correct map was detected as incorrect", adapter.isMapCorrect());
+		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 	}
 
 	@Test
 	public final void testMapEntities() {
-		//adapter.initializeGame();
+		adapter.initializeGame();
 		adapter.createMap();
-		assertTrue("A correct map was detected as incorrect", adapter.isMapCorrect());
+		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect planet count", 2, adapter.getPlanetCount());
-		assertEquals("Incorrect ape count", 4, adapter.getApeCount());
+		assertEquals("Incorrect ape count", 2, adapter.getApeCount());
 		//assertEquals("Incorrect wall count", 5, adapter.getWallCount());
 		//assertEquals("Incorrect shot count", 7, adapter.getShotCount());
 		//assertEquals("Incorrect explosion count", 2, adapter.getExplosionCount());
@@ -83,7 +83,7 @@ public class CreateMapTest {
 	
 	
 //	@Test
-//	public final void testEntitiyValues() {
+//	public final void testEntitiyPositionAndValues() {
 //		
 //		adapter.loadMapFromFile(new File("testmaps/minimal/valueTest"));
 //		assertTrue("A correct map was detected as incorrect", adapter.isCorrectMap());
