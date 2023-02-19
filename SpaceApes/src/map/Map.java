@@ -295,8 +295,13 @@ public class Map {
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
 					dot.setScale(1 - (i * 0.8f / iterations)); // TODO Scalingfactor abhaengig von Bildschirmgroesse
 					try {
-						dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
-						// System.out.println("add dot");
+						if (Launch.renderImages) {
+							dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
+							// System.out.println("add dot");
+						} else {
+							//MR no println() here because it would be called to often
+							//System.out.println("noRenderImages: assign dot image.");
+						}
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}

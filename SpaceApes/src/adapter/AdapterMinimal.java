@@ -3,9 +3,10 @@ package adapter;
 import java.io.File;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.test.TestAppGameContainer;
+import testUtils.TestAppGameContainer;
 import map.Map;
 import spaceapes.Launch;
 
@@ -72,18 +73,27 @@ public class AdapterMinimal {
 	public void initializeGame() {
 		
 		// Setze den library Pfad abhaengig vom Betriebssystem
-    	if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/windows");
-		} 
-		else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/macosx");
+		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/native/windows");
+		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+			System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/native/macosx");
+		} else {
+			System.setProperty("org.lwjgl.librarypath",
+					System.getProperty("user.dir") + "/native/" + System.getProperty("os.name").toLowerCase());
 		}
-		else {
-			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/" +System.getProperty("os.name").toLowerCase());
-		}
+		
+//    	if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/windows");
+//		} 
+//		else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/macosx");
+//		}
+//		else {
+//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/" +System.getProperty("os.name").toLowerCase());
+//		}
     	// Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
     	//tanks = new Tanks(true); -> die haben hier übergeben, ob es ein debug sein soll oder nicht, also ob das Spiel nur über die Komandozeile läuft (so kann man leicht checken, ob z.B. geschossen wurde...)
-    	launch = new Launch();
+    	launch = new Launch(false);
 		
 		// Initialisiere die statische Klasse Map
 		try {
@@ -132,8 +142,12 @@ public class AdapterMinimal {
 	 * Erstellt eine Map
 	 */
 	public void createMap() {
-		Map.getInstance().parse(null, null); //MR für den MinimalTest müssten hier feste Parameter vergeben werden...
-		isMapCorrect = true;
+		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
+		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
+		Map.getInstance().parse(positionPlanet1, positionPlanet2);
+		if (Map.getInstance() != null) {
+			isMapCorrect = true;
+		}
 	}
 	
 	/**
@@ -142,4 +156,27 @@ public class AdapterMinimal {
 	public boolean isMapCorrect() {
 		return isMapCorrect;
 	}
+	
+	/* *************************************************** 
+	 * ******************** Planets **********************
+	 * *************************************************** */
+	
+	/**
+	 * @return returns the number of planets
+	 */
+	public int getPlanetCount() {
+		return Map.getInstance().getPlanets().size();
+	}
+	
+	/* *************************************************** 
+	 * ********************* Apes ************************
+	 * *************************************************** */
+	
+	/**
+	 * @return returns the number of apes
+	 */
+	public int getApeCount() {
+		return Map.getInstance().getApes().size();
+	}
+	
 }

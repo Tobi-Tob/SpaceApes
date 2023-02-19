@@ -36,9 +36,12 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 
 	// Sollte das Spiel anfangen zu laggen, vergroessere das Update Intervall
 	public static final int UPDATE_INTERVAL = 20; // Updatefrequenz der Gameloop in ms
+	
+	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird für die Tests benötigt.
 
-	public Launch() {
+	public Launch(boolean renderImages) {
 		super("Space Apes"); // Name des Spiels
+		setRenderImages(renderImages);
 	}
 
 	public static void main(String[] args) throws SlickException {
@@ -53,7 +56,7 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 		}
 
 		// Setze dieses StateBasedGame in einen App Container (oder Fenster)
-		AppGameContainer app = new AppGameContainer(new Launch());
+		AppGameContainer app = new AppGameContainer(new Launch(true));
 		app.setMinimumLogicUpdateInterval(UPDATE_INTERVAL);
 		app.setMaximumLogicUpdateInterval(UPDATE_INTERVAL);
 		app.setShowFPS(true);
@@ -84,5 +87,9 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 		StateBasedEntityManager.getInstance().addState(MAINMENU_STATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
 		StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE);
+	}
+	
+	public void setRenderImages(boolean renderImages1) {
+		renderImages = renderImages1;
 	}
 }

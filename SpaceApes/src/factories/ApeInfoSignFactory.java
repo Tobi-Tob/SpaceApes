@@ -12,6 +12,7 @@ import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.ApeInfoSign;
 import spaceapes.Constants;
+import spaceapes.Launch;
 import utils.Utils;
 
 public class ApeInfoSignFactory implements IEntityFactory {
@@ -40,12 +41,16 @@ public class ApeInfoSignFactory implements IEntityFactory {
 		int fontSize = Math.round(signScalingFactor * 200);
 		apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
 		
-		try {
-			ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/ape_info_sign.png"));
-			apeInfoSign.addComponent(imageRenderComponent);
-			apeInfoSign.setImageRenderComponent(imageRenderComponent);
-		} catch (SlickException e) {
-			System.err.println("Problem with planet panel image");
+		if (Launch.renderImages) {
+			try {
+				ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/ape_info_sign.png"));
+				apeInfoSign.addComponent(imageRenderComponent);
+				apeInfoSign.setImageRenderComponent(imageRenderComponent);
+			} catch (SlickException e) {
+				System.err.println("Problem with planet panel image");
+			}
+		} else {
+			System.out.println("noRenderImages: assign apeInfoSign image.");
 		}
 		
 		return apeInfoSign;

@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Planet;
+import spaceapes.Launch;
 import utils.Utils;
 import eea.engine.event.basicevents.*;
 import eea.engine.event.*;
@@ -68,10 +69,14 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(radius / blackHoleRadiusInWorldUnits);
 			planet.setRotation(0);
 			
-			try {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/blackhole1.png")));
-			} catch (SlickException e) {
-				System.err.println("Problem with black hole image");
+			if (Launch.renderImages) {
+				try {
+					planet.addComponent(new ImageRenderComponent(new Image("img/planets/blackhole1.png")));
+				} catch (SlickException e) {
+					System.err.println("Problem with black hole image");
+				}
+			} else {
+				System.out.println("noRenderImages: assign blackhole image.");
 			}
 			
 			
@@ -81,10 +86,14 @@ public class PlanetFactory implements IEntityFactory {
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(radius / planetRadiusInWorldUnits);
 			
-			try {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet_anti1.png")));
-			} catch (SlickException e) {
-				System.err.println("Problem with planet image");
+			if (Launch.renderImages) {
+				try {
+					planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet_anti1.png")));
+				} catch (SlickException e) {
+					System.err.println("Problem with planet image");
+				}
+			} else {
+				System.out.println("noRenderImages: assign antiplanet image.");
 			}
 			
 			
@@ -130,49 +139,81 @@ public class PlanetFactory implements IEntityFactory {
 
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
+			} else {
+				System.out.println("noRenderImages: assign planet1 image.");
+			}
 			float planetRadiusInPixel = 235;
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 2:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
+			} else {
+				System.out.println("noRenderImages: assign planet2 image.");
+			}
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 3:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
+			} else {
+				System.out.println("noRenderImages: assign planet3 image.");
+			}
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 4:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
+			} else {
+				System.out.println("noRenderImages: assign planet4 image.");
+			}
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 5:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
+			} else {
+				System.out.println("noRenderImages: assign planet5 image.");
+			}
 			planetRadiusInPixel = 222;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 6:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
+			} else {
+				System.out.println("noRenderImages: assign ring planet1 image.");
+			}
 			planetRadiusInPixel = 210;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 7:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
+			} else {
+				System.out.println("noRenderImages: assign ring planet2 image.");
+			}
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 8:
-			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
+			if (Launch.renderImages) {
+				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
+			} else {
+				System.out.println("noRenderImages: assign ring planet3 image.");
+			}
 			planetRadiusInPixel = 245;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);

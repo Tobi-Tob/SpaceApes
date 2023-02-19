@@ -51,9 +51,13 @@ public class MainMenuState extends BasicGameState {
 
 		Entity menuBackground = new Entity("Menu"); // Entitaet fuer Hintergrund erzeugen
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
-		Image image = new Image("img/assets/menuSP.png");
-		menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
-		menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
+		if (Launch.renderImages) {
+			Image image = new Image("img/assets/menuSP.png");
+			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
+			menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
+		} else {
+			System.out.println("noRenderImages: assign MainMenuState image.");
+		}
 		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
 		/* Neues Spiel starten-Entitaet */
@@ -62,7 +66,11 @@ public class MainMenuState extends BasicGameState {
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
 		newGameEntity.setScale((float) Launch.HEIGHT / 3200);
-		newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
+		if (Launch.renderImages) {
+			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
+		} else {
+			System.out.println("noRenderImages: assign start button image.");
+		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent startGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -77,7 +85,11 @@ public class MainMenuState extends BasicGameState {
 		// Setze Position und Bildkomponente
 		quitEntity.setPosition(new Vector2f(Launch.WIDTH / 4.4f, Launch.HEIGHT / 1.4f));
 		quitEntity.setScale((float) Launch.HEIGHT / 3200);
-		quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
+		if (Launch.renderImages) {
+			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
+		} else {
+			System.out.println("noRenderImages: assign beenden button image.");
+		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent quitGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());

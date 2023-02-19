@@ -41,13 +41,15 @@ public class HighscoreState extends BasicGameState {
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 
-		/* Menu Hintergrund */
-
 		Entity highscoreBackground = new Entity("Highscore");
 		highscoreBackground.setPosition(Utils.toPixelCoordinates(0, 0));
-		Image image = new Image("img/assets/menuSP.png");
-		highscoreBackground.addComponent(new ImageRenderComponent(image));
-		highscoreBackground.setScale((float) Launch.HEIGHT / image.getHeight());
+		if (Launch.renderImages) {
+			Image image = new Image("img/assets/menuSP.png");
+			highscoreBackground.addComponent(new ImageRenderComponent(image));
+			highscoreBackground.setScale((float) Launch.HEIGHT / image.getHeight());
+		} else {
+			System.out.println("noRenderImages: assign HighscoreState image.");
+		}
 		entityManager.addEntity(stateID, highscoreBackground);
 		
 		/* Neues Spiel starten-Entitaet */
@@ -56,7 +58,11 @@ public class HighscoreState extends BasicGameState {
 		// Setze Position und Bildkomponente
 		highscoreImage.setPosition(new Vector2f(Launch.WIDTH / 4.5f, Launch.HEIGHT / 2.5f));
 		highscoreImage.setScale((float) Launch.HEIGHT / 1500);
-		highscoreImage.addComponent(new ImageRenderComponent(new Image("img/assets/highscore.png")));
+		if (Launch.renderImages) {
+			highscoreImage.addComponent(new ImageRenderComponent(new Image("img/assets/highscore.png")));
+		} else {
+			System.out.println("noRenderImages: assign highscore image.");
+		}
 		entityManager.addEntity(this.stateID, highscoreImage);
 
 		// Die dummyEntity steuert die Wechsel der States

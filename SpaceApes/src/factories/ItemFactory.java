@@ -47,7 +47,11 @@ public class ItemFactory implements IEntityFactory {
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
 				value = Constants.ENERGY_PACK_VALUE; 
-				imageRenderComponent = new ImageRenderComponent(new Image(Constants.ENERGY_IMAGE_PATH));
+				if (Launch.renderImages) {
+					imageRenderComponent = new ImageRenderComponent(new Image(Constants.ENERGY_IMAGE_PATH));
+				} else {
+					System.out.println("noRenderImages: assign energy pack image.");
+				}
 				break;
 				
 			case HEALTH_PACK:
@@ -56,7 +60,11 @@ public class ItemFactory implements IEntityFactory {
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
 				value = Constants.HEALTH_PACK_VALUE;
-				imageRenderComponent = new ImageRenderComponent(new Image(Constants.HEALTH_IMAGE_PATH));
+				if (Launch.renderImages) {
+					imageRenderComponent = new ImageRenderComponent(new Image(Constants.HEALTH_IMAGE_PATH));
+				} else {
+					System.out.println("noRenderImages: assign health pack image.");
+				}
 				break;
 
 			case COPPER_COIN:
@@ -65,7 +73,11 @@ public class ItemFactory implements IEntityFactory {
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
 				value = Constants.COPPER_COIN_VALUE;
-				imageRenderComponent = new ImageRenderComponent(new Image(Constants.COPPER_COIN_IMAGE_PATH));
+				if (Launch.renderImages) {
+					imageRenderComponent = new ImageRenderComponent(new Image(Constants.COPPER_COIN_IMAGE_PATH));
+				} else {
+					System.out.println("noRenderImages: assign copper coin image.");
+				}
 				break;
 
 			case GOLD_COIN:
@@ -74,7 +86,11 @@ public class ItemFactory implements IEntityFactory {
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
 				value = Constants.GOLD_COIN_VALUE;
-				imageRenderComponent = new ImageRenderComponent(new Image(Constants.GOLD_COIN_IMAGE_PATH));
+				if (Launch.renderImages) {
+					imageRenderComponent = new ImageRenderComponent(new Image(Constants.GOLD_COIN_IMAGE_PATH));
+				} else {
+					System.out.println("noRenderImages: assign gold coin image.");
+				}
 				break;
 
 			default: // ansonsten erzeugt er immer einen DIAMANT_COIN
@@ -83,7 +99,11 @@ public class ItemFactory implements IEntityFactory {
 				desiredItemWidth = 0.03f; // im Verhaeltnis zur Fenster Breite
 				itemScaleFactor = desiredItemWidth * Launch.WIDTH / itemWidthInPixel;
 				value = Constants.DIAMOND_COIN_VALUE;
-				imageRenderComponent = new ImageRenderComponent(new Image(Constants.DIAMOND_COIN_IMAGE_PATH));
+				if (Launch.renderImages) {
+					imageRenderComponent = new ImageRenderComponent(new Image(Constants.DIAMOND_COIN_IMAGE_PATH));
+				} else {
+					System.out.println("noRenderImages: assign diamond coin image.");
+				}
 				break;
 				
 			}
@@ -103,7 +123,9 @@ public class ItemFactory implements IEntityFactory {
 		itemLoop.addAction(new RotateRightAction(0.03f));
 		item.addComponent(itemLoop);
 		
-		item.addComponent(imageRenderComponent);
+		if (Launch.renderImages) {
+			item.addComponent(imageRenderComponent);
+		}
 		
 		// Füge das Item dem EntityManager hinzu
 		StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, item);

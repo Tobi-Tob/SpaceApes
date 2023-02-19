@@ -17,6 +17,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
+import spaceapes.Launch;
 import utils.Utils;
 
 public class ApeFactory implements IEntityFactory {
@@ -80,14 +81,18 @@ public class ApeFactory implements IEntityFactory {
 		ape.setScale(scalingFactor);
 		ape.setRotation(angleOnPlanet + 90f);
 
-		try {
-			ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImageIndex + ".png")));
-		} catch (SlickException | RuntimeException e) {
+		if (Launch.renderImages) {
 			try {
-				ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape1.png")));
-			} catch (SlickException e1) {
-				System.err.println("Problem with image for ape");
+				ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImageIndex + ".png")));
+			} catch (SlickException | RuntimeException e) {
+				try {
+					ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape1.png")));
+				} catch (SlickException e1) {
+					System.err.println("Problem with image for ape");
+				}
 			}
+		} else {
+			System.out.println("noRenderImages: assign ape image.");
 		}
 
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler

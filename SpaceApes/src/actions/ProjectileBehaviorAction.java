@@ -74,17 +74,21 @@ public class ProjectileBehaviorAction implements Action {
 
 			// Zeige Explosion
 			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
-			Image[] images = new Image[4];
-			try {
-				images[0] = new Image("img/explosions/explosion1.png");
-				images[1] = new Image("img/explosions/explosion2.png");
-				images[2] = new Image("img/explosions/explosion3.png");
-				images[3] = new Image("img/explosions/explosion4.png");
-
-			} catch (SlickException e) {
-				System.err.println("Problem with image for explosion");
+			if (Launch.renderImages) {
+				Image[] images = new Image[4];
+				try {
+					images[0] = new Image("img/explosions/explosion1.png");
+					images[1] = new Image("img/explosions/explosion2.png");
+					images[2] = new Image("img/explosions/explosion3.png");
+					images[3] = new Image("img/explosions/explosion4.png");
+	
+				} catch (SlickException e) {
+					System.err.println("Problem with image for explosion");
+				}
+				explosion.setImages(images);
+			} else {
+				System.out.println("noRenderImages: assign explosion animation images.");
 			}
-			explosion.setImages(images);
 			explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder

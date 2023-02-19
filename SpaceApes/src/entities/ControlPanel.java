@@ -99,18 +99,22 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200));
 		listOfCorrespondingEntities.add(arrow_Angle_Left);
 
-		try {
-			imageRenderComponent = new ImageRenderComponent(new Image("img/assets/panel.png"));
-			this.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
-			arrow_Weapons.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
-			arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
-			arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
-			arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
-			arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
-		} catch (SlickException e) {
-			System.err.println("Problem with controlpanel images");
+		if (Launch.renderImages) {
+			try {
+				imageRenderComponent = new ImageRenderComponent(new Image("img/assets/panel.png"));
+				this.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
+				arrow_Weapons.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+				arrow_Power_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+				arrow_Power_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+				arrow_Angle_Right.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_right.png")));
+				arrow_Angle_Left.addComponent(new ImageRenderComponent(new Image("img/assets/arrow_left.png")));
+			} catch (SlickException e) {
+				System.err.println("Problem with controlpanel images");
+			}
+			this.addComponent(imageRenderComponent);
+		} else {
+			System.out.println("noRenderImages: assign control panel images.");
 		}
-		this.addComponent(imageRenderComponent);
 
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		int stateID = Launch.GAMEPLAY_STATE; // MR kann man evtl schoener loesen...
