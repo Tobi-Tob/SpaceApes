@@ -25,10 +25,18 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 
 	private List<Entity> playerPlanets = new ArrayList<Entity>();
 
-	public void initMap() {
+	/**
+	 * This method creates all entities of a Map and takes the positions of the two player planets as input.
+	 * If a a position is null or is out of the possible spawning positions
+	 * then the planets will be spawned randomly in the according half of the Map
+	 * 
+	 * @param position1 - Positiion of the planet for player one in world coordinates
+	 * @param position2 - Positiion of the planet for player two in world coordinates
+	 */
+	public void initMap(Vector2f position1, Vector2f position2) {
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground();
-		initPlanets();
+		initPlanets(position1, position2);
 		initApes(); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 	}
@@ -38,7 +46,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void initPlanets() {
+	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2) {
 		Map map = Map.getInstance();
 
 		float xBorder = Constants.WORLD_WIDTH / 2;
@@ -49,13 +57,21 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 
 		// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
 		String namePlanetOne = "Planet1";
-		float xPlanetOne = Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f);
-		float yPlanetOne = Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f);
-		Vector2f coordinatesPlanetOne = new Vector2f(xPlanetOne, yPlanetOne);
+		if (coordinates1 == null || !map.isValidPositionForPlayerPlanet1(coordinates1)) {
+			if (coordinates1 != null) {
+				System.out.println("Given position of Planet1 was out of allowed area! x: " + coordinates1.x + " | y: " + coordinates1.y);
+			}
+			float xPlanetOne = Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f);
+			float yPlanetOne = Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f);
+			coordinates1 = new Vector2f(xPlanetOne, yPlanetOne);
+			
+		} else {
+			System.out.println("Create Planet1 at the given coordiantes! x: " + coordinates1.x + " | y: " + coordinates1.y);
+		}
 		float radiusPlanetOne = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetOne = (int) (radiusPlanetOne * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne, coordinatesPlanetOne,
+		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne, coordinates1,
 				PlanetType.PLAYER).createEntity();
 		// Spielerplaneten und fuer die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
@@ -65,13 +81,21 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 
 		// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
 		String namePlanetTwo = "Planet2";
-		float xPlanetTwo = Utils.randomFloat(xBorder * 0.3f, xBorder * 0.6f);
-		float yPlanetTwo = Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f);
-		Vector2f coordinatesPlanetTwo = new Vector2f(xPlanetTwo, yPlanetTwo);
+		if (coordinates2 == null || !map.isValidPositionForPlayerPlanet2(coordinates2)) {
+			if (coordinates2 != null) {
+				System.out.println("Given position of Planet2 was out of allowed area! x: " + coordinates2.x + " | y: " + coordinates2.y);
+			}
+			float xPlanetTwo = Utils.randomFloat(xBorder * 0.3f, xBorder * 0.6f);
+			float yPlanetTwo = Utils.randomFloat(-yBorder * 0.5f, yBorder * 0.5f);
+			coordinates2 = new Vector2f(xPlanetTwo, yPlanetTwo);
+			
+		} else {
+			System.out.println("Create Planet2 at the given coordiantes! x: " + coordinates2.x + " | y: " + coordinates2.y);
+		}
 		float radiusPlanetTwo = Utils.randomFloat(0.75f, 1.5f);
 		int massPlanetTwo = (int) (radiusPlanetTwo * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo, coordinatesPlanetTwo,
+		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo, coordinates2,
 				PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);

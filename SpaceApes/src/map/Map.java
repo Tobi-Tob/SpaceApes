@@ -53,9 +53,9 @@ public class Map {
 		return map;
 	}
 
-	public void parse() {
+	public void parse(Vector2f planet1Position, Vector2f planet2Position) {
 		Parser parser = new Parser();
-		parser.initMap();
+		parser.initMap(planet1Position, planet2Position);
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
@@ -345,6 +345,56 @@ public class Map {
 		// Falls Such-Schleife bis zum Ende durch laeuft:
 		// java.lang.System.out.println("Planet spawning after: null");
 		return null;
+	}
+	
+	/**
+	 * Returns true if given position is in the allowed area, else false
+	 * 
+	 * @param position - position of the planet
+	 * @return true if given position is in the allowed area, else false
+	 */
+	public boolean isValidPositionForPlayerPlanet1(Vector2f position) {
+		
+		//TODO wenn der Radius zu groß ist, könnte der Planet trotzdem außerhalb der Welt sein...
+		
+		float xBorder = Constants.WORLD_WIDTH / 2;
+		float yBorder = Constants.WORLD_HEIGHT / 2;
+		
+		if (Math.abs(position.y) <= yBorder / 2) {
+			if (position.x >= -xBorder * 0.6f && position.x <= -xBorder * 0.3f) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Returns true if given position is in the allowed area, else false
+	 * 
+	 * @param position - position of the planet
+	 * @return true if given position is in the allowed area, else false
+	 */
+	public boolean isValidPositionForPlayerPlanet2(Vector2f position) {
+		
+		//TODO wenn der Radius zu groß ist, könnte der Planet trotzdem außerhalb der Welt sein...
+		
+		float xBorder = Constants.WORLD_WIDTH / 2;
+		float yBorder = Constants.WORLD_HEIGHT / 2;
+		
+		if (Math.abs(position.y) <= yBorder / 2) {
+			if (position.x <= xBorder * 0.6f && position.x >= xBorder * 0.3f) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public void resetToDefault() {
+		apes = new ArrayList<Ape>();
+		planets = new ArrayList<Planet>();
+		items = new ArrayList<Entity>();
 	}
 
 }

@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -40,7 +41,10 @@ public class GameplayState extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
 		// Map parsen
-		map.parse();
+		//Vector2f posPlanet1 = new Vector2f(Constants.WORLD_WIDTH * 0.5f / 2, Constants.WORLD_HEIGHT * 0 / 2);
+		Vector2f posPlanet1 = null;
+		Vector2f posPlanet2 = null;
+		map.parse(posPlanet1, posPlanet2);
 		
 		// Die dummyEntity steuert die Wechsel der States
 		Entity dummyEntity = new Entity("Dummy");
