@@ -3,6 +3,7 @@ package spaceapes;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -16,6 +17,8 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
+import eea.engine.event.Event;
+import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import utils.Utils;
@@ -46,11 +49,11 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
 		/* Menu Hintergrund */
 
 		Entity menuBackground = new Entity("Menu"); // Entitaet fuer Hintergrund erzeugen
-		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des Fensters)
+		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des
+																	// Fensters)
 		if (Launch.renderImages) {
 			Image image = new Image("img/assets/menuSP.png");
 			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
@@ -61,7 +64,6 @@ public class MainMenuState extends BasicGameState {
 		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
 		/* Neues Spiel starten-Entitaet */
-
 		Entity newGameEntity = new Entity("SpielStarten");
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
@@ -73,10 +75,14 @@ public class MainMenuState extends BasicGameState {
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent startGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		ANDEvent startGameByMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		Action startGameAction = new ChangeStateAction(Launch.GAMEPLAY_STATE);
-		startGameEvent.addAction(startGameAction);
-		newGameEntity.addComponent(startGameEvent);
+		startGameByMouseEvent.addAction(startGameAction);
+		newGameEntity.addComponent(startGameByMouseEvent);
+		// Ausserdem soll das Druecken der n-Taste das Spiel starten
+		KeyPressedEvent startGameByNKeyEvent = new KeyPressedEvent(Input.KEY_N);
+		startGameByNKeyEvent.addAction(new ChangeStateAction(Launch.GAMEPLAY_STATE));
+		newGameEntity.addComponent(startGameByNKeyEvent);
 		entityManager.addEntity(this.stateID, newGameEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
 
 		/* Beenden-Entitaet */
@@ -92,12 +98,15 @@ public class MainMenuState extends BasicGameState {
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
-		ANDEvent quitGameEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		ANDEvent quitGameMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		Action quit_Action = new QuitAction();
-		quitGameEvent.addAction(quit_Action);
-		quitEntity.addComponent(quitGameEvent);
+		quitGameMouseEvent.addAction(quit_Action);
+		quitEntity.addComponent(quitGameMouseEvent);
+		// Ausserdem soll das Druecken der Esc-Taste das Spiel beenden
+		KeyPressedEvent quitGameEscKeyEvent = new KeyPressedEvent(Input.KEY_ESCAPE);
+		quitGameEscKeyEvent.addAction(new QuitAction());
+		quitEntity.addComponent(quitGameEscKeyEvent);
 		entityManager.addEntity(this.stateID, quitEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
-
 	}
 
 	private void startMusic(float pitch, float volume, int fadeInTime) {
@@ -120,7 +129,7 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
-		if(Launch.PLAY_MUSIC && !music.playing()) {
+		if (Launch.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
 		// System.out.println("Main Menu Render");

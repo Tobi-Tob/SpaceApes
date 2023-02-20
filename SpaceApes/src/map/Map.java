@@ -53,9 +53,9 @@ public class Map {
 		return map;
 	}
 
-	public void parse(Vector2f planet1Position, Vector2f planet2Position) {
+	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets) {
 		Parser parser = new Parser();
-		parser.initMap(planet1Position, planet2Position);
+		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets);
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?

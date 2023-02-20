@@ -17,6 +17,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
+import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -34,10 +35,7 @@ public class ApeFactory implements IEntityFactory {
 	private final float throwStrength;
 	private final float movementSpeed;
 
-	public final float apePixelHeight = 300;
-	public final float pixelfromFeetToCenter = 130;
-	public final float desiredApeSizeInWorldUnits = 0.6f;
-	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
+	public final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
 	private final float distancePlanetCenter;
 
 	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImageIndex, boolean isActive,
@@ -55,7 +53,7 @@ public class ApeFactory implements IEntityFactory {
 		this.angleOfView = angleOfView;
 		this.throwStrength = throwStrength;
 		this.distancePlanetCenter = homePlanet.getRadius()
-				+ Utils.pixelLengthToWorldLength(pixelfromFeetToCenter * scalingFactor);
+				+ Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_FEET_TO_CENTER * scalingFactor);
 		if (distancePlanetCenter < 0.1f) {
 			throw new RuntimeException("Radius ist zu nah an null");
 		}

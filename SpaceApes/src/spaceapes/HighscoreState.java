@@ -40,7 +40,6 @@ public class HighscoreState extends BasicGameState {
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-
 		Entity highscoreBackground = new Entity("Highscore");
 		highscoreBackground.setPosition(Utils.toPixelCoordinates(0, 0));
 		if (Launch.renderImages) {
@@ -51,7 +50,7 @@ public class HighscoreState extends BasicGameState {
 			System.out.println("noRenderImages: assign HighscoreState image.");
 		}
 		entityManager.addEntity(stateID, highscoreBackground);
-		
+
 		/* Neues Spiel starten-Entitaet */
 
 		Entity highscoreImage = new Entity("HighscoreImage");
@@ -73,7 +72,7 @@ public class HighscoreState extends BasicGameState {
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
 		dummyEntity.addComponent(escPressed);
-		
+
 		entityManager.addEntity(stateID, dummyEntity);
 	}
 

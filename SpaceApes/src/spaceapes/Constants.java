@@ -15,12 +15,21 @@ public class Constants { // TODO Constants vllt ins package utils verschieben? u
 	//public static final float WORLD_HEIGHT = WORLD_WIDTH * Launch.HEIGHT / Launch.WIDTH;
 	public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es beim oberen abgebrochen ist.
 												//MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
+	
+/////////////////////// Planet Constants //////////////////////////////
+
+	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
+	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;	
 
 /////////////////////// Ape Constants //////////////////////////////
 
 	public static final int APE_MAX_HEALTH = 100;
 	public static final int APE_MAX_ENERGY = 100;
 	public static final float APE_MOVMENT_SPEED = 0.05f;
+	
+	public static final int APE_PIXEL_HEIGHT = 300;
+	public static final int APE_PIXEL_FEET_TO_CENTER = 130;
+	public static final float APE_DESIRED_SIZE = 0.6f; // desired size in world units
 
 ////////////////////// Projectile Constants //////////////////////////////
 

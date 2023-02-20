@@ -7,7 +7,9 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
 import testUtils.TestAppGameContainer;
+import utils.Utils;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.Launch;
 
 /**
@@ -144,7 +146,7 @@ public class AdapterMinimal {
 	public void createMap() {
 		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
 		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		Map.getInstance().parse(positionPlanet1, positionPlanet2);
+		Map.getInstance().parse(positionPlanet1, positionPlanet2, false);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}
@@ -168,6 +170,42 @@ public class AdapterMinimal {
 		return Map.getInstance().getPlanets().size();
 	}
 	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the name of a planet of the player with the given index
+	 */
+	public String getPlanetName(int indexOfPlayer) {
+		return Map.getInstance().getPlanets().get(indexOfPlayer).getID();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the coordinates of the planet of the player with the given index
+	 */
+	public Vector2f getPlanetCoordinates(int indexOfPlayer) {
+		return Map.getInstance().getPlanets().get(indexOfPlayer).getCoordinates();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the radius of the planet of the player with the given index
+	 */
+	public float getPlanetRadius(int indexOfPlayer) {
+		return Map.getInstance().getPlanets().get(indexOfPlayer).getRadius();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the mass of the planet of the player with the given index
+	 */
+	public float getPlanetMass(int indexOfPlayer) {
+		return Map.getInstance().getPlanets().get(indexOfPlayer).getMass();
+	}
+	
 	/* *************************************************** 
 	 * ********************* Apes ************************
 	 * *************************************************** */
@@ -178,5 +216,111 @@ public class AdapterMinimal {
 	public int getApeCount() {
 		return Map.getInstance().getApes().size();
 	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the name of a ape of the player with the given index
+	 */
+	public String getApeName(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getID();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the coordinates of the ape of the player with the given index
+	 */
+	public Vector2f getApeCoordinates(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getWorldCoordinates();
+	}
+	
+	/**
+	 * Note: it is important to return the distance from the feet of the ape to the planet center, not the coordinates of the ape!
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the distance to the planet center of the apes feet of the player with the given index
+	 */
+	public float getApeDistanceFeetToPlanetCenter(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getDistanceToPlanetCenter() - Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_FEET_TO_CENTER * getApeScalingFactor());
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the angle on the planet of the ape of the player with the given index
+	 */
+	public float getApeAngleOnPlanet(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getAngleOnPlanet();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the rotation of the ape of the player with the given index
+	 */
+	public float getApeRotation(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getRotation();
+	}
+	
+	/**
+	 * 
+	 * @return returns the scaling factor of the apes 
+	 */
+	public float getApeScalingFactor() {
+		// get(0) da es bei allen Apes gleich ist
+		return Map.getInstance().getApes().get(0).getScalingFactor();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns true if the ape of the player with the given index is active
+	 */
+	public boolean isApeActive(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).isActive();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns true if the ape of the player with the given index can interact
+	 */
+	public boolean isApeInteractionAllowed(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).isInteractionAllowed();
+	}
+	
+	/**
+	 * This Method should emulate the key pressed event.
+	 * This enables the testing of player interaction.
+	 * 
+	 * Diese Methode emuliert das Druecken beliebiger Tasten.
+	 * (Dies soll es ermoeglichen, Spielerinteraktion
+	 * zu testen)
+	 * 
+	 * @param updatetime : Zeitdauer bis update-Aufruf
+	 * @param input : z.B. Input.KEY_K, Input.KEY_L
+	 */
+	public void handleKeyPressed(int updatetime, Integer input) {
+		if (launch != null && app != null) {
+			app.getTestInput().setKeyPressed(input);
+			try {
+				app.updateGame(updatetime);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+//	public void setCursorPosition(int xPosition, int yPosition) {
+//		if (launch != null && app != null) {
+//			try {
+//				app.setMouseCursor("Cursor", xPosition, yPosition);
+//			} catch (SlickException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 	
 }

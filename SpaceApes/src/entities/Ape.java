@@ -16,10 +16,7 @@ public class Ape extends Entity {
 	private float movementSpeed; // Faktor fuer die Schrittweite des Affen
 	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe bewegt
 
-	public float apePixelHeight = 300;
-	public float pixelfromFeetToCenter = 130;
-	public float desiredApeSizeInWorldUnits = 0.6f;
-	public final float scalingFactor = desiredApeSizeInWorldUnits / Utils.pixelLengthToWorldLength(apePixelHeight);
+	private final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
 
 	private final int maxHealth = Constants.APE_MAX_HEALTH;
 	private final int maxEnergy = Constants.APE_MAX_ENERGY;
@@ -48,7 +45,7 @@ public class Ape extends Entity {
 		// Koordinaten des Planeten + relative Koordinaten vom Planeten zum Affen
 		return relativPos.add(homePlanet.getCoordinates());
 	}
-
+	
 	/**
 	 * Aendert angleOnPlanet des Affens nach links oder rechts
 	 * 
@@ -258,12 +255,8 @@ public class Ape extends Entity {
 		coins += value;
 	}
 
-	public float getApePixelHeight() {
-		return apePixelHeight;
-	}
-
-	public float getRadiusInWorldUnits() {
-		return desiredApeSizeInWorldUnits / 2;
+	public float getRadiusInWorldUnits() { //necessary for collision check
+		return Constants.APE_DESIRED_SIZE / 2;
 	}
 
 	/**
@@ -282,6 +275,10 @@ public class Ape extends Entity {
 			return true;
 		}
 		return false;
+	}
+
+	public float getScalingFactor() {
+		return scalingFactor;
 	}
 
 }

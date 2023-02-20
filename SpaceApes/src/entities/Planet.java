@@ -3,6 +3,7 @@ package entities;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.entity.Entity;
+import spaceapes.Constants;
 import utils.Utils;
 
 public class Planet extends Entity {
@@ -25,7 +26,7 @@ public class Planet extends Entity {
 	 * @throws RuntimeException wenn Radius zu klein
 	 */
 	public float distanceToApePosition() {
-		float dist = getRadius() + Utils.pixelLengthToWorldLength(ape.pixelfromFeetToCenter * ape.scalingFactor);
+		float dist = getRadius() + Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_FEET_TO_CENTER * ape.getScalingFactor());
 		if (dist > 0.1f) {
 			return dist;
 		} else

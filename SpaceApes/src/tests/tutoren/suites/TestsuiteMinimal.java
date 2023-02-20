@@ -11,7 +11,7 @@ public class TestsuiteMinimal {
 		
 		TestSuite suite = new TestSuite("Tutor tests for Space Apes - Minimal");
 		suite.addTest(new JUnit4TestAdapter(CreateMapTest.class));
-		//suite.addTest(new JUnit4TestAdapter(KeyboardInputTest.class));
+		suite.addTest(new JUnit4TestAdapter(KeyboardInputTestMinimal.class));
 		return suite;
 	}
 }

@@ -15,7 +15,10 @@ import org.junit.Test;
 import org.newdawn.slick.Input;
 
 import adapter.AdapterMinimal;
+import eea.engine.entity.StateBasedEntityManager;
+import spaceapes.Constants;
 import spaceapes.Launch;
+import utils.Utils;
 
 /**
  * Tests if a given map is correctly created.
@@ -23,14 +26,6 @@ import spaceapes.Launch;
 public class CreateMapTest {
 	
 	AdapterMinimal adapter;
-	
-	String [] correctMaps = {
-			"correct01", "correct02", "correct03", "correct04", "correct05"
-	};
-	
-	String [] incorrectMaps = {
-			"incorrect01", "incorrect02", "incorrect03", "incorrect04", "incorrect05", "incorrect06"
-	};
 	
 	@Before
 	public void setUp() {
@@ -53,23 +48,28 @@ public class CreateMapTest {
 //	}
 	
 	@Test
-	public void testCreateMap() {
+	public void testCreateMap() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
 		adapter.createMap();
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
+		adapter.stopGame();
 	}
 
 	@Test
-	public final void testMapEntities() {
+	public final void testMapEntities() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
 		adapter.createMap();
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect planet count", 2, adapter.getPlanetCount());
 		assertEquals("Incorrect ape count", 2, adapter.getApeCount());
-		//assertEquals("Incorrect wall count", 5, adapter.getWallCount());
-		//assertEquals("Incorrect shot count", 7, adapter.getShotCount());
-		//assertEquals("Incorrect explosion count", 2, adapter.getExplosionCount());
+		
+		assertTrue("StateBasedEntityManager doesnt contain Planet1", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Planet1"));
+		assertTrue("StateBasedEntityManager doesnt contain Planet2", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Planet2"));
+		assertTrue("StateBasedEntityManager doesnt contain Ape1", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Ape1"));
+		assertTrue("StateBasedEntityManager doesnt contain Ape2", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Ape2"));
+		
+		adapter.stopGame();
 		
 //		adapter.loadMapFromFile(new File("testmaps/minimal/entityTest02"));
 //		assertFalse("An incorrect map was detected as correct", adapter.isCorrectMap());
@@ -82,145 +82,52 @@ public class CreateMapTest {
 	
 	
 	
-//	@Test
-//	public final void testEntitiyPositionAndValues() {
-//		
-//		adapter.loadMapFromFile(new File("testmaps/minimal/valueTest"));
-//		assertTrue("A correct map was detected as incorrect", adapter.isCorrectMap());
-//		
-//		// Maps infos
-//		assertEquals("Incorrect value of map background", "/assets/sandTexture.jpg", adapter.getMapBackgroundTexture());
-//		assertEquals("Incorrect value of map highscore file", "valueTest", adapter.getMapName());
-//		assertEquals("Incorrect value of next map", "/maps/map00", adapter.getMapNextMap());
-//		assertEquals("Incorrect value of map maximum duration", 100, adapter.getMapMaxDuration());
-//		assertEquals("Incorrect value of map elapsed time", 10, adapter.getMapElapsedTime());
-//		assertEquals("Incorrect value of map fired shots", 5, adapter.getMapFiredShots());
-//		// Tanks
-//		assertEquals("Incorrect value of tank amount", 2, adapter.getTankCount());
-//		// PlayerTank
-//		assertEquals("Incorrect value of tank name", "PlayerOne", adapter.getTankName(0));
-//		assertEquals("Incorrect value of tank maximum life", 1000, adapter.getTankMaxLife(0));
-//		assertEquals("Incorrect value of tank actual life", 875, adapter.getTankActualLife(0));
-//		assertEquals("Incorrect value of tank maximum shot amount", 10, adapter.getTankMaxShot(0));
-//		assertEquals("Incorrect value of tank actual shot amount", 5, adapter.getTankActualShot(0));
-//		assertEquals("Incorrect value of tank maximum mine amount", 3, adapter.getTankMaxMine(0));
-//		assertEquals("Incorrect value of tank actual mine amount", 2, adapter.getTankActualMine(0));
-//		assertEquals("Incorrect value of tank strength", 30, adapter.getTankStrength(0));
-//		assertEquals("Incorrect value of tank speed", 5, adapter.getTankSpeed(0));
-//		assertEquals("Incorrect value of tank rotation", 0, adapter.getTankRotation(0));
-//		assertEquals("Incorrect value of tank scale", 10, adapter.getTankScale(0));
-//		assertEquals("Incorrect value of tank x position", 300, adapter.getTankXPosition(0));
-//		assertEquals("Incorrect value of tank y position", 200, adapter.getTankYPosition(0));
-//		// OpponentTank
-//		assertEquals("Incorrect value of tank name", "OpponentTank0", adapter.getTankName(1));
-//		assertEquals("Incorrect value of tank maximum life",  30, adapter.getTankMaxLife(1));
-//		assertEquals("Incorrect value of tank actual life", 11, adapter.getTankActualLife(1));
-//		assertEquals("Incorrect value of tank maximum shot amount", 1, adapter.getTankMaxShot(1));
-//		assertEquals("Incorrect value of tank actual shot amount", 1, adapter.getTankActualShot(1));
-//		assertEquals("Incorrect value of tank maximum mine amount", 0, adapter.getTankMaxMine(1));
-//		assertEquals("Incorrect value of tank actual mine amount", 0, adapter.getTankActualMine(1));
-//		assertEquals("Incorrect value of tank strength", 1, adapter.getTankStrength(1));
-//		assertEquals("Incorrect value of tank speed", 4, adapter.getTankSpeed(1));
-//		assertEquals("Incorrect value of tank rotation", 270, adapter.getTankRotation(1));
-//		assertEquals("Incorrect value of tank scale", 10, adapter.getTankScale(1));
-//		assertEquals("Incorrect value of tank x position", 100, adapter.getTankXPosition(1));
-//		assertEquals("Incorrect value of tank y position", 200, adapter.getTankYPosition(1));
-//		// Border
-//		assertEquals("Incorrect value of wall amount", 1, adapter.getBorderCount());
-//		assertEquals("Incorrect value of border x position", 400, adapter.getBorderXPosition(0));
-//		assertEquals("Incorrect value of border y position", 0, adapter.getBorderYPosition(0));
-//		assertEquals("Incorrect value of border x size", 800, adapter.getBorderXSize(0));
-//		assertEquals("Incorrect value of border y size", 0, adapter.getBorderYSize(0));
-//		// Wall
-//		assertEquals("Incorrect value of wall amount", 1, adapter.getWallCount());
-//		assertEquals("Incorrect value of wall maximum life", 100, adapter.getWallMaxLife(0));
-//		assertEquals("Incorrect value of wall actual life", 33, adapter.getWallActualLife(0));
-//		assertEquals("Incorrect value of wall rotation", 0, adapter.getWallRotation(0));
-//		assertEquals("Incorrect value of wall scale", 10, adapter.getWallScale(0));
-//		assertEquals("Incorrect value of wall x position", 100, adapter.getWallXPosition(0));
-//		assertEquals("Incorrect value of wall y position", 100, adapter.getWallYPosition(0));;
-//		// Shot
-//		assertEquals("Incorrect value of shot amount", 1, adapter.getShotCount());
-//		assertEquals("Incorrect value of shot strength", 5, adapter.getShotStrength(0));
-//		assertEquals("Incorrect value of shot rotation", 280, adapter.getShotRotation(0));
-//		assertEquals("Incorrect value of shot scale", 10, adapter.getShotScale(0));
-//		assertEquals("Incorrect value of shot x position", 50, adapter.getShotXPosition(0));
-//		assertEquals("Incorrect value of shot y position", 50, adapter.getShotYPosition(0));;
-//		// Explosion
-//		assertEquals("Incorrect value of explosion amount", 1, adapter.getExplosionCount());
-//		assertEquals("Incorrect value of explosion width", 25, adapter.getExplosionWidth(0));
-//		assertEquals("Incorrect value of explosion height", 40, adapter.getExplosionHeight(0));
-//		assertEquals("Incorrect value of explosion speed", 1, adapter.getExplosionSpeed(0));
-//		assertEquals("Incorrect value of explosion x position", 10, adapter.getExplosionXPosition(0));
-//		assertEquals("Incorrect value of explosion y position", 7, adapter.getExplosionYPosition(0));;
-//	}
-//	
-//	@Test
-//	public final void testSemanticException() {
-//		
-//		boolean semanticException;
-//		
-//		// Entitiy collision
-//		semanticException = false;
-//		try {
-//			adapter.loadMapFromFileWithExceptions(new File("testmaps/minimal/incorrect05"));
-//			fail("Loading an semantically incorrect map should throw a SemanticException");
-//		} catch (SyntaxException e) {
-//			fail("Loading an syntactically correct map should not throw a SyntaxException");
-//		} catch (SemanticException e) {
-//			semanticException = true;
-//		}
-//		assertTrue("Loading an semantically incorrect map should throw a SyntaxException", semanticException);
-//		
-//		// Opponent missing
-//		try {
-//			adapter.loadMapFromFileWithExceptions(new File("testmaps/minimal/incorrect03"));
-//			fail("Loading an semantically incorrect map should throw a SemanticException");
-//		} catch (SyntaxException e) {
-//			fail("Loading an syntactically correct map should not throw a SyntaxException");
-//		} catch (SemanticException e) {
-//			semanticException = true;
-//		}
-//		assertTrue("Loading an semantically incorrect map should throw a SyntaxException", semanticException);
-//		
-//		// Player missing
-//		try {
-//			adapter.loadMapFromFileWithExceptions(new File("testmaps/minimal/incorrect06"));
-//			fail("Loading an semantically incorrect map should throw a SemanticException");
-//		} catch (SyntaxException e) {
-//			fail("Loading an syntactically correct map should not throw a SyntaxException");
-//		} catch (SemanticException e) {
-//			semanticException = true;
-//		}
-//		assertTrue("Loading an semantically incorrect map should throw a SyntaxException", semanticException);
-//	}
-//	
-//	@Test
-//	public final void testSyntaxException() {
-//		
-//		boolean sytaxException;
-//		
-//		// No map info
-//		sytaxException = false;
-//		try {
-//			adapter.loadMapFromFileWithExceptions(new File("testmaps/minimal/incorrect01"));
-//			fail("Loading an syntactically incorrect map should throw a SyntaxException");
-//		} catch (SemanticException e) {
-//		} catch (SyntaxException e) {
-//			sytaxException = true;
-//		}
-//		assertTrue("Loading an syntactically incorrect map should throw a SyntaxException", sytaxException);
-//		
-//		// Incorrect map entity
-//		sytaxException = false;
-//		try {
-//			adapter.loadMapFromFileWithExceptions(new File("testmaps/minimal/incorrect07"));
-//			fail("Loading an syntactically incorrect map should throw a SyntaxException");
-//		} catch (SemanticException e) {
-//		} catch (SyntaxException e) {
-//			sytaxException = true;
-//		}
-//		assertTrue("Loading an syntactically incorrect map should throw a SyntaxException", sytaxException);
-//	}
+	@Test
+	public final void testPlanetPositionAndValues() { // belongs to task: "Initialisieren einer simplen Spielwelt"
+		
+		adapter.initializeGame();
+		adapter.createMap();
+		assertTrue("The map was not created correctly", adapter.isMapCorrect());
+		
+		assertEquals("Incorrect value of planet name of player1", "Planet1", adapter.getPlanetName(0)); //TODO Aufgabenstellung?
+		assertEquals("Incorrect x-coordinate of Planet1", -4.0f, adapter.getPlanetCoordinates(0).x, 0.001f);
+		assertEquals("Incorrect y-coordinate of Planet1", 0.0f, adapter.getPlanetCoordinates(0).y, 0.001f);
+		assertTrue("Radius of Planet1 is not greater than " + Constants.MINIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(0) > Constants.MINIMUM_RADIUS_PLAYER_PLANET);
+		assertTrue("Radius of Planet1 is not smaller than " + Constants.MAXIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(0) < Constants.MAXIMUM_RADIUS_PLAYER_PLANET);
+		assertTrue("Mass of Planet1 is not greater than " + 0.5f, adapter.getPlanetMass(0) > 0.5f); //prevent division by to small mass
+		assertTrue("Mass of Planet1 is not smaller than " + 1000.0f, adapter.getPlanetMass(0) < 1000.0f); //prevent too big masses
+		
+		assertEquals("Incorrect value of planet name of player2", "Planet2", adapter.getPlanetName(1)); //TODO Aufgabenstellung?
+		assertEquals("Incorrect x-coordinate of Planet2", 4.0f, adapter.getPlanetCoordinates(1).x, 0.001f);
+		assertEquals("Incorrect y-coordinate of Planet2", 0.0f, adapter.getPlanetCoordinates(1).y, 0.001f);
+		assertTrue("Radius of Planet1 is not greater than " + Constants.MINIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(1) > Constants.MINIMUM_RADIUS_PLAYER_PLANET);
+		assertTrue("Radius of Planet1 is not smaller than " + Constants.MAXIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(1) < Constants.MAXIMUM_RADIUS_PLAYER_PLANET);
+		assertTrue("Mass of Planet1 is not greater than " + 0.5f, adapter.getPlanetMass(1) > 0.5f); //prevent division by to small mass
+		assertTrue("Mass of Planet1 is not smaller than " + 1000.0f, adapter.getPlanetMass(1) < 1000.0f); //prevent too big masses
+		
+		adapter.stopGame();
 	
+	}
+	
+	@Test
+	public final void testApePositionAndValues() { // belongs to task: "Platzieren der Affen"
+		
+		adapter.initializeGame();
+		adapter.createMap();
+		assertTrue("The map was not created correctly", adapter.isMapCorrect());
+		
+		assertEquals("Incorrect value of ape name of player1", "Ape1", adapter.getApeName(0)); //TODO Aufgabenstellung?
+		assertEquals("Ape1 is not positioned on the surface of Planet1 correctly", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
+		assertEquals("Incorrect rotation of Ape1", adapter.getApeAngleOnPlanet(0) + 90f, adapter.getApeRotation(0), 0.001f);
+		
+		adapter.stopGame();
+		
+	}
+	
+//	@Test
+//	public final void testApePositionAndValues() { // belongs to task: "Platzieren der Affen"
+//		assertTrue("Ape1 is not active, but should be", adapter.isApeActive(0)); //TODO gehört zu anderem Aufgabenteil!!
+//		assertTrue("Ape1 is not allowed to interact, but should be", adapter.isApeInteractionAllowed(0)); //TODO gehört zu anderem Aufgabenteil!!
+//		
+//	}
 }

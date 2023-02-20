@@ -25,7 +25,7 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HIGHSCORE_STATE = 2;
 
-	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2", "Player3"));
+	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
 	// TODO Kompatibilitaet mit 3+ Spielern
 
 	public static int WIDTH = 1200;

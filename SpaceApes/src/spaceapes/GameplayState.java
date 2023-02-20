@@ -27,42 +27,47 @@ public class GameplayState extends BasicGameState {
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 	private Map map;
 	private Music music; // Musik dieses GameStates
-	
+
 	GameplayState(int stateID) {
-	       this.stateID = stateID;
-	       this.entityManager = StateBasedEntityManager.getInstance();
-	       this.map = Map.getInstance();
+		this.stateID = stateID;
+		this.entityManager = StateBasedEntityManager.getInstance();
+		this.map = Map.getInstance();
 	}
-	
+
 	/**
 	 * Wird vor dem (erstmaligen) Starten dieses States ausgefuehrt
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
-		// Map parsen
-		//Vector2f posPlanet1 = new Vector2f(Constants.WORLD_WIDTH * 0.5f / 2, Constants.WORLD_HEIGHT * 0 / 2);
-		Vector2f posPlanet1 = null;
-		Vector2f posPlanet2 = null;
-		map.parse(posPlanet1, posPlanet2);
-		
+
+		if (Launch.renderImages) { // wird bei den Tests immer manuell gemacht
+			// Map erstellen
+			// Vector2f coordinatesPlanet1 = new Vector2f(Constants.WORLD_WIDTH * 0.5f / 2,
+			// Constants.WORLD_HEIGHT * 0 / 2);
+			Vector2f coordinatesPlanet1 = null;
+			Vector2f coordinatesPlanet2 = null;
+			map.parse(coordinatesPlanet1, coordinatesPlanet2, true);
+		}
+
 		// Die dummyEntity steuert die Wechsel der States
 		Entity dummyEntity = new Entity("Dummy");
-		
+
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
 		dummyEntity.addComponent(escPressed);
-		
-		//Hier kommen alle weiteren Events hinzu...
-		
+
+		// Hier kommen alle weiteren Events hinzu...
+
 		entityManager.addEntity(stateID, dummyEntity);
-		
-		// Initialisierung der Aimline
-		map.updateAimline();
+
+		if (Launch.renderImages) { // muss im Test manuell gemacht werden, da sonst die map entities noch nicht erzeugt sind...!
+			// Initialisierung der Aimline
+			map.updateAimline();
+		}
 	}
-	
+
 	/**
 	 * Wird vor dem Frame ausgefuehrt
 	 */
@@ -87,7 +92,7 @@ public class GameplayState extends BasicGameState {
 	public int getID() {
 		return stateID;
 	}
-	
+
 	public StateBasedEntityManager getEntityManager() {
 		return entityManager;
 	}
