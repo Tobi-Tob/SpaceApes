@@ -1,6 +1,6 @@
 # SpaceApesRepo
 This is the Space Apes repository of Markus, Constanze and Tobi
 
-![Affe](SpaceApes/assets/logo.jpg)
+![Ape](SpaceApes/img/assets/logo.jpg)
 
 
