@@ -246,6 +246,16 @@ public class AdapterMinimal {
 	}
 	
 	/**
+	 * Note: it is important to return the distance from the position of the ape to the planet center, not the coordinates of the ape!
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the distance from the position of the ape to the planet center
+	 */
+	public float getApeDistanceToPlanetCenter(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getDistanceToPlanetCenter();
+	}
+	
+	/**
 	 * 
 	 * @param indexOfPlayer - index of player
 	 * @return returns the angle on the planet of the ape of the player with the given index
@@ -294,7 +304,7 @@ public class AdapterMinimal {
 	 * This Method should emulate the key pressed event.
 	 * This enables the testing of player interaction.
 	 * 
-	 * Diese Methode emuliert das Druecken beliebiger Tasten.
+	 * Diese Methode emuliert das einmalige Druecken beliebiger Tasten.
 	 * (Dies soll es ermoeglichen, Spielerinteraktion
 	 * zu testen)
 	 * 
@@ -304,6 +314,28 @@ public class AdapterMinimal {
 	public void handleKeyPressed(int updatetime, Integer input) {
 		if (launch != null && app != null) {
 			app.getTestInput().setKeyPressed(input);
+			try {
+				app.updateGame(updatetime);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * This Method should emulate the key down event.
+	 * This enables the testing of player interaction.
+	 * 
+	 * Diese Methode emuliert das Gedrückthalten beliebiger Tasten.
+	 * (Dies soll es ermoeglichen, Spielerinteraktion
+	 * zu testen)
+	 * 
+	 * @param updatetime : Zeitdauer bis update-Aufruf
+	 * @param input : z.B. Input.KEY_K, Input.KEY_L
+	 */
+	public void handleKeyDown(int updatetime, Integer input) {
+		if (launch != null && app != null) {
+			app.getTestInput().setKeyDown(input);
 			try {
 				app.updateGame(updatetime);
 			} catch (SlickException e) {

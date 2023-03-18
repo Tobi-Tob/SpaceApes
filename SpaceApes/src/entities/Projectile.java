@@ -103,7 +103,7 @@ public class Projectile extends Entity {
 	}
 
 	/**
-	 * Berechnet die Neue Position des Projektils abhaengig von seiner
+	 * Berechnet die neue Position des Projektils abhaengig von seiner
 	 * Geschwindigkeit und der verstrichenen Zeit in ms
 	 * 
 	 * @param timeDelta int in Millisekunden
@@ -116,7 +116,7 @@ public class Projectile extends Entity {
 	}
 
 	/**
-	 * Berechnet die Neue Position des Projektils abhaengig von seiner
+	 * Berechnet die neue Position des Projektils abhaengig von seiner
 	 * Geschwindigkeit, Anziehungskraefte der Planeten und der verstrichenen Zeit in
 	 * ms
 	 * 

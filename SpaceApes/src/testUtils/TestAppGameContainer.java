@@ -40,7 +40,7 @@ public class TestAppGameContainer extends AppGameContainer {
 	
 	public void updateGame(int delta) throws SlickException{
 		game.update(this, delta);
-		game.update(this, delta); //MR warum 2 Mal?
+		game.update(this, delta); //TODO: warum 2 Mal?
 	}
 	
 	@Override
