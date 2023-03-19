@@ -13,9 +13,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterMinimal;
 import eea.engine.entity.StateBasedEntityManager;
+import factories.ProjectileFactory.MovementType;
 import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
@@ -50,7 +52,10 @@ public class CreateMapTest {
 	@Test
 	public void testCreateMap() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
-		adapter.createMap();
+		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
+		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
+		MovementType projectileMovementType = MovementType.LINEAR;
+		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.stopGame();
 	}
@@ -58,7 +63,10 @@ public class CreateMapTest {
 	@Test
 	public final void testMapEntities() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
-		adapter.createMap();
+		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
+		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
+		MovementType projectileMovementType = MovementType.LINEAR;
+		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect planet count", 2, adapter.getPlanetCount());
@@ -86,7 +94,10 @@ public class CreateMapTest {
 	public final void testPlanetPositionAndValues() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		
 		adapter.initializeGame();
-		adapter.createMap();
+		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
+		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
+		MovementType projectileMovementType = MovementType.LINEAR;
+		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect value of planet name of player1", "Planet1", adapter.getPlanetName(0)); //TODO Aufgabenstellung?
@@ -113,7 +124,10 @@ public class CreateMapTest {
 	public final void testApePositionAndValues() { // belongs to task: "Platzieren der Affen"
 		
 		adapter.initializeGame();
-		adapter.createMap();
+		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
+		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
+		MovementType projectileMovementType = MovementType.LINEAR;
+		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect value of ape name of player1", "Ape1", adapter.getApeName(0)); //TODO Aufgabenstellung?

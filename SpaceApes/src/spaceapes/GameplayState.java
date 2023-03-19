@@ -14,6 +14,7 @@ import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
+import factories.ProjectileFactory.MovementType;
 import map.Map;
 
 /**
@@ -46,7 +47,7 @@ public class GameplayState extends BasicGameState {
 			// Constants.WORLD_HEIGHT * 0 / 2);
 			Vector2f coordinatesPlanet1 = null;
 			Vector2f coordinatesPlanet2 = null;
-			map.parse(coordinatesPlanet1, coordinatesPlanet2, true);
+			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.LINEAR);
 		}
 
 		// Die dummyEntity steuert die Wechsel der States

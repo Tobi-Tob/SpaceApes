@@ -15,6 +15,7 @@ import factories.ApeFactory;
 import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
+import factories.ProjectileFactory.MovementType;
 import factories.ApeInfoSignFactory;
 import spaceapes.Constants;
 import spaceapes.Launch;
@@ -33,11 +34,11 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	 * @param coordinatesPlanet1 - Positiion of the planet for player one in world coordinates
 	 * @param coordinatesPlanet2 - Positiion of the planet for player two in world coordinates
 	 */
-	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets) {
+	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType) {
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground();
 		initPlanets(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets);
-		initApes(); // initPlanets() muss unbedingt davor ausgefuehrt werden!
+		initApes(projectileMovementType); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 	}
 
@@ -167,7 +168,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		}
 	}
 
-	protected void initApes() {
+	protected void initApes(MovementType projectileMovementType) {
 		Map map = Map.getInstance();
 
 		for (int i = 0; i < Launch.players.size(); i++) {
@@ -191,7 +192,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 			float throwStrength = 5f;
 
 			Ape ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
-					movementSpeed, angleOnPlanet, angleOfView, throwStrength).createEntity();
+					movementSpeed, angleOnPlanet, angleOfView, throwStrength, projectileMovementType).createEntity();
 			// TODO eine Apefactory fuer alle Apes?
 			map.addApe(ape);
 			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);

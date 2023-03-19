@@ -28,6 +28,7 @@ import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import events.MouseDownEvent;
 import factories.ProjectileFactory;
+import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
@@ -214,7 +215,7 @@ public class ControlPanel extends Entity {
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		for (ProjectileType type : types) {
 			Projectile shopProjectile = new ProjectileFactory(Constants.SHOP_PROJECTILE_ID, new Vector2f(), new Vector2f(),
-					true, false, type).createEntity();
+					true, false, type, MovementType.EXPLICIT_EULER).createEntity();
 			shopProjectile.setPosition(relativPosOnPanelToPixelPos(380, -230));
 			shopProjectile.setVisible(false);
 

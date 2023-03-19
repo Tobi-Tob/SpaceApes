@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
+import spaceapes.Constants;
 import utils.Utils;
 
 public class Projectile extends Entity {
@@ -134,7 +135,6 @@ public class Projectile extends Entity {
 		// Geschwindigkeitsupdate:
 		// V1 = V0 + dt * ddX
 		Vector2f ddx = new Vector2f(0, 0);
-		float G = 0.25f; // Gravitationskonstante (frei waehlbar)
 
 		List<Planet> planets = Map.getInstance().getPlanets(); // TODO vllt schnelleren Datenzugriff einbauen
 		List<Ape> apes = Map.getInstance().getApes();
@@ -162,7 +162,7 @@ public class Projectile extends Entity {
 
 			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des
 			// Planeten
-			ddx.add(distanceVector.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+			ddx.add(distanceVector.scale(Constants.GRAVITATION_CONSTANT * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
 		}
 		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
 
@@ -176,6 +176,53 @@ public class Projectile extends Entity {
 			setRotation(direction + 90f);
 			setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		}
+		return false; // Keine Kollision
+	}
+	
+	/**
+	 * Berechnet die neue Position des Projektils für eine linearer Flugbahn
+	 * 
+	 * @param timeDelta int in Millisekunden
+	 * @return true, falls eine Kollision mit einem Planeten/Affen in diesem Schritt
+	 *         vorliegt
+	 */
+	public boolean linearMovementStep(int timeDelta) {
+		double dt = timeDelta * 1e-3d; // dt in Sekunden
+		boolean projectileIsVisible = this.isVisible();
+		// Positionsupdate:
+		// X1 = X0 + dt * V0
+		double xNew = x + dt * vx;
+		double yNew = y + dt * vy;
+
+		List<Planet> planets = Map.getInstance().getPlanets();
+		List<Ape> apes = Map.getInstance().getApes();
+
+		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
+		// png-files, da auch transparente Ecken in die Hitbox einfliessen...
+		
+		// Pruefe auf Kollision mit einem Affen
+		if (projectileIsVisible) {
+			for (Ape ape : apes) {
+				if (ape.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
+					return true;
+				}
+			}
+		}
+
+		// Pruefe auf Kollision mit einem Planeten
+		for (Planet planet : planets) {
+			if (planet.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
+				return true;
+			}
+		}
+
+		this.x = xNew;
+		this.y = yNew;
+		//this.vx = vx; // no update necessary
+		//this.vy = vy; // no update necessary
+		
+		setRotation(direction + 90f);
+		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		return false; // Keine Kollision
 	}
 

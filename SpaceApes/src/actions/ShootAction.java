@@ -10,6 +10,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.Projectile;
 import factories.ProjectileFactory;
+import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
@@ -17,6 +18,13 @@ import spaceapes.GameplayState;
 import utils.Utils;
 
 public class ShootAction implements Action {
+	
+	private final MovementType movementType;
+	
+	public ShootAction(MovementType movementType) {
+		super();
+		this.movementType = movementType;
+	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
@@ -55,7 +63,7 @@ public class ShootAction implements Action {
 
 				// Projektil wird erzeugt
 				Projectile projectile = new ProjectileFactory(Constants.PROJECTILE_ID, positionOfProjectileLaunch,
-						velocity, true, true, selectedType).createEntity();
+						velocity, true, true, selectedType, movementType).createEntity();
 
 				entityManager.addEntity(gs.getID(), projectile);
 				

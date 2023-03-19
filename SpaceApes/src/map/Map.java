@@ -24,6 +24,7 @@ import events.LeavingWorldEvent;
 import factories.ItemFactory;
 import factories.ItemFactory.ItemType;
 import factories.ProjectileFactory;
+import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Constants;
 import spaceapes.Launch;
@@ -53,9 +54,9 @@ public class Map {
 		return map;
 	}
 
-	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets) {
+	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType) {
 		Parser parser = new Parser();
-		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets);
+		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets, projectileMovementType);
 		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
@@ -279,7 +280,7 @@ public class Map {
 
 			// Hilfsprojektil wird erzeugt
 			Projectile dummyProjectile = new ProjectileFactory(Constants.DUMMY_PROJECTILE_ID, positionOfProjectileLaunch,
-					velocity, false, true, ProjectileType.COCONUT).createEntity();
+					velocity, false, true, ProjectileType.COCONUT, MovementType.EXPLICIT_EULER).createEntity();
 			for (int i = 0; i <= iterations; i++) {
 				if (dummyProjectile.explizitEulerStep((int) updateFrequency)) {
 					// Wenn Kollision mit einem Objekt

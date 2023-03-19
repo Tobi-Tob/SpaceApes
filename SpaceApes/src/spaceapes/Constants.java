@@ -20,6 +20,7 @@ public class Constants { // TODO Constants vllt ins package utils verschieben? u
 
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
 	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;	
+	public static final float GRAVITATION_CONSTANT = 0.25f;
 
 /////////////////////// Ape Constants //////////////////////////////
 
@@ -32,7 +33,7 @@ public class Constants { // TODO Constants vllt ins package utils verschieben? u
 	public static final float APE_DESIRED_SIZE = 0.6f; // desired size in world units
 
 ////////////////////// Projectile Constants //////////////////////////////
-
+	
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;
 	public static final int COCONUT_MAX_DAMAGE = 20;

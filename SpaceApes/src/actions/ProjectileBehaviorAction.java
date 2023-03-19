@@ -16,6 +16,7 @@ import entities.AnimatedEntity;
 import entities.Ape;
 import entities.DamageDisplay;
 import entities.Projectile;
+import factories.ProjectileFactory.MovementType;
 import map.Map;
 import spaceapes.Constants;
 import spaceapes.Launch;
@@ -24,16 +25,24 @@ import utils.Utils;
 public class ProjectileBehaviorAction implements Action {
 
 	private Projectile projectile;
+	private MovementType movementType; // which method calculate the flight trajectory should be used?
+								// 0: linearMovement | 1: explicitEuler
 
-	public ProjectileBehaviorAction(Projectile projectile) {
+	public ProjectileBehaviorAction(Projectile projectile, MovementType movementType) {
 		this.projectile = projectile;
+		this.movementType = movementType;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 
-		if (projectile.explizitEulerStep(delta)) { // Berechnet so lange den naechsten Schritt, bis Kollision auftritt und
-													// explizitEulerStep true zurueck gibt
+		boolean collision = false;
+		if (movementType==MovementType.LINEAR && projectile.linearMovementStep(delta) || movementType==MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta)) {
+			// linearMovementStep und explizitEulerStep geben jeweils true zurück bei Kollision mit Affen/Planeten
+			collision = true;
+		}
+		
+		if (collision) {
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
 			// Im Kollisionsfall:

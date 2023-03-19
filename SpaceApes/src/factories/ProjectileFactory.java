@@ -20,6 +20,10 @@ public class ProjectileFactory implements IEntityFactory {
 	public enum ProjectileType {
 		COCONUT, SPIKEBALL, BOMB, SHARD, CRYSTAL, TURTLE
 	};
+	
+	public enum MovementType {
+		LINEAR, EXPLICIT_EULER
+	};
 
 	private final String iD;
 	private final Vector2f position;
@@ -27,15 +31,17 @@ public class ProjectileFactory implements IEntityFactory {
 	private final boolean visible;
 	private final boolean isAffectedByEnvironment;
 	private final ProjectileType type;
+	private final MovementType movementType;
 
 	public ProjectileFactory(String iD, Vector2f position, Vector2f velocity, boolean visible,
-			boolean isAffectedByEnvironment, ProjectileType type) {
+			boolean isAffectedByEnvironment, ProjectileType type, MovementType movementType) {
 		this.iD = iD;
 		this.position = position;
 		this.velocity = velocity;
 		this.visible = visible;
 		this.isAffectedByEnvironment = isAffectedByEnvironment;
 		this.type = type;
+		this.movementType = movementType;
 	}
 
 	@Override
@@ -144,7 +150,7 @@ public class ProjectileFactory implements IEntityFactory {
 		if (isAffectedByEnvironment) {
 			// Loop Event
 			LoopEvent projectileLoop = new LoopEvent();
-			projectileLoop.addAction(new ProjectileBehaviorAction(projectile));
+			projectileLoop.addAction(new ProjectileBehaviorAction(projectile, movementType));
 			projectile.addComponent(projectileLoop);
 		}
 		

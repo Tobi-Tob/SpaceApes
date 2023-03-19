@@ -17,6 +17,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
+import factories.ProjectileFactory.MovementType;
 import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
@@ -34,13 +35,14 @@ public class ApeFactory implements IEntityFactory {
 	private final float angleOfView;
 	private final float throwStrength;
 	private final float movementSpeed;
+	private final MovementType projectileMovementType;
 
 	public final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
 	private final float distancePlanetCenter;
 
 	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImageIndex, boolean isActive,
 			boolean isInteractionAllowed, float movementSpeed, float angleOnPlanet, float angleOfView,
-			float throwStrength) {
+			float throwStrength, MovementType projectileMovementType) {
 		this.name = name;
 		this.homePlanet = homePlanet;
 		this.health = health;
@@ -57,6 +59,7 @@ public class ApeFactory implements IEntityFactory {
 		if (distancePlanetCenter < 0.1f) {
 			throw new RuntimeException("Radius ist zu nah an null");
 		}
+		this.projectileMovementType = projectileMovementType;
 	}
 
 	@Override
@@ -114,7 +117,7 @@ public class ApeFactory implements IEntityFactory {
 
 		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
 		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
-		spaceKeyPressed.addAction(new ShootAction());
+		spaceKeyPressed.addAction(new ShootAction(projectileMovementType));
 		ape.addComponent(spaceKeyPressed);
 
 		return ape;

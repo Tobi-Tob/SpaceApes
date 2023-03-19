@@ -6,6 +6,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
+import entities.Projectile;
+import factories.ProjectileFactory.MovementType;
 import testUtils.TestAppGameContainer;
 import utils.Utils;
 import map.Map;
@@ -143,10 +145,8 @@ public class AdapterMinimal {
 	/**
 	 * Erstellt eine Map
 	 */
-	public void createMap() {
-		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
-		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		Map.getInstance().parse(positionPlanet1, positionPlanet2, false);
+	public void createMap(Vector2f positionPlanet1,Vector2f positionPlanet2, MovementType projectileMovementType) {
+		Map.getInstance().parse(positionPlanet1, positionPlanet2, false, projectileMovementType);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}
@@ -285,6 +285,24 @@ public class AdapterMinimal {
 	/**
 	 * 
 	 * @param indexOfPlayer - index of player
+	 * @return returns global angle of view of the ape of the player with the given index can interact
+	 */
+	public float getApeGlobalAngleOfView(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getGlobalAngleOfView();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the throw strength set by the player with the given index
+	 */
+	public float getThrowStrength(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getThrowStrength();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
 	 * @return returns true if the ape of the player with the given index is active
 	 */
 	public boolean isApeActive(int indexOfPlayer) {
@@ -299,6 +317,22 @@ public class AdapterMinimal {
 	public boolean isApeInteractionAllowed(int indexOfPlayer) {
 		return Map.getInstance().getApes().get(indexOfPlayer).isInteractionAllowed();
 	}
+	
+	/* *************************************************** 
+	 * ***************** Projectiles *********************
+	 * *************************************************** */
+	
+	/**
+	 * @return returns the world coordinates of the current projectile
+	 */
+	public Vector2f getProjectileCoordinates() {
+		return ((Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+	}
+	
+	
+	/* *************************************************** 
+	 * ******************** General **********************
+	 * *************************************************** */
 	
 	/**
 	 * This Method should emulate the key pressed event.
