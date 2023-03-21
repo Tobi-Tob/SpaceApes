@@ -138,10 +138,4 @@ public class CreateMapTest {
 		
 	}
 	
-//	@Test
-//	public final void testApePositionAndValues() { // belongs to task: "Platzieren der Affen"
-//		assertTrue("Ape1 is not active, but should be", adapter.isApeActive(0)); //TODO gehört zu anderem Aufgabenteil!!
-//		assertTrue("Ape1 is not allowed to interact, but should be", adapter.isApeInteractionAllowed(0)); //TODO gehört zu anderem Aufgabenteil!!
-//		
-//	}
 }

@@ -14,6 +14,7 @@ import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
+import events.LessThan2ApesLeftEvent;
 import factories.ProjectileFactory.MovementType;
 import map.Map;
 
@@ -47,7 +48,7 @@ public class GameplayState extends BasicGameState {
 			// Constants.WORLD_HEIGHT * 0 / 2);
 			Vector2f coordinatesPlanet1 = null;
 			Vector2f coordinatesPlanet2 = null;
-			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.LINEAR);
+			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.EXPLICIT_EULER);
 		}
 
 		// Die dummyEntity steuert die Wechsel der States
@@ -58,7 +59,12 @@ public class GameplayState extends BasicGameState {
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
 		dummyEntity.addComponent(escPressed);
-
+		
+		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
+		Event lessThan2Apes = new LessThan2ApesLeftEvent();
+		lessThan2Apes.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
+		dummyEntity.addComponent(lessThan2Apes);
+		
 		// Hier kommen alle weiteren Events hinzu...
 
 		entityManager.addEntity(stateID, dummyEntity);

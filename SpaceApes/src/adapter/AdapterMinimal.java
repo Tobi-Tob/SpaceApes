@@ -295,14 +295,20 @@ public class AdapterMinimal {
 	/**
 	 * 
 	 * @param indexOfPlayer - index of player
-	 * @return returns true if the ape of the player with the given index is active
+	 * @return returns the health of the ape of the player with the given index
 	 */
-	public boolean isApeActive(int indexOfPlayer) {
-		return Map.getInstance().getApes().get(indexOfPlayer).isActive();
+	public int getApeHealth(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getHealth();
 	}
 	
 	/**
-	 * 
+	 * @return returns the number of living apes
+	 */
+	public int getNumberOfLivingApes() {
+		return Map.getInstance().getApes().size();
+	}
+	
+	/**
 	 * @param indexOfPlayer - index of player
 	 * @return returns true if the ape of the player with the given index can interact
 	 */
@@ -315,7 +321,7 @@ public class AdapterMinimal {
 	 * *************************************************** */
 	
 	/**
-	 * @return returns the world coordinates of the current projectile
+	 * @return returns the world coordinates of the current projectile. If not existing then null
 	 */
 	public Vector2f getProjectileCoordinates() {
 		if (Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
@@ -323,6 +329,25 @@ public class AdapterMinimal {
 			return null;
 		} else {
 			return ((Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+		}
+	}
+	
+	/**
+	 * @return returns the world coordinates of the current projectile. If not existing then null
+	 */
+	public void setProjectileCoordinates(Projectile projectile, Vector2f coordinates) {
+		projectile.setCoordinates(coordinates);
+	}
+	
+	/**
+	 * @return returns the current flying projectile. If not existing then null
+	 */
+	public Projectile getProjectile() {
+		if (Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
+			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
+			return null;
+		} else {
+			return (Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID);
 		}
 	}
 	
