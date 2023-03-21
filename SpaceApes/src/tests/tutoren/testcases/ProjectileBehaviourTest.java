@@ -86,6 +86,8 @@ public class ProjectileBehaviourTest {
 		adapter.setProjectileCoordinates(projectileFlying, coordinatesApe2);
 		adapter.runGame(10);
 		assertTrue("The health of Ape2 should be lower than 100 after a projectile hit it!", adapter.getApeHealth(1)<100);
+		
+		//TODO: evtl. abfrage des maximalen Schadens eines Projektils und dann test, ob health nach direktem Treffer geringer...
 	}
 	
 }
