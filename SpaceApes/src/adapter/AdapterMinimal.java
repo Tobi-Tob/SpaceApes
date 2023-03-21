@@ -7,7 +7,9 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Projectile;
+import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileType;
 import testUtils.TestAppGameContainer;
 import utils.Utils;
 import map.Map;
@@ -86,17 +88,7 @@ public class AdapterMinimal {
 					System.getProperty("user.dir") + "/native/" + System.getProperty("os.name").toLowerCase());
 		}
 		
-//    	if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/windows");
-//		} 
-//		else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/macosx");
-//		}
-//		else {
-//			System.setProperty("org.lwjgl.librarypath",System.getProperty("user.dir") + "/lib/lwjgl-2.8.3/native/" +System.getProperty("os.name").toLowerCase());
-//		}
-    	// Initialisiere das Spiel Tanks im Debug-Modus (ohne UI-Ausgabe)
-    	//tanks = new Tanks(true); -> die haben hier übergeben, ob es ein debug sein soll oder nicht, also ob das Spiel nur über die Komandozeile läuft (so kann man leicht checken, ob z.B. geschossen wurde...)
+		// Start game without GUI
     	launch = new Launch(false);
 		
 		// Initialisiere die statische Klasse Map
@@ -326,7 +318,37 @@ public class AdapterMinimal {
 	 * @return returns the world coordinates of the current projectile
 	 */
 	public Vector2f getProjectileCoordinates() {
-		return ((Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+		if (Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
+			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
+			return null;
+		} else {
+			return ((Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+		}
+	}
+	
+	/**
+	 * This method spawns a projectile at the given position
+	 * 
+	 * @param position - position where the projectile is spawned
+	 * @return returns the created projectile
+	 */
+	public Projectile createProjectile(Vector2f position) {
+		return new ProjectileFactory(Constants.PROJECTILE_ID, position,
+				new Vector2f(0,0), true, true, ProjectileType.COCONUT, MovementType.LINEAR).createEntity();
+	}
+	
+	/**
+	 * @param movementType - the MovementType of the projectile
+	 * @return returns true if a projectile collided with a planet or ape
+	 */
+	public boolean isCollision(Projectile projectile, MovementType movementType) {
+		if (movementType == MovementType.LINEAR) {
+			return projectile.linearMovementStep(0);
+		} else if (movementType == MovementType.EXPLICIT_EULER) {
+			return projectile.explizitEulerStep(0);
+		}
+		System.out.println("wrong MovementType in isCollision()!");
+		return false;
 	}
 	
 	

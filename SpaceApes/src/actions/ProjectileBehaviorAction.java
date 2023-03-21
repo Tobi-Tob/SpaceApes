@@ -73,12 +73,14 @@ public class ProjectileBehaviorAction implements Action {
 
 			map.changeTurn();
 			
-			// Erzeuge DamageDisplays zur Schadens Visualisierung
-			for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
-			    Integer damage = entry.getKey();
-			    Ape damagedApe = entry.getValue();
-			    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
-				entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
+			if (Launch.renderImages) {
+				// Erzeuge DamageDisplays zur Schadens Visualisierung
+				for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
+				    Integer damage = entry.getKey();
+				    Ape damagedApe = entry.getValue();
+				    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
+					entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
+				}
 			}
 
 			// Zeige Explosion
@@ -95,11 +97,11 @@ public class ProjectileBehaviorAction implements Action {
 					System.err.println("Problem with image for explosion");
 				}
 				explosion.setImages(images);
+				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
+				explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			} else {
 				System.out.println("noRenderImages: assign explosion animation images.");
 			}
-			explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
-			explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder
 																		// entfernt werden
 

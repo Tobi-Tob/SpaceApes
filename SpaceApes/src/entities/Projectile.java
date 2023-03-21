@@ -187,6 +187,7 @@ public class Projectile extends Entity {
 	 *         vorliegt
 	 */
 	public boolean linearMovementStep(int timeDelta) {
+		System.out.println("linearMovementStep");
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
 		boolean projectileIsVisible = this.isVisible();
 		// Positionsupdate:
