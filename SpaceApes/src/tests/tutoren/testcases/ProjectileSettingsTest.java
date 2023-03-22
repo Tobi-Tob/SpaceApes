@@ -84,7 +84,7 @@ public class ProjectileSettingsTest {
 		Projectile projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
 		//System.out.println("projectileFlyingCoordinates = " + projectileFlying.getCoordinates());
 		// The follwing assert does not indicate an error of the student. Because of the random placement of the apes on their planets, one cant predict for sure if no collision will occur. This should happen very rarely due to the small timeDelta
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		float desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		float desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		Vector2f newCoordinates = projectileFlying.getCoordinates();
@@ -103,7 +103,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -121,7 +121,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -139,7 +139,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -157,7 +157,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -176,7 +176,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -194,7 +194,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -212,7 +212,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -230,7 +230,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -248,7 +248,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -309,7 +309,7 @@ public class ProjectileSettingsTest {
 		Projectile projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
 		//System.out.println("projectileFlyingCoordinates = " + projectileFlying.getCoordinates());
 		// The follwing assert does not indicate an error of the student. Because of the random placement of the apes on their planets, one cant predict for sure if no collision will occur. This should happen very rarely due to the small timeDelta
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		float desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		float desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		Vector2f newCoordinates = projectileFlying.getCoordinates();
@@ -328,7 +328,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -346,7 +346,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -365,7 +365,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -383,7 +383,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();
@@ -401,7 +401,7 @@ public class ProjectileSettingsTest {
 		positionOfProjectileLaunch = new Vector2f(adapter.getApeCoordinates(player)).add(
 				Utils.toCartesianCoordinates(adapter.getApeRadiusInWorldUnits(player), adapter.getApeAngleOnPlanet(player)));
 		projectileFlying = adapter.createProjectile(positionOfProjectileLaunch, velocityVec);
-		assertTrue("Projectile collided during the, please run the test again.", !adapter.isCollision(projectileFlying, MovementType.LINEAR, timeDelta)); // Do one step of the linear movement
+		assertTrue("Projectile collided during the, please run the test again.", !adapter.doLinearMovementStep(projectileFlying, timeDelta)); // Do one step of the linear movement
 		desiredX = positionOfProjectileLaunch.x + (float) (Math.cos(angleInRad) * initVelocity * scalingFactor);
 		desiredY = positionOfProjectileLaunch.y + (float) (Math.sin(angleInRad) * initVelocity * scalingFactor);
 		newCoordinates = projectileFlying.getCoordinates();

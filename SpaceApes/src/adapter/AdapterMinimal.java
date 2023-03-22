@@ -372,17 +372,14 @@ public class AdapterMinimal {
 	}
 	
 	/**
-	 * @param movementType - the MovementType of the projectile
+	 * This method does one step of linear movement for the given projectile. The width of the step depends on the given time delta.
+	 * 
+	 * @param projectile - the projectile which is used for the linear movement step
+	 * @param timeDelta - time used for the linear movement step
 	 * @return returns true if a projectile collided with a planet or ape
 	 */
-	public boolean isCollision(Projectile projectile, MovementType movementType, int timeDelta) {
-		if (movementType == MovementType.LINEAR) {
-			return projectile.linearMovementStep(timeDelta);
-		} else if (movementType == MovementType.EXPLICIT_EULER) {
-			return projectile.explizitEulerStep(timeDelta);
-		}
-		System.out.println("wrong MovementType in isCollision()!");
-		return false;
+	public boolean doLinearMovementStep(Projectile projectile, int timeDelta) {
+		return projectile.linearMovementStep(timeDelta);
 	}
 	
 	

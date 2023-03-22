@@ -1,5 +1,7 @@
 package adapter;
 
+import entities.Projectile;
+import factories.ProjectileFactory.MovementType;
 import map.Map;
 
 public class AdapterExtended1 extends AdapterMinimal {
@@ -41,6 +43,17 @@ public class AdapterExtended1 extends AdapterMinimal {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Invalid shooting power: " + power);
 		}
+	}
+	
+	/**
+	 * This method does one step of explicit euler movement for the given projectile. The width of the step depends on the given time delta.
+	 * 
+	 * @param projectile - the projectile which is used for the explicit euler movement step
+	 * @param timeDelta - time used for the explicit euler movement step
+	 * @return returns true if a projectile collided with a planet or ape
+	 */
+	public boolean doExplicitEulerStep(Projectile projectile, int timeDelta) {
+		return projectile.explizitEulerStep(timeDelta);
 	}
 
 }
