@@ -28,6 +28,15 @@ import utils.Utils;
 public class CreateMapTest {
 	
 	AdapterMinimal adapter;
+	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
+	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
+	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	float radiusPlanet1 = 1f;
+	float radiusPlanet2 = 1f;
+	int massPlanet1 = 65;
+	int massPlanet2 = 65;
+	float angleOnPlanetApe1 = 0f;
+	float angleOnPlanetApe2 = 0f;
 	
 	@Before
 	public void setUp() {
@@ -52,10 +61,7 @@ public class CreateMapTest {
 	@Test
 	public void testCreateMap() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
-		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
-		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		MovementType projectileMovementType = MovementType.LINEAR;
-		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.stopGame();
 	}
@@ -63,10 +69,7 @@ public class CreateMapTest {
 	@Test
 	public final void testMapEntities() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		adapter.initializeGame();
-		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
-		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		MovementType projectileMovementType = MovementType.LINEAR;
-		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect planet count", 2, adapter.getPlanetCount());
@@ -78,14 +81,6 @@ public class CreateMapTest {
 		assertTrue("StateBasedEntityManager doesnt contain Ape2", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Ape2"));
 		
 		adapter.stopGame();
-		
-//		adapter.loadMapFromFile(new File("testmaps/minimal/entityTest02"));
-//		assertFalse("An incorrect map was detected as correct", adapter.isCorrectMap());
-//		
-//		assertEquals("You should not parse entities from an incorrect map", 0, adapter.getTankCount());
-//		assertEquals("You should not parse entities from an incorrect map", 0, adapter.getShotCount());
-//		assertEquals("You should not parse entities from an incorrect map", 0, adapter.getWallCount());
-//		assertEquals("You should not parse entities from an incorrect map", 0, adapter.getBorderCount());
 	}
 	
 	
@@ -94,10 +89,7 @@ public class CreateMapTest {
 	public final void testPlanetPositionAndValues() { // belongs to task: "Initialisieren einer simplen Spielwelt"
 		
 		adapter.initializeGame();
-		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
-		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		MovementType projectileMovementType = MovementType.LINEAR;
-		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect value of planet name of player1", "Planet1", adapter.getPlanetName(0)); //TODO Aufgabenstellung?
@@ -117,17 +109,13 @@ public class CreateMapTest {
 		assertTrue("Mass of Planet1 is not smaller than " + 1000.0f, adapter.getPlanetMass(1) < 1000.0f); //prevent too big masses
 		
 		adapter.stopGame();
-	
 	}
 	
 	@Test
 	public final void testApePositionAndValues() { // belongs to task: "Platzieren der Affen"
 		
 		adapter.initializeGame();
-		Vector2f positionPlanet1 = new Vector2f(-4.0f, 0.0f);
-		Vector2f positionPlanet2 = new Vector2f(4.0f, 0.0f);
-		MovementType projectileMovementType = MovementType.LINEAR;
-		adapter.createMap(positionPlanet1, positionPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertEquals("Incorrect value of ape name of player1", "Ape1", adapter.getApeName(0)); //TODO Aufgabenstellung?
@@ -135,7 +123,6 @@ public class CreateMapTest {
 		assertEquals("Incorrect rotation of Ape1", adapter.getApeAngleOnPlanet(0) + 90f, adapter.getApeRotation(0), 0.001f);
 		
 		adapter.stopGame();
-		
 	}
 	
 }

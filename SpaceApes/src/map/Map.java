@@ -54,10 +54,10 @@ public class Map {
 		return map;
 	}
 
-	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType) {
+	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		Parser parser = new Parser();
-		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets, projectileMovementType);
-		// Control Panel hinzufuegen -> MR das muss eigentlich in Map, damit man besser
+		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		// Control Panel hinzufuegen -> TODO: MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
 		controlPanel.initControlPanel();

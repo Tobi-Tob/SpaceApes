@@ -137,8 +137,8 @@ public class AdapterMinimal {
 	/**
 	 * Erstellt eine Map
 	 */
-	public void createMap(Vector2f positionPlanet1,Vector2f positionPlanet2, MovementType projectileMovementType) {
-		Map.getInstance().parse(positionPlanet1, positionPlanet2, false, projectileMovementType);
+	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
+		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}

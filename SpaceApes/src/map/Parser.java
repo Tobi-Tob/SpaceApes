@@ -34,11 +34,11 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	 * @param coordinatesPlanet1 - Positiion of the planet for player one in world coordinates
 	 * @param coordinatesPlanet2 - Positiion of the planet for player two in world coordinates
 	 */
-	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType) {
+	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground();
-		initPlanets(coordinatesPlanet1, coordinatesPlanet2, createNonPlayerPlanets);
-		initApes(projectileMovementType); // initPlanets() muss unbedingt davor ausgefuehrt werden!
+		initPlanets(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets);
+		initApes(projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 	}
 
@@ -47,7 +47,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, boolean createNonPlayerPlanets) {
+	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets) {
 		Map map = Map.getInstance();
 
 		try {
@@ -81,10 +81,14 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		} else {
 			System.out.println("Create Planet1 at the given coordiantes! x: " + coordinates1.x + " | y: " + coordinates1.y);
 		}
-		float radiusPlanetOne = Utils.randomFloat(Constants.MINIMUM_RADIUS_PLAYER_PLANET, Constants.MAXIMUM_RADIUS_PLAYER_PLANET);
-		int massPlanetOne = (int) (radiusPlanetOne * Utils.randomFloat(0.91f, 1.1f) * 65);
+		if (radiusPlanet1 == 0) {
+			radiusPlanet1 =  Utils.randomFloat(Constants.MINIMUM_RADIUS_PLAYER_PLANET, Constants.MAXIMUM_RADIUS_PLAYER_PLANET);;
+		}
+		if (massPlanet1 == 0) {
+			massPlanet1 = (int) (radiusPlanet1 * Utils.randomFloat(0.91f, 1.1f) * 65);
+		}
 
-		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanetOne, massPlanetOne, coordinates1,
+		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanet1, massPlanet1, coordinates1,
 				PlanetType.PLAYER).createEntity();
 		// Spielerplaneten und fuer die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
@@ -105,10 +109,14 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		} else {
 			System.out.println("Create Planet2 at the given coordiantes! x: " + coordinates2.x + " | y: " + coordinates2.y);
 		}
-		float radiusPlanetTwo = Utils.randomFloat(0.75f, 1.5f);
-		int massPlanetTwo = (int) (radiusPlanetTwo * Utils.randomFloat(0.91f, 1.1f) * 65);
+		if (radiusPlanet2 == 0) {
+			radiusPlanet2 =  Utils.randomFloat(Constants.MINIMUM_RADIUS_PLAYER_PLANET, Constants.MAXIMUM_RADIUS_PLAYER_PLANET);;
+		}
+		if (massPlanet2 == 0) {
+			massPlanet2 = (int) (radiusPlanet2 * Utils.randomFloat(0.91f, 1.1f) * 65);
+		}
 
-		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanetTwo, massPlanetTwo, coordinates2,
+		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanet2, massPlanet2, coordinates2,
 				PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
@@ -168,7 +176,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		}
 	}
 
-	protected void initApes(MovementType projectileMovementType) {
+	protected void initApes(MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		Map map = Map.getInstance();
 
 		for (int i = 0; i < Launch.players.size(); i++) {
@@ -188,6 +196,11 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 			boolean apeInteraction = (i == 0);
 			float movementSpeed = Constants.APE_MOVMENT_SPEED;
 			float angleOnPlanet = Utils.randomFloat(0, 360);
+			if (i == 0 && angleOnPlanetApe1 != 999) {
+				angleOnPlanet = angleOnPlanetApe1;
+			} else if (i == 1 && angleOnPlanetApe2 != 999) {
+				angleOnPlanet = angleOnPlanetApe2;
+			}
 			float angleOfView = 0;
 			float throwStrength = 5f;
 

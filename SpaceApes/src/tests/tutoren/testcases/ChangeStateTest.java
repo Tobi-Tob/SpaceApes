@@ -19,8 +19,14 @@ public class ChangeStateTest {
 	AdapterMinimal adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.LINEAR; //TODO: zu Aufgabenstellung hinzufügen...
-
+	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	float radiusPlanet1 = 1f;
+	float radiusPlanet2 = 1f;
+	int massPlanet1 = 65;
+	int massPlanet2 = 65;
+	float angleOnPlanetApe1 = 0f;
+	float angleOnPlanetApe2 = 0f;
+	
 	@Before
 	public void setUp() {
 		adapter = new AdapterMinimal();
@@ -34,7 +40,7 @@ public class ChangeStateTest {
 	@Test
 	public void testNewGame() { // belongs to task: "Wechsel zwischen Gamestates"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		assertTrue("Game is not in main menu state after initialization", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE);
 		adapter.handleKeyPressed(0, Input.KEY_N);
@@ -48,7 +54,7 @@ public class ChangeStateTest {
 	@Test
 	public void testApe1Dead() { // belongs to task: "Spielende"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -63,12 +69,13 @@ public class ChangeStateTest {
 			adapter.runGame(0); // Game has to be run two times otherwise one update call is missing due to the change of the State
 		}
 		assertTrue("Game is not in main menu or highscore state after Ape1 is dead!", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==Launch.HIGHSCORE_STATE);
+		adapter.stopGame();
 	}
 	
 	@Test
 	public void testApe2Dead() { // belongs to task: "Spielende"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -83,6 +90,7 @@ public class ChangeStateTest {
 			adapter.runGame(0); // Game has to be run two times otherwise one update call is missing due to the change of the State
 		}
 		assertTrue("Game is not in main menu or highscore state after Ape2 is dead!", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==Launch.HIGHSCORE_STATE);
+		adapter.stopGame();
 	}
 
 }

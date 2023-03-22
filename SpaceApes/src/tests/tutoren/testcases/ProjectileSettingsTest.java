@@ -24,7 +24,13 @@ public class ProjectileSettingsTest {
 	AdapterExtended1 adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.LINEAR; //TODO: zu Aufgabenstellung hinzufügen...
+	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	float radiusPlanet1 = 1f;
+	float radiusPlanet2 = 1f;
+	int massPlanet1 = 65;
+	int massPlanet2 = 65;
+	float angleOnPlanetApe1 = 0f;
+	float angleOnPlanetApe2 = 0f;
 
 	@Before
 	public void setUp() {
@@ -39,7 +45,7 @@ public class ProjectileSettingsTest {
 	@Test
 	public void testShootingAngle() { // belongs to task: "Schussparameter"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -261,12 +267,14 @@ public class ProjectileSettingsTest {
 //		assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager after hitting Space-Key!", newCoordinates!=null);
 //		assertEquals("With the shooting angle of " + testedAngle + "° the projectile should have other x-coordinates!", newCoordinates.x, desiredX, 0.01f);
 //		assertEquals("With the shooting angle of " + testedAngle + "° the projectile should have other y-coordinates!", newCoordinates.y, desiredY, 0.01f);
+		
+		adapter.stopGame();
 	}
 	
 	@Test
 	public void testShootingPower() { // belongs to task: "Schussparameter"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -400,6 +408,7 @@ public class ProjectileSettingsTest {
 		assertEquals("With the shooting angle of " + testedPower + "° the projectile should have other x-coordinates! Tested Ape" + (player+1), desiredX, newCoordinates.x, 0.01f);
 		assertEquals("With the shooting angle of " + testedPower + "° the projectile should have other y-coordinates! Tested Ape" + (player+1), desiredY, newCoordinates.y, 0.01f);
 		
+		adapter.stopGame();
 	}
 
 }

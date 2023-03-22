@@ -24,7 +24,13 @@ public class KeyboardInputTestMinimal {
 	AdapterMinimal adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.LINEAR; //TODO: zu Aufgabenstellung hinzufügen...
+	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	float radiusPlanet1 = 1f;
+	float radiusPlanet2 = 1f;
+	int massPlanet1 = 65;
+	int massPlanet2 = 65;
+	float angleOnPlanetApe1 = 0f;
+	float angleOnPlanetApe2 = 0f;
 
 	@Before
 	public void setUp() {
@@ -39,7 +45,7 @@ public class KeyboardInputTestMinimal {
 	@Test
 	public void testMoveLeft() { // belongs to task: "Affenbewegung"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -52,12 +58,13 @@ public class KeyboardInputTestMinimal {
 		assertEquals("The active ape should move left with the set speed when pressing left arrow", targetAngleOnPlanet, adapter.getApeAngleOnPlanet(0), 0.01f);
 		assertEquals("Ape1 is not positioned on the surface of Planet1 after moving right", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
 		assertEquals("Rotation of Ape1 is incorrect after moving left", adapter.getApeAngleOnPlanet(0) + 90f, adapter.getApeRotation(0), 0.001f);
+		adapter.stopGame();
 	}
 	
 	@Test
 	public void testMoveRight() { // belongs to task: "Affenbewegung"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -70,12 +77,13 @@ public class KeyboardInputTestMinimal {
 		assertEquals("The active ape should move right with the set speed when pressing right arrow", targetAngleOnPlanet, adapter.getApeAngleOnPlanet(0), 0.01f);
 		assertEquals("Ape1 is not positioned on the surface of Planet1 after moving right", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
 		assertEquals("Rotation of Ape1 is incorrect after moving right", adapter.getApeAngleOnPlanet(0) + 90f, adapter.getApeRotation(0), 0.001f);
+		adapter.stopGame();
 	}
 	
 	@Test
 	public void testShootStraight() { // belongs to task: "Schießen entlang einer Geraden"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -98,12 +106,13 @@ public class KeyboardInputTestMinimal {
 		assertEquals("The ape should not move in x direction when space is pressed", originalCoordinatesApe.x, adapter.getApeCoordinates(0).x, 0.001f);
 		assertEquals("The ape should not move in y direction when space is pressed", originalCoordinatesApe.y, adapter.getApeCoordinates(0).y, 0.001f);
 		assertEquals("Rotation of Ape1 is incorrect after moving right", originalRotationApe, adapter.getApeRotation(0), 0.001f);
+		adapter.stopGame();
 	}
 	
 	@Test
 	public void testActivePlayer() { // belongs to task: "Spielzug Logik"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, projectileMovementType);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -142,6 +151,8 @@ public class KeyboardInputTestMinimal {
 		assertTrue("Ape1 should be able to interact after the projectile of Ape2 collided with Planet2!", adapter.isApeInteractionAllowed(0));
 		
 		//TODO: teste alle Fälle durch, wie es sich verhält bei Treffer von eigenem Ape, Treffer von eigenem Planet, Treffer von ..., Schuss außerhalb von der Welt, 2x Space
+		
+		adapter.stopGame();
 	}
 
 }

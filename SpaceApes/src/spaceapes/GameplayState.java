@@ -44,11 +44,30 @@ public class GameplayState extends BasicGameState {
 
 		if (Launch.renderImages) { // wird bei den Tests immer manuell gemacht
 			// Map erstellen
-			// Vector2f coordinatesPlanet1 = new Vector2f(Constants.WORLD_WIDTH * 0.5f / 2,
-			// Constants.WORLD_HEIGHT * 0 / 2);
+			// Wähle zufällige Erstellung der Map:
 			Vector2f coordinatesPlanet1 = null;
 			Vector2f coordinatesPlanet2 = null;
-			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.LINEAR);
+			float radiusPlanet1 = 0;
+			float radiusPlanet2 = 0;
+			int massPlanet1 = 0;
+			int massPlanet2 = 0;
+			boolean createNonPlayerPlanets = true;
+			MovementType projectileMovementType = MovementType.EXPLICIT_EULER;
+			float angleOnPlanetApe1 = 999;
+			float angleOnPlanetApe2 = 999;
+			
+//			Die folgenden Parameter sind nur fürs Debugging
+//			Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
+//			Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
+//			MovementType projectileMovementType = MovementType.EXPLICIT_EULER;
+//			float radiusPlanet1 = 1f;
+//			float radiusPlanet2 = 1f;
+//			int massPlanet1 = 65;
+//			int massPlanet2 = 65;
+//			float angleOnPlanetApe1 = 0f;
+//			float angleOnPlanetApe2 = 0f;
+//			boolean createNonPlayerPlanets = false;
+			map.parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		}
 
 		// Die dummyEntity steuert die Wechsel der States
