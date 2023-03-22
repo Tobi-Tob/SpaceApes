@@ -71,7 +71,7 @@ public class ControlPanel extends Entity {
 		if (Launch.renderImages) {
 			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
 		} else {
-			System.out.println("noRenderImages: assign control panel font.");
+			//System.out.println("noRenderImages: assign control panel font.");
 		}
 		powerFormatter = new DecimalFormat("0.00");
 		angleFormatter = new DecimalFormat("00.0");
@@ -118,7 +118,7 @@ public class ControlPanel extends Entity {
 			}
 			this.addComponent(imageRenderComponent);
 		} else {
-			System.out.println("noRenderImages: assign control panel images.");
+			//System.out.println("noRenderImages: assign control panel images.");
 		}
 
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();

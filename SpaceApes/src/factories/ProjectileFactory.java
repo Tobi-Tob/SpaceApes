@@ -65,7 +65,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 					} else {
-						System.out.println("noRenderImages: assign coconut image.");
+						//System.out.println("noRenderImages: assign coconut image.");
 					}
 					break;
 
@@ -80,7 +80,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/spikeball.png")));
 					} else {
-						System.out.println("noRenderImages: assign spikeball image.");
+						//System.out.println("noRenderImages: assign spikeball image.");
 					}
 					break;
 
@@ -94,7 +94,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/bomb.png")));
 					} else {
-						System.out.println("noRenderImages: assign bomb image.");
+						//System.out.println("noRenderImages: assign bomb image.");
 					}
 					break;
 
@@ -109,7 +109,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/shard.png")));
 					} else {
-						System.out.println("noRenderImages: assign shard image.");
+						//System.out.println("noRenderImages: assign shard image.");
 					}
 					break;
 
@@ -123,7 +123,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/crystal.png")));
 					} else {
-						System.out.println("noRenderImages: assign crystal image.");
+						//System.out.println("noRenderImages: assign crystal image.");
 					}
 					break;
 
@@ -137,7 +137,7 @@ public class ProjectileFactory implements IEntityFactory {
 					if (Launch.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/turtle.png")));
 					} else {
-						System.out.println("noRenderImages: assign turtle image.");
+						//System.out.println("noRenderImages: assign turtle image.");
 					}
 					break;
 

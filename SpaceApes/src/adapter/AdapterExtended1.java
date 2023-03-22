@@ -28,5 +28,19 @@ public class AdapterExtended1 extends AdapterMinimal {
 			throw new IllegalArgumentException("Invalid shooting angle: " + angle);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @param power - new shooting power
+	 * @throws IllegalArgumentException - passes the exception when an invalid angle is given
+	 */
+	public void setShootingPowerOfApe(int indexOfPlayer, float power) throws IllegalArgumentException {
+		try {
+			Map.getInstance().getApes().get(indexOfPlayer).setThrowStrength(power);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Invalid shooting power: " + power);
+		}
+	}
 
 }

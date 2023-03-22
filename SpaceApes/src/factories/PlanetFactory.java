@@ -76,7 +76,7 @@ public class PlanetFactory implements IEntityFactory {
 					System.err.println("Problem with black hole image");
 				}
 			} else {
-				System.out.println("noRenderImages: assign blackhole image.");
+				//System.out.println("noRenderImages: assign blackhole image.");
 			}
 			
 			
@@ -93,7 +93,7 @@ public class PlanetFactory implements IEntityFactory {
 					System.err.println("Problem with planet image");
 				}
 			} else {
-				System.out.println("noRenderImages: assign antiplanet image.");
+				//System.out.println("noRenderImages: assign antiplanet image.");
 			}
 			
 			
@@ -142,7 +142,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
 			} else {
-				System.out.println("noRenderImages: assign planet1 image.");
+				//System.out.println("noRenderImages: assign planet1 image.");
 			}
 			float planetRadiusInPixel = 235;
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -152,7 +152,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
 			} else {
-				System.out.println("noRenderImages: assign planet2 image.");
+				//System.out.println("noRenderImages: assign planet2 image.");
 			}
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -162,7 +162,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
 			} else {
-				System.out.println("noRenderImages: assign planet3 image.");
+				//System.out.println("noRenderImages: assign planet3 image.");
 			}
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -172,7 +172,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
 			} else {
-				System.out.println("noRenderImages: assign planet4 image.");
+				//System.out.println("noRenderImages: assign planet4 image.");
 			}
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -182,7 +182,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
 			} else {
-				System.out.println("noRenderImages: assign planet5 image.");
+				//System.out.println("noRenderImages: assign planet5 image.");
 			}
 			planetRadiusInPixel = 222;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -192,7 +192,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
 			} else {
-				System.out.println("noRenderImages: assign ring planet1 image.");
+				//System.out.println("noRenderImages: assign ring planet1 image.");
 			}
 			planetRadiusInPixel = 210;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -202,7 +202,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
 			} else {
-				System.out.println("noRenderImages: assign ring planet2 image.");
+				//System.out.println("noRenderImages: assign ring planet2 image.");
 			}
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
@@ -212,7 +212,7 @@ public class PlanetFactory implements IEntityFactory {
 			if (Launch.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
 			} else {
-				System.out.println("noRenderImages: assign ring planet3 image.");
+				//System.out.println("noRenderImages: assign ring planet3 image.");
 			}
 			planetRadiusInPixel = 245;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);

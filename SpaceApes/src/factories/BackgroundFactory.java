@@ -31,7 +31,7 @@ public class BackgroundFactory implements IEntityFactory {
 				background.addComponent(new ImageRenderComponent(image));
 				background.setScale((float) Launch.HEIGHT / image.getHeight());
 			} else {
-				System.out.println("noRenderImages: assign background image.");
+				//System.out.println("noRenderImages: assign background image.");
 			}
 		} catch (SlickException e) {
 			System.err.println("Problem with image for background");

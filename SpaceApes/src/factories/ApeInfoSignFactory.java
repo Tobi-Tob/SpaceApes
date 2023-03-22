@@ -43,7 +43,7 @@ public class ApeInfoSignFactory implements IEntityFactory {
 		if (Launch.renderImages) {
 			apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
 		} else {
-			System.out.println("noRenderImages: assign apeInfoSign font.");
+			//System.out.println("noRenderImages: assign apeInfoSign font.");
 		}
 		
 		if (Launch.renderImages) {
@@ -55,7 +55,7 @@ public class ApeInfoSignFactory implements IEntityFactory {
 				System.err.println("Problem with planet panel image");
 			}
 		} else {
-			System.out.println("noRenderImages: assign apeInfoSign image.");
+			//System.out.println("noRenderImages: assign apeInfoSign image.");
 		}
 		
 		return apeInfoSign;

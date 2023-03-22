@@ -59,7 +59,7 @@ public class MainMenuState extends BasicGameState {
 			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
 			menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		} else {
-			System.out.println("noRenderImages: assign MainMenuState image.");
+			//System.out.println("noRenderImages: assign MainMenuState image.");
 		}
 		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 
@@ -71,7 +71,7 @@ public class MainMenuState extends BasicGameState {
 		if (Launch.renderImages) {
 			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 		} else {
-			System.out.println("noRenderImages: assign start button image.");
+			//System.out.println("noRenderImages: assign start button image.");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -94,7 +94,7 @@ public class MainMenuState extends BasicGameState {
 		if (Launch.renderImages) {
 			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
 		} else {
-			System.out.println("noRenderImages: assign beenden button image.");
+			//System.out.println("noRenderImages: assign beenden button image.");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action

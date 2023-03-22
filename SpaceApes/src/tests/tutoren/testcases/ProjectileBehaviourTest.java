@@ -20,6 +20,8 @@ public class ProjectileBehaviourTest {
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
 	MovementType projectileMovementType = MovementType.LINEAR; //TODO: zu Aufgabenstellung hinzufügen...
+	Vector2f velocityVector = new Vector2f(0,0);
+	int timeDelta = 0;
 
 	@Before
 	public void setUp() {
@@ -39,12 +41,12 @@ public class ProjectileBehaviourTest {
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
 		
-		Projectile projectileCollisionPlanet1 = adapter.createProjectile(coordinatesPlanet1);
-		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Planet1 befindet!", adapter.isCollision(projectileCollisionPlanet1, projectileMovementType));
-		Projectile projectileCollisionPlanet2 = adapter.createProjectile(coordinatesPlanet2);
-		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Planet2 befindet!", adapter.isCollision(projectileCollisionPlanet2, projectileMovementType));
-		Projectile projectileNoCollision = adapter.createProjectile(new Vector2f(0,0));
-		assertTrue("Es wurde eine Kollision erkannt, obwohl kein Projektil sich innerhalb eines Planeten befindet!", !adapter.isCollision(projectileNoCollision, projectileMovementType));
+		Projectile projectileCollisionPlanet1 = adapter.createProjectile(coordinatesPlanet1, velocityVector);
+		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Planet1 befindet!", adapter.isCollision(projectileCollisionPlanet1, projectileMovementType, timeDelta));
+		Projectile projectileCollisionPlanet2 = adapter.createProjectile(coordinatesPlanet2, velocityVector);
+		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Planet2 befindet!", adapter.isCollision(projectileCollisionPlanet2, projectileMovementType, timeDelta));
+		Projectile projectileNoCollision = adapter.createProjectile(new Vector2f(0,0), velocityVector);
+		assertTrue("Es wurde eine Kollision erkannt, obwohl kein Projektil sich innerhalb eines Planeten befindet!", !adapter.isCollision(projectileNoCollision, projectileMovementType, timeDelta));
 	}
 	
 	@Test
@@ -56,13 +58,13 @@ public class ProjectileBehaviourTest {
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
 		
 		Vector2f coordinatesApe1 = adapter.getApeCoordinates(0);
-		Projectile projectileCollisionApe1 = adapter.createProjectile(coordinatesApe1);
-		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Ape1 befindet!", adapter.isCollision(projectileCollisionApe1, projectileMovementType));
+		Projectile projectileCollisionApe1 = adapter.createProjectile(coordinatesApe1, velocityVector);
+		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Ape1 befindet!", adapter.isCollision(projectileCollisionApe1, projectileMovementType, timeDelta));
 		Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
-		Projectile projectileCollisionApe2 = adapter.createProjectile(coordinatesApe2);
-		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Ape2 befindet!", adapter.isCollision(projectileCollisionApe2, projectileMovementType));
-		Projectile projectileNoCollision = adapter.createProjectile(new Vector2f(0,0));
-		assertTrue("Es wurde eine Kollision erkannt, obwohl kein Projektil sich innerhalb eines Apes befindet!", !adapter.isCollision(projectileNoCollision, projectileMovementType));
+		Projectile projectileCollisionApe2 = adapter.createProjectile(coordinatesApe2, velocityVector);
+		assertTrue("Es wurde keine Kollision erkannt, obwohl ein Projektil sich innerhalb von Ape2 befindet!", adapter.isCollision(projectileCollisionApe2, projectileMovementType, timeDelta));
+		Projectile projectileNoCollision = adapter.createProjectile(new Vector2f(0,0), velocityVector);
+		assertTrue("Es wurde eine Kollision erkannt, obwohl kein Projektil sich innerhalb eines Apes befindet!", !adapter.isCollision(projectileNoCollision, projectileMovementType, timeDelta));
 	}
 
 	

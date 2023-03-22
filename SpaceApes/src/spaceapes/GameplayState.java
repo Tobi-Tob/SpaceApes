@@ -48,7 +48,7 @@ public class GameplayState extends BasicGameState {
 			// Constants.WORLD_HEIGHT * 0 / 2);
 			Vector2f coordinatesPlanet1 = null;
 			Vector2f coordinatesPlanet2 = null;
-			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.EXPLICIT_EULER);
+			map.parse(coordinatesPlanet1, coordinatesPlanet2, true, MovementType.LINEAR);
 		}
 
 		// Die dummyEntity steuert die Wechsel der States

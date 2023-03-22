@@ -259,6 +259,15 @@ public class AdapterMinimal {
 	/**
 	 * 
 	 * @param indexOfPlayer - index of player
+	 * @return returns the radius of the ape of the ape of the player with the given index in world units
+	 */
+	public float getApeRadiusInWorldUnits(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getRadiusInWorldUnits();
+	}
+	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
 	 * @return returns the rotation of the ape of the player with the given index
 	 */
 	public float getApeRotation(int indexOfPlayer) {
@@ -357,20 +366,20 @@ public class AdapterMinimal {
 	 * @param position - position where the projectile is spawned
 	 * @return returns the created projectile
 	 */
-	public Projectile createProjectile(Vector2f position) {
+	public Projectile createProjectile(Vector2f position, Vector2f velocityVector) {
 		return new ProjectileFactory(Constants.PROJECTILE_ID, position,
-				new Vector2f(0,0), true, true, ProjectileType.COCONUT, MovementType.LINEAR).createEntity();
+				velocityVector, true, true, ProjectileType.COCONUT, MovementType.LINEAR).createEntity();
 	}
 	
 	/**
 	 * @param movementType - the MovementType of the projectile
 	 * @return returns true if a projectile collided with a planet or ape
 	 */
-	public boolean isCollision(Projectile projectile, MovementType movementType) {
+	public boolean isCollision(Projectile projectile, MovementType movementType, int timeDelta) {
 		if (movementType == MovementType.LINEAR) {
-			return projectile.linearMovementStep(0);
+			return projectile.linearMovementStep(timeDelta);
 		} else if (movementType == MovementType.EXPLICIT_EULER) {
-			return projectile.explizitEulerStep(0);
+			return projectile.explizitEulerStep(timeDelta);
 		}
 		System.out.println("wrong MovementType in isCollision()!");
 		return false;
@@ -424,16 +433,5 @@ public class AdapterMinimal {
 			}
 		}
 	}
-	
-
-//	public void setCursorPosition(int xPosition, int yPosition) {
-//		if (launch != null && app != null) {
-//			try {
-//				app.setMouseCursor("Cursor", xPosition, yPosition);
-//			} catch (SlickException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 	
 }

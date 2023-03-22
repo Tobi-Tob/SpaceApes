@@ -47,7 +47,7 @@ public class HighscoreState extends BasicGameState {
 			highscoreBackground.addComponent(new ImageRenderComponent(image));
 			highscoreBackground.setScale((float) Launch.HEIGHT / image.getHeight());
 		} else {
-			System.out.println("noRenderImages: assign HighscoreState image.");
+			//System.out.println("noRenderImages: assign HighscoreState image.");
 		}
 		entityManager.addEntity(stateID, highscoreBackground);
 
@@ -60,7 +60,7 @@ public class HighscoreState extends BasicGameState {
 		if (Launch.renderImages) {
 			highscoreImage.addComponent(new ImageRenderComponent(new Image("img/assets/highscore.png")));
 		} else {
-			System.out.println("noRenderImages: assign highscore image.");
+			//System.out.println("noRenderImages: assign highscore image.");
 		}
 		entityManager.addEntity(this.stateID, highscoreImage);
 

@@ -100,7 +100,7 @@ public class ProjectileBehaviorAction implements Action {
 				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 				explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
 			} else {
-				System.out.println("noRenderImages: assign explosion animation images.");
+				//System.out.println("noRenderImages: assign explosion animation images.");
 			}
 			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder
 																		// entfernt werden

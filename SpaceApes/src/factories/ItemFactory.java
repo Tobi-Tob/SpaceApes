@@ -50,7 +50,7 @@ public class ItemFactory implements IEntityFactory {
 				if (Launch.renderImages) {
 					imageRenderComponent = new ImageRenderComponent(new Image(Constants.ENERGY_IMAGE_PATH));
 				} else {
-					System.out.println("noRenderImages: assign energy pack image.");
+					//System.out.println("noRenderImages: assign energy pack image.");
 				}
 				break;
 				
@@ -63,7 +63,7 @@ public class ItemFactory implements IEntityFactory {
 				if (Launch.renderImages) {
 					imageRenderComponent = new ImageRenderComponent(new Image(Constants.HEALTH_IMAGE_PATH));
 				} else {
-					System.out.println("noRenderImages: assign health pack image.");
+					//System.out.println("noRenderImages: assign health pack image.");
 				}
 				break;
 
@@ -76,7 +76,7 @@ public class ItemFactory implements IEntityFactory {
 				if (Launch.renderImages) {
 					imageRenderComponent = new ImageRenderComponent(new Image(Constants.COPPER_COIN_IMAGE_PATH));
 				} else {
-					System.out.println("noRenderImages: assign copper coin image.");
+					//System.out.println("noRenderImages: assign copper coin image.");
 				}
 				break;
 
@@ -89,7 +89,7 @@ public class ItemFactory implements IEntityFactory {
 				if (Launch.renderImages) {
 					imageRenderComponent = new ImageRenderComponent(new Image(Constants.GOLD_COIN_IMAGE_PATH));
 				} else {
-					System.out.println("noRenderImages: assign gold coin image.");
+					//System.out.println("noRenderImages: assign gold coin image.");
 				}
 				break;
 
@@ -102,7 +102,7 @@ public class ItemFactory implements IEntityFactory {
 				if (Launch.renderImages) {
 					imageRenderComponent = new ImageRenderComponent(new Image(Constants.DIAMOND_COIN_IMAGE_PATH));
 				} else {
-					System.out.println("noRenderImages: assign diamond coin image.");
+					//System.out.println("noRenderImages: assign diamond coin image.");
 				}
 				break;
 				

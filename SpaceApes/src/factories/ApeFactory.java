@@ -93,7 +93,7 @@ public class ApeFactory implements IEntityFactory {
 				}
 			}
 		} else {
-			System.out.println("noRenderImages: assign ape image.");
+			//System.out.println("noRenderImages: assign ape image.");
 		}
 
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
