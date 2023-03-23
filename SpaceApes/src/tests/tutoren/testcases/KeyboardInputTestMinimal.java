@@ -3,9 +3,6 @@ package tests.tutoren.testcases;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.util.Scanner;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,17 +11,14 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterMinimal;
 import entities.Projectile;
-import factories.ProjectileFactory.MovementType;
 import spaceapes.Constants;
 import spaceapes.Launch;
-import utils.Utils;
 
 public class KeyboardInputTestMinimal {
 	
 	AdapterMinimal adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
 	float radiusPlanet1 = 1f;
 	float radiusPlanet2 = 1f;
 	int massPlanet1 = 65;
@@ -45,7 +39,7 @@ public class KeyboardInputTestMinimal {
 	@Test
 	public void testMoveLeft() { // belongs to task: "Affenbewegung"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -64,7 +58,7 @@ public class KeyboardInputTestMinimal {
 	@Test
 	public void testMoveRight() { // belongs to task: "Affenbewegung"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -83,7 +77,7 @@ public class KeyboardInputTestMinimal {
 	@Test
 	public void testShootStraight() { // belongs to task: "Schießen entlang einer Geraden"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -112,7 +106,7 @@ public class KeyboardInputTestMinimal {
 	@Test
 	public void testActivePlayer() { // belongs to task: "Spielzug Logik"
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -142,7 +136,7 @@ public class KeyboardInputTestMinimal {
 		assertTrue("Ape1 should not be able to interact after Ape2 shot its projectile which is still flying!", !adapter.isApeInteractionAllowed(1));
 		
 		projectileFlying = adapter.getProjectile();
-		assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!", projectileFlying!=null);
+		assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager after Player two hit Space-Key!", projectileFlying!=null);
 		adapter.setProjectileCoordinates(projectileFlying, coordinatesPlanet1);
 		adapter.runGame(10);
 		projectileFlying = adapter.getProjectile();

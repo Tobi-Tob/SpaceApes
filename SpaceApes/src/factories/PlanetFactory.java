@@ -52,6 +52,7 @@ public class PlanetFactory implements IEntityFactory {
 		planet.setMass(mass);
 		planet.setRadius(radius);
 		planet.setRotation(Utils.randomFloat(-30, 30));
+		planet.setPlanetType(type);
 		
 		if (type == PlanetType.PLAYER) {
 			

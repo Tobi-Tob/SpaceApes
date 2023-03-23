@@ -22,7 +22,7 @@ public class ProjectileFactory implements IEntityFactory {
 	};
 	
 	public enum MovementType {
-		LINEAR, EXPLICIT_EULER
+		LINEAR, EXPLICIT_EULER, EULER_FRICTION
 	};
 
 	private final String iD;

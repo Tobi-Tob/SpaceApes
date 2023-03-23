@@ -14,8 +14,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended1;
 import entities.Projectile;
-import factories.ProjectileFactory.MovementType;
-import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
@@ -24,7 +22,7 @@ public class ProjectileSettingsTest {
 	AdapterExtended1 adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	int projectileMovementType = 1;
 	float radiusPlanet1 = 1f;
 	float radiusPlanet2 = 1f;
 	int massPlanet1 = 65;

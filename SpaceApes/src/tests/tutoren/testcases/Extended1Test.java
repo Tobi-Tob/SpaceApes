@@ -2,8 +2,6 @@ package tests.tutoren.testcases;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,23 +11,21 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended1;
 import entities.Projectile;
-import factories.ProjectileFactory.MovementType;
-import spaceapes.Constants;
 import spaceapes.Launch;
 import utils.Utils;
 
-public class ProjectileBehaviourExt1Test {
+public class Extended1Test {
 	
 	AdapterExtended1 adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	MovementType projectileMovementType = MovementType.EXPLICIT_EULER; //TODO: zu Aufgabenstellung hinzufügen...
+	int projectileMovementType = 1;
 	float radiusPlanet1 = 1.5f;
 	float radiusPlanet2 = 1.5f;
 	int massPlanet1 = 65;
 	int massPlanet2 = 65;
-	//float angleOnPlanetApe1 = -25f;
-	//float angleOnPlanetApe2 = 180f;
+	float angleOnPlanetApe1 = 0f;
+	float angleOnPlanetApe2 = 0f;
 
 	@Before
 	public void setUp() {
@@ -44,9 +40,9 @@ public class ProjectileBehaviourExt1Test {
 	@Test
 	public void testShootingAngle1() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
 		adapter.initializeGame();
-		float angleOnPlanetApe1 = -25f;
-		float angleOnPlanetApe2 = 180f;
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		float otherAngleOnPlanetApe1 = -25f;
+		float otherAngleOnPlanetApe2 = 180f;
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, otherAngleOnPlanetApe1, otherAngleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -85,9 +81,9 @@ public class ProjectileBehaviourExt1Test {
 	@Test
 	public void testShootingAngle2() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
 		adapter.initializeGame();
-		float angleOnPlanetApe1 = 90f;
-		float angleOnPlanetApe2 = 0f;
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		float otherAngleOnPlanetApe1 = 90f;
+		float otherAngleOnPlanetApe2 = 0f;
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, otherAngleOnPlanetApe1, otherAngleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
@@ -122,4 +118,5 @@ public class ProjectileBehaviourExt1Test {
 
 		adapter.stopGame();
 	}
+	
 }

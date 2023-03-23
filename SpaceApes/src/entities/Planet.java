@@ -3,6 +3,7 @@ package entities;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.entity.Entity;
+import factories.PlanetFactory.PlanetType;
 import spaceapes.Constants;
 import utils.Utils;
 
@@ -12,6 +13,7 @@ public class Planet extends Entity {
 	private int mass;
 	private Vector2f coordinates; // in Weltkoordinaten
 	private Ape ape;
+	private PlanetType planetType;
 
 	public Planet(String entityID) {
 		super(entityID);
@@ -66,6 +68,14 @@ public class Planet extends Entity {
 
 	public void setCoordinates(Vector2f coordinates) {
 		this.coordinates = coordinates;
+	}
+	
+	public void setPlanetType(PlanetType type) {
+		planetType = type;
+	}
+
+	public PlanetType getPlanetType() {
+		return planetType;
 	}
 
 	public void setApe(Ape a) {

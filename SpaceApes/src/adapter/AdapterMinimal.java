@@ -1,7 +1,5 @@
 package adapter;
 
-import java.io.File;
-
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -17,39 +15,34 @@ import spaceapes.Constants;
 import spaceapes.Launch;
 
 /**
- * This is the test adapter for the minimal stage of completion. You <b>must</b> implement the method stubs and match
- * them to your concrete implementation. Please read all the Javadoc of a method before implementing it. <br>
- * <strong>Important:</strong> this class should not contain any real game logic, you should rather only match the
- * method stubs to your game. <br>
- * Example: in {@link #isCorrectMap()} you may return the value <i>Tanks.isCorrectMap()</i>, if you have a variable
- * <i>Tanks</i> and a map has before been loaded via {@link #loadMapFromFile(File)}. What you mustn't do is to
- * implement the actual logic of the method in this class. <br>
- * <br>
+ * This is the test adapter for the minimal stage of completion. You must implement the method stubs and match
+ * them to your concrete implementation. Please read all the Javadoc of a method before implementing it.
+ * Important: this class should not contain any real game logic, you should rather only match the
+ * method stubs to your game.
+ * Example: in {@link #isCorrectMap()} you may return the value Launch.isCorrectMap(), if you have a variable
+ * Launch and a map has before created via {@link #createMap(...)}. What you mustn't do is to
+ * implement the actual logic of the method in this class.
+ *
  * If you have implemented the minimal stage of completion, you should be able to implement all method stubs. The public
  * and private JUnit tests for the minimal stage of completion will be run on this test adapter. The other test adapters
- * will inherit from this class, because they need the basic methods (like loading a map), too. <br>
- * <br>
- * The methods of all test adapters need to function without any kind of user interaction.</br>
+ * will inherit from this class, because they need the basic methods (like creating a map), too.
  * 
- * <i>Note:</i> All other test adapters will inherit from this class.
+ * The methods of all test adapters need to function without any kind of user interaction.
+ * 
+ * Note: All other test adapters will inherit from this class.
  * 
  * @see AdapterExtended1
  * @see AdapterExtended2
  * @see AdapterExtended3
  */
-//TODO Beschreibung anpassen!!
 public class AdapterMinimal {
 	
-	Launch launch; 						// erbt von StateBasedGame
-	TestAppGameContainer app;			// spezielle Variante des AppGameContainer, welche keine UI erzeugt (nur für Tests!)
-	//boolean syntaxException;			// gibt es Syntax-Fehler //TODO brauchen wird das?
-	//boolean semanticException;		// gibt es Semantik-Fehler //TODO brauchen wird das?
+	Launch launch; 						// inherits from StateBasedGame
+	TestAppGameContainer app;			// special variant of the AppGameContainer, which doesn't build a UI (just for the tests!)
 	boolean isMapCorrect;
 	
 	
 	/**
-	 * Verwenden Sie diesen Konstruktor zur Initialisierung von allem,
-	 * was sie benoetigen
 	 * 
 	 * Use this constructor to set up everything you need.
 	 */
@@ -71,10 +64,8 @@ public class AdapterMinimal {
 	}
 	
 	/**
-	 * Diese Methode initialisiert das Spiel im Debug-Modus, d.h. es wird
-	 * ein AppGameContainer gestartet, der keine Fenster erzeugt und aktualisiert.
-	 * 
-	 * Sie müssen diese Methode erweitern
+	 * This method initializes the game in no-GUI mode. That means no
+	 * AppGameContainer is started, so no window will be created
 	 */
 	public void initializeGame() {
 		
@@ -103,7 +94,7 @@ public class AdapterMinimal {
 	}
 	
 	/**
-	 * Stoppe das im Hintergrund laufende Spiel
+	 * This method stopps the running game
 	 */
 	public void stopGame() {
 		if (app != null) {
@@ -116,7 +107,6 @@ public class AdapterMinimal {
 	
 	/**
 	 * Run the game for a specified duration.
-	 * Laesst das Spiel fuer eine angegebene Zeit laufen
 	 * 
 	 * @param ms duration of runtime of the game
 	 */
@@ -135,17 +125,26 @@ public class AdapterMinimal {
 	 * *************************************************** */
 	
 	/**
-	 * Erstellt eine Map
+	 * This method creates a new map. 
+	 * 
+	 * @param coordinatesPlanet1 - coordinates of Planet1. In the "Ausbaustufe" 2 & 3 "null" is passed to indicate a random position as explained in the task
+	 * @param coordinatesPlanet2 - coordinates of Planet2. In the "Ausbaustufe" 2 & 3 "null" is passed to indicate a random position as explained in the task
+	 * @param radiusPlanet1 - radius of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random radius as explained in the task
+	 * @param radiusPlanet2 - radius of Planet2. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random radius as explained in the task
+	 * @param massPlanet1 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
+	 * @param massPlanet2 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
+	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
+	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 */
-	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
-		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, float angleOnPlanetApe1, float angleOnPlanetApe2) {
+		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, MovementType.LINEAR, angleOnPlanetApe1, angleOnPlanetApe2, false);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}
 	}
 	
 	/**
-	 * @return Konnte die Map fehlerfrei geladen werden?
+	 * @return true if the map was created correctly
 	 */
 	public boolean isMapCorrect() {
 		return isMapCorrect;
@@ -391,12 +390,8 @@ public class AdapterMinimal {
 	 * This Method should emulate the key pressed event.
 	 * This enables the testing of player interaction.
 	 * 
-	 * Diese Methode emuliert das einmalige Druecken beliebiger Tasten.
-	 * (Dies soll es ermoeglichen, Spielerinteraktion
-	 * zu testen)
-	 * 
-	 * @param updatetime : Zeitdauer bis update-Aufruf
-	 * @param input : z.B. Input.KEY_K, Input.KEY_L
+	 * @param updatetime : time duration till the update-method is called
+	 * @param input : e.g. Input.KEY_K, Input.KEY_L
 	 */
 	public void handleKeyPressed(int updatetime, Integer input) {
 		if (launch != null && app != null) {
@@ -413,12 +408,8 @@ public class AdapterMinimal {
 	 * This Method should emulate the key down event.
 	 * This enables the testing of player interaction.
 	 * 
-	 * Diese Methode emuliert das Gedrückthalten beliebiger Tasten.
-	 * (Dies soll es ermoeglichen, Spielerinteraktion
-	 * zu testen)
-	 * 
-	 * @param updatetime : Zeitdauer bis update-Aufruf
-	 * @param input : z.B. Input.KEY_K, Input.KEY_L
+	 * @param updatetime : time duration till the update-method is called
+	 * @param input : e.g. Input.KEY_K, Input.KEY_L
 	 */
 	public void handleKeyDown(int updatetime, Integer input) {
 		if (launch != null && app != null) {

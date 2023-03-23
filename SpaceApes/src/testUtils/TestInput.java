@@ -12,8 +12,8 @@ public class TestInput extends Input {
 	private int mouseX, mouseY;
 
 
-	public TestInput() { //ich habe den Konstruktor anders als on tanks gemacht -> height macht keinen Sinn...
-		super(0); //MR ehrlichgesagt habe ich immer noch nicht so richtig verstanden was das macht...
+	public TestInput() {
+		super(0);
 		this.clearPressedKeys();
 		this.clearDownKeys();
 		this.clearMouseButtonPressed();

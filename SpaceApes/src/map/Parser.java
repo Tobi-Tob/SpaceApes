@@ -34,10 +34,10 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	 * @param coordinatesPlanet1 - Positiion of the planet for player one in world coordinates
 	 * @param coordinatesPlanet2 - Positiion of the planet for player two in world coordinates
 	 */
-	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
+	public void initMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
 		initBackground();
-		initPlanets(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets);
+		initPlanets(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, antiPlanetAndBlackHole);
 		initApes(projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 	}
@@ -47,7 +47,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
-	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets) {
+	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, boolean antiPlanetAndBlackHole) {
 		Map map = Map.getInstance();
 
 		try {
@@ -123,14 +123,22 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetTwo);
 
 		if (createNonPlayerPlanets) {
+			boolean otherPlanetSpawned = false; // Damit mindestens ein anderer Planet gespawnt wird
+			
 			// Versuche Schwarzes Loch zu platzieren
 			float blackHoleProbability = 0.4f;
-			if (Utils.randomFloat(0, 1) < blackHoleProbability) {
-				Vector2f blackHolePosition = map.findValidPosition(5, 30);
+			if (Utils.randomFloat(0, 1) < blackHoleProbability || antiPlanetAndBlackHole) {
+				Vector2f blackHolePosition = null;
+				if (antiPlanetAndBlackHole) {
+					blackHolePosition = map.findValidPosition(5, -1);
+				} else {
+					blackHolePosition = map.findValidPosition(5, 30);
+				}				
 				if (blackHolePosition != null) {
+					otherPlanetSpawned = true;
 					String nameBlackHole = "BlackHole";
 					float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
-					int massBlackHole = (int) (radiusBlackHole * 250);
+					int massBlackHole = (int) (radiusBlackHole * 275);
 	
 					Planet blackHole = new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole, blackHolePosition,
 							PlanetType.BLACKHOLE).createEntity();
@@ -141,9 +149,15 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	
 			// Versuche Anti Planet zu platzieren
 			float antiPlanetProbability = 0.3f;
-			if (Utils.randomFloat(0, 1) < antiPlanetProbability) {
-				Vector2f antiPlanetPosition = map.findValidPosition(4, 30);
+			if (Utils.randomFloat(0, 1) < antiPlanetProbability || antiPlanetAndBlackHole) {
+				Vector2f antiPlanetPosition = null;
+				if (antiPlanetAndBlackHole) {
+					antiPlanetPosition = map.findValidPosition(5, -1);
+				} else {
+					antiPlanetPosition = map.findValidPosition(5, 30);
+				}	
 				if (antiPlanetPosition != null) {
+					otherPlanetSpawned = true;
 					String nameAntiPlanet = "AntiPlanet";
 					float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
 					int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
@@ -157,12 +171,23 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	
 			// Restliche Planeten
 			Random r = new Random();
-			int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten
+			int morePlanetsToAdd = r.nextInt(4); // 0, 1, 2 oder 3 weitere Planeten ...
+			if (!otherPlanetSpawned && morePlanetsToAdd == 0) {
+				morePlanetsToAdd++; // ... aber mindestens einen Nicht-Spieler-Planet insgesamt
+			}
 			for (int i = 0; i < morePlanetsToAdd; i++) {
-				Vector2f validePosition = map.findValidPosition(4, 10);
+				Vector2f validePosition = null;
+				if (i == 0 && !otherPlanetSpawned) {
+					otherPlanetSpawned = true;
+					validePosition = map.findValidPosition(4, -1); // wird bei -1 so oft durchgeführt, bis eine Position gefunden
+				} else {
+					validePosition = map.findValidPosition(4, 10);
+				}
+				
 				// Falls keine geeignete Position gefunden wurde, fuege keinen neuen Planeten
 				// hinzu
 				if (validePosition != null) {
+					otherPlanetSpawned = true;
 					String namePlanet = "Planet" + (i + 3);
 					float radiusPlanet = Utils.randomFloat(0.75f, 1.5f);
 					int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);

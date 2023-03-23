@@ -7,7 +7,6 @@ import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
 import eea.engine.component.render.ImageRenderComponent;
-import eea.engine.entity.Entity;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;

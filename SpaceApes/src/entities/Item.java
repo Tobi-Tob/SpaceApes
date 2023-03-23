@@ -1,7 +1,10 @@
 package entities;
 
+import org.newdawn.slick.geom.Vector2f;
+
 import eea.engine.entity.Entity;
 import factories.ItemFactory.ItemType;
+import utils.Utils;
 
 public class Item extends Entity {
 	
@@ -23,6 +26,10 @@ public class Item extends Entity {
 
 	public ItemType getItemType() {
 		return itemType;
+	}
+	
+	public Vector2f getCoordinates() {
+		return Utils.toWorldCoordinates(getPosition());
 	}
 
 }

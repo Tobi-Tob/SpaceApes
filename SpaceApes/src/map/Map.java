@@ -35,7 +35,7 @@ public class Map {
 	private static Map map = new Map(); // TODO soll Map static werden?
 	private List<Ape> apes; // Liste aller lebenden Affen
 	private List<Planet> planets; // Liste aller Planeten
-	private List<Entity> items; // Liste aller Items
+	private List<Item> items; // Liste aller Items
 	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
 
@@ -46,7 +46,7 @@ public class Map {
 	public Map() {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
-		items = new ArrayList<Entity>();
+		items = new ArrayList<Item>();
 		this.entityManager = StateBasedEntityManager.getInstance(); // TODO das ist unnoetig
 	}
 
@@ -54,9 +54,9 @@ public class Map {
 		return map;
 	}
 
-	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
+	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
 		Parser parser = new Parser();
-		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
+		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		// Control Panel hinzufuegen -> TODO: MR das muss eigentlich in Map, damit man besser
 		// darauf zugreifen kann
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
@@ -75,11 +75,11 @@ public class Map {
 		planets.add(planet);
 	}
 
-	public List<Entity> getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 
-	public void addItem(Entity item) {
+	public void addItem(Item item) {
 		items.add(item);
 	}
 
@@ -319,35 +319,47 @@ public class Map {
 	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
 	 *                                 mindestens entfernt sein muss
 	 * @param iterations               Wie oft soll maximal nach einer gueltigen
-	 *                                 Position gesucht werden
+	 *                                 Position gesucht werden. -1 bedeutet so lange bis eine Position gefunden wurde
 	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
 	 *         ueberschritten wurde
 	 */
 	public Vector2f findValidPosition(float marginToNextPlanetCenter, int iterations) {
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
-		for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
-			Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
-					Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
-			boolean positionIsValide = true;
-			// List<Planet> plantes = Map.getInstance().getPlanets();
-			// Iteriere ueber alle Planeten
-			for (int i = 0; i < planets.size(); i++) {
-				Planet p_i = planets.get(i);
-				Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
-						p_i.getCoordinates().y - randomPosition.y);
-				// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
-				if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
-						.pow(marginToNextPlanetCenter, 2)) {
-					positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
-					break;
+		boolean infiniteSearch = false;
+		if (iterations == -1) {
+			infiniteSearch = true;
+			iterations = 10; // any positive number
+		}
+		boolean continueSearch = true;
+		while (continueSearch) { // Falls iterations == -1 wird so lange gesucht bis eine Position gefunden wurde!!
+			for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
+				Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
+						Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
+				boolean positionIsValide = true;
+				// List<Planet> plantes = Map.getInstance().getPlanets();
+				// Iteriere ueber alle Planeten
+				for (int i = 0; i < planets.size(); i++) {
+					Planet p_i = planets.get(i);
+					Vector2f vectorToPlanetCenter = new Vector2f(p_i.getCoordinates().x - randomPosition.x,
+							p_i.getCoordinates().y - randomPosition.y);
+					// Test ob randomPosition zu nahe am Planeten i liegt (durch Kreisgleichung)
+					if (Math.pow(vectorToPlanetCenter.x, 2) + Math.pow(vectorToPlanetCenter.y, 2) < Math
+							.pow(marginToNextPlanetCenter, 2)) {
+						positionIsValide = false; // Ist dies der Fall, ist die Position ungueltig
+						break;
+					}
+				}
+				if (positionIsValide) {
+					// java.lang.System.out.println("Planet spawning after: n=" + n);
+					return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 				}
 			}
-			if (positionIsValide) {
-				// java.lang.System.out.println("Planet spawning after: n=" + n);
-				return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
+			if (!infiniteSearch) {
+				continueSearch = false;
 			}
 		}
+		
 		// Falls Such-Schleife bis zum Ende durch laeuft:
 		// java.lang.System.out.println("Planet spawning after: null");
 		return null;
@@ -400,7 +412,7 @@ public class Map {
 	public void resetToDefault() {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
-		items = new ArrayList<Entity>();
+		items = new ArrayList<Item>();
 	}
 
 }
