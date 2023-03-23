@@ -10,10 +10,7 @@ public class TestsuiteMinimal {
 	public static Test suite() {
 		
 		TestSuite suite = new TestSuite("Tutor tests for Space Apes - Minimal");
-		suite.addTest(new JUnit4TestAdapter(CreateMapTest.class));
-		suite.addTest(new JUnit4TestAdapter(ChangeStateTest.class));
-		suite.addTest(new JUnit4TestAdapter(KeyboardInputTestMinimal.class));
-		suite.addTest(new JUnit4TestAdapter(ProjectileBehaviourTest.class));
+		suite.addTest(new JUnit4TestAdapter(MinimalTest.class));
 		return suite;
 	}
 }
