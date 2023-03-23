@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 import adapter.AdapterMinimal;
 import entities.Projectile;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class KeyboardInputTestMinimal {
 	
@@ -42,11 +42,11 @@ public class KeyboardInputTestMinimal {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		float initAngleOnPlanet = adapter.getApeAngleOnPlanet(0);
 		adapter.handleKeyDown(1000, Input.KEY_LEFT);
-		float targetAngleOnPlanet = initAngleOnPlanet - (Constants.APE_MOVMENT_SPEED * Launch.UPDATE_INTERVAL / adapter.getApeDistanceToPlanetCenter(0));
+		float targetAngleOnPlanet = initAngleOnPlanet - (Constants.APE_MOVMENT_SPEED * SpaceApes.UPDATE_INTERVAL / adapter.getApeDistanceToPlanetCenter(0));
 		//System.out.println("initAngleOnPlanet=" + initAngleOnPlanet + "targetAngleOnPlanet=" + targetAngleOnPlanet + "adapter.getApeDistanceToPlanetCenter(0)=" + adapter.getApeDistanceToPlanetCenter(0));
 		assertEquals("The distance to the planet center should not change when pressing left arrow", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
 		assertEquals("The active ape should move left with the set speed when pressing left arrow", targetAngleOnPlanet, adapter.getApeAngleOnPlanet(0), 0.01f);
@@ -61,11 +61,11 @@ public class KeyboardInputTestMinimal {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		float originalAngleOnPlanet = adapter.getApeAngleOnPlanet(0);
 		adapter.handleKeyDown(1000, Input.KEY_RIGHT);
-		float targetAngleOnPlanet = originalAngleOnPlanet + (Constants.APE_MOVMENT_SPEED * Launch.UPDATE_INTERVAL / adapter.getApeDistanceToPlanetCenter(0));
+		float targetAngleOnPlanet = originalAngleOnPlanet + (Constants.APE_MOVMENT_SPEED * SpaceApes.UPDATE_INTERVAL / adapter.getApeDistanceToPlanetCenter(0));
 		//System.out.println("initAngleOnPlanet=" + originalAngleOnPlanet + "targetAngleOnPlanet=" + targetAngleOnPlanet + "adapter.getApeDistanceToPlanetCenter(0)=" + adapter.getApeDistanceToPlanetCenter(0));
 		assertEquals("The distance to the planet center should not change when pressing right arrow", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
 		assertEquals("The active ape should move right with the set speed when pressing right arrow", targetAngleOnPlanet, adapter.getApeAngleOnPlanet(0), 0.01f);
@@ -80,7 +80,7 @@ public class KeyboardInputTestMinimal {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		Vector2f originalCoordinatesApe = adapter.getApeCoordinates(0);
 		float originalRotationApe = adapter.getApeRotation(0);
@@ -109,7 +109,7 @@ public class KeyboardInputTestMinimal {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		assertTrue("Ape1 should be able to interact before shooting its projectile at the start of the game!", adapter.isApeInteractionAllowed(0));
 		assertTrue("Ape2 should not be able to interact at the start of the game!", !adapter.isApeInteractionAllowed(1));

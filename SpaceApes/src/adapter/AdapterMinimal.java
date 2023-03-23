@@ -12,7 +12,7 @@ import testUtils.TestAppGameContainer;
 import utils.Utils;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 /**
  * This is the test adapter for the minimal stage of completion. You must implement the method stubs and match
@@ -37,7 +37,7 @@ import spaceapes.Launch;
  */
 public class AdapterMinimal {
 	
-	Launch launch; 						// inherits from StateBasedGame
+	SpaceApes launch; 						// inherits from StateBasedGame
 	TestAppGameContainer app;			// special variant of the AppGameContainer, which doesn't build a UI (just for the tests!)
 	boolean isMapCorrect;
 	
@@ -51,7 +51,7 @@ public class AdapterMinimal {
 		launch = null;
 		//syntaxException = true;
 		//semanticException = true;
-		Map.getInstance().resetToDefault(); //TODO
+		Map.getInstance().resetToDefault();
 		isMapCorrect = false;
 	}
 	
@@ -80,7 +80,7 @@ public class AdapterMinimal {
 		}
 		
 		// Start game without GUI
-    	launch = new Launch(false);
+    	launch = new SpaceApes(false);
 		
 		// Initialisiere die statische Klasse Map
 		try {
@@ -332,11 +332,11 @@ public class AdapterMinimal {
 	 * @return returns the world coordinates of the current projectile. If not existing then null
 	 */
 	public Vector2f getProjectileCoordinates() {
-		if (Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
+		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
 			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
 			return null;
 		} else {
-			return ((Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+			return ((Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
 		}
 	}
 	
@@ -351,11 +351,11 @@ public class AdapterMinimal {
 	 * @return returns the current flying projectile. If not existing then null
 	 */
 	public Projectile getProjectile() {
-		if (Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
+		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
 			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
 			return null;
 		} else {
-			return (Projectile) Map.getInstance().getEntityManager().getEntity(Launch.GAMEPLAY_STATE, Constants.PROJECTILE_ID);
+			return (Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID);
 		}
 	}
 	

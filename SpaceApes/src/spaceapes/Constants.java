@@ -4,10 +4,7 @@ import java.awt.Font;
 
 import org.newdawn.slick.TrueTypeFont;
 
-public class Constants { // TODO Constants vllt ins package utils verschieben? und package spaceapes in
-								// gamestates umbennen?
-	// TODO vllt zum Interface machen. Alle klassen die zugriff auf die konstanten
-	// benoetigen koennen das dann implementieren
+public class Constants {
 
 //////////////////////// World Constants //////////////////////////
 
@@ -131,7 +128,7 @@ public class Constants { // TODO Constants vllt ins package utils verschieben? u
 	// Damage Display Entity
 	public static final String DAMAGE_DISPLAY_ID = "DAMAGE_DISPLAY";
 	public static final TrueTypeFont DAMAGE_FONT = new TrueTypeFont(
-			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * Launch.WIDTH)), true);
+			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * SpaceApes.WIDTH)), true);
 	// ID Control Panel
 	public static final String CONTROL_PANEL_ID = "CONTROL_PANEL";
 

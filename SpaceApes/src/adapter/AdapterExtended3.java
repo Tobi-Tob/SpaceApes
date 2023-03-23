@@ -10,7 +10,7 @@ import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import spaceapes.MainMenuState;
 
 public class AdapterExtended3 extends AdapterExtended2 {
@@ -56,7 +56,7 @@ public class AdapterExtended3 extends AdapterExtended2 {
 	 * @return returns the Music of the main menu state
 	 */
 	public Music getMainMenuMusic() {
-		return ((MainMenuState) getStateBasedGame().getState(Launch.MAINMENU_STATE)).getMusic();
+		return ((MainMenuState) getStateBasedGame().getState(SpaceApes.MAINMENU_STATE)).getMusic();
 	}
 	
 	/**

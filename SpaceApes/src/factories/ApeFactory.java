@@ -18,7 +18,7 @@ import entities.Ape;
 import entities.Planet;
 import factories.ProjectileFactory.MovementType;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ApeFactory implements IEntityFactory {
@@ -81,7 +81,7 @@ public class ApeFactory implements IEntityFactory {
 		ape.setScale(scalingFactor);
 		ape.setRotation(angleOnPlanet + 90f);
 
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			try {
 				ape.addComponent(new ImageRenderComponent(new Image("img/apes/ape" + apeImageIndex + ".png")));
 			} catch (SlickException | RuntimeException e) {
@@ -111,7 +111,7 @@ public class ApeFactory implements IEntityFactory {
 		// Spieler am Zug ist!)
 		// und erzeuge eine Ziellinie
 		Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
-		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape)); // MR: float durch bool ersetzen!
+		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape));
 		ape.addComponent(leftKeyPressed);
 
 		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)

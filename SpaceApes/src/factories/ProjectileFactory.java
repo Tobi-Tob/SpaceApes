@@ -13,7 +13,7 @@ import eea.engine.interfaces.IEntityFactory;
 import entities.Projectile;
 import utils.Utils;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class ProjectileFactory implements IEntityFactory {
 
@@ -62,7 +62,7 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setDamageRadius(Constants.COCONUT_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.COCONUT_DESIRED_SIZE);
 					projectile.setScale(Constants.COCONUT_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.COCONUT_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 					} else {
 						//System.out.println("noRenderImages: assign coconut image.");
@@ -70,14 +70,13 @@ public class ProjectileFactory implements IEntityFactory {
 					break;
 
 				case SPIKEBALL:
-					//TODO 2 Projektile hinter einander
 
 					projectile.setPrice(Constants.SPIKEBALL_PRIZE);
 					projectile.setMaxDamage(Constants.SPIKEBALL_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SPIKEBALL_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.SPIKEBALL_SIZE_IN_COORDINATES);
 					projectile.setScale(Constants.SPIKEBALL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SPIKEBALL_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/spikeball.png")));
 					} else {
 						//System.out.println("noRenderImages: assign spikeball image.");
@@ -91,7 +90,7 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setDamageRadius(Constants.BOMB_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.BOMB_SIZE_IN_COORDINATES);
 					projectile.setScale(Constants.BOMB_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.BOMB_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/bomb.png")));
 					} else {
 						//System.out.println("noRenderImages: assign bomb image.");
@@ -99,14 +98,13 @@ public class ProjectileFactory implements IEntityFactory {
 					break;
 
 				case SHARD:
-					//TODO 5 Projektile gleichzeitig in alle Richtungen
 
 					projectile.setPrice(Constants.SHARD_PRIZE);
 					projectile.setMaxDamage(Constants.SHARD_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SHARD_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.SHARD_SIZE_IN_COORDINATES);
 					projectile.setScale(Constants.SHARD_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SHARD_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/shard.png")));
 					} else {
 						//System.out.println("noRenderImages: assign shard image.");
@@ -120,7 +118,7 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setDamageRadius(Constants.CRYSTAL_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.CRYSTAL_SIZE_IN_COORDINATES);
 					projectile.setScale(Constants.CRYSTAL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.CRYSTAL_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/crystal.png")));
 					} else {
 						//System.out.println("noRenderImages: assign crystal image.");
@@ -134,7 +132,7 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setDamageRadius(Constants.TURTLE_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.TURTLE_SIZE_IN_COORDINATES);
 					projectile.setScale(Constants.TURTLE_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.TURTLE_SIZE_IN_PIXEL));
-					if (Launch.renderImages) {
+					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/turtle.png")));
 					} else {
 						//System.out.println("noRenderImages: assign turtle image.");

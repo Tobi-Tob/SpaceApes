@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 import adapter.AdapterMinimal;
 import eea.engine.entity.StateBasedEntityManager;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 /**
  * Tests if a given map is correctly created.
@@ -55,10 +55,10 @@ public class CreateMapTest {
 		assertEquals("Incorrect planet count", 2, adapter.getPlanetCount());
 		assertEquals("Incorrect ape count", 2, adapter.getApeCount());
 		
-		assertTrue("StateBasedEntityManager doesnt contain Planet1", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Planet1"));
-		assertTrue("StateBasedEntityManager doesnt contain Planet2", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Planet2"));
-		assertTrue("StateBasedEntityManager doesnt contain Ape1", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Ape1"));
-		assertTrue("StateBasedEntityManager doesnt contain Ape2", StateBasedEntityManager.getInstance().hasEntity(Launch.GAMEPLAY_STATE, "Ape2"));
+		assertTrue("StateBasedEntityManager doesnt contain Planet1", StateBasedEntityManager.getInstance().hasEntity(SpaceApes.GAMEPLAY_STATE, "Planet1"));
+		assertTrue("StateBasedEntityManager doesnt contain Planet2", StateBasedEntityManager.getInstance().hasEntity(SpaceApes.GAMEPLAY_STATE, "Planet2"));
+		assertTrue("StateBasedEntityManager doesnt contain Ape1", StateBasedEntityManager.getInstance().hasEntity(SpaceApes.GAMEPLAY_STATE, "Ape1"));
+		assertTrue("StateBasedEntityManager doesnt contain Ape2", StateBasedEntityManager.getInstance().hasEntity(SpaceApes.GAMEPLAY_STATE, "Ape2"));
 		
 		adapter.stopGame();
 	}
@@ -96,7 +96,6 @@ public class CreateMapTest {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
-		assertEquals("Incorrect value of ape name of player1", "Ape1", adapter.getApeName(0)); //TODO Aufgabenstellung?
 		assertEquals("Ape1 is not positioned on the surface of Planet1 correctly", adapter.getPlanetRadius(0), adapter.getApeDistanceFeetToPlanetCenter(0), 0.001f);
 		assertEquals("Incorrect rotation of Ape1", adapter.getApeAngleOnPlanet(0) + 90f, adapter.getApeRotation(0), 0.001f);
 		

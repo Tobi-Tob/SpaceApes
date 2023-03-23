@@ -12,7 +12,7 @@ import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.ApeInfoSign;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ApeInfoSignFactory implements IEntityFactory {
@@ -40,13 +40,13 @@ public class ApeInfoSignFactory implements IEntityFactory {
 		
 		int fontSize = Math.round(signScalingFactor * 200);
 		
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			apeInfoSign.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
 		} else {
 			//System.out.println("noRenderImages: assign apeInfoSign font.");
 		}
 		
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			try {
 				ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/ape_info_sign.png"));
 				apeInfoSign.addComponent(imageRenderComponent);

@@ -18,7 +18,7 @@ import eea.engine.entity.StateBasedEntityManager;
  *         Diese Klasse startet das Spiel "Space Apes". Sie enthaelt zwei
  *         State's fuer das Menue und das eigentliche Spiel.
  */
-public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
+public class SpaceApes extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
@@ -39,7 +39,7 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 	
 	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird für die Tests benötigt.
 
-	public Launch(boolean renderImages) {
+	public SpaceApes(boolean renderImages) {
 		super("Space Apes"); // Name des Spiels
 		setRenderImages(renderImages);
 	}
@@ -56,7 +56,7 @@ public class Launch extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
 		}
 
 		// Setze dieses StateBasedGame in einen App Container (oder Fenster)
-		AppGameContainer app = new AppGameContainer(new Launch(true));
+		AppGameContainer app = new AppGameContainer(new SpaceApes(true));
 		app.setMinimumLogicUpdateInterval(UPDATE_INTERVAL);
 		app.setMaximumLogicUpdateInterval(UPDATE_INTERVAL);
 		app.setShowFPS(true);

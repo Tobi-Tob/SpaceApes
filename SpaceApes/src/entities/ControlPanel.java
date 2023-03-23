@@ -32,7 +32,7 @@ import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ControlPanel extends Entity {
@@ -63,12 +63,12 @@ public class ControlPanel extends Entity {
 		this.setPosition(coordinates);
 		float controlpanelWidthInPixel = 1483;
 		float desiredControlpanelWidth = 0.3f; // im Verhaeltnis zur Fenster Breite
-		panelScaleFactor = desiredControlpanelWidth * Launch.WIDTH / controlpanelWidthInPixel;
+		panelScaleFactor = desiredControlpanelWidth * SpaceApes.WIDTH / controlpanelWidthInPixel;
 		this.setScale(panelScaleFactor);
 
 		// Font
 		int fontSize = Math.round(panelScaleFactor * 90);
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
 		} else {
 			//System.out.println("noRenderImages: assign control panel font.");
@@ -104,7 +104,7 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Left.setPosition(relativPosOnPanelToPixelPos(120, 200));
 		listOfCorrespondingEntities.add(arrow_Angle_Left);
 
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			try {
 				imageRenderComponent = new ImageRenderComponent(new Image("img/assets/panel.png"));
 				this.addComponent(new ImageRenderComponent(new Image("img/assets/panel.png")));
@@ -122,9 +122,8 @@ public class ControlPanel extends Entity {
 		}
 
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		int stateID = Launch.GAMEPLAY_STATE; // MR kann man evtl schoener loesen...
-		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den
-												// Pfeilen...
+		int stateID = SpaceApes.GAMEPLAY_STATE;
+		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den Pfeilen...
 		entityManager.addEntity(stateID, arrow_Weapons);
 		entityManager.addEntity(stateID, arrow_Power_Right);
 		entityManager.addEntity(stateID, arrow_Power_Left);
@@ -143,7 +142,7 @@ public class ControlPanel extends Entity {
 		arrow_Weapons.addComponent(change_Weapon_Event);
 
 		ANDEvent increase_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Angle_Fast_Action = new ChangeAngleAction(0.03f * Launch.UPDATE_INTERVAL, arrow_Angle_Right);
+		Action increase_Angle_Fast_Action = new ChangeAngleAction(0.03f * SpaceApes.UPDATE_INTERVAL, arrow_Angle_Right);
 		increase_Angle_Fast_Event.addAction(increase_Angle_Fast_Action);
 		arrow_Angle_Right.addComponent(increase_Angle_Fast_Event);
 		ANDEvent increase_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -152,7 +151,7 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Right.addComponent(increase_Angle_Slow_Event);
 
 		ANDEvent decrease_Angle_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Angle_Fast_Action = new ChangeAngleAction(-0.03f * Launch.UPDATE_INTERVAL, arrow_Angle_Left);
+		Action decrease_Angle_Fast_Action = new ChangeAngleAction(-0.03f * SpaceApes.UPDATE_INTERVAL, arrow_Angle_Left);
 		decrease_Angle_Fast_Event.addAction(decrease_Angle_Fast_Action);
 		arrow_Angle_Left.addComponent(decrease_Angle_Fast_Event);
 		ANDEvent decrease_Angle_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -161,7 +160,7 @@ public class ControlPanel extends Entity {
 		arrow_Angle_Left.addComponent(decrease_Angle_Slow_Event);
 
 		ANDEvent increase_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action increase_Power_Action = new ChangePowerAction(0.002f * Launch.UPDATE_INTERVAL, arrow_Power_Right);
+		Action increase_Power_Action = new ChangePowerAction(0.002f * SpaceApes.UPDATE_INTERVAL, arrow_Power_Right);
 		increase_Power_Fast_Event.addAction(increase_Power_Action);
 		arrow_Power_Right.addComponent(increase_Power_Fast_Event);
 		ANDEvent increase_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -170,7 +169,7 @@ public class ControlPanel extends Entity {
 		arrow_Power_Right.addComponent(increase_Power_Slow_Event);
 
 		ANDEvent decrease_Power_Fast_Event = new ANDEvent(new MouseEnteredEvent(), new MouseDownEvent());
-		Action decrease_Power_Action = new ChangePowerAction(-0.002f * Launch.UPDATE_INTERVAL, arrow_Power_Left);
+		Action decrease_Power_Action = new ChangePowerAction(-0.002f * SpaceApes.UPDATE_INTERVAL, arrow_Power_Left);
 		decrease_Power_Fast_Event.addAction(decrease_Power_Action);
 		arrow_Power_Left.addComponent(decrease_Power_Fast_Event);
 		ANDEvent decrease_Power_Slow_Event = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -253,7 +252,7 @@ public class ControlPanel extends Entity {
 			}
 
 			listOfShopProjectiles.add(shopProjectile);
-			entityManager.addEntity(Launch.GAMEPLAY_STATE, shopProjectile);
+			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, shopProjectile);
 		}
 		makeFirstShopProjectileVisible();
 	}
@@ -306,10 +305,10 @@ public class ControlPanel extends Entity {
 	 * @return Vector2f Pixel Position
 	 */
 	private Vector2f calcPosition() {
-		Vector2f leftUpperCorner = new Vector2f(0.18f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
-		Vector2f rightUpperCorner = new Vector2f(0.82f * Launch.WIDTH, 0.14f * Launch.HEIGHT);
-		Vector2f leftLowerCorner = new Vector2f(0.18f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
-		Vector2f rightLowerCorner = new Vector2f(0.82f * Launch.WIDTH, 0.86f * Launch.HEIGHT);
+		Vector2f leftUpperCorner = new Vector2f(0.18f * SpaceApes.WIDTH, 0.14f * SpaceApes.HEIGHT);
+		Vector2f rightUpperCorner = new Vector2f(0.82f * SpaceApes.WIDTH, 0.14f * SpaceApes.HEIGHT);
+		Vector2f leftLowerCorner = new Vector2f(0.18f * SpaceApes.WIDTH, 0.86f * SpaceApes.HEIGHT);
+		Vector2f rightLowerCorner = new Vector2f(0.82f * SpaceApes.WIDTH, 0.86f * SpaceApes.HEIGHT);
 		if (location == Location.TOP_LEFT) {
 			return leftUpperCorner;
 		}

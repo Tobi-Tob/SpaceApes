@@ -40,7 +40,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 
-		if (Launch.renderImages) { // wird bei den Tests immer manuell gemacht
+		if (SpaceApes.renderImages) { // wird bei den Tests immer manuell gemacht
 			// Map erstellen
 			// Wähle zufällige Erstellung der Map:
 			Vector2f coordinatesPlanet1 = null;
@@ -76,19 +76,19 @@ public class GameplayState extends BasicGameState {
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
+		escPressed.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
 		dummyEntity.addComponent(escPressed);
 		
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
-		lessThan2Apes.addAction(new ChangeStateAction(Launch.HIGHSCORE_STATE));
+		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
 		dummyEntity.addComponent(lessThan2Apes);
 		
 		// Hier kommen alle weiteren Events hinzu...
 
 		entityManager.addEntity(stateID, dummyEntity);
 
-		if (Launch.renderImages) { // muss im Test manuell gemacht werden, da sonst die map entities noch nicht erzeugt sind...!
+		if (SpaceApes.renderImages) { // muss im Test manuell gemacht werden, da sonst die map entities noch nicht erzeugt sind...!
 			// Initialisierung der Aimline
 			map.updateAimline();
 		}

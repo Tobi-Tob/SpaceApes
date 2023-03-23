@@ -38,10 +38,10 @@ public class HighscoreState extends BasicGameState {
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
 		Entity highscoreBackground = new Entity("Highscore");
 		highscoreBackground.setPosition(Utils.toPixelCoordinates(0, 0));
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			Image image = new Image("img/assets/menuSP.png");
 			highscoreBackground.addComponent(new ImageRenderComponent(image));
-			highscoreBackground.setScale((float) Launch.HEIGHT / image.getHeight());
+			highscoreBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight());
 		} else {
 			//System.out.println("noRenderImages: assign HighscoreState image.");
 		}
@@ -51,9 +51,9 @@ public class HighscoreState extends BasicGameState {
 
 		Entity highscoreImage = new Entity("HighscoreImage");
 		// Setze Position und Bildkomponente
-		highscoreImage.setPosition(new Vector2f(Launch.WIDTH / 4.5f, Launch.HEIGHT / 2.5f));
-		highscoreImage.setScale((float) Launch.HEIGHT / 1500);
-		if (Launch.renderImages) {
+		highscoreImage.setPosition(new Vector2f(SpaceApes.WIDTH / 4.5f, SpaceApes.HEIGHT / 2.5f));
+		highscoreImage.setScale((float) SpaceApes.HEIGHT / 1500);
+		if (SpaceApes.renderImages) {
 			highscoreImage.addComponent(new ImageRenderComponent(new Image("img/assets/highscore.png")));
 		} else {
 			//System.out.println("noRenderImages: assign highscore image.");
@@ -66,7 +66,7 @@ public class HighscoreState extends BasicGameState {
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(Launch.MAINMENU_STATE));
+		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
 		dummyEntity.addComponent(escPressed);
 
 		entityManager.addEntity(stateID, dummyEntity);
@@ -75,7 +75,7 @@ public class HighscoreState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
-		if (Launch.PLAY_MUSIC && !music.playing()) {
+		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
 	}

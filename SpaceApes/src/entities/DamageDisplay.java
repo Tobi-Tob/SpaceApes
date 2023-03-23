@@ -8,7 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 /**
@@ -81,7 +81,7 @@ public class DamageDisplay extends Entity {
 		if (timer < displayTime) {
 			Constants.DAMAGE_FONT.drawString(posX, posY, damageString, color);
 		} else {
-			StateBasedEntityManager.getInstance().removeEntity(Launch.GAMEPLAY_STATE, this);
+			StateBasedEntityManager.getInstance().removeEntity(SpaceApes.GAMEPLAY_STATE, this);
 		}
 	}
 

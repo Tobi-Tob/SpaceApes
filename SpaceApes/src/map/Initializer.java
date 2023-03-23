@@ -18,11 +18,10 @@ import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.MovementType;
 import factories.ApeInfoSignFactory;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
-public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird ja noch keine Datei
-						// gelesen)
+public class Initializer {
 
 	private List<Entity> playerPlanets = new ArrayList<Entity>();
 
@@ -44,7 +43,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 
 	protected void initBackground() {
 		Map map = Map.getInstance();
-		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
+		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
 	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, boolean antiPlanetAndBlackHole) {
@@ -62,11 +61,8 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		    System.out.println("Error in initPlanets");
 		}
 
-		float xBorder = 8.0f; //MR raus nach debug
-		float yBorder = 6.0f; //MR raus nach debug
-
-		// TODO die Erzeugung der Planeten muss spaeter auch noch in eine Schleife,
-		// wenn es mehr als 2 Spieler geben koennen soll...
+		float xBorder = 8.0f;
+		float yBorder = 6.0f;
 
 		// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
 		String namePlanetOne = "Planet1";
@@ -94,7 +90,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
 		playerPlanets.add(planetOne);
 		map.addPlanet(planetOne);
-		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetOne);
+		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planetOne);
 
 		// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
 		String namePlanetTwo = "Planet2";
@@ -120,7 +116,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 				PlanetType.PLAYER).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
-		map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planetTwo);
+		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planetTwo);
 
 		if (createNonPlayerPlanets) {
 			boolean otherPlanetSpawned = false; // Damit mindestens ein anderer Planet gespawnt wird
@@ -143,7 +139,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 					Planet blackHole = new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole, blackHolePosition,
 							PlanetType.BLACKHOLE).createEntity();
 					map.addPlanet(blackHole);
-					map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, blackHole);
+					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, blackHole);
 				}
 			}
 	
@@ -165,7 +161,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 					Planet antiPlanet = new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet, antiPlanetPosition,
 							PlanetType.ANTI).createEntity();
 					map.addPlanet(antiPlanet);
-					map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, antiPlanet);
+					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, antiPlanet);
 				}
 			}
 	
@@ -195,7 +191,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 					Planet planet = new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition, PlanetType.NORMAL)
 							.createEntity();
 					map.addPlanet(planet);
-					map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, planet);
+					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planet);
 				}
 			}
 		}
@@ -204,7 +200,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 	protected void initApes(MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		Map map = Map.getInstance();
 
-		for (int i = 0; i < Launch.players.size(); i++) {
+		for (int i = 0; i < SpaceApes.players.size(); i++) {
 
 			String nameApe = "Ape" + (i + 1);
 			Planet homePlanet;
@@ -233,7 +229,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 					movementSpeed, angleOnPlanet, angleOfView, throwStrength, projectileMovementType).createEntity();
 			// TODO eine Apefactory fuer alle Apes?
 			map.addApe(ape);
-			map.getEntityManager().addEntity(Launch.GAMEPLAY_STATE, ape);
+			map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
 		}
 	}
 
@@ -250,7 +246,7 @@ public class Parser { // TL: TODO vllt name Initialiser passender (momentan wird
 //																// (wegen den Ringplaneten)
 
 			ApeInfoSign apeInfoSign = new ApeInfoSignFactory(panelCoordinates, ape).createEntity();
-			StateBasedEntityManager.getInstance().addEntity(Launch.GAMEPLAY_STATE, apeInfoSign);
+			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, apeInfoSign);
 		}
 	}
 }

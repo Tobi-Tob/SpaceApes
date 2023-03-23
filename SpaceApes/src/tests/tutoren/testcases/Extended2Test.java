@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 import adapter.AdapterExtended2;
 import entities.Projectile;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class Extended2Test {
 	
@@ -83,7 +83,7 @@ public class Extended2Test {
 		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		// test Ape1:
 		float originalEnergyApe = adapter.getApeEnergy(0);

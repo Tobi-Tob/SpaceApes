@@ -19,7 +19,7 @@ import entities.Projectile;
 import factories.ProjectileFactory.MovementType;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ProjectileBehaviorAction implements Action {
@@ -46,7 +46,7 @@ public class ProjectileBehaviorAction implements Action {
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
 			// Im Kollisionsfall:
-			entityManager.removeEntity(Launch.GAMEPLAY_STATE, projectile);
+			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>();
 
 			for (Ape ape : map.getApes()) {
@@ -73,19 +73,19 @@ public class ProjectileBehaviorAction implements Action {
 
 			map.changeTurn();
 			
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				// Erzeuge DamageDisplays zur Schadens Visualisierung
 				for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
 				    Integer damage = entry.getKey();
 				    Ape damagedApe = entry.getValue();
 				    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, display);
+					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, display);
 				}
 			}
 
 			// Zeige Explosion
 			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				Image[] images = new Image[4];
 				try {
 					images[0] = new Image("img/explosions/explosion1.png");
@@ -98,19 +98,18 @@ public class ProjectileBehaviorAction implements Action {
 				}
 				explosion.setImages(images);
 				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
-				explosion.addAnimation(0.012f, false); // TODO Scaling Faktor abhaenging von Bildschrimgroesse
+				explosion.addAnimation(0.012f, false);
 			} else {
 				//System.out.println("noRenderImages: assign explosion animation images.");
 			}
-			entityManager.addEntity(Launch.GAMEPLAY_STATE, explosion); // TODO Explosions Entitaeten muessen wieder
-																		// entfernt werden
+			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, explosion);
 
 		}
 		if (Math.abs(projectile.getCoordinates().x) > 10 || Math.abs(projectile.getCoordinates().y) > 8) {
 			// Zu weit ausserhalb des Bildes
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
-			entityManager.removeEntity(Launch.GAMEPLAY_STATE, projectile);
+			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 			map.changeTurn();
 		}
 	}

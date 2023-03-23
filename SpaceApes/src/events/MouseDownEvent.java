@@ -5,7 +5,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.event.Event;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class MouseDownEvent extends Event {
 	int mouseDownTime;
@@ -18,7 +18,7 @@ public class MouseDownEvent extends Event {
 
 	@Override
 	protected boolean performAction(GameContainer gc, StateBasedGame sb, int delta) {
-		boolean mouseButtonDown = new Input(Launch.HEIGHT).isMouseButtonDown(0);
+		boolean mouseButtonDown = new Input(SpaceApes.HEIGHT).isMouseButtonDown(0);
 		if (!mouseButtonDown && mouseDownTime != 0) {
 			mouseDownTime = 0; // Taste wurde losgelassen
 		}

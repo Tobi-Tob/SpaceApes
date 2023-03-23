@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 import adapter.AdapterMinimal;
 import entities.Projectile;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class ChangeStateTest {
 	
@@ -40,11 +40,11 @@ public class ChangeStateTest {
 		adapter.initializeGame();
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
-		assertTrue("Game is not in main menu state after initialization", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE);
+		assertTrue("Game is not in main menu state after initialization", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.MAINMENU_STATE);
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		adapter.handleKeyPressed(0, Input.KEY_ESCAPE);
-		assertTrue("Game is not in main menu or highscore state after pressing 'esc' in gameplay state", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==Launch.HIGHSCORE_STATE);
+		assertTrue("Game is not in main menu or highscore state after pressing 'esc' in gameplay state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.HIGHSCORE_STATE);
 		adapter.handleKeyPressed(0, Input.KEY_ESCAPE);
 		adapter.stopGame();
 	}
@@ -55,7 +55,7 @@ public class ChangeStateTest {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		Vector2f coordinatesApe1 = adapter.getApeCoordinates(0);
 		while(adapter.getNumberOfLivingApes() > 1) {
@@ -66,7 +66,7 @@ public class ChangeStateTest {
 			adapter.runGame(10);
 			adapter.runGame(0); // Game has to be run two times otherwise one update call is missing due to the change of the State
 		}
-		assertTrue("Game is not in main menu or highscore state after Ape1 is dead!", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==Launch.HIGHSCORE_STATE);
+		assertTrue("Game is not in main menu or highscore state after Ape1 is dead!", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.HIGHSCORE_STATE);
 		adapter.stopGame();
 	}
 	
@@ -76,7 +76,7 @@ public class ChangeStateTest {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==Launch.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
 		
 		Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
 		while(adapter.getNumberOfLivingApes() > 1) {
@@ -87,7 +87,7 @@ public class ChangeStateTest {
 			adapter.runGame(10);
 			adapter.runGame(0); // Game has to be run two times otherwise one update call is missing due to the change of the State
 		}
-		assertTrue("Game is not in main menu or highscore state after Ape2 is dead!", adapter.getStateBasedGame().getCurrentStateID()==Launch.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==Launch.HIGHSCORE_STATE);
+		assertTrue("Game is not in main menu or highscore state after Ape2 is dead!", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.MAINMENU_STATE || adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.HIGHSCORE_STATE);
 		adapter.stopGame();
 	}
 

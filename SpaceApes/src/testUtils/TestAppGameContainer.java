@@ -27,7 +27,7 @@ public class TestAppGameContainer extends AppGameContainer {
 	 */
 	public void start(int delta) throws SlickException {
 
-		this.input = new TestInput(); //MR ich denke, dass hiermit ein leerer Input gesetzt werden soll...
+		this.input = new TestInput();
 		game.update(this, delta);
 		((StateBasedGame)game).initStatesList(this);
 		game.init(this);
@@ -40,7 +40,7 @@ public class TestAppGameContainer extends AppGameContainer {
 	
 	public void updateGame(int delta) throws SlickException{
 		game.update(this, delta);
-		game.update(this, delta); //TODO: warum 2 Mal?
+		game.update(this, delta);
 	}
 	
 	@Override

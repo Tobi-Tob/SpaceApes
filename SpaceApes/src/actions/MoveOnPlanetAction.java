@@ -7,7 +7,7 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import entities.Ape;
 import map.Map;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public class MoveOnPlanetAction implements Action {
 
@@ -20,10 +20,10 @@ public class MoveOnPlanetAction implements Action {
 	}
 
 	@Override
-	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) { // TODO laufen ist noch nicht performant
+	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		if (ape.isInteractionAllowed() && ape.hasEnergy()) {
 			ape.stepOnPlanet(direction);
-			ape.changeEnergy(-0.003f * Launch.UPDATE_INTERVAL);
+			ape.changeEnergy(-0.003f * SpaceApes.UPDATE_INTERVAL);
 			Map.getInstance().updateAimline();
 		}
 	}

@@ -53,10 +53,10 @@ public class MainMenuState extends BasicGameState {
 		Entity menuBackground = new Entity("Menu"); // Entitaet fuer Hintergrund erzeugen
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des
 																	// Fensters)
-		if (Launch.renderImages) {
+		if (SpaceApes.renderImages) {
 			Image image = new Image("img/assets/menuSP.png");
 			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
-			menuBackground.setScale((float) Launch.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
+			menuBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		} else {
 			//System.out.println("noRenderImages: assign MainMenuState image.");
 		}
@@ -65,9 +65,9 @@ public class MainMenuState extends BasicGameState {
 		/* Neues Spiel starten-Entitaet */
 		Entity newGameEntity = new Entity("SpielStarten");
 		// Setze Position und Bildkomponente
-		newGameEntity.setPosition(new Vector2f(Launch.WIDTH / 4f, Launch.HEIGHT / 2));
-		newGameEntity.setScale((float) Launch.HEIGHT / 3200);
-		if (Launch.renderImages) {
+		newGameEntity.setPosition(new Vector2f(SpaceApes.WIDTH / 4f, SpaceApes.HEIGHT / 2));
+		newGameEntity.setScale((float) SpaceApes.HEIGHT / 3200);
+		if (SpaceApes.renderImages) {
 			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 		} else {
 			//System.out.println("noRenderImages: assign start button image.");
@@ -75,12 +75,12 @@ public class MainMenuState extends BasicGameState {
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent startGameByMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action startGameAction = new ChangeStateAction(Launch.GAMEPLAY_STATE);
+		Action startGameAction = new ChangeStateAction(SpaceApes.GAMEPLAY_STATE);
 		startGameByMouseEvent.addAction(startGameAction);
 		newGameEntity.addComponent(startGameByMouseEvent);
 		// Ausserdem soll das Druecken der n-Taste das Spiel starten
 		KeyPressedEvent startGameByNKeyEvent = new KeyPressedEvent(Input.KEY_N);
-		startGameByNKeyEvent.addAction(new ChangeStateAction(Launch.GAMEPLAY_STATE));
+		startGameByNKeyEvent.addAction(new ChangeStateAction(SpaceApes.GAMEPLAY_STATE));
 		newGameEntity.addComponent(startGameByNKeyEvent);
 		entityManager.addEntity(this.stateID, newGameEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
 
@@ -88,9 +88,9 @@ public class MainMenuState extends BasicGameState {
 
 		Entity quitEntity = new Entity("Beenden");
 		// Setze Position und Bildkomponente
-		quitEntity.setPosition(new Vector2f(Launch.WIDTH / 4.4f, Launch.HEIGHT / 1.4f));
-		quitEntity.setScale((float) Launch.HEIGHT / 3200);
-		if (Launch.renderImages) {
+		quitEntity.setPosition(new Vector2f(SpaceApes.WIDTH / 4.4f, SpaceApes.HEIGHT / 1.4f));
+		quitEntity.setScale((float) SpaceApes.HEIGHT / 3200);
+		if (SpaceApes.renderImages) {
 			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
 		} else {
 			//System.out.println("noRenderImages: assign beenden button image.");
@@ -132,7 +132,7 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		entityManager.renderEntities(container, game, g);
-		if (Launch.PLAY_MUSIC && !music.playing()) {
+		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
 		// System.out.println("Main Menu Render");

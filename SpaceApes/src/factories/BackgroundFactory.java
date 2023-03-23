@@ -13,7 +13,7 @@ import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.interfaces.IEntityFactory;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class BackgroundFactory implements IEntityFactory {
@@ -26,10 +26,10 @@ public class BackgroundFactory implements IEntityFactory {
 		// Startposition des Hintergrunds (Mitte des Fensters)
 		background.setPosition(Utils.toPixelCoordinates(0, 0));
 		try {
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				Image image = new Image("img/assets/space1.jpg");
 				background.addComponent(new ImageRenderComponent(image));
-				background.setScale((float) Launch.HEIGHT / image.getHeight());
+				background.setScale((float) SpaceApes.HEIGHT / image.getHeight());
 			} else {
 				//System.out.println("noRenderImages: assign background image.");
 			}

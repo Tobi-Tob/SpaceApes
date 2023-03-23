@@ -5,7 +5,7 @@ import java.util.Random;
 import org.newdawn.slick.geom.Vector2f;
 
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 
 public final class Utils {
 
@@ -17,8 +17,8 @@ public final class Utils {
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(float x, float y) {
-		float w = Launch.WIDTH;
-		float h = Launch.HEIGHT;
+		float w = SpaceApes.WIDTH;
+		float h = SpaceApes.HEIGHT;
 		return new Vector2f(x * w / Constants.WORLD_WIDTH + w / 2, y * w / Constants.WORLD_WIDTH + h / 2);
 	}
 
@@ -29,8 +29,8 @@ public final class Utils {
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(Vector2f v) {
-		float w = Launch.WIDTH;
-		float h = Launch.HEIGHT;
+		float w = SpaceApes.WIDTH;
+		float h = SpaceApes.HEIGHT;
 		return new Vector2f(v.x * w / Constants.WORLD_WIDTH + w / 2, v.y * w / Constants.WORLD_WIDTH + h / 2);
 	}
 
@@ -41,13 +41,13 @@ public final class Utils {
 	 * @return Vector2f mit Welt-Koordinaten
 	 */
 	public static Vector2f toWorldCoordinates(Vector2f p) {
-		float w = Launch.WIDTH;
-		float h = Launch.HEIGHT;
+		float w = SpaceApes.WIDTH;
+		float h = SpaceApes.HEIGHT;
 		return new Vector2f((p.x - w * 0.5f) * Constants.WORLD_WIDTH / w, (p.y - h * 0.5f) * Constants.WORLD_WIDTH / w);
 	}
 
 	public static float pixelLengthToWorldLength(float p) {
-		return p * Constants.WORLD_WIDTH / Launch.WIDTH;
+		return p * Constants.WORLD_WIDTH / SpaceApes.WIDTH;
 	}
 
 	/**

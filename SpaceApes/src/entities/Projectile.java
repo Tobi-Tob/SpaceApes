@@ -136,7 +136,7 @@ public class Projectile extends Entity {
 		// V1 = V0 + dt * ddX
 		Vector2f ddx = new Vector2f(0, 0);
 
-		List<Planet> planets = Map.getInstance().getPlanets(); // TODO vllt schnelleren Datenzugriff einbauen
+		List<Planet> planets = Map.getInstance().getPlanets();
 		List<Ape> apes = Map.getInstance().getApes();
 
 		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
@@ -153,9 +153,7 @@ public class Projectile extends Entity {
 		// Pruefe auf Kollision mit einem Planeten
 		for (Planet planet : planets) {
 			Vector2f distanceVector = new Vector2f(planet.getX() - (float) x, planet.getY() - (float) y);
-			// TODO Test wenn man xNew und yNew nimmt fuer Berechnung von ddx: implizites
-			// Verhalten?
-			// TODO Effizenz erhoehen
+			// Wenn man xNew und yNew nimmt fuer Berechnung von ddx: implizites Verhalten?
 			if (planet.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
 				return true;
 			}
@@ -171,7 +169,7 @@ public class Projectile extends Entity {
 		this.vx = vx + dt * ddx.x;
 		this.vy = vy + dt * ddx.y;
 		// Aendern der direction in Richtung der Beschleunigung
-		if (projectileIsVisible) { // TODO muss das hier gemacht werden?
+		if (projectileIsVisible) {
 			this.direction = Utils.angleInPolarCoordinates(ddx.x, ddx.y);
 			setRotation(direction + 90f);
 			setPosition(Utils.toPixelCoordinates((float) x, (float) y));

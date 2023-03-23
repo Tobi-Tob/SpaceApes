@@ -12,7 +12,7 @@ import org.newdawn.slick.SlickException;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.interfaces.IEntityFactory;
 import entities.Planet;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 import eea.engine.event.basicevents.*;
 import eea.engine.event.*;
@@ -70,7 +70,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(radius / blackHoleRadiusInWorldUnits);
 			planet.setRotation(0);
 			
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				try {
 					planet.addComponent(new ImageRenderComponent(new Image("img/planets/blackhole1.png")));
 				} catch (SlickException e) {
@@ -87,7 +87,7 @@ public class PlanetFactory implements IEntityFactory {
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(radius / planetRadiusInWorldUnits);
 			
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				try {
 					planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet_anti1.png")));
 				} catch (SlickException e) {
@@ -140,7 +140,7 @@ public class PlanetFactory implements IEntityFactory {
 
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
 			} else {
 				//System.out.println("noRenderImages: assign planet1 image.");
@@ -150,7 +150,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 2:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
 			} else {
 				//System.out.println("noRenderImages: assign planet2 image.");
@@ -160,7 +160,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 3:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
 			} else {
 				//System.out.println("noRenderImages: assign planet3 image.");
@@ -170,7 +170,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 4:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
 			} else {
 				//System.out.println("noRenderImages: assign planet4 image.");
@@ -180,7 +180,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 5:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
 			} else {
 				//System.out.println("noRenderImages: assign planet5 image.");
@@ -190,7 +190,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 6:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
 			} else {
 				//System.out.println("noRenderImages: assign ring planet1 image.");
@@ -200,7 +200,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 7:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
 			} else {
 				//System.out.println("noRenderImages: assign ring planet2 image.");
@@ -210,7 +210,7 @@ public class PlanetFactory implements IEntityFactory {
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 8:
-			if (Launch.renderImages) {
+			if (SpaceApes.renderImages) {
 				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
 			} else {
 				//System.out.println("noRenderImages: assign ring planet3 image.");

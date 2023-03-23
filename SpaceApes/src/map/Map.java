@@ -27,12 +27,12 @@ import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Constants;
-import spaceapes.Launch;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 //public class Map implements IMap {
 public class Map {
-	private static Map map = new Map(); // TODO soll Map static werden?
+	private static Map map = new Map();
 	private List<Ape> apes; // Liste aller lebenden Affen
 	private List<Planet> planets; // Liste aller Planeten
 	private List<Item> items; // Liste aller Items
@@ -47,7 +47,7 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
-		this.entityManager = StateBasedEntityManager.getInstance(); // TODO das ist unnoetig
+		this.entityManager = StateBasedEntityManager.getInstance();
 	}
 
 	public static Map getInstance() {
@@ -55,11 +55,9 @@ public class Map {
 	}
 
 	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
-		Parser parser = new Parser();
+		Initializer parser = new Initializer();
 		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
-		// Control Panel hinzufuegen -> TODO: MR das muss eigentlich in Map, damit man besser
-		// darauf zugreifen kann
-		this.controlPanel = new ControlPanel(Location.FREE); // TODO vllt in initMap?
+		this.controlPanel = new ControlPanel(Location.FREE);
 		controlPanel.initControlPanel();
 	}
 
@@ -129,10 +127,10 @@ public class Map {
 				ape.setInteractionAllowed(false);
 
 				// Entferne zugehoeriges ApeInfoSign
-				for (Entity e : entityManager.getEntitiesByState(Launch.GAMEPLAY_STATE)) {
+				for (Entity e : entityManager.getEntitiesByState(SpaceApes.GAMEPLAY_STATE)) {
 					if (e.getID() == Constants.APE_INFO_SIGN_ID) {
 						if (((ApeInfoSign) e).getApe().equals(ape)) {
-							entityManager.removeEntity(Launch.GAMEPLAY_STATE, e);
+							entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, e);
 							System.out.println("ApeInfoSign removed");
 							break;
 						}
@@ -152,13 +150,12 @@ public class Map {
 			}
 		}
 		apes = livingApes;
-		// TODO Unfertig -> beschreiben was genau!
 		if (apes.isEmpty()) {
 			System.out.println(activeApe.getID() + " has killed all apes");
-			// TODO Change State
+			// Change State
 		} else if (apes.size() == 1) {
 			System.out.println(apes.get(0).getID() + " has won!!!!!!!!!!!!!!!!! SUIII");
-			// TODO Change State
+			// Change State
 		} else {
 			activeApe.setActive(false);
 			activeApe.setInteractionAllowed(false);
@@ -167,7 +164,7 @@ public class Map {
 			updateAimline();
 			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy()
 					+ " | health = " + nextApe.getHealth() + " | coins = " + nextApe.getCoins());
-			controlPanel.setPanelAndComponentsVisible(true); // TODO
+			controlPanel.setPanelAndComponentsVisible(true);
 			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
 					Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
 		}
@@ -240,12 +237,12 @@ public class Map {
 	 * Entfernt alle Hilfslinien Punkte
 	 */
 	public void removeAimeLine() {
-		for (int i = 0; i < 100; i++) { // MR: 100 ist gehardcoded!
-			Entity dot = entityManager.getEntity(Launch.GAMEPLAY_STATE, Constants.AIMLINE_DOT_ID);
+		for (int i = 0; i < 100; i++) {
+			Entity dot = entityManager.getEntity(SpaceApes.GAMEPLAY_STATE, Constants.AIMLINE_DOT_ID);
 			if (dot == null) {
 				break;
 			}
-			entityManager.removeEntity(Launch.GAMEPLAY_STATE, dot);
+			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, dot);
 		}
 	}
 
@@ -257,7 +254,7 @@ public class Map {
 
 		Ape ape = Map.getInstance().getActiveApe();
 
-		if (ape.isInteractionAllowed()) { // TODO brauchen wir die abfrage wirklich?
+		if (ape.isInteractionAllowed()) {
 
 			removeAimeLine();
 
@@ -270,9 +267,8 @@ public class Map {
 			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
 					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
-			// TODO Variablen!!
 			int flightTime = 500; // in ms
-			float updateFrequency = Launch.UPDATE_INTERVAL;
+			float updateFrequency = SpaceApes.UPDATE_INTERVAL;
 			boolean draw = true;
 			// int numberOfDots = 16; // TL: Wird nicht benoetigt (numberOfDots ergibt sich
 			// aus der Laenge der Linie und ist nicht fix)
@@ -294,19 +290,18 @@ public class Map {
 
 					Entity dot = new Entity(Constants.AIMLINE_DOT_ID); // Entitaet fuer einen Punkt der Linie
 					dot.setPosition(Utils.toPixelCoordinates(dummyProjectile.getCoordinates()));
-					dot.setScale(1 - (i * 0.8f / iterations)); // TODO Scalingfactor abhaengig von Bildschirmgroesse
+					dot.setScale(1 - (i * 0.8f / iterations)); // Scalingfactor abhaengig von Bildschirmgroesse machen!
 					try {
-						if (Launch.renderImages) {
+						if (SpaceApes.renderImages) {
 							dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
 							// System.out.println("add dot");
 						} else {
-							//MR no println() here because it would be called to often
 							//System.out.println("noRenderImages: assign dot image.");
 						}
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(Launch.GAMEPLAY_STATE, dot);
+					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, dot);
 				}
 			}
 		}
@@ -373,8 +368,6 @@ public class Map {
 	 */
 	public boolean isValidPositionForPlayerPlanet1(Vector2f position) {
 		
-		//TODO wenn der Radius zu groß ist, könnte der Planet trotzdem außerhalb der Welt sein...
-		
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
 		
@@ -394,8 +387,6 @@ public class Map {
 	 * @return true if given position is in the allowed area, else false
 	 */
 	public boolean isValidPositionForPlayerPlanet2(Vector2f position) {
-		
-		//TODO wenn der Radius zu groß ist, könnte der Planet trotzdem außerhalb der Welt sein...
 		
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
