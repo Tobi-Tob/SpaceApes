@@ -54,7 +54,7 @@ public class MainMenuState extends BasicGameState {
 		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des
 																	// Fensters)
 		if (SpaceApes.renderImages) {
-			Image image = new Image("img/assets/menuSP.png");
+			Image image = new Image("img/assets/menuSP.jpg");
 			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
 			menuBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
 		} else {

@@ -39,7 +39,7 @@ public class HighscoreState extends BasicGameState {
 		Entity highscoreBackground = new Entity("Highscore");
 		highscoreBackground.setPosition(Utils.toPixelCoordinates(0, 0));
 		if (SpaceApes.renderImages) {
-			Image image = new Image("img/assets/menuSP.png");
+			Image image = new Image("img/assets/menuSP.jpg");
 			highscoreBackground.addComponent(new ImageRenderComponent(image));
 			highscoreBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight());
 		} else {
