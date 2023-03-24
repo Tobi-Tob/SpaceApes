@@ -20,7 +20,6 @@ public class SpaceApes extends StateBasedGame {
 	//public static final int HIGHSCORE_STATE = 2; // Not used yet
 
 	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
-	// TODO Kompatibilitaet mit 3+ Spielern
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true

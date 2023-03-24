@@ -229,7 +229,7 @@ public class Initializer {
 
 			Ape ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
 					movementSpeed, angleOnPlanet, angleOfView, throwStrength, projectileMovementType).createEntity();
-			// TODO eine Apefactory fuer alle Apes?
+			// eine Apefactory fuer alle Apes?
 			map.addApe(ape);
 			map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
 		}
@@ -243,7 +243,7 @@ public class Initializer {
 			Planet planet = ape.getPlanet();
 			Vector2f panelCoordinates = planet.getCoordinates(); // Uebergibt man das der Factory oder machtr die das
 																	// intern selbst?
-//			float ApeInfoSignScale = planet.getScale() * 0.4f; // TODO es waere schlauer den Scale ueber den Radius zu
+//			float ApeInfoSignScale = planet.getScale() * 0.4f; // es waere schlauer den Scale ueber den Radius zu
 //																// ermitteln
 //																// (wegen den Ringplaneten)
 
