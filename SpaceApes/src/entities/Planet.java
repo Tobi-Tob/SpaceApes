@@ -11,6 +11,7 @@ public class Planet extends Entity {
 
 	private float radius; // Radius in Weltkoordinaten
 	private int mass;
+	private float atmosphereRadiusFactor; // atmosphere radius = atmosphereRadiusFactor * radius of planet
 	private Vector2f coordinates; // in Weltkoordinaten
 	private Ape ape;
 	private PlanetType planetType;
@@ -41,6 +42,14 @@ public class Planet extends Entity {
 
 	public float getRadius() {
 		return radius;
+	}
+	
+	public void setAtmosphereRadiusFactor(float factor) {
+		this.atmosphereRadiusFactor = factor;
+	}
+	
+	public float getAtmosphereRadius() {
+		return radius * atmosphereRadiusFactor;
 	}
 
 	public void setMass(int mass) {

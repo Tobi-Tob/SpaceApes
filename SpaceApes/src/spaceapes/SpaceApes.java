@@ -12,13 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.StateBasedEntityManager;
 
-/**
- * @author Timo Baehr
- *
- *         Diese Klasse startet das Spiel "Space Apes". Sie enthaelt zwei
- *         State's fuer das Menue und das eigentliche Spiel.
- */
-public class SpaceApes extends StateBasedGame { // TODO vllt in Spaceapes umbennen?
+public class SpaceApes extends StateBasedGame {
 
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;

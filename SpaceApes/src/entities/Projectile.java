@@ -125,7 +125,7 @@ public class Projectile extends Entity {
 	 * @return true, falls eine Kollision mit einem Planeten/Affen in diesem Schritt
 	 *         vorliegt
 	 */
-	public boolean explizitEulerStep(int timeDelta) {
+	public boolean explizitEulerStep(int timeDelta, boolean useAirFriction) {
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
 		boolean projectileIsVisible = this.isVisible();
 		// Positionsupdate:
@@ -159,8 +159,16 @@ public class Projectile extends Entity {
 			}
 
 			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des
-			// Planeten
-			ddx.add(distanceVector.scale(Constants.GRAVITATION_CONSTANT * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+			// Planeten und ggf. durch den Luftwiederstand in der Atmosphäre
+			if (!useAirFriction) {
+				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+			} else {
+				float airFrictionAcceleration = 0;
+				if (distanceVector.length() < planet.getAtmosphereRadius()) {
+					
+				}
+				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+			}
 		}
 		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
 

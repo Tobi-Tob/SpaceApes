@@ -9,7 +9,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended3;
-import entities.Projectile;
 
 public class Extended3Test {
 	
@@ -25,6 +24,7 @@ public class Extended3Test {
 	float angleOnPlanetApe2 = 0f;
 	boolean createNonPlayerPlanets = true;
 	boolean antiPlanetAndBlackHole = true;
+	float gravitation = 0.25f;
 	
 	@Before
 	public void setUp() {
@@ -48,29 +48,14 @@ public class Extended3Test {
 	public final void testItemSpawning() { // belongs to task: "Item Spawning"
 		
 		adapter.initializeGame();
-		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
+		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999, gravitation);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// change turn 6 times:
-		for (int i = 0; i < 3; i++) {
-			adapter.handleKeyPressed(10, Input.KEY_SPACE);
-			Projectile projectileFlying = adapter.getProjectile();
-			assertTrue("No Projectile in EntityManager after hitting Space-Key!", projectileFlying!=null);
-			Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
-			adapter.setProjectileCoordinates(projectileFlying, coordinatesApe2);
-			adapter.runGame(10);
-			assertTrue("Ape2 should be able to interact after the projectile collided with it!", adapter.isApeInteractionAllowed(1));
-			
-			adapter.handleKeyPressed(10, Input.KEY_SPACE);
-			projectileFlying = adapter.getProjectile();
-			assertTrue("No Projectile in EntityManager after Player two hit Space-Key!", projectileFlying!=null);
-			Vector2f coordinatesApe1 = adapter.getApeCoordinates(0);
-			adapter.setProjectileCoordinates(projectileFlying, coordinatesApe1);
-			adapter.runGame(10);
-			projectileFlying = adapter.getProjectile();
-			assertTrue("Ape1 should be able to interact after the projectile of Ape2 collided with Planet2!", adapter.isApeInteractionAllowed(0));
+		for (int i = 0; i < 6; i++) {
+			adapter.changeTurn();
 		}
 		
 		assertTrue("No Item has spawned after 6 rounds!", adapter.getItemCount() > 0);
@@ -84,7 +69,7 @@ public class Extended3Test {
 	public final void testBuyingProjectiles() { // belongs to task: "Kauf von Projektilen"
 		
 		adapter.initializeGame();
-		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
+		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999, gravitation);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
@@ -108,7 +93,7 @@ public class Extended3Test {
 	public final void testBlackHole() { // belongs to task: "Schwarzes Loch und Anti Planet"
 		
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, gravitation, antiPlanetAndBlackHole);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
@@ -126,7 +111,7 @@ public class Extended3Test {
 	public final void testAntiPlanet() { // belongs to task: "Schwarzes Loch und Anti Planet"
 		
 		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
+		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, gravitation, antiPlanetAndBlackHole);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());

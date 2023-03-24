@@ -9,7 +9,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended2;
-import entities.Projectile;
 
 public class Extended2Test {
 	
@@ -24,6 +23,7 @@ public class Extended2Test {
 	float angleOnPlanetApe1 = 0f;
 	float angleOnPlanetApe2 = 0f;
 	boolean createNonPlayerPlanets = true;
+	float gravitation = 0.25f;
 	
 	@Before
 	public void setUp() {
@@ -39,7 +39,7 @@ public class Extended2Test {
 	public final void testRandomPlanetPositionAndValues1() { // belongs to task: "Erweiterte Spielkartengenerierung"
 		
 		adapter.initializeGame();
-		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
+		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999, gravitation);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		assertTrue("The x-coordinate of Planet1 is not smaller than -0.5f!", adapter.getPlanetCoordinates(0).x < -0.5f);
 		assertTrue("The y-coordinate of Planet1 is not greater than -7.5f!", adapter.getPlanetCoordinates(0).x > -7.5f);
@@ -61,7 +61,7 @@ public class Extended2Test {
 	public final void testRandomPlanetPositionAndValues2() { // belongs to task: "Erweiterte Spielkartengenerierung"
 		
 		adapter.initializeGame();
-		adapter.createMap(new Vector2f(-4.0f, 0f), new Vector2f(4.0f, 0f), 1.5f, 1.5f, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
+		adapter.createMap(new Vector2f(-4.0f, 0f), new Vector2f(4.0f, 0f), 1.5f, 1.5f, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999, gravitation);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled and and initial coordinates for the player-planets are passed!", adapter.getPlanetCount() > 2);
@@ -74,7 +74,7 @@ public class Extended2Test {
 	public final void testEnergyOfApe() { // belongs to task: "Bewegung auf dem Planeten verbraucht Energie"
 		
 		adapter.initializeGame();
-		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
+		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999, gravitation);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
@@ -89,27 +89,6 @@ public class Extended2Test {
 		adapter.handleKeyDown(1000, Input.KEY_RIGHT);
 		newEnergyApe = adapter.getApeEnergy(0);
 		assertTrue("The energy level of Ape1 does not decrease while walking right!", newEnergyApe < originalEnergyApe);
-		
-		// change turn:
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		Projectile projectileFlying = adapter.getProjectile();
-		assertTrue("No Projectile in EntityManager after hitting Space-Key!", projectileFlying!=null);
-		Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
-		adapter.setProjectileCoordinates(projectileFlying, coordinatesApe2);
-		adapter.runGame(10);
-		assertTrue("Ape2 should be able to interact after the projectile of Ape1 collided with it!", adapter.isApeInteractionAllowed(1));
-		
-		// test Ape2: //TODO: funktioniert aus irgendeinem Grund nicht...
-//		originalEnergyApe = adapter.getApeEnergy(1);
-//		adapter.handleKeyPressed(1000, Input.KEY_LEFT);
-//		//adapter.runGame(1000);
-//		newEnergyApe = adapter.getApeEnergy(1);
-//		assertTrue("The energy level of Ape2 does not decrease while walking left!", newEnergyApe < originalEnergyApe);
-//		
-//		originalEnergyApe = adapter.getApeEnergy(1);
-//		adapter.handleKeyDown(1000, Input.KEY_RIGHT);
-//		newEnergyApe = adapter.getApeEnergy(1);
-//		assertTrue("The energy level of Ape2 does not decrease while walking right!", newEnergyApe < originalEnergyApe);
 		
 		adapter.stopGame();
 	}

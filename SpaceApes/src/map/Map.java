@@ -38,6 +38,7 @@ public class Map {
 	private List<Item> items; // Liste aller Items
 	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
+	private float gravitationConstant = 0.25f;
 
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
@@ -92,6 +93,14 @@ public class Map {
 	public ControlPanel getControlPanel() {
 		return controlPanel;
 	}
+	
+	public void setGravitationConstant(float gravitation) {
+		this.gravitationConstant = gravitation;
+	}
+	
+	public float getGravitationConstant() {
+		return gravitationConstant;
+	}
 
 	public Ape getActiveApe() {
 		Ape activeApe = null;
@@ -112,7 +121,8 @@ public class Map {
 		return activeApe;
 	}
 
-	public void changeTurn() {
+	// This method works for more than two players covers spacial cases when 2 players are on the same planet and so on...
+	public void changeTurn() { 
 		Ape activeApe = getActiveApe();
 		Ape nextApe = findNextLivingApe();
 		if (nextApe == null) {

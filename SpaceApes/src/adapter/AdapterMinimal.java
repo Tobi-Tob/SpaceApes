@@ -4,15 +4,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
-import entities.Projectile;
-import factories.ProjectileFactory;
-import factories.ProjectileFactory.MovementType;
-import factories.ProjectileFactory.ProjectileType;
+//import entities.Projectile;
+//import factories.ProjectileFactory;
+//import factories.ProjectileFactory.MovementType;
+//import factories.ProjectileFactory.ProjectileType;
 import testUtils.TestAppGameContainer;
 import utils.Utils;
-import map.Map;
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
+//import map.Map;
+//import spaceapes.Constants;
+//import spaceapes.SpaceApes;
 
 /**
  * This is the test adapter for the minimal stage of completion. You must implement the method stubs and match
@@ -37,7 +37,7 @@ import spaceapes.SpaceApes;
  */
 public class AdapterMinimal {
 	
-	SpaceApes launch; 						// inherits from StateBasedGame
+	SpaceApes launch; 					// inherits from StateBasedGame
 	TestAppGameContainer app;			// special variant of the AppGameContainer, which doesn't build a UI (just for the tests!)
 	boolean isMapCorrect;
 	

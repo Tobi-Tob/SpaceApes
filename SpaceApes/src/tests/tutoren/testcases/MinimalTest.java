@@ -204,8 +204,6 @@ public class MinimalTest {
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
-		//float desiredTargetX = 
-		
 		// We test if a projectile flies along the desired linear trajectory for different test cases.
 		// Test 1
 		int updateTimeDelta = 20;
@@ -217,7 +215,7 @@ public class MinimalTest {
 		adapter.handleKeyPressed(20, Input.KEY_SPACE);
 		for (int i = 0; i < numberOfSteps; i++) {
 			adapter.runGame(updateTimeDelta);
-			System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
+			//System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
 		}
 		assertTrue("No Projectile in EntityManager but should be!", adapter.getProjectileCoordinates()!=null);
 		assertEquals("The projectile does not has the expected x-coordinate after applying multiple steps of the linear movement!", desiredX, adapter.getProjectileCoordinates().x, 0.5f);
@@ -235,7 +233,7 @@ public class MinimalTest {
 		adapter.handleKeyPressed(20, Input.KEY_SPACE);
 		for (int i = 0; i < numberOfSteps; i++) {
 			adapter.runGame(updateTimeDelta);
-			System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
+			//System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
 		}
 		assertTrue("No Projectile in EntityManager but should be!", adapter.getProjectileCoordinates()!=null);
 		assertEquals("The projectile does not has the expected x-coordinate after applying multiple steps of the linear movement!", desiredX, adapter.getProjectileCoordinates().x, 0.5f);
@@ -255,7 +253,7 @@ public class MinimalTest {
 		adapter.handleKeyPressed(20, Input.KEY_SPACE);
 		for (int i = 0; i < numberOfSteps; i++) {
 			adapter.runGame(updateTimeDelta);
-			System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
+			//System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
 		}
 		assertTrue("No Projectile in EntityManager but should be!", adapter.getProjectileCoordinates()!=null);
 		assertEquals("The projectile does not has the expected x-coordinate after applying multiple steps of the linear movement!", desiredX, adapter.getProjectileCoordinates().x, 0.01f);

@@ -39,6 +39,7 @@ public class Initializer {
 		initPlanets(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, antiPlanetAndBlackHole);
 		initApes(projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
+		Map.getInstance().setGravitationConstant(0.25f);
 	}
 
 	protected void initBackground() {
