@@ -45,6 +45,7 @@ public class ShootAction implements Action {
 				
 			} else {
 				
+				activeApe.reduceCoins(selectedProjectile.getPrice());
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 				// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
 				activeApe.setInteractionAllowed(false);

@@ -40,7 +40,7 @@ public class Initializer {
 		initApes(projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
 		Map.getInstance().setGravitationConstant(0.25f);
-		Map.getInstance().useAirFriction(true);
+		Map.getInstance().useAirFriction(false);
 	}
 
 	protected void initBackground() {

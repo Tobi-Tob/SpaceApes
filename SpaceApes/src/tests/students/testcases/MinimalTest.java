@@ -1,4 +1,4 @@
-package tests.tutoren.testcases;
+package tests.students.testcases;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -100,7 +100,7 @@ public class MinimalTest {
 	}
 	
 	@Test
-	public void testApe2Dead() { // belongs to task: "Spielende"
+	public void testApeDead() { // belongs to task: "Spielende"
 		adapter.initializeGame();
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, 0, 180);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
@@ -114,36 +114,6 @@ public class MinimalTest {
 			i++;
 			if (adapter.getProjectileCoordinates() == null) {
 				adapter.handleKeyPressed(20, Input.KEY_SPACE); // since Ape1 shoots first, Ape2 will die first
-			} else {
-				adapter.runGame(20);
-				adapter.runGame(20);
-			}
-		}
-		adapter.runGame(20); // another update needs to be called to change state
-		assertTrue("During this test one ape should be killed! The apes stand directly opposite to each other and constantly shoot when its their turn.", !(adapter.getNumberOfLivingApes() > 1));
-		assertTrue("Game is not in main menu state after an ape is dead!", adapter.getStateBasedGame().getCurrentStateID()==adapter.getMainMenuStateID());
-		adapter.stopGame();
-	}
-	
-	@Test
-	public void testApe1Dead() { // belongs to task: "Spielende"
-		adapter.initializeGame();
-		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, 0, 180);
-		assertTrue("The map was not created correctly", adapter.isMapCorrect());
-		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
-		
-		// we placed the apes opposite to each other on the planets and let them shoot all the time. One ape should be killed after a view rounds
-		int maxIterations = 1000; // to prevent an infinite loop if some kind of setup got wrong -> if your test fail try to increase this value!!
-		int i = 0;
-		while (i < maxIterations && adapter.getNumberOfLivingApes() > 1) {
-			i++;
-			if (adapter.getProjectileCoordinates() == null) {
-				if (adapter.isApeInteractionAllowed(0)) {
-					adapter.changeTurn(); // only shoot with Ape2 to kill Ape1
-				} else {
-					adapter.handleKeyPressed(20, Input.KEY_SPACE);
-				}
 			} else {
 				adapter.runGame(20);
 				adapter.runGame(20);
@@ -201,8 +171,7 @@ public class MinimalTest {
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
-		// We test if a projectile flies along the desired linear trajectory for different test cases.
-		// Test 1
+		// We test if a projectile flies along the desired linear trajectory
 		int updateTimeDelta = 20;
 		int numberOfSteps = 21;
 		float desiredX = 0.14f;
@@ -222,40 +191,6 @@ public class MinimalTest {
 			adapter.runGame(updateTimeDelta);
 		}
 		
-		// Test 2
-		desiredX = -0.14f;
-		desiredY = 4.14f;
-		
-		// Do 'numberOfSteps' steps of the linear movement
-		adapter.handleKeyPressed(20, Input.KEY_SPACE);
-		for (int i = 0; i < numberOfSteps; i++) {
-			adapter.runGame(updateTimeDelta);
-			//System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
-		}
-		assertTrue("No Projectile in EntityManager but should be!", adapter.getProjectileCoordinates()!=null);
-		assertEquals("The projectile does not has the expected x-coordinate after applying multiple steps of the linear movement!", desiredX, adapter.getProjectileCoordinates().x, 0.5f);
-		assertEquals("The projectile does not has the expected y-coordinate after applying multiple steps of the linear movement!", desiredY, adapter.getProjectileCoordinates().y, 0.5f);
-		
-		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
-			adapter.runGame(updateTimeDelta);
-		}
-		
-		// Test 3
-		numberOfSteps = 10;
-		desiredX = -4f;
-		desiredY = 3.67f;
-		adapter.setApeAngleOnPlanet(0, 90);
-		
-		// Do 'numberOfSteps' steps of the linear movement
-		adapter.handleKeyPressed(20, Input.KEY_SPACE);
-		for (int i = 0; i < numberOfSteps; i++) {
-			adapter.runGame(updateTimeDelta);
-			//System.out.println("projectile Coordinates = " + adapter.getProjectileCoordinates() + " at iteration i = " + i);
-		}
-		assertTrue("No Projectile in EntityManager but should be!", adapter.getProjectileCoordinates()!=null);
-		assertEquals("The projectile does not has the expected x-coordinate after applying multiple steps of the linear movement!", desiredX, adapter.getProjectileCoordinates().x, 0.01f);
-		assertEquals("The projectile does not has the expected y-coordinate after applying multiple steps of the linear movement!", desiredY, adapter.getProjectileCoordinates().y, 0.2f);
-
 		adapter.stopGame();
 	}
 	
@@ -268,47 +203,17 @@ public class MinimalTest {
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		assertTrue("Ape1 should be able to interact before shooting its projectile at the start of the game!", adapter.isApeInteractionAllowed(0));
-		assertTrue("Ape2 should not be able to interact at the start of the game!", !adapter.isApeInteractionAllowed(1));
 		
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape1!", adapter.getProjectileCoordinates()!=null);
 		assertTrue("Ape1 should not be able to interact after shooting its projectile!", !adapter.isApeInteractionAllowed(0));
-		assertTrue("Ape2 should not be able to interact after Ape1 shot its projectile which is still flying!", !adapter.isApeInteractionAllowed(1));
 		
 		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
 			adapter.runGame(20);
 		}
 		
 		assertTrue("There should not be a Projectile in the EntityManager after it collided with Ape2!", adapter.getProjectileCoordinates()==null);
-		assertTrue("Ape1 should not be able to interact after its projectile collided!", !adapter.isApeInteractionAllowed(0));
 		assertTrue("Ape2 should be able to interact after the projectile of Ape1 collided with it!", adapter.isApeInteractionAllowed(1));
-		
-		adapter.setApeAngleOnPlanet(1, 90);
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape2!", adapter.getProjectileCoordinates()!=null);
-		assertTrue("Ape2 should not be able to interact after shooting its projectile!", !adapter.isApeInteractionAllowed(1));
-		assertTrue("Ape1 should not be able to interact after Ape2 shot its projectile which is still flying!", !adapter.isApeInteractionAllowed(0));
-		
-		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
-			adapter.runGame(20);
-		}
-		
-		assertTrue("There should not be a Projectile in the EntityManager after it went out to far in space!", adapter.getProjectileCoordinates()==null);
-		assertTrue("Ape2 should not be able to interact after its projectile went out to far in space!", !adapter.isApeInteractionAllowed(1));
-		assertTrue("Ape1 should be able to interact after the projectile of Ape2 went out to far in space!", adapter.isApeInteractionAllowed(0));
-		
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape1!", adapter.getProjectileCoordinates()!=null);
-		assertTrue("Ape1 should not be able to interact after shooting its projectile!", !adapter.isApeInteractionAllowed(0));
-		assertTrue("Ape2 should not be able to interact after Ape1 shot its projectile which is still flying!", !adapter.isApeInteractionAllowed(1));
-		
-		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
-			adapter.runGame(20);
-		}
-		
-		assertTrue("There should not be a Projectile in the EntityManager after it collided with Planet2!", adapter.getProjectileCoordinates()==null);
-		assertTrue("Ape1 should not be able to interact after its projectile collided with Planet2!", !adapter.isApeInteractionAllowed(0));
-		assertTrue("Ape2 should be able to interact after the projectile of Ape1 collided with Planet2!", adapter.isApeInteractionAllowed(1));
 		
 		adapter.stopGame();
 	}
@@ -321,7 +226,6 @@ public class MinimalTest {
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
-		// Test 1
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape1!", adapter.getProjectileCoordinates()!=null);
 		
@@ -331,23 +235,6 @@ public class MinimalTest {
 		}
 	
 		assertTrue("Projectile has not collided with Planet2 as expected!", adapter.getProjectileCoordinates()==null);
-		
-		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
-			adapter.runGame(20);
-		}
-		
-		// Test 2
-		adapter.setApeAngleOnPlanet(0, 90);
-		adapter.setApeAngleOnPlanet(1, 180);
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape2!", adapter.getProjectileCoordinates()!=null);
-		
-		// run shot until it collided or exceeded position of Planet1 (should have hit planet by then)
-		while (adapter.getProjectileCoordinates()!=null && adapter.getProjectileCoordinates().x > adapter.getPlanetCoordinates(0).x) {
-			adapter.runGame(20);
-		}
-	
-		assertTrue("Projectile has not collided with Planet1 as expected!", adapter.getProjectileCoordinates()==null);
 		
 		adapter.stopGame();
 	}
@@ -360,7 +247,6 @@ public class MinimalTest {
 		adapter.handleKeyPressed(0, Input.KEY_N);
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
-		// Test 1
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape1!", adapter.getProjectileCoordinates()!=null);
 		
@@ -370,21 +256,6 @@ public class MinimalTest {
 		}
 	
 		assertTrue("Projectile has not collided with Ape2 as expected!", adapter.getProjectileCoordinates()==null);
-		
-		while (adapter.getProjectileCoordinates()!=null) { // to initiate a changeTurn and remove the projectile from the entity manager
-			adapter.runGame(20);
-		}
-		
-		// Test 2
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		assertTrue("No Projectile in EntityManager after hitting Space-Key with Ape2!", adapter.getProjectileCoordinates()!=null);
-		
-		// run shot until it collided or exceeded x position of Ape1 (should have hit planet by then)
-		while (adapter.getProjectileCoordinates()!=null && adapter.getProjectileCoordinates().x > adapter.getApeCoordinates(0).x) {
-			adapter.runGame(20);
-		}
-	
-		assertTrue("Projectile has not collided with Ape1 as expected!", adapter.getProjectileCoordinates()==null);
 		
 		adapter.stopGame();
 	}
@@ -403,7 +274,6 @@ public class MinimalTest {
 		int healthApe2 = adapter.getApeHealth(1);
 		assertTrue("The health of Ape2 should be 100 at the start of the game!", healthApe2==100);
 		
-		// Test1
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		
 		// run shot until it collided with Ape2
@@ -412,16 +282,6 @@ public class MinimalTest {
 		}
 		
 		assertTrue("The health of Ape2 should be lower than 100 after a projectile hit it!", adapter.getApeHealth(1)<100);
-
-		// Test 2
-		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		
-		// run shot until it collided with Ape1
-		while (adapter.getProjectileCoordinates()!=null) {
-			adapter.runGame(20);
-		}
-		
-		assertTrue("The health of Ap1 should be lower than 100 after a projectile hit it!", adapter.getApeHealth(0)<100);
 		
 		adapter.stopGame();
 	}

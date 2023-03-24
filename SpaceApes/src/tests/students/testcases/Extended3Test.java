@@ -1,4 +1,4 @@
-package tests.tutoren.testcases;
+package tests.students.testcases;
 
 import static org.junit.Assert.assertTrue;
 
@@ -59,8 +59,6 @@ public class Extended3Test {
 		}
 		
 		assertTrue("No Item has spawned after 6 rounds!", adapter.getItemCount() > 0);
-		//System.out.println("Items: " +  adapter.getItemCount());
-		assertTrue("Items are spawned inside a planet!", adapter.getMinimalDistanceItemToPlanet() > 0.75f);
 		
 		adapter.stopGame();
 	}
@@ -83,7 +81,6 @@ public class Extended3Test {
 		adapter.setApeCoins(0, price);
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		assertTrue("A projectile should be fired after hitting Space-Key, when the selected projectile costs less than the amount of coins of the ape!", adapter.getProjectileCoordinates()!=null);
-		assertTrue("Ape1 should not have any coins after spending all of them on an expensive projectile!", adapter.getApeCoins(0)==0);
 		
 		adapter.stopGame();
 	}
@@ -98,7 +95,6 @@ public class Extended3Test {
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled!", adapter.getPlanetCount() > 2);
-		assertTrue("The distance between the spawned planets is less than 4, which is the minimal allowed distance)!", adapter.getMinimalDistancePlanets() >= 4f);
 		assertTrue("No black hole is created, but it is expected to!", adapter.getBlackHoleCount() > 0);
 		//System.out.println("blackHole mass: " + adapter.getBlackHoleMass() + " planet1 mass: " + adapter.getPlanetMass(0));
 		assertTrue("The mass of the created black hole is not big enough in relation to the other planets! At least double mass is required!", adapter.getBlackHoleMass() > adapter.getPlanetMass(0));
@@ -116,7 +112,6 @@ public class Extended3Test {
 		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled!", adapter.getPlanetCount() > 2);
-		assertTrue("The distance between the spawned planets is less than 4, which is the minimal allowed distance)!", adapter.getMinimalDistancePlanets() >= 4f);
 		assertTrue("No anti planet is created, but it is expected to!", adapter.getAntiPlanetCount() > 0);
 		System.out.println("anti mass: " + adapter.getAntiPlanetMass());
 		assertTrue("The mass of the created anti planet is not less than zero!", adapter.getAntiPlanetMass() < 0);

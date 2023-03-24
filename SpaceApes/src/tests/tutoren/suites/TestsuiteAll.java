@@ -9,10 +9,11 @@ public class TestsuiteAll {
 		
 		TestSuite suite = new TestSuite("All tutor tests for Space Apes");
 		
-		suite.addTest(TestsuiteMinimal.suite());
-		suite.addTest(TestsuiteExtended1.suite());
-		suite.addTest(TestsuiteExtended2.suite());
-		suite.addTest(TestsuiteExtended3.suite());
+		suite.addTest(tests.tutoren.suites.TestsuiteMinimal.suite());
+		suite.addTest(tests.tutoren.suites.TestsuiteExtended1.suite());
+		suite.addTest(tests.tutoren.suites.TestsuiteExtended2.suite());
+		suite.addTest(tests.tutoren.suites.TestsuiteExtended3.suite());
+		suite.addTest(tests.tutoren.suites.TestsuiteExtendedCE.suite());
 		
 		return suite;
 	}

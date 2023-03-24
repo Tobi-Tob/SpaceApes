@@ -1,4 +1,4 @@
-package tests.tutoren.suites;
+package tests.students.suites;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
@@ -7,8 +7,8 @@ import junit.framework.TestSuite;
 public class TestsuiteExtended2 {
 	
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Tutor tests for SpaceApes - Extended 2");
-		suite.addTest(new JUnit4TestAdapter(tests.tutoren.testcases.Extended2Test.class));
+		TestSuite suite = new TestSuite("Student tests for SpaceApes - Extended 2");
+		suite.addTest(new JUnit4TestAdapter(tests.students.testcases.Extended2Test.class));
 		return suite;
 	}
 	

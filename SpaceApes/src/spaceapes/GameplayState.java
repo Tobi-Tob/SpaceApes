@@ -69,11 +69,13 @@ public class GameplayState extends BasicGameState {
 			float angleOnPlanetApe2 = 155f;
 			boolean antiPlanetAndBlackHole = true;
 			map.parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
+			Map.getInstance().useAirFriction(true); // needs to be done here so that the tests work
 			
 //			Die folgenden Parameter sind nur fürs Debugging
 			for (Planet planet : map.getPlanets()) {
 				planet.setAtmosphereRadiusFactor(2f);
 			}
+			
 		}
 
 		// Die dummyEntity steuert die Wechsel der States

@@ -117,6 +117,16 @@ public class AdapterExtended3 extends AdapterExtended2 {
 	}
 	
 	/**
+	 * This method returns the number of coins of the player with the given index
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns the number of coins of the player with the given index
+	 */
+	public int getApeCoins(int indexOfPlayer) {
+		return Map.getInstance().getApes().get(indexOfPlayer).getCoins();
+	}
+	
+	/**
 	 * @return returns the number of black holes
 	 */
 	public int getBlackHoleCount() {

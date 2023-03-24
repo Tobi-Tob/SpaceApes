@@ -3,7 +3,6 @@ package adapter;
 import org.newdawn.slick.geom.Vector2f;
 
 //The following are just used for the implementation of the adapter-methodes and have to be removed for the student version
-import entities.Projectile;
 import factories.ProjectileFactory.MovementType;
 import map.Map;
 

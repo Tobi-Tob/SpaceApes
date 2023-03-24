@@ -9,9 +9,7 @@ import utils.Utils;
 
 //The following are just used for the implementation of the adapter-methodes and have to be removed for the student version
 import entities.Projectile;
-import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
-import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
@@ -71,7 +69,7 @@ public class AdapterMinimal {
 	 */
 	public void initializeGame() {
 		
-		// Setze den library Pfad abhaengig vom Betriebssystem
+		// Here you set the library path which depends on the operationg system
 		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 			System.setProperty("org.lwjgl.librarypath", System.getProperty("user.dir") + "/native/windows");
 		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -390,6 +388,7 @@ public class AdapterMinimal {
 	
 	/**
 	 * This method manually changes turn to the other player
+	 * (no matter if the projectile is still flying or not)
 	 */
 	public void changeTurn() {
 		Map.getInstance().changeTurn();
@@ -403,52 +402,12 @@ public class AdapterMinimal {
 	 * @return returns the world coordinates of the current projectile. If not existing then null
 	 */
 	public Vector2f getProjectileCoordinates() {
-		if (getProjectile() == null) {
-			return null;
-		} else {
-			return getProjectile().getCoordinates();
-		}
-	}
-	
-	/**
-	 * @return returns the world coordinates of the current projectile. If not existing then null
-	 */
-	public void setProjectileCoordinates(Projectile projectile, Vector2f coordinates) {
-		projectile.setCoordinates(coordinates);
-	}
-	
-	/**
-	 * @return returns the current flying projectile. If not existing then null
-	 */
-	public Projectile getProjectile() {
 		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
 			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager! In getProjectile");
 			return null;
 		} else {
-			return (Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID);
+			return ((Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
 		}
-	}
-	
-	/**
-	 * This method spawns a projectile at the given position
-	 * 
-	 * @param position - position where the projectile is spawned
-	 * @return returns the created projectile
-	 */
-	public Projectile createProjectile(Vector2f position, Vector2f velocityVector) {
-		return new ProjectileFactory(Constants.PROJECTILE_ID, position,
-				velocityVector, true, true, ProjectileType.COCONUT, MovementType.LINEAR).createEntity();
-	}
-	
-	/**
-	 * This method does one step of linear movement for the given projectile. The width of the step depends on the given time delta.
-	 * 
-	 * @param projectile - the projectile which is used for the linear movement step
-	 * @param timeDelta - time used for the linear movement step
-	 * @return returns true if a projectile collided with a planet or ape
-	 */
-	public boolean doLinearMovementStep(Projectile projectile, int timeDelta) {
-		return projectile.linearMovementStep(timeDelta);
 	}
 	
 	
