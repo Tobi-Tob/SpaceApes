@@ -37,7 +37,8 @@ public class ProjectileBehaviorAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 
 		boolean collision = false;
-		if (movementType==MovementType.LINEAR && projectile.linearMovementStep(delta) || movementType==MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta)) {
+		boolean airFriction = Map.getInstance().isAirFrictionUsed();
+		if (movementType==MovementType.LINEAR && projectile.linearMovementStep(delta) || movementType==MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta, airFriction)) {
 			// linearMovementStep und explizitEulerStep geben jeweils true zurück bei Kollision mit Affen/Planeten
 			collision = true;
 		}

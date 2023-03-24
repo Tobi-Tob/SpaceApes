@@ -11,7 +11,7 @@ public class Planet extends Entity {
 
 	private float radius; // Radius in Weltkoordinaten
 	private int mass;
-	private float atmosphereRadiusFactor; // atmosphere radius = atmosphereRadiusFactor * radius of planet
+	private float atmosphereRadiusFactor = 5f; // atmosphere radius = atmosphereRadiusFactor * radius of planet
 	private Vector2f coordinates; // in Weltkoordinaten
 	private Ape ape;
 	private PlanetType planetType;

@@ -39,6 +39,7 @@ public class Map {
 	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
 	private float gravitationConstant = 0.25f;
+	private boolean useAirFriction = false;
 
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
@@ -100,6 +101,14 @@ public class Map {
 	
 	public float getGravitationConstant() {
 		return gravitationConstant;
+	}
+	
+	public void useAirFriction(boolean useAirFriction) {
+		this.useAirFriction = useAirFriction;
+	}
+	
+	public boolean isAirFrictionUsed() {
+		return useAirFriction;
 	}
 
 	public Ape getActiveApe() {
@@ -288,7 +297,7 @@ public class Map {
 			Projectile dummyProjectile = new ProjectileFactory(Constants.DUMMY_PROJECTILE_ID, positionOfProjectileLaunch,
 					velocity, false, true, ProjectileType.COCONUT, MovementType.EXPLICIT_EULER).createEntity();
 			for (int i = 0; i <= iterations; i++) {
-				if (dummyProjectile.explizitEulerStep((int) updateFrequency)) {
+				if (dummyProjectile.explizitEulerStep((int) updateFrequency, useAirFriction)) {
 					// Wenn Kollision mit einem Objekt
 					break; // -> laufe trotzdem durch die schleife, damit es nicht so wirkt als wuerde es
 							// laggen TL: laggt jz nicht mehr

@@ -165,9 +165,14 @@ public class Projectile extends Entity {
 			} else {
 				float airFrictionAcceleration = 0;
 				if (distanceVector.length() < planet.getAtmosphereRadius()) {
-					
+					float airDensity = 1.293f;
+					float C = 2.1f;
+					float halfSurfaceArea = (float) (2 *  Math.PI * Math.pow(getRadiusInWorldUnits(), 2));
+					Vector2f airSpeed = new Vector2f(0, 0);
+					Vector2f relativeSpeedToAirSpeed = new Vector2f((float) vx - airSpeed.x, (float) vy - airSpeed.y);
+					airFrictionAcceleration = (float) (0.5 * airDensity * C * halfSurfaceArea * Math.pow(relativeSpeedToAirSpeed.length(), 2));
 				}
-				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration));
 			}
 		}
 		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
