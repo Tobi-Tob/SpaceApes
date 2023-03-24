@@ -4,10 +4,16 @@ import java.util.Random;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
-
 public final class Utils {
+	
+	//int pixelWidth = SpaceApes.WIDTH;
+	//int pixelHeight = SpaceApes.HEIGHT;
+	//int worldWidth = Constants.WORLD_WIDTH;
+	//int worldHeight = Constants.WORLD_HEIGHT;
+	public static int pixelWidth = 1200;
+	public static int pixelHeight = 900;
+	public static int worldWidth = 16;
+	public static int worldHeight = 12;
 
 	/**
 	 * Wandelt Welt-Koordinaten in Pixel-Koordinaten um
@@ -17,9 +23,7 @@ public final class Utils {
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(float x, float y) {
-		float w = SpaceApes.WIDTH;
-		float h = SpaceApes.HEIGHT;
-		return new Vector2f(x * w / Constants.WORLD_WIDTH + w / 2, y * w / Constants.WORLD_WIDTH + h / 2);
+		return new Vector2f(x * pixelWidth / worldWidth + pixelWidth / 2, y * pixelWidth / worldWidth + pixelHeight / 2);
 	}
 
 	/**
@@ -29,9 +33,7 @@ public final class Utils {
 	 * @return Vector2f mit Pixel-Koordinaten
 	 */
 	public static Vector2f toPixelCoordinates(Vector2f v) {
-		float w = SpaceApes.WIDTH;
-		float h = SpaceApes.HEIGHT;
-		return new Vector2f(v.x * w / Constants.WORLD_WIDTH + w / 2, v.y * w / Constants.WORLD_WIDTH + h / 2);
+		return new Vector2f(v.x * pixelWidth / worldWidth + pixelWidth / 2, v.y * pixelWidth / worldWidth + pixelHeight / 2);
 	}
 
 	/**
@@ -41,13 +43,11 @@ public final class Utils {
 	 * @return Vector2f mit Welt-Koordinaten
 	 */
 	public static Vector2f toWorldCoordinates(Vector2f p) {
-		float w = SpaceApes.WIDTH;
-		float h = SpaceApes.HEIGHT;
-		return new Vector2f((p.x - w * 0.5f) * Constants.WORLD_WIDTH / w, (p.y - h * 0.5f) * Constants.WORLD_WIDTH / w);
+		return new Vector2f((p.x - pixelWidth * 0.5f) * worldWidth / pixelWidth, (p.y - pixelHeight * 0.5f) * worldWidth / pixelWidth);
 	}
 
 	public static float pixelLengthToWorldLength(float p) {
-		return p * Constants.WORLD_WIDTH / SpaceApes.WIDTH;
+		return p * worldWidth / pixelWidth;
 	}
 
 	/**
