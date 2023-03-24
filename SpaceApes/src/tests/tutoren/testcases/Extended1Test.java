@@ -13,7 +13,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended1;
 import entities.Projectile;
-import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class Extended1Test {
@@ -40,14 +39,14 @@ public class Extended1Test {
 	}
 	
 	@Test
-	public void testShootingAngle1() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
+	public void testExplicitEuler1() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
 		adapter.initializeGame();
 		float otherAngleOnPlanetApe1 = -25f;
 		float otherAngleOnPlanetApe2 = 180f;
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, otherAngleOnPlanetApe1, otherAngleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// We test if a projectile flies approx. along the desired explicit euler trajectory for different test cases.
 		int player = 0;
@@ -81,14 +80,14 @@ public class Extended1Test {
 	}
 	
 	@Test
-	public void testShootingAngle2() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
+	public void testExplicitEuler2() { // belongs to task: "Bahnberechnung mittels explizitem Euler Verfahren"
 		adapter.initializeGame();
 		float otherAngleOnPlanetApe1 = 90f;
 		float otherAngleOnPlanetApe2 = 0f;
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, otherAngleOnPlanetApe1, otherAngleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// We test if a projectile flies approx. along the desired explicit euler trajectory for different test cases.
 		int player = 0;
@@ -127,7 +126,7 @@ public class Extended1Test {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// At first we test if only valid argument are accepted
 		
@@ -356,7 +355,7 @@ public class Extended1Test {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// At first we test if only valid argument are accepted
 		

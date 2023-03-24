@@ -81,8 +81,7 @@ public class AdapterMinimal {
 		
 		// Start game without GUI
     	launch = new SpaceApes(false);
-		
-		// Initialisiere die statische Klasse Map
+
 		try {
 			Map.getInstance().resetToDefault();
 			app = new TestAppGameContainer(launch);
@@ -90,7 +89,6 @@ public class AdapterMinimal {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**
@@ -121,6 +119,39 @@ public class AdapterMinimal {
 	}
 	
 	/* *************************************************** 
+	 * *************** game settings *********************
+	 * *************************************************** */
+	
+	/**
+	 * This method returns the value of the main menu state
+	 * 
+	 * @return returns the value of the main menu state
+	 */
+	public int getMainMenuStateID() {
+		return SpaceApes.MAINMENU_STATE;
+	}
+	
+	/**
+	 * This method returns the value of the gameplay state
+	 * 
+	 * @return returns the value of the gameplay state
+	 */
+	public int getGameplayStateID() {
+		return SpaceApes.GAMEPLAY_STATE;
+	}
+	
+	/**
+	 * This method returns fixed update intervall in milli seconds (ms)
+	 * Note: If you are not sure what to choose as update rate, we used 20ms in the reference implementation
+	 * 
+	 * @return returns fixed update intervall
+	 */
+	public int getUpdateIntervall() {
+		return SpaceApes.UPDATE_INTERVAL;
+	}
+	
+	
+	/* *************************************************** 
 	 * *********************** Map ***********************
 	 * *************************************************** */
 	
@@ -133,8 +164,8 @@ public class AdapterMinimal {
 	 * @param radiusPlanet2 - radius of Planet2. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random radius as explained in the task
 	 * @param massPlanet1 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param massPlanet2 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
-	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
-	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
+	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
+	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 */
 	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, MovementType.LINEAR, angleOnPlanetApe1, angleOnPlanetApe2, false);
@@ -197,6 +228,15 @@ public class AdapterMinimal {
 		return Map.getInstance().getPlanets().get(indexOfPlayer).getMass();
 	}
 	
+	/**
+	 * 
+	 * @param indexOfPlayer - index of player
+	 * @return returns true if an ape is placed on the planet of the player with the given index
+	 */
+	public boolean hasApe(int indexOfPlayer) {
+		return Map.getInstance().getPlanets().get(indexOfPlayer).hasApe();
+	}
+	
 	/* *************************************************** 
 	 * ********************* Apes ************************
 	 * *************************************************** */
@@ -256,6 +296,16 @@ public class AdapterMinimal {
 	}
 	
 	/**
+	 * This method sets the angle on the planet of the ape of the player with the given index.
+	 * So it basicly sets its position on the planet
+	 * 
+	 * @param indexOfPlayer - index of player
+	 */
+	public void setApeAngleOnPlanet(int indexOfPlayer, int angleInDegrees) {
+		Map.getInstance().getApes().get(indexOfPlayer).setAngleOnPlanet(angleInDegrees);
+	}
+	
+	/**
 	 * 
 	 * @param indexOfPlayer - index of player
 	 * @return returns the radius of the ape of the ape of the player with the given index in world units
@@ -301,6 +351,18 @@ public class AdapterMinimal {
 	}
 	
 	/**
+	 * This method returns the movement speed of the ape.
+	 * Note: The returned value is a factor that is multiplied with the velocity in coordinates/milliseconds.
+	 * If you are not sure what to do, in the test a movement speed of 0.05f is used with an
+	 * update rate of 20 milliseconds
+	 * 
+	 * @return returns the movement speed of the ape. 
+	 */
+	public float getApeMovementSpeed() {
+		return Constants.APE_MOVMENT_SPEED;
+	}
+	
+	/**
 	 * 
 	 * @param indexOfPlayer - index of player
 	 * @return returns the health of the ape of the player with the given index
@@ -324,6 +386,13 @@ public class AdapterMinimal {
 		return Map.getInstance().getApes().get(indexOfPlayer).isInteractionAllowed();
 	}
 	
+	/**
+	 * This method manually changes turn to the other player
+	 */
+	public void changeTurn() {
+		Map.getInstance().changeTurn();
+	}
+	
 	/* *************************************************** 
 	 * ***************** Projectiles *********************
 	 * *************************************************** */
@@ -332,11 +401,10 @@ public class AdapterMinimal {
 	 * @return returns the world coordinates of the current projectile. If not existing then null
 	 */
 	public Vector2f getProjectileCoordinates() {
-		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
-			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
+		if (getProjectile() == null) {
 			return null;
 		} else {
-			return ((Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+			return getProjectile().getCoordinates();
 		}
 	}
 	
@@ -352,7 +420,7 @@ public class AdapterMinimal {
 	 */
 	public Projectile getProjectile() {
 		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
-			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager!");
+			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager! In getProjectile");
 			return null;
 		} else {
 			return (Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID);

@@ -28,8 +28,8 @@ public class AdapterExtended2 extends AdapterExtended1 {
 	 * @param massPlanet2 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param createNonPlayerPlanets - indication if non-player-planets should be created
 	 * @param projectileMovementType - indicates the movement type of the projectiles. 0 means linear movemet, 1 means explicit euler, 2 means explicit euler with atmosphere friction (only CE task)
-	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
-	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
+	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
+	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 */
 	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, int projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2) {
 		MovementType movementType;

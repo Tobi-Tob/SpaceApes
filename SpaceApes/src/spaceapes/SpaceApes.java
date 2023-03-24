@@ -23,7 +23,7 @@ public class SpaceApes extends StateBasedGame { // TODO vllt in Spaceapes umbenn
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
-	public static final int HIGHSCORE_STATE = 2;
+	//public static final int HIGHSCORE_STATE = 2; // Not used yet
 
 	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
 	// TODO Kompatibilitaet mit 3+ Spielern
@@ -81,12 +81,12 @@ public class SpaceApes extends StateBasedGame { // TODO vllt in Spaceapes umbenn
 		// (der zuerst hinzugefuegte State wird als erster State gestartet)
 		addState(new MainMenuState(MAINMENU_STATE));
 		addState(new GameplayState(GAMEPLAY_STATE));
-		addState(new HighscoreState(HIGHSCORE_STATE));
+		//addState(new HighscoreState(HIGHSCORE_STATE)); // Not used yet
 
 		// Fuege dem StateBasedEntityManager die States hinzu
 		StateBasedEntityManager.getInstance().addState(MAINMENU_STATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
-		StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE);
+		//StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE); // Not used yet
 	}
 	
 	public void setRenderImages(boolean renderImages1) {

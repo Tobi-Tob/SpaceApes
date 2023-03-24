@@ -76,12 +76,12 @@ public class GameplayState extends BasicGameState {
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
+		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
 		dummyEntity.addComponent(escPressed);
 		
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
-		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
+		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
 		dummyEntity.addComponent(lessThan2Apes);
 		
 		// Hier kommen alle weiteren Events hinzu...

@@ -10,8 +10,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended3;
 import entities.Projectile;
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
 
 public class Extended3Test {
 	
@@ -53,13 +51,13 @@ public class Extended3Test {
 		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// change turn 6 times:
 		for (int i = 0; i < 3; i++) {
 			adapter.handleKeyPressed(10, Input.KEY_SPACE);
 			Projectile projectileFlying = adapter.getProjectile();
-			assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager after hitting Space-Key!", projectileFlying!=null);
+			assertTrue("No Projectile in EntityManager after hitting Space-Key!", projectileFlying!=null);
 			Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
 			adapter.setProjectileCoordinates(projectileFlying, coordinatesApe2);
 			adapter.runGame(10);
@@ -67,7 +65,7 @@ public class Extended3Test {
 			
 			adapter.handleKeyPressed(10, Input.KEY_SPACE);
 			projectileFlying = adapter.getProjectile();
-			assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager after Player two hit Space-Key!", projectileFlying!=null);
+			assertTrue("No Projectile in EntityManager after Player two hit Space-Key!", projectileFlying!=null);
 			Vector2f coordinatesApe1 = adapter.getApeCoordinates(0);
 			adapter.setProjectileCoordinates(projectileFlying, coordinatesApe1);
 			adapter.runGame(10);
@@ -89,22 +87,19 @@ public class Extended3Test {
 		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		adapter.selectExpensiveProjectile();
 		int price = adapter.getSelectedProjectilePrice();
 		assertTrue("The selected projectile is expected to cost more than zero!", price > 0);
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		Projectile projectileFlying = adapter.getProjectile();
-		assertTrue("No projectile should be fired after hitting Space-Key, when the selected projectile is too expensive!", projectileFlying==null);
+		assertTrue("No projectile should be fired after hitting Space-Key, when the selected projectile is too expensive!", adapter.getProjectile()==null);
 		
 		adapter.setApeCoins(0, price);
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		projectileFlying = adapter.getProjectile();
-		assertTrue("A projectile should be fired after hitting Space-Key, when the selected projectile costs less than the amount of coins of the ape!", projectileFlying!=null);
+		assertTrue("A projectile should be fired after hitting Space-Key, when the selected projectile costs less than the amount of coins of the ape!", adapter.getProjectile()!=null);
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
-		projectileFlying = adapter.getProjectile();
-		assertTrue("No projectile should be fired after hitting Space-Key, when the selected projectile is too expensive!", projectileFlying!=null);
+		assertTrue("No projectile should be fired after hitting Space-Key, when the selected projectile is too expensive!", adapter.getProjectile()!=null);
 		
 		adapter.stopGame();
 	}
@@ -116,7 +111,7 @@ public class Extended3Test {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled!", adapter.getPlanetCount() > 2);
 		assertTrue("The distance between the spawned planets is less than 4, which is the minimal allowed distance)!", adapter.getMinimalDistancePlanets() >= 4f);
@@ -134,7 +129,7 @@ public class Extended3Test {
 		adapter.createMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled!", adapter.getPlanetCount() > 2);
 		assertTrue("The distance between the spawned planets is less than 4, which is the minimal allowed distance)!", adapter.getMinimalDistancePlanets() >= 4f);

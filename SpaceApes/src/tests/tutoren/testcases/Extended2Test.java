@@ -10,8 +10,6 @@ import org.newdawn.slick.geom.Vector2f;
 
 import adapter.AdapterExtended2;
 import entities.Projectile;
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
 
 public class Extended2Test {
 	
@@ -43,23 +41,19 @@ public class Extended2Test {
 		adapter.initializeGame();
 		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
-		
 		assertTrue("The x-coordinate of Planet1 is not smaller than -0.5f!", adapter.getPlanetCoordinates(0).x < -0.5f);
 		assertTrue("The y-coordinate of Planet1 is not greater than -7.5f!", adapter.getPlanetCoordinates(0).x > -7.5f);
-		assertTrue("Radius of Planet1 is not greater than " + Constants.MINIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(0) > Constants.MINIMUM_RADIUS_PLAYER_PLANET);
-		assertTrue("Radius of Planet1 is not smaller than " + Constants.MAXIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(0) < Constants.MAXIMUM_RADIUS_PLAYER_PLANET);
-		assertTrue("Mass of Planet1 is not greater than " + 0.5f, adapter.getPlanetMass(0) > 0.5f); //prevent division by to small mass
-		assertTrue("Mass of Planet1 is not smaller than " + 1000.0f, adapter.getPlanetMass(0) < 1000.0f); //prevent too big masses
-		
+		assertTrue("Radius of Planet1 is not greater than " + 0.75f + "!", adapter.getPlanetRadius(0) > 0.75f);
+		assertTrue("Radius of Planet1 is not smaller than " + 1.5f + "!", adapter.getPlanetRadius(0) < 1.5f);
+		assertTrue("Mass of Planet1 is not greater than " + 0.5f + "!", adapter.getPlanetMass(0) > 0.5f); //prevent division by to small mass
+		assertTrue("Mass of Planet1 is not smaller than " + 1000.0f + "!", adapter.getPlanetMass(0) < 1000.0f); //prevent too big masses
 		assertTrue("The x-coordinate of Planet2 is not greater than 0.5f!", adapter.getPlanetCoordinates(1).x > 0.5f);
 		assertTrue("The y-coordinate of Planet2 is not smaller than 7.5f!", adapter.getPlanetCoordinates(1).x < 7.5f);
-		assertTrue("Radius of Planet2 is not greater than " + Constants.MINIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(1) > Constants.MINIMUM_RADIUS_PLAYER_PLANET);
-		assertTrue("Radius of Planet2 is not smaller than " + Constants.MAXIMUM_RADIUS_PLAYER_PLANET, adapter.getPlanetRadius(1) < Constants.MAXIMUM_RADIUS_PLAYER_PLANET);
-		assertTrue("Mass of Planet2 is not greater than " + 0.5f, adapter.getPlanetMass(1) > 0.5f); //prevent division by to small mass
-		assertTrue("Mass of Planet2 is not smaller than " + 1000.0f, adapter.getPlanetMass(1) < 1000.0f); //prevent too big masses
-		
+		assertTrue("Radius of Planet2 is not greater than " + 0.75f + "!", adapter.getPlanetRadius(1) > 0.75f);
+		assertTrue("Radius of Planet2 is not smaller than " + 1.5f + "!", adapter.getPlanetRadius(1) < 1.5f);
+		assertTrue("Mass of Planet2 is not greater than " + 0.5f + "!", adapter.getPlanetMass(1) > 0.5f); //prevent division by to small mass
+		assertTrue("Mass of Planet2 is not smaller than " + 1000.0f + "!", adapter.getPlanetMass(1) < 1000.0f); //prevent too big masses		
 		assertTrue("The planetcount is not >2 when non-player-planets are enabled!", adapter.getPlanetCount() > 2);
-		
 		adapter.stopGame();
 	}
 	
@@ -83,7 +77,7 @@ public class Extended2Test {
 		adapter.createMap(null, null, 0, 0, 0, 0, createNonPlayerPlanets, projectileMovementType, 999, 999);
 		assertTrue("The map was not created correctly", adapter.isMapCorrect());
 		adapter.handleKeyPressed(0, Input.KEY_N);
-		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==SpaceApes.GAMEPLAY_STATE);
+		assertTrue("Game is not in gameplay state after pressing 'n' in main menu state", adapter.getStateBasedGame().getCurrentStateID()==adapter.getGameplayStateID());
 		
 		// test Ape1:
 		float originalEnergyApe = adapter.getApeEnergy(0);
@@ -99,7 +93,7 @@ public class Extended2Test {
 		// change turn:
 		adapter.handleKeyPressed(10, Input.KEY_SPACE);
 		Projectile projectileFlying = adapter.getProjectile();
-		assertTrue("No Projectile with ID '" + Constants.PROJECTILE_ID + "' in EntityManager after hitting Space-Key!", projectileFlying!=null);
+		assertTrue("No Projectile in EntityManager after hitting Space-Key!", projectileFlying!=null);
 		Vector2f coordinatesApe2 = adapter.getApeCoordinates(1);
 		adapter.setProjectileCoordinates(projectileFlying, coordinatesApe2);
 		adapter.runGame(10);
