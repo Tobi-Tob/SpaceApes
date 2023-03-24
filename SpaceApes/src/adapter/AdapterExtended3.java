@@ -4,14 +4,16 @@ import java.util.List;
 
 import org.newdawn.slick.Music;
 import org.newdawn.slick.geom.Vector2f;
-//import entities.Item;
-//import entities.Planet;
-//import factories.PlanetFactory.PlanetType;
-//import factories.ProjectileFactory.MovementType;
-//import factories.ProjectileFactory.ProjectileType;
-//import map.Map;
-//import spaceapes.SpaceApes;
-//import spaceapes.MainMenuState;
+
+//The following are just used for the implementation of the adapter-methodes and have to be removed for the student version
+import entities.Item;
+import entities.Planet;
+import factories.PlanetFactory.PlanetType;
+import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileType;
+import map.Map;
+import spaceapes.SpaceApes;
+import spaceapes.MainMenuState;
 
 public class AdapterExtended3 extends AdapterExtended2 {
 	
@@ -32,7 +34,7 @@ public class AdapterExtended3 extends AdapterExtended2 {
 	 * @param massPlanet1 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param massPlanet2 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param createNonPlayerPlanets - indication if non-player-planets should be created
-	 * @param projectileMovementType - indicates the movement type of the projectiles. 0 means linear movemet, 1 means explicit euler, 2 means explicit euler with atmosphere friction (only CE task)
+	 * @param projectileMovementType - indicates the movement type of the projectiles. 0 means linear movemet, 1 means explicit euler
 	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 * @param gravitation - gravitation constant
@@ -41,8 +43,6 @@ public class AdapterExtended3 extends AdapterExtended2 {
 		MovementType movementType;
 		if (projectileMovementType == 1) {
 			movementType = MovementType.EXPLICIT_EULER;
-		} else if (projectileMovementType == 2) {
-			movementType = MovementType.EULER_FRICTION;
 		} else {
 			movementType = MovementType.LINEAR;
 		}

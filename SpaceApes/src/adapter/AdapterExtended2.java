@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
 
-//import entities.Planet;
+//The following are just used for the implementation of the adapter-methodes and have to be removed for the student version
+import entities.Planet;
 import factories.ProjectileFactory.MovementType;
-//import map.Map;
+import map.Map;
 
 public class AdapterExtended2 extends AdapterExtended1 {
 	
@@ -27,7 +28,7 @@ public class AdapterExtended2 extends AdapterExtended1 {
 	 * @param massPlanet1 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param massPlanet2 - mass of Planet1. In the "Ausbaustufe" 2 & 3 "0" is passed to indicate a random mass as explained in the task
 	 * @param createNonPlayerPlanets - indication if non-player-planets should be created
-	 * @param projectileMovementType - indicates the movement type of the projectiles. 0 means linear movemet, 1 means explicit euler, 2 means explicit euler with atmosphere friction (only CE task)
+	 * @param projectileMovementType - indicates the movement type of the projectiles. 0 means linear movemet, 1 means explicit euler
 	 * @param angleOnPlanetApe1 - angle of Ape1 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 * @param gravitation - gravitation constant
@@ -36,8 +37,6 @@ public class AdapterExtended2 extends AdapterExtended1 {
 		MovementType movementType;
 		if (projectileMovementType == 1) {
 			movementType = MovementType.EXPLICIT_EULER;
-		} else if (projectileMovementType == 2) {
-			movementType = MovementType.EULER_FRICTION;
 		} else {
 			movementType = MovementType.LINEAR;
 		}

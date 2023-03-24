@@ -15,7 +15,7 @@ public class Extended2Test {
 	AdapterExtended2 adapter;
 	Vector2f coordinatesPlanet1 = new Vector2f(-4.0f, 0.0f);
 	Vector2f coordinatesPlanet2 = new Vector2f(4.0f, 0.0f);
-	int projectileMovementType = 1;
+	int projectileMovementType = 1; // explicit euler used
 	float radiusPlanet1 = 1.5f;
 	float radiusPlanet2 = 1.5f;
 	int massPlanet1 = 65;

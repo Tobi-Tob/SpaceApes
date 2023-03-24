@@ -4,15 +4,17 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.StateBasedEntityManager;
-//import entities.Projectile;
-//import factories.ProjectileFactory;
-//import factories.ProjectileFactory.MovementType;
-//import factories.ProjectileFactory.ProjectileType;
 import testUtils.TestAppGameContainer;
 import utils.Utils;
-//import map.Map;
-//import spaceapes.Constants;
-//import spaceapes.SpaceApes;
+
+//The following are just used for the implementation of the adapter-methodes and have to be removed for the student version
+import entities.Projectile;
+import factories.ProjectileFactory;
+import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileType;
+import map.Map;
+import spaceapes.Constants;
+import spaceapes.SpaceApes;
 
 /**
  * This is the test adapter for the minimal stage of completion. You must implement the method stubs and match
