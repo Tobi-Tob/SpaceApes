@@ -73,15 +73,13 @@ public class MainMenuState extends BasicGameState {
 			float scale1 = (float) SpaceApes.HEIGHT / imageLayer1.getHeight();
 			menuFirstLayer.setScale(scale1);
 
-			float maxPixelToShiftFirstLayer =  (scale1 * imageLayer1.getWidth() - SpaceApes.WIDTH) / 2;
+			float maxPixelToShiftFirstLayer = (scale1 * imageLayer1.getWidth() - SpaceApes.WIDTH) / 2;
 			if (maxPixelToShiftFirstLayer < 0)
 				maxPixelToShiftFirstLayer = 0;
 			if (maxPixelToShiftFirstLayer > scale1 * 200)
 				maxPixelToShiftFirstLayer = scale1 * 200;
 			float effectStrength = 0.4f;
 			this.maxPixelToShiftFirstLayer = (int) (effectStrength * maxPixelToShiftFirstLayer);
-			
-			System.out.print(this.maxPixelToShiftFirstLayer);
 		}
 		entityManager.addEntity(stateID, menuLastLayer); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
 		entityManager.addEntity(stateID, menuMidLayer);
@@ -93,7 +91,7 @@ public class MainMenuState extends BasicGameState {
 		Entity newGameEntity = new Entity("SpielStarten");
 		// Setze Position und Bildkomponente
 		newGameEntity.setPosition(new Vector2f(SpaceApes.WIDTH / 4f, SpaceApes.HEIGHT / 2));
-		newGameEntity.setScale((float) SpaceApes.HEIGHT / 3200);
+		newGameEntity.setScale((float) SpaceApes.HEIGHT * 0.00035f);
 		if (SpaceApes.renderImages) {
 			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 		} else {
@@ -116,9 +114,9 @@ public class MainMenuState extends BasicGameState {
 		Entity quitEntity = new Entity("Beenden");
 		// Setze Position und Bildkomponente
 		quitEntity.setPosition(new Vector2f(SpaceApes.WIDTH / 4.4f, SpaceApes.HEIGHT / 1.4f));
-		quitEntity.setScale((float) SpaceApes.HEIGHT / 3200);
+		quitEntity.setScale((float) SpaceApes.HEIGHT * 0.00035f);
 		if (SpaceApes.renderImages) {
-			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
+			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_quit.png")));
 		} else {
 			// System.out.println("noRenderImages: assign beenden button image.");
 		}
@@ -151,7 +149,7 @@ public class MainMenuState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		float mouseX = container.getInput().getMouseX();
 		float halfScreenWidth = SpaceApes.WIDTH / 2;
-		float pixelToShiftFirstLayer = - this.maxPixelToShiftFirstLayer * (mouseX - halfScreenWidth) / halfScreenWidth;
+		float pixelToShiftFirstLayer = -this.maxPixelToShiftFirstLayer * (mouseX - halfScreenWidth) / halfScreenWidth;
 		menuFirstLayer.setPosition(new Vector2f(pixelToShiftFirstLayer + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		menuMidLayer.setPosition(new Vector2f(pixelToShiftFirstLayer / 2 + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		entityManager.updateEntities(container, game, delta);
