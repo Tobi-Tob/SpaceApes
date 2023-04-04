@@ -23,14 +23,14 @@ public class SpaceApes extends StateBasedGame {
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
-	public static boolean USE_FULL_SCREEN = false;
+	public static boolean USE_FULL_SCREEN = true;
 
 	public static boolean PLAY_MUSIC = false;
 
 	// Sollte das Spiel anfangen zu laggen, vergroessere das Update Intervall
 	public static final int UPDATE_INTERVAL = 20; // Updatefrequenz der Gameloop in ms
 	
-	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird für die Tests benötigt.
+	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird fuer die Tests benoetigt.
 
 	public SpaceApes(boolean renderImages) {
 		super("Space Apes"); // Name des Spiels

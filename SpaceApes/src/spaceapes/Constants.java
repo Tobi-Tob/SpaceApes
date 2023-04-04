@@ -9,8 +9,8 @@ public class Constants {
 //////////////////////// World Constants //////////////////////////
 
 	public static final float WORLD_WIDTH = 16;
-	//public static final float WORLD_HEIGHT = WORLD_WIDTH * Launch.HEIGHT / Launch.WIDTH;
-	public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es beim oberen abgebrochen ist.
+	public static final float WORLD_HEIGHT = WORLD_WIDTH * SpaceApes.HEIGHT / SpaceApes.WIDTH;
+	//public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es beim oberen abgebrochen ist.
 												//MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
 	
 /////////////////////// Planet Constants //////////////////////////////
@@ -30,6 +30,9 @@ public class Constants {
 	public static final float APE_DESIRED_SIZE = 0.6f; // desired size in world units
 
 ////////////////////// Projectile Constants //////////////////////////////
+	
+	// AimLine
+	public static final int AIMLINE_LENGTH = 500;
 	
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;

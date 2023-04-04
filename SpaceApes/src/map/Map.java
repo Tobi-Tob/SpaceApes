@@ -286,7 +286,7 @@ public class Map {
 			Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe)
 					.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
-			int flightTime = 500; // in ms
+			int flightTime = Constants.AIMLINE_LENGTH; // in ms
 			float updateFrequency = SpaceApes.UPDATE_INTERVAL;
 			boolean draw = true;
 			// int numberOfDots = 16; // TL: Wird nicht benoetigt (numberOfDots ergibt sich

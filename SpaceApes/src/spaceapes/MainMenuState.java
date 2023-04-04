@@ -33,6 +33,10 @@ public class MainMenuState extends BasicGameState {
 	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 	private Music music; // Musik dieses GameStates
 
+	private Entity menuFirstLayer;
+	private Entity menuMidLayer;
+	private int maxPixelToShiftFirstLayer = 0;
+
 	MainMenuState(int sid) {
 		stateID = sid; // MAINMENU_STATE = 0
 		entityManager = StateBasedEntityManager.getInstance();
@@ -50,17 +54,40 @@ public class MainMenuState extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		/* Menu Hintergrund */
 
-		Entity menuBackground = new Entity("Menu"); // Entitaet fuer Hintergrund erzeugen
-		menuBackground.setPosition(Utils.toPixelCoordinates(0, 0)); // Startposition des Hintergrunds (Mitte des
-																	// Fensters)
+		Entity menuLastLayer = new Entity("MenuLastLayer"); // Entitaet fuer Hintergrund erzeugen
+		menuLastLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2)); // Mitte des Fensters
+		Entity menuMidLayer = new Entity("MenuMidLayer");
+		menuMidLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2));
+		Entity menuFirstLayer = new Entity("MenuFirstLayer");
+		menuFirstLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2));
+
 		if (SpaceApes.renderImages) {
-			Image image = new Image("img/assets/menuSP.jpg");
-			menuBackground.addComponent(new ImageRenderComponent(image)); // Bildkomponente
-			menuBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight()); // Skalieren des Hintergrunds
-		} else {
-			//System.out.println("noRenderImages: assign MainMenuState image.");
+			Image imageLayer3 = new Image("img/assets/menu_layer3.png");
+			menuLastLayer.addComponent(new ImageRenderComponent(imageLayer3));
+			menuLastLayer.setScale((float) SpaceApes.HEIGHT / imageLayer3.getHeight());
+			Image imageLayer2 = new Image("img/assets/menu_layer2.png");
+			menuMidLayer.addComponent(new ImageRenderComponent(imageLayer2));
+			menuMidLayer.setScale((float) SpaceApes.HEIGHT / imageLayer2.getHeight());
+			Image imageLayer1 = new Image("img/assets/menu_layer1.png");
+			menuFirstLayer.addComponent(new ImageRenderComponent(imageLayer1));
+			float scale1 = (float) SpaceApes.HEIGHT / imageLayer1.getHeight();
+			menuFirstLayer.setScale(scale1);
+
+			float maxPixelToShiftFirstLayer =  (scale1 * imageLayer1.getWidth() - SpaceApes.WIDTH) / 2;
+			if (maxPixelToShiftFirstLayer < 0)
+				maxPixelToShiftFirstLayer = 0;
+			if (maxPixelToShiftFirstLayer > scale1 * 200)
+				maxPixelToShiftFirstLayer = scale1 * 200;
+			float effectStrength = 0.4f;
+			this.maxPixelToShiftFirstLayer = (int) (effectStrength * maxPixelToShiftFirstLayer);
+			
+			System.out.print(this.maxPixelToShiftFirstLayer);
 		}
-		entityManager.addEntity(stateID, menuBackground); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
+		entityManager.addEntity(stateID, menuLastLayer); // Hintergrund-Entitaet an StateBasedEntityManager uebergeben
+		entityManager.addEntity(stateID, menuMidLayer);
+		entityManager.addEntity(stateID, menuFirstLayer);
+		this.menuMidLayer = menuMidLayer;
+		this.menuFirstLayer = menuFirstLayer;
 
 		/* Neues Spiel starten-Entitaet */
 		Entity newGameEntity = new Entity("SpielStarten");
@@ -70,7 +97,7 @@ public class MainMenuState extends BasicGameState {
 		if (SpaceApes.renderImages) {
 			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 		} else {
-			//System.out.println("noRenderImages: assign start button image.");
+			// System.out.println("noRenderImages: assign start button image.");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -93,7 +120,7 @@ public class MainMenuState extends BasicGameState {
 		if (SpaceApes.renderImages) {
 			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_beenden.png")));
 		} else {
-			//System.out.println("noRenderImages: assign beenden button image.");
+			// System.out.println("noRenderImages: assign beenden button image.");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -112,7 +139,7 @@ public class MainMenuState extends BasicGameState {
 		music.loop(pitch, 0);
 		music.fade(fadeInTime, volume, false);
 	}
-	
+
 	public Music getMusic() {
 		return music;
 	}
@@ -122,6 +149,11 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		float mouseX = container.getInput().getMouseX();
+		float halfScreenWidth = SpaceApes.WIDTH / 2;
+		float pixelToShiftFirstLayer = - this.maxPixelToShiftFirstLayer * (mouseX - halfScreenWidth) / halfScreenWidth;
+		menuFirstLayer.setPosition(new Vector2f(pixelToShiftFirstLayer + halfScreenWidth, SpaceApes.HEIGHT / 2));
+		menuMidLayer.setPosition(new Vector2f(pixelToShiftFirstLayer / 2 + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		entityManager.updateEntities(container, game, delta);
 		// System.out.println("Main Menu Updatefrequenz: " + delta + " ms");
 	}

@@ -4,16 +4,19 @@ import java.util.Random;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import spaceapes.Constants;
+import spaceapes.SpaceApes;
+
 public final class Utils {
 	
-	//int pixelWidth = SpaceApes.WIDTH;
-	//int pixelHeight = SpaceApes.HEIGHT;
-	//int worldWidth = Constants.WORLD_WIDTH;
-	//int worldHeight = Constants.WORLD_HEIGHT;
-	public static int pixelWidth = 1200;
-	public static int pixelHeight = 900;
-	public static int worldWidth = 16;
-	public static int worldHeight = 12;
+	public static float pixelWidth = SpaceApes.WIDTH;
+	public static float pixelHeight = SpaceApes.HEIGHT;
+	public static float worldWidth = 16;
+ 	public static float worldHeight = worldWidth * SpaceApes.HEIGHT / SpaceApes.WIDTH;
+	//public static int pixelWidth = 1200;
+	//public static int pixelHeight = 900;
+	//public static int worldWidth = 16;
+	//public static int worldHeight = 12;
 
 	/**
 	 * Wandelt Welt-Koordinaten in Pixel-Koordinaten um
