@@ -48,9 +48,7 @@ public class ItemFactory implements IEntityFactory {
 				itemScaleFactor = desiredItemWidth * SpaceApes.WIDTH / itemWidthInPixel;
 				value = Constants.ENERGY_PACK_VALUE; 
 				if (SpaceApes.renderImages) {
-					imageRenderComponent = new ImageRenderComponent(new Image(Constants.ENERGY_IMAGE_PATH));
-				} else {
-					//System.out.println("noRenderImages: assign energy pack image.");
+					imageRenderComponent = new ImageRenderComponent(new Image("img/items/energy.png"));
 				}
 				break;
 				
@@ -61,9 +59,7 @@ public class ItemFactory implements IEntityFactory {
 				itemScaleFactor = desiredItemWidth * SpaceApes.WIDTH / itemWidthInPixel;
 				value = Constants.HEALTH_PACK_VALUE;
 				if (SpaceApes.renderImages) {
-					imageRenderComponent = new ImageRenderComponent(new Image(Constants.HEALTH_IMAGE_PATH));
-				} else {
-					//System.out.println("noRenderImages: assign health pack image.");
+					imageRenderComponent = new ImageRenderComponent(new Image("img/items/health.png"));
 				}
 				break;
 
@@ -74,9 +70,7 @@ public class ItemFactory implements IEntityFactory {
 				itemScaleFactor = desiredItemWidth * SpaceApes.WIDTH / itemWidthInPixel;
 				value = Constants.COPPER_COIN_VALUE;
 				if (SpaceApes.renderImages) {
-					imageRenderComponent = new ImageRenderComponent(new Image(Constants.COPPER_COIN_IMAGE_PATH));
-				} else {
-					//System.out.println("noRenderImages: assign copper coin image.");
+					imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin1.png"));
 				}
 				break;
 
@@ -87,9 +81,7 @@ public class ItemFactory implements IEntityFactory {
 				itemScaleFactor = desiredItemWidth * SpaceApes.WIDTH / itemWidthInPixel;
 				value = Constants.GOLD_COIN_VALUE;
 				if (SpaceApes.renderImages) {
-					imageRenderComponent = new ImageRenderComponent(new Image(Constants.GOLD_COIN_IMAGE_PATH));
-				} else {
-					//System.out.println("noRenderImages: assign gold coin image.");
+					imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin2.png"));
 				}
 				break;
 
@@ -100,9 +92,7 @@ public class ItemFactory implements IEntityFactory {
 				itemScaleFactor = desiredItemWidth * SpaceApes.WIDTH / itemWidthInPixel;
 				value = Constants.DIAMOND_COIN_VALUE;
 				if (SpaceApes.renderImages) {
-					imageRenderComponent = new ImageRenderComponent(new Image(Constants.DIAMOND_COIN_IMAGE_PATH));
-				} else {
-					//System.out.println("noRenderImages: assign diamond coin image.");
+					imageRenderComponent = new ImageRenderComponent(new Image("img/items/coin3.png"));
 				}
 				break;
 				
@@ -127,7 +117,7 @@ public class ItemFactory implements IEntityFactory {
 			item.addComponent(imageRenderComponent);
 		}
 		
-		// Füge das Item dem EntityManager hinzu
+		// Fuege das Item dem EntityManager hinzu
 		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, item);
 
 		return item;

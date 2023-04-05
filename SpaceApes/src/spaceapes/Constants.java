@@ -6,7 +6,7 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class Constants {
 // TODO Constants vllt ins package utils verschieben? und package spaceapes in gamestates umbennen?
-// TODO vllt zum Interface machen. Alle klassen die zugriff auf die konstanten benoetigen koennen das dann implementieren
+// TODO vllt zum Interface machen. Alle Klassen die Zugriff auf die Konstanten benoetigen koennen das dann implementieren
 
 //////////////////////// World Constants //////////////////////////
 
@@ -15,12 +15,15 @@ public class Constants {
 	// public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es
 	// beim oberen abgebrochen ist.
 	// MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
+	public static final float GRAVITATION_CONSTANT = 0.25f;
 
 /////////////////////// Planet Constants //////////////////////////////
 
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
 	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;
-	public static final float GRAVITATION_CONSTANT = 0.25f;
+
+	public static final float BLACKHOLE_PROBABILITY = 0.4f;
+	public static final float ANTI_PLANET_PROBABILITY = 0.3f;
 
 /////////////////////// Ape Constants //////////////////////////////
 
@@ -35,7 +38,7 @@ public class Constants {
 ////////////////////// Projectile Constants //////////////////////////////
 
 	// AimLine
-	public static final int AIMLINE_LENGTH = 500;
+	public static final int AIMLINE_LENGTH = 500; // TODO Projektile koennen unterschiedlich Lange Hilfslinien haben
 
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;
@@ -84,37 +87,29 @@ public class Constants {
 	// Energy Pack
 	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
 	public static final int ENERGY_PACK_VALUE = 20;
-	public static final String ENERGY_IMAGE_PATH = "img/items/energy.png";
-	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.3f;
+	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.15f;
 
 	// Health Pack
 	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
 	public static final int HEALTH_PACK_VALUE = 20;
-	public static final String HEALTH_IMAGE_PATH = "img/items/health.png";
-	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.3f;
+	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.15f;
 
 	// Coins general
 	public static final String COIN_ID = "COIN";
-	public static final float COIN_SPAWN_POSSIBILITY = 0.5f;
+	public static final float COIN_SPAWN_POSSIBILITY = 0.4f;
+	// This is the possibility if any coin is spawned
 
 	// Copper Coin
 	public static final int COPPER_COIN_VALUE = 1;
-	public static final String COPPER_COIN_IMAGE_PATH = "img/items/coin1.png";
-	// this is the possibility if any coin is spawned. This is determined by
-	// COIN_SPAWN_POSSIBILITY.
 	public static final float COPPER_COIN_SPAWN_POSSIBILITY = 0.6f;
 
 	// Gold Coin
 	public static final int GOLD_COIN_VALUE = 3;
-	public static final String GOLD_COIN_IMAGE_PATH = "img/items/coin2.png";
-	// this is the possibility if any coin is spawned. This is determined by
-	// COIN_SPAWN_POSSIBILITY.
 	public static final float GOLD_COIN_SPAWN_POSSIBILITY = 0.3f;
 
-	// Copper Coin
+	// Diamond Coin
 	public static final int DIAMOND_COIN_VALUE = 5;
-	public static final String DIAMOND_COIN_IMAGE_PATH = "img/items/coin3.png";
-	// note: DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY +
+	// DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY +
 	// GOLD_COIN_SPAWN_POSSIBILITY)
 
 ////////////////////// More Constants //////////////////////////////

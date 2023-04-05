@@ -117,13 +117,11 @@ public class ControlPanel extends Entity {
 				System.err.println("Problem with controlpanel images");
 			}
 			this.addComponent(imageRenderComponent);
-		} else {
-			//System.out.println("noRenderImages: assign control panel images.");
 		}
 
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		int stateID = SpaceApes.GAMEPLAY_STATE;
-		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den Pfeilen...
+		entityManager.addEntity(stateID, this); // muss zuerst hinzugefuegt werden, sonst ist das Panel ueber den Pfeilen
 		entityManager.addEntity(stateID, arrow_Weapons);
 		entityManager.addEntity(stateID, arrow_Power_Right);
 		entityManager.addEntity(stateID, arrow_Power_Left);

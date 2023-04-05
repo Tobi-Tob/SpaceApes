@@ -23,9 +23,7 @@ import eea.engine.event.basicevents.MouseEnteredEvent;
 import utils.Utils;
 
 /**
- * @author Timo Baehr
- *
- *         Diese Klasse repraesentiert das Menuefenster
+ * Diese Klasse repraesentiert das Menuefenster
  */
 public class MainMenuState extends BasicGameState {
 
@@ -50,9 +48,10 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+		
 		/* Menu Hintergrund */
-
 		Entity menuLastLayer = new Entity("MenuLastLayer"); // Entitaet fuer Hintergrund erzeugen
 		menuLastLayer.setPosition(Utils.toPixelCoordinates(0, 0)); // Mitte des Fensters
 		Entity menuMidLayer = new Entity("MenuMidLayer");

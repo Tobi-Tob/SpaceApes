@@ -30,7 +30,6 @@ import spaceapes.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
 
-//public class Map implements IMap {
 public class Map {
 	private static Map INSTANCE;
 	private List<Ape> apes; // Liste aller lebenden Affen
@@ -49,21 +48,20 @@ public class Map {
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
 	}
-	
-	public static Map getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new Map();
-        }
-        return INSTANCE;
-    }
 
-	public void init(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1,
-			int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1,
-			float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
-		Initializer initializer = new Initializer();
-		initializer.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2,
-				createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
-		this.controlPanel = new ControlPanel(Location.FREE);
+	public static Map getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new Map();
+		}
+		return INSTANCE;
+	}
+
+	public void init() {
+		Integer level = null; // TODO Hierrueber kann spaeter die gewuenschte Level Datei ausgewaehlt
+		// werden. NULL = Random Level. Wichtig: Level Datei solle modulare Struktur haben, damit neue
+		// Features einfach den Leveln hinzugefuegt werden koennen.
+		new Initializer().initMap(level);
+		this.controlPanel = new ControlPanel(Location.FREE); // TODO Location kann durchs Level bestimmt werden, sonst FREE
 		controlPanel.initControlPanel();
 	}
 
@@ -351,7 +349,7 @@ public class Map {
 		}
 		boolean continueSearch = true;
 		while (continueSearch) { // Falls iterations == -1 wird so lange gesucht bis eine Position gefunden
-									// wurde!!
+									// wurde!! TODO kann zu Endlosschleife fuehren
 			for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
 				Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
 						Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
