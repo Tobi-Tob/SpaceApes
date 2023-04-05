@@ -402,11 +402,11 @@ public class AdapterMinimal {
 	 * @return returns the world coordinates of the current projectile. If not existing then null
 	 */
 	public Vector2f getProjectileCoordinates() {
-		if (Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
+		if (StateBasedEntityManager.getInstance().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)==null) {
 			System.out.println("No Entity with ID '" + Constants.PROJECTILE_ID + "' in EntityManager! In getProjectile");
 			return null;
 		} else {
-			return ((Projectile) Map.getInstance().getEntityManager().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
+			return ((Projectile) StateBasedEntityManager.getInstance().getEntity(SpaceApes.GAMEPLAY_STATE, Constants.PROJECTILE_ID)).getCoordinates();
 		}
 	}
 	

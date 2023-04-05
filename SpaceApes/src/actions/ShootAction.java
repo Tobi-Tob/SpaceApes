@@ -14,7 +14,7 @@ import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.GameplayState;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ShootAction implements Action {
@@ -33,8 +33,8 @@ public class ShootAction implements Action {
 		Ape activeApe = map.getActiveApe();
 
 		if (activeApe.isInteractionAllowed()) {
-			GameplayState gs = (GameplayState) sb.getCurrentState();
-			StateBasedEntityManager entityManager = gs.getEntityManager();
+			
+			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 
 			// Abfragen der ausgewaehlten Waffe
 			Projectile selectedProjectile = map.getControlPanel().getSelectedProjectile();
@@ -66,7 +66,7 @@ public class ShootAction implements Action {
 				Projectile projectile = new ProjectileFactory(Constants.PROJECTILE_ID, positionOfProjectileLaunch,
 						velocity, true, true, selectedType, movementType).createEntity();
 
-				entityManager.addEntity(gs.getID(), projectile);
+				entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 				
 			}
 		}

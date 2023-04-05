@@ -50,13 +50,13 @@ public class Initializer {
 	}
 
 	protected void initBackground() {
-		Map map = Map.getInstance();
-		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
+		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
 	}
 
 	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2,
 			int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, boolean antiPlanetAndBlackHole) {
 		Map map = Map.getInstance();
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 
 		try {
 			// code that uses Constants class
@@ -100,7 +100,7 @@ public class Initializer {
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
 		playerPlanets.add(planetOne);
 		map.addPlanet(planetOne);
-		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planetOne);
+		entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planetOne);
 
 		// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
 		String namePlanetTwo = "Planet2";
@@ -126,7 +126,7 @@ public class Initializer {
 		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanet2, massPlanet2, coordinates2, PlanetType.PLAYER, false).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
-		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planetTwo);
+		entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planetTwo);
 
 		if (createNonPlayerPlanets) {
 			boolean otherPlanetSpawned = false; // Damit mindestens ein anderer Planet gespawnt wird
@@ -149,7 +149,7 @@ public class Initializer {
 					Planet blackHole = new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole, blackHolePosition,
 							PlanetType.BLACKHOLE, false).createEntity();
 					map.addPlanet(blackHole);
-					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, blackHole);
+					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, blackHole);
 				}
 			}
 
@@ -171,7 +171,7 @@ public class Initializer {
 					Planet antiPlanet = new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
 							antiPlanetPosition, PlanetType.ANTI, false).createEntity();
 					map.addPlanet(antiPlanet);
-					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, antiPlanet);
+					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, antiPlanet);
 				}
 			}
 
@@ -202,7 +202,7 @@ public class Initializer {
 					Planet planet = new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition,
 							PlanetType.NORMAL, true).createEntity();
 					map.addPlanet(planet);
-					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planet);
+					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planet);
 				}
 			}
 		}
@@ -240,7 +240,7 @@ public class Initializer {
 					movementSpeed, angleOnPlanet, angleOfView, throwStrength, projectileMovementType).createEntity();
 			// eine Apefactory fuer alle Apes?
 			map.addApe(ape);
-			map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
+			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
 		}
 	}
 

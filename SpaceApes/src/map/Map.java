@@ -32,11 +32,10 @@ import utils.Utils;
 
 //public class Map implements IMap {
 public class Map {
-	private static Map map = new Map();
+	private static Map INSTANCE;
 	private List<Ape> apes; // Liste aller lebenden Affen
 	private List<Planet> planets; // Liste aller Planeten
 	private List<Item> items; // Liste aller Items
-	private StateBasedEntityManager entityManager;
 	private ControlPanel controlPanel;
 	private float gravitationConstant = 0.25f;
 	private boolean useAirFriction = false;
@@ -45,26 +44,27 @@ public class Map {
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
 	 * hinzugefuegt werden.
 	 */
-	public Map() {
+	private Map() {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
-		this.entityManager = StateBasedEntityManager.getInstance(); // TODO TL Wird nicht als Attribut benotigt
 	}
-
+	
 	public static Map getInstance() {
-		return map;
-	}
+        if(INSTANCE == null) {
+            INSTANCE = new Map();
+        }
+        return INSTANCE;
+    }
 
-	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1, float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
+	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1,
+			int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1,
+			float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
 		Initializer parser = new Initializer();
-		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
+		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2,
+				createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		this.controlPanel = new ControlPanel(Location.FREE);
 		controlPanel.initControlPanel();
-	}
-
-	public StateBasedEntityManager getEntityManager() {
-		return entityManager;
 	}
 
 	public List<Planet> getPlanets() {
@@ -94,19 +94,19 @@ public class Map {
 	public ControlPanel getControlPanel() {
 		return controlPanel;
 	}
-	
+
 	public void setGravitationConstant(float gravitation) {
 		this.gravitationConstant = gravitation;
 	}
-	
+
 	public float getGravitationConstant() {
 		return gravitationConstant;
 	}
-	
+
 	public void useAirFriction(boolean useAirFriction) {
 		this.useAirFriction = useAirFriction;
 	}
-	
+
 	public boolean isAirFrictionUsed() {
 		return useAirFriction;
 	}
@@ -130,8 +130,10 @@ public class Map {
 		return activeApe;
 	}
 
-	// This method works for more than two players covers spacial cases when 2 players are on the same planet and so on...
-	public void changeTurn() { 
+	// This method works for more than two players covers spacial cases when 2
+	// players are on the same planet and so on...
+	public void changeTurn() {
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		Ape activeApe = getActiveApe();
 		Ape nextApe = findNextLivingApe();
 		if (nextApe == null) {
@@ -211,7 +213,7 @@ public class Map {
 
 		// Coin Spawnen
 		if (Utils.randomFloat(0, 1) < probCoin) {
-			Vector2f itemPosition = map.findValidPosition(2, 10);
+			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 
 				float probForCoinType = Utils.randomFloat(0, 1);
@@ -225,29 +227,29 @@ public class Map {
 				}
 
 				Item coin = new ItemFactory(itemType, itemPosition).createEntity();
-				map.addItem(coin);
+				this.addItem(coin);
 			}
 		}
 
 		// Healthpack Spawnen
 		if (Utils.randomFloat(0, 1) < probHealth) {
-			Vector2f itemPosition = map.findValidPosition(2, 10);
+			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 				itemType = ItemType.HEALTH_PACK;
 
 				Item healthpack = new ItemFactory(itemType, itemPosition).createEntity();
-				map.addItem(healthpack);
+				this.addItem(healthpack);
 			}
 		}
 
 		// Energypack Spawnen
 		if (Utils.randomFloat(0, 1) < probEnergy) {
-			Vector2f itemPosition = map.findValidPosition(2, 10);
+			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 				itemType = ItemType.ENERGY_PACK;
 
 				Item energypack = new ItemFactory(itemType, itemPosition).createEntity();
-				map.addItem(energypack);
+				this.addItem(energypack);
 			}
 		}
 	}
@@ -256,6 +258,7 @@ public class Map {
 	 * Entfernt alle Hilfslinien Punkte
 	 */
 	public void removeAimeLine() {
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		for (int i = 0; i < 100; i++) {
 			Entity dot = entityManager.getEntity(SpaceApes.GAMEPLAY_STATE, Constants.AIMLINE_DOT_ID);
 			if (dot == null) {
@@ -315,12 +318,12 @@ public class Map {
 							dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
 							// System.out.println("add dot");
 						} else {
-							//System.out.println("noRenderImages: assign dot image.");
+							// System.out.println("noRenderImages: assign dot image.");
 						}
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
 					}
-					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, dot);
+					StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, dot);
 				}
 			}
 		}
@@ -333,7 +336,8 @@ public class Map {
 	 * @param marginToNextPlanetCenter Gibt Abstand an, wie weit der naechste Planet
 	 *                                 mindestens entfernt sein muss
 	 * @param iterations               Wie oft soll maximal nach einer gueltigen
-	 *                                 Position gesucht werden. -1 bedeutet so lange bis eine Position gefunden wurde
+	 *                                 Position gesucht werden. -1 bedeutet so lange
+	 *                                 bis eine Position gefunden wurde
 	 * @return Vector2f oder null, falls die vorgegebene Anzahl an Iterationen
 	 *         ueberschritten wurde
 	 */
@@ -346,7 +350,8 @@ public class Map {
 			iterations = 10; // any positive number
 		}
 		boolean continueSearch = true;
-		while (continueSearch) { // Falls iterations == -1 wird so lange gesucht bis eine Position gefunden wurde!!
+		while (continueSearch) { // Falls iterations == -1 wird so lange gesucht bis eine Position gefunden
+									// wurde!!
 			for (int n = 0; n < iterations; n++) { // Suche so lange wie durch iterations vorgegeben
 				Vector2f randomPosition = new Vector2f(Utils.randomFloat(-xBorder * 0.8f, xBorder * 0.8f),
 						Utils.randomFloat(-yBorder * 0.7f, yBorder * 0.7f));
@@ -373,12 +378,12 @@ public class Map {
 				continueSearch = false;
 			}
 		}
-		
+
 		// Falls Such-Schleife bis zum Ende durch laeuft:
 		// java.lang.System.out.println("Planet spawning after: null");
 		return null;
 	}
-	
+
 	/**
 	 * Returns true if given position is in the allowed area, else false
 	 * 
@@ -386,19 +391,19 @@ public class Map {
 	 * @return true if given position is in the allowed area, else false
 	 */
 	public boolean isValidPositionForPlayerPlanet1(Vector2f position) {
-		
+
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
-		
+
 		if (Math.abs(position.y) <= yBorder / 2) {
 			if (position.x >= -xBorder * 0.6f && position.x <= -xBorder * 0.3f) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Returns true if given position is in the allowed area, else false
 	 * 
@@ -406,19 +411,19 @@ public class Map {
 	 * @return true if given position is in the allowed area, else false
 	 */
 	public boolean isValidPositionForPlayerPlanet2(Vector2f position) {
-		
+
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
-		
+
 		if (Math.abs(position.y) <= yBorder / 2) {
 			if (position.x <= xBorder * 0.6f && position.x >= xBorder * 0.3f) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public void resetToDefault() {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();

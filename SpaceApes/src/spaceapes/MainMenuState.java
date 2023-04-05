@@ -20,7 +20,6 @@ import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
-import utils.Utils;
 
 /**
  * @author Timo Baehr
@@ -30,7 +29,6 @@ import utils.Utils;
 public class MainMenuState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
-	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 	private Music music; // Musik dieses GameStates
 
 	private Entity menuFirstLayer;
@@ -39,7 +37,6 @@ public class MainMenuState extends BasicGameState {
 
 	MainMenuState(int sid) {
 		stateID = sid; // MAINMENU_STATE = 0
-		entityManager = StateBasedEntityManager.getInstance();
 		try {
 			this.music = new Music("snd/song1.ogg");
 		} catch (SlickException e) {
@@ -52,6 +49,7 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		/* Menu Hintergrund */
 
 		Entity menuLastLayer = new Entity("MenuLastLayer"); // Entitaet fuer Hintergrund erzeugen
@@ -152,7 +150,7 @@ public class MainMenuState extends BasicGameState {
 		float pixelToShiftFirstLayer = -this.maxPixelToShiftFirstLayer * (mouseX - halfScreenWidth) / halfScreenWidth;
 		menuFirstLayer.setPosition(new Vector2f(pixelToShiftFirstLayer + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		menuMidLayer.setPosition(new Vector2f(pixelToShiftFirstLayer / 2 + halfScreenWidth, SpaceApes.HEIGHT / 2));
-		entityManager.updateEntities(container, game, delta);
+		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 		// System.out.println("Main Menu Updatefrequenz: " + delta + " ms");
 	}
 
@@ -161,7 +159,7 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		entityManager.renderEntities(container, game, g);
+		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
 		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}

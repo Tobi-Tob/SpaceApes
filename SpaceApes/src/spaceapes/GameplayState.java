@@ -13,7 +13,6 @@ import eea.engine.entity.Entity;
 import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
-import entities.Planet;
 import events.LessThan2ApesLeftEvent;
 import factories.ProjectileFactory.MovementType;
 import map.Map;
@@ -26,12 +25,10 @@ import map.Map;
 public class GameplayState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
-	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
 	private Map map;
 
 	GameplayState(int stateID) {
 		this.stateID = stateID;
-		this.entityManager = StateBasedEntityManager.getInstance();
 		this.map = Map.getInstance();
 	}
 
@@ -94,8 +91,7 @@ public class GameplayState extends BasicGameState {
 		dummyEntity.addComponent(lessThan2Apes);
 		
 		// Hier kommen alle weiteren Events hinzu...
-
-		entityManager.addEntity(stateID, dummyEntity);
+		StateBasedEntityManager.getInstance().addEntity(stateID, dummyEntity);
 
 		if (SpaceApes.renderImages) { // muss im Test manuell gemacht werden, da sonst die map entities noch nicht erzeugt sind...!
 			// Initialisierung der Aimline
@@ -109,7 +105,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		// StatedBasedEntityManager soll alle Entities aktualisieren
-		entityManager.updateEntities(container, game, delta);
+		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 		// System.out.println("Gameplaystate Updatefrequenz: " + delta + " ms");
 	}
 
@@ -119,16 +115,12 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		// StatedBasedEntityManager soll alle Entities rendern
-		entityManager.renderEntities(container, game, g);
+		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
 		// System.out.println("Gameplaystate Render");
 	}
 
 	@Override
 	public int getID() {
 		return stateID;
-	}
-
-	public StateBasedEntityManager getEntityManager() {
-		return entityManager;
 	}
 }

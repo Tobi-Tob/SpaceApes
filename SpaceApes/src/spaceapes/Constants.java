@@ -5,18 +5,21 @@ import java.awt.Font;
 import org.newdawn.slick.TrueTypeFont;
 
 public class Constants {
+// TODO Constants vllt ins package utils verschieben? und package spaceapes in gamestates umbennen?
+// TODO vllt zum Interface machen. Alle klassen die zugriff auf die konstanten benoetigen koennen das dann implementieren
 
 //////////////////////// World Constants //////////////////////////
 
 	public static final float WORLD_WIDTH = 16;
 	public static final float WORLD_HEIGHT = WORLD_WIDTH * SpaceApes.HEIGHT / SpaceApes.WIDTH;
-	//public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es beim oberen abgebrochen ist.
-												//MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
-	
+	// public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es
+	// beim oberen abgebrochen ist.
+	// MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
+
 /////////////////////// Planet Constants //////////////////////////////
 
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
-	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;	
+	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;
 	public static final float GRAVITATION_CONSTANT = 0.25f;
 
 /////////////////////// Ape Constants //////////////////////////////
@@ -24,16 +27,16 @@ public class Constants {
 	public static final int APE_MAX_HEALTH = 100;
 	public static final int APE_MAX_ENERGY = 100;
 	public static final float APE_MOVMENT_SPEED = 0.05f;
-	
+
 	public static final int APE_PIXEL_HEIGHT = 300;
 	public static final int APE_PIXEL_FEET_TO_CENTER = 130;
 	public static final float APE_DESIRED_SIZE = 0.6f; // desired size in world units
 
 ////////////////////// Projectile Constants //////////////////////////////
-	
+
 	// AimLine
 	public static final int AIMLINE_LENGTH = 500;
-	
+
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;
 	public static final int COCONUT_MAX_DAMAGE = 20;
