@@ -20,6 +20,7 @@ import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+import utils.Utils;
 
 /**
  * @author Timo Baehr
@@ -53,11 +54,11 @@ public class MainMenuState extends BasicGameState {
 		/* Menu Hintergrund */
 
 		Entity menuLastLayer = new Entity("MenuLastLayer"); // Entitaet fuer Hintergrund erzeugen
-		menuLastLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2)); // Mitte des Fensters
+		menuLastLayer.setPosition(Utils.toPixelCoordinates(0, 0)); // Mitte des Fensters
 		Entity menuMidLayer = new Entity("MenuMidLayer");
-		menuMidLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2));
+		menuMidLayer.setPosition(Utils.toPixelCoordinates(0, 0));
 		Entity menuFirstLayer = new Entity("MenuFirstLayer");
-		menuFirstLayer.setPosition(new Vector2f(SpaceApes.WIDTH / 2, SpaceApes.HEIGHT / 2));
+		menuFirstLayer.setPosition(Utils.toPixelCoordinates(0, 0));
 
 		if (SpaceApes.renderImages) {
 			Image imageLayer3 = new Image("img/assets/menu_layer3.png");

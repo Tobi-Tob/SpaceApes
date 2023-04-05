@@ -12,7 +12,6 @@ import entities.Ape;
 import entities.ApeInfoSign;
 import entities.Planet;
 import factories.ApeFactory;
-import factories.BackgroundFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.MovementType;
@@ -40,7 +39,6 @@ public class Initializer {
 			int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1,
 			float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
 		// Hier werden alle Entities, die auf der Map vorkommen erstellt
-		initBackground();
 		initPlanets(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets,
 				antiPlanetAndBlackHole);
 		initApes(projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2); // initPlanets() muss unbedingt davor ausgefuehrt werden!
@@ -49,9 +47,6 @@ public class Initializer {
 		Map.getInstance().useAirFriction(false);
 	}
 
-	protected void initBackground() {
-		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, new BackgroundFactory().createEntity());
-	}
 
 	protected void initPlanets(Vector2f coordinates1, Vector2f coordinates2, float radiusPlanet1, float radiusPlanet2,
 			int massPlanet1, int massPlanet2, boolean createNonPlayerPlanets, boolean antiPlanetAndBlackHole) {

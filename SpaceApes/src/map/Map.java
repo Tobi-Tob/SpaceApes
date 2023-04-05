@@ -57,11 +57,11 @@ public class Map {
         return INSTANCE;
     }
 
-	public void parse(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1,
+	public void init(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1,
 			int massPlanet2, boolean createNonPlayerPlanets, MovementType projectileMovementType, float angleOnPlanetApe1,
 			float angleOnPlanetApe2, boolean antiPlanetAndBlackHole) {
-		Initializer parser = new Initializer();
-		parser.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2,
+		Initializer initializer = new Initializer();
+		initializer.initMap(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2,
 				createNonPlayerPlanets, projectileMovementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		this.controlPanel = new ControlPanel(Location.FREE);
 		controlPanel.initControlPanel();

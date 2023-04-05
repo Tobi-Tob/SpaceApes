@@ -36,7 +36,7 @@ public class AdapterExtended1 extends AdapterMinimal {
 		} else {
 			movementType = MovementType.LINEAR;
 		}
-		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, movementType, angleOnPlanetApe1, angleOnPlanetApe2, false);
+		Map.getInstance().init(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, movementType, angleOnPlanetApe1, angleOnPlanetApe2, false);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}

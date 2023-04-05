@@ -46,7 +46,7 @@ public class AdapterExtended3 extends AdapterExtended2 {
 		} else {
 			movementType = MovementType.LINEAR;
 		}
-		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, movementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
+		Map.getInstance().init(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, createNonPlayerPlanets, movementType, angleOnPlanetApe1, angleOnPlanetApe2, antiPlanetAndBlackHole);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}

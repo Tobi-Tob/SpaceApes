@@ -168,7 +168,7 @@ public class AdapterMinimal {
 	 * @param angleOnPlanetApe2 - angle of Ape2 on its planet in degrees. In the "Ausbaustufe" 2 & 3 "999" is passed to indicate a random angle
 	 */
 	public void createMap(Vector2f coordinatesPlanet1, Vector2f coordinatesPlanet2, float radiusPlanet1, float radiusPlanet2, int massPlanet1, int massPlanet2, float angleOnPlanetApe1, float angleOnPlanetApe2) {
-		Map.getInstance().parse(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, MovementType.LINEAR, angleOnPlanetApe1, angleOnPlanetApe2, false);
+		Map.getInstance().init(coordinatesPlanet1, coordinatesPlanet2, radiusPlanet1, radiusPlanet2, massPlanet1, massPlanet2, false, MovementType.LINEAR, angleOnPlanetApe1, angleOnPlanetApe2, false);
 		if (Map.getInstance() != null) {
 			isMapCorrect = true;
 		}
