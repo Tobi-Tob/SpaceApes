@@ -49,7 +49,7 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
-		this.entityManager = StateBasedEntityManager.getInstance();
+		this.entityManager = StateBasedEntityManager.getInstance(); // TODO TL Wird nicht als Attribut benotigt
 	}
 
 	public static Map getInstance() {

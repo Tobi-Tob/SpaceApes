@@ -70,7 +70,7 @@ public class Initializer {
 			System.out.println("Error in initPlanets");
 		}
 
-		float xBorder = 8.0f;
+		float xBorder = 8.0f; // TODO TL warum hier hart definiert?
 		float yBorder = 6.0f;
 
 		// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
@@ -95,7 +95,7 @@ public class Initializer {
 			massPlanet1 = (int) (radiusPlanet1 * Utils.randomFloat(0.91f, 1.1f) * 65);
 		}
 
-		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanet1, massPlanet1, coordinates1, PlanetType.PLAYER).createEntity();
+		Planet planetOne = new PlanetFactory(namePlanetOne, radiusPlanet1, massPlanet1, coordinates1, PlanetType.PLAYER, true).createEntity();
 		// Spielerplaneten und fuer die Berechnungen notwendige Planetendaten werden in
 		// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
 		playerPlanets.add(planetOne);
@@ -123,7 +123,7 @@ public class Initializer {
 			massPlanet2 = (int) (radiusPlanet2 * Utils.randomFloat(0.91f, 1.1f) * 65);
 		}
 
-		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanet2, massPlanet2, coordinates2, PlanetType.PLAYER).createEntity();
+		Planet planetTwo = new PlanetFactory(namePlanetTwo, radiusPlanet2, massPlanet2, coordinates2, PlanetType.PLAYER, false).createEntity();
 		playerPlanets.add(planetTwo);
 		map.addPlanet(planetTwo);
 		map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planetTwo);
@@ -147,7 +147,7 @@ public class Initializer {
 					int massBlackHole = (int) (radiusBlackHole * 275);
 
 					Planet blackHole = new PlanetFactory(nameBlackHole, radiusBlackHole, massBlackHole, blackHolePosition,
-							PlanetType.BLACKHOLE).createEntity();
+							PlanetType.BLACKHOLE, false).createEntity();
 					map.addPlanet(blackHole);
 					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, blackHole);
 				}
@@ -169,7 +169,7 @@ public class Initializer {
 					int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
 
 					Planet antiPlanet = new PlanetFactory(nameAntiPlanet, radiusAntiPlanet, massAntiPlanet,
-							antiPlanetPosition, PlanetType.ANTI).createEntity();
+							antiPlanetPosition, PlanetType.ANTI, false).createEntity();
 					map.addPlanet(antiPlanet);
 					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, antiPlanet);
 				}
@@ -200,7 +200,7 @@ public class Initializer {
 					int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);
 
 					Planet planet = new PlanetFactory(namePlanet, radiusPlanet, massPlanet, validePosition,
-							PlanetType.NORMAL).createEntity();
+							PlanetType.NORMAL, true).createEntity();
 					map.addPlanet(planet);
 					map.getEntityManager().addEntity(SpaceApes.GAMEPLAY_STATE, planet);
 				}
