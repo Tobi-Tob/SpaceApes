@@ -25,6 +25,18 @@ import utils.Utils;
 
 public abstract class ApeFactory {
 
+	/**
+	 * This method is able to create apes with their images. All apes are already
+	 * assigned to the EntityManager and the Map.
+	 * 
+	 * @param name                 String as Identifier
+	 * @param homePlanet           Planet on wich the Ape is located
+	 * @param angleOnPlanet        float defines the position on the planet
+	 * @param apeImageIndex        int as index for the desired image
+	 * @param isActive             boolean whether it is the apes turn
+	 * @param isInteractionAllowed boolean whether ape/player intraction is allowed
+	 * @return Ape
+	 */
 	public static Ape createApe(String name, Planet homePlanet, float angleOnPlanet, int apeImageIndex, boolean isActive,
 			boolean isInteractionAllowed) {
 
@@ -34,7 +46,7 @@ public abstract class ApeFactory {
 		if (distancePlanetCenter < 0.1f) {
 			throw new RuntimeException("Radius ist zu nah an null");
 		}
-		
+
 		Ape ape = new Ape(name);
 
 		ape.setPlanet(homePlanet);
@@ -63,7 +75,7 @@ public abstract class ApeFactory {
 				}
 			}
 		}
-		
+
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
 		// am Zug ist!)
 		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -87,11 +99,11 @@ public abstract class ApeFactory {
 		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER));
 		ape.addComponent(spaceKeyPressed);
-		
+
 		// Zuweisung zur Map und zum EntityManager
 		Map.getInstance().addApe(ape);
 		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
-		
+
 		return ape;
 	}
 

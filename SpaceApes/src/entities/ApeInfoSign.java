@@ -1,23 +1,54 @@
 package entities;
 
+import java.awt.Font;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import spaceapes.Constants;
+import spaceapes.SpaceApes;
+import utils.Utils;
 
 public class ApeInfoSign extends Entity {
+
+	private final float apeInfoSignInPixel = 700;
+	private final float desiredapeInfoSignInWorldUnits = 1.1f;
+	private final float signScalingFactor = desiredapeInfoSignInWorldUnits / Utils.pixelLengthToWorldLength(apeInfoSignInPixel);
+	private final int fontSize = Math.round(signScalingFactor * 200);
 
 	private ImageRenderComponent imageRenderComponent = null;
 	private TrueTypeFont font;
 	private Ape ape;
 
-	public ApeInfoSign(String entityID) {
-		super(entityID);
+	public ApeInfoSign(Ape ape) {
+		
+		super(Constants.APE_INFO_SIGN_ID);
+
+		Vector2f coordinates = ape.getPlanet().getCoordinates();
+
+		this.setPosition(Utils.toPixelCoordinates(coordinates));
+		this.setRotation(0);
+		this.setScale(signScalingFactor);
+		this.setApe(ape);
+
+		if (SpaceApes.renderImages) {
+			this.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
+			try {
+				ImageRenderComponent imageRenderComponent = new ImageRenderComponent(new Image("img/assets/ape_info_sign.png"));
+				this.addComponent(imageRenderComponent);
+				this.setImageRenderComponent(imageRenderComponent);
+			} catch (SlickException e) {
+				System.err.println("Problem with ApeInfoSign image");
+			}
+		}
 	}
 
 	public void setImageRenderComponent(ImageRenderComponent imageRenderComponent) {

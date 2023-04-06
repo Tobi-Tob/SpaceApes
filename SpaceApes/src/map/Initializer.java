@@ -14,7 +14,6 @@ import entities.Planet;
 import factories.ApeFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
-import factories.ApeInfoSignFactory;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
@@ -36,7 +35,6 @@ public class Initializer {
 
 	protected void initPlanets(Integer level) {
 		Map map = Map.getInstance();
-		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 
 		float xBorder = Constants.WORLD_WIDTH / 2;
 		float yBorder = Constants.WORLD_HEIGHT / 2;
@@ -147,14 +145,8 @@ public class Initializer {
 
 		for (int i = 0; i < map.getApes().size(); i++) {
 			Ape ape = map.getApes().get(i);
-			Planet planet = ape.getPlanet();
-			Vector2f panelCoordinates = planet.getCoordinates(); // Uebergibt man das der Factory oder machtr die das
-																	// intern selbst?
-//			float ApeInfoSignScale = planet.getScale() * 0.4f; // es waere schlauer den Scale ueber den Radius zu
-//																// ermitteln
-//																// (wegen den Ringplaneten)
 
-			ApeInfoSign apeInfoSign = new ApeInfoSignFactory(panelCoordinates, ape).createEntity();
+			ApeInfoSign apeInfoSign = new ApeInfoSign(ape);
 			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, apeInfoSign);
 		}
 	}
