@@ -48,8 +48,7 @@ public class Initializer {
 
 			/* Erstelle Random Level */
 
-			// TODO Kompatibilitaet fuer mehr als 2 Spieler benoetigt (entwender mehr
-			// Affenplaneten oder Teams von Spielern auf einem Planeten)
+			// TODO Kompatibilitaet fuer mehr als 2 Spieler benoetigt
 
 			// Planet 1 fuer Spieler 1 in der linken Haelfte platzieren
 			float xPlanet1 = Utils.randomFloat(-xBorder * 0.6f, -xBorder * 0.3f);
@@ -61,11 +60,7 @@ public class Initializer {
 			int massPlanet1 = (int) (radiusPlanet1 * Utils.randomFloat(0.91f, 1.1f) * 65);
 
 			Planet planet1 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet1", coordinatesPlanet1, radiusPlanet1, massPlanet1, null);
-			// Spielerplaneten und fuer die Berechnungen notwendige Planetendaten werden in
-			// der Instanz von Map abgelegt. Somit kann man von ueberall darauf zugreifen
 			playerPlanets.add(planet1);
-			map.addPlanet(planet1);
-			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planet1);
 
 			// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
 			float xPlanet2 = Utils.randomFloat(xBorder * 0.3f, xBorder * 0.6f);
@@ -78,8 +73,6 @@ public class Initializer {
 
 			Planet planet2 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet2", coordinatesPlanet2, radiusPlanet2, massPlanet2, null);
 			playerPlanets.add(planet2);
-			map.addPlanet(planet2);
-			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planet2);
 
 			// Versuche Schwarzes Loch zu platzieren
 			if (Utils.randomFloat(0, 1) < Constants.BLACKHOLE_PROBABILITY) {
@@ -89,11 +82,7 @@ public class Initializer {
 					float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
 					int massBlackHole = (int) (radiusBlackHole * 275);
 
-					Planet blackHole = PlanetFactory.createPlanet(PlanetType.BLACKHOLE, "BlackHole", blackHolePosition, radiusBlackHole,
-							massBlackHole, null);
-
-					map.addPlanet(blackHole);
-					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, blackHole);
+					PlanetFactory.createPlanet(PlanetType.BLACKHOLE, "BlackHole", blackHolePosition, radiusBlackHole, massBlackHole, null);
 				}
 			}
 
@@ -104,12 +93,8 @@ public class Initializer {
 				if (antiPlanetPosition != null) {
 					float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
 					int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
-					
-					Planet antiPlanet = PlanetFactory.createPlanet(PlanetType.ANTI, "AntiPlanet", antiPlanetPosition, radiusAntiPlanet,
-							massAntiPlanet, null);
 
-					map.addPlanet(antiPlanet);
-					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, antiPlanet);
+					PlanetFactory.createPlanet(PlanetType.ANTI, "AntiPlanet", antiPlanetPosition, radiusAntiPlanet, massAntiPlanet, null);
 				}
 			}
 
@@ -127,11 +112,8 @@ public class Initializer {
 					float radiusPlanet = Utils.randomFloat(0.75f, 1.5f);
 					int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);
 					float radiusAtmosphere = radiusPlanet * 1.5f;
-					
-					Planet planet = PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet,
-							massPlanet, radiusAtmosphere);
-					map.addPlanet(planet);
-					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, planet);
+
+					PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet, massPlanet, radiusAtmosphere);
 				}
 			}
 		}

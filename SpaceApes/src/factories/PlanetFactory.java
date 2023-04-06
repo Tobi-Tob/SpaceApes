@@ -13,6 +13,7 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Planet;
+import map.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
 import eea.engine.event.basicevents.*;
@@ -25,7 +26,8 @@ public abstract class PlanetFactory {
 	};
 
 	/**
-	 * Creates a Planet object with image already assigned to the entityManager.
+	 * This method is able to create all planet types with their images. The planet
+	 * objects are already assigned to the EntityManager and the Map.
 	 * 
 	 * @param type             PlanetType: PLAYER, NORMAL, BLACKHOLE, ANTI
 	 * @param name             String as Identifier
@@ -48,6 +50,9 @@ public abstract class PlanetFactory {
 		planet.setRotation(Utils.randomFloat(-30, 30));
 		planet.setPlanetType(type);
 
+		// For the calculations necessary planet data are stored in the instance of Map.
+		// Thus you can access it from anywhere.
+		Map.getInstance().addPlanet(planet);
 		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, planet);
 
 		// Images
