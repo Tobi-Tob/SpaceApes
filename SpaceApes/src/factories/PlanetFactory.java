@@ -12,43 +12,31 @@ import org.newdawn.slick.SlickException;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.interfaces.IEntityFactory;
 import entities.Planet;
 import spaceapes.SpaceApes;
 import utils.Utils;
 import eea.engine.event.basicevents.*;
 import eea.engine.event.*;
 
-public class PlanetFactory implements IEntityFactory {
+public abstract class PlanetFactory {
 
 	public enum PlanetType {
-		PLAYER, BLACKHOLE, ANTI, NORMAL
+		PLAYER, NORMAL, BLACKHOLE, ANTI
 	};
 
-	private final String name;
-	private final float radius;
-	private final int mass;
-	private final Vector2f coordinates; // In Welt-Koordinaten
-	private final boolean ringImagePossible;
-	private final PlanetType type;
-	private boolean hasAtmosphere;
-
-	public PlanetFactory(String name, float radius, int mass, Vector2f coordinates, PlanetType type, boolean hasAtmosphere) {
-		this.name = name;
-		this.radius = radius;
-		this.mass = mass;
-		this.coordinates = coordinates;
-		this.type = type;
-		this.hasAtmosphere = hasAtmosphere;
-		if (type == PlanetType.NORMAL) {
-			this.ringImagePossible = true;
-		} else {
-			this.ringImagePossible = false;
-		}
-	}
-
-	@Override
-	public Planet createEntity() {
+	/**
+	 * Creates a Planet object with image already assigned to the entityManager.
+	 * 
+	 * @param type             PlanetType: PLAYER, NORMAL, BLACKHOLE, ANTI
+	 * @param name             String as Identifier
+	 * @param coordinates      Vector2f in world units
+	 * @param radius           float as radius of the planet in world units
+	 * @param mass             int as mass of the planet
+	 * @param atmosphereRadius Float as Radius of the planets atmosphere. Null if no
+	 *                         atmosphere is desired
+	 * @return Planet
+	 */
+	public static Planet createPlanet(PlanetType type, String name, Vector2f coordinates, float radius, int mass, Float atmosphereRadius) {
 
 		Planet planet = new Planet(name);
 
@@ -60,10 +48,21 @@ public class PlanetFactory implements IEntityFactory {
 		planet.setRotation(Utils.randomFloat(-30, 30));
 		planet.setPlanetType(type);
 
+		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, planet);
+
+		// Images
 		if (type == PlanetType.PLAYER) {
 
 			try {
-				addRandomImageToPlanet(planet, ringImagePossible);
+				addRandomImageToPlanet(planet, false);
+			} catch (SlickException e) {
+				System.err.println("Problem with planet image");
+			}
+
+		} else if (type == PlanetType.NORMAL) {
+
+			try {
+				addRandomImageToPlanet(planet, true);
 			} catch (SlickException e) {
 				System.err.println("Problem with planet image");
 			}
@@ -81,8 +80,6 @@ public class PlanetFactory implements IEntityFactory {
 				} catch (SlickException e) {
 					System.err.println("Problem with black hole image");
 				}
-			} else {
-				// System.out.println("noRenderImages: assign blackhole image.");
 			}
 
 		} else if (type == PlanetType.ANTI) {
@@ -97,25 +94,14 @@ public class PlanetFactory implements IEntityFactory {
 				} catch (SlickException e) {
 					System.err.println("Problem with planet image");
 				}
-			} else {
-				// System.out.println("noRenderImages: assign antiplanet image.");
-			}
-
-		} else if (type == PlanetType.NORMAL) {
-
-			try {
-				addRandomImageToPlanet(planet, ringImagePossible);
-			} catch (SlickException e) {
-				System.err.println("Problem with planet image");
 			}
 
 		} else {
-
 			throw new IllegalArgumentException("Invalid planet type: " + type.toString());
 		}
-		
+
 		// Atmosphere
-		if (this.hasAtmosphere) {
+		if (atmosphereRadius != null) {
 
 			Entity atmosphere = new Entity("AtmosphereOf" + name);
 			atmosphere.setPassable(true);
@@ -123,11 +109,11 @@ public class PlanetFactory implements IEntityFactory {
 			atmosphere.setRotation(Utils.randomFloat(0, 360));
 
 			try {
-				addRandomImageToAtmosphere(atmosphere, planet);
+				addRandomImageToAtmosphere(atmosphere, atmosphereRadius);
 			} catch (SlickException e) {
 				System.err.println("Problem with atmosphere image");
 			}
-			
+
 			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, atmosphere);
 		}
 
@@ -140,14 +126,18 @@ public class PlanetFactory implements IEntityFactory {
 	}
 
 	/**
-	 * Fuegt Planeten ein zufaelliges Bild hinzu und skaliert dieses individuell
+	 * Adds a random image to the planet and scales it individually
 	 * 
-	 * @param planet
-	 * @param ringsAllowed true, wenn Planetenbilder mit Ringen verwedet werden
-	 *                     duerfen
+	 * @param planet       Planet
+	 * @param ringsAllowed true, if planet images with rings can be used
 	 * @throws SlickException
 	 */
-	public void addRandomImageToPlanet(Planet planet, boolean ringsAllowed) throws SlickException {
+	private static void addRandomImageToPlanet(Planet planet, boolean ringsAllowed) throws SlickException {
+
+		if (!SpaceApes.renderImages) {
+			return; // do not add any image to planet
+		}
+
 		Random r = new Random();
 		int imageNumber = r.nextInt(5) + 1; // Integer im Intervall [1, 5]
 		if (ringsAllowed) {
@@ -156,116 +146,106 @@ public class PlanetFactory implements IEntityFactory {
 
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
-			} else {
-				// System.out.println("noRenderImages: assign planet1 image.");
-			}
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet1.png")));
+
 			float planetRadiusInPixel = 235;
 			float planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 2:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
-			} else {
-				// System.out.println("noRenderImages: assign planet2 image.");
-			}
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet2.png")));
+
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 3:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
-			} else {
-				// System.out.println("noRenderImages: assign planet3 image.");
-			}
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet3.png")));
+
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 4:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
-			} else {
-				// System.out.println("noRenderImages: assign planet4 image.");
-			}
+
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet4.png")));
+
 			planetRadiusInPixel = 242;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 5:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
-			} else {
-				// System.out.println("noRenderImages: assign planet5 image.");
-			}
+
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/planet5.png")));
+
 			planetRadiusInPixel = 222;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 6:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
-			} else {
-				// System.out.println("noRenderImages: assign ring planet1 image.");
-			}
+
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet1.png")));
+
 			planetRadiusInPixel = 210;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 7:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
-			} else {
-				// System.out.println("noRenderImages: assign ring planet2 image.");
-			}
+
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet2.png")));
+
 			planetRadiusInPixel = 230;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		case 8:
-			if (SpaceApes.renderImages) {
-				planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
-			} else {
-				// System.out.println("noRenderImages: assign ring planet3 image.");
-			}
+
+			planet.addComponent(new ImageRenderComponent(new Image("img/planets/ring_planet3.png")));
+
 			planetRadiusInPixel = 245;
 			planetRadiusInWorldUnits = Utils.pixelLengthToWorldLength(planetRadiusInPixel);
 			planet.setScale(planet.getRadius() / planetRadiusInWorldUnits);
 			break;
 		}
 	}
-	
-	public void addRandomImageToAtmosphere(Entity atmosphere, Planet planet) throws SlickException {
+
+	/**
+	 * Adds a random image to the planets atmosphere and scales it individually
+	 * 
+	 * @param atmosphere       Entity
+	 * @param atmosphereRadius Float as radius
+	 * @throws SlickException
+	 */
+	public static void addRandomImageToAtmosphere(Entity atmosphere, Float atmosphereRadius) throws SlickException {
+
+		if (!SpaceApes.renderImages) {
+			return; // do not add any image to atmosphere
+		}
+
 		Random r = new Random();
 		int imageNumber = r.nextInt(3) + 1; // Integer im Intervall [1, 3]
 
 		switch (imageNumber) {
 		default: // Eqivalent zu case 1
-			if (SpaceApes.renderImages) {
-				atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere1.png")));
-			}
+			atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere1.png")));
+
 			float atmosphereRadiusInPixel = 400;
 			float atmosphereRadiusInWorldUnits = Utils.pixelLengthToWorldLength(atmosphereRadiusInPixel);
-			atmosphere.setScale(1.5f * planet.getRadius() / atmosphereRadiusInWorldUnits);
+			atmosphere.setScale(atmosphereRadius / atmosphereRadiusInWorldUnits);
 			break;
 		case 2:
-			if (SpaceApes.renderImages) {
-				atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere2.png")));
-			}
+			atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere2.png")));
+
 			atmosphereRadiusInPixel = 400;
 			atmosphereRadiusInWorldUnits = Utils.pixelLengthToWorldLength(atmosphereRadiusInPixel);
-			atmosphere.setScale(1.5f * planet.getRadius() / atmosphereRadiusInWorldUnits);
+			atmosphere.setScale(atmosphereRadius / atmosphereRadiusInWorldUnits);
 			break;
 		case 3:
-			if (SpaceApes.renderImages) {
-				atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere3.png")));
-			}
+			atmosphere.addComponent(new ImageRenderComponent(new Image("img/planets/atmosphere3.png")));
+
 			atmosphereRadiusInPixel = 400;
 			atmosphereRadiusInWorldUnits = Utils.pixelLengthToWorldLength(atmosphereRadiusInPixel);
-			atmosphere.setScale(1.5f * planet.getRadius() / atmosphereRadiusInWorldUnits);
+			atmosphere.setScale(atmosphereRadius / atmosphereRadiusInWorldUnits);
 			break;
 		}
 	}
