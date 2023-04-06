@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.newdawn.slick.geom.Vector2f;
 
 import eea.engine.entity.Entity;
-import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.ApeInfoSign;
 import entities.Planet;
@@ -124,7 +123,7 @@ public class Initializer {
 
 			String nameApe = "Ape" + (i + 1);
 			Planet homePlanet;
-			if (i > playerPlanets.size() - 1) { // Fall es nicht genug PlayerPlanets gibt
+			if (i > playerPlanets.size() - 1) { // Falls es nicht genug PlayerPlanets gibt
 				int randomIndex = new Random().nextInt(map.getPlanets().size());
 				homePlanet = map.getPlanets().get(randomIndex);
 			} else {

@@ -224,8 +224,7 @@ public class Map {
 					itemType = ItemType.DIAMOND_COIN;
 				}
 
-				Item coin = new ItemFactory(itemType, itemPosition).createEntity();
-				this.addItem(coin);
+				ItemFactory.createItem(itemType, itemPosition);
 			}
 		}
 
@@ -235,8 +234,7 @@ public class Map {
 			if (itemPosition != null) {
 				itemType = ItemType.HEALTH_PACK;
 
-				Item healthpack = new ItemFactory(itemType, itemPosition).createEntity();
-				this.addItem(healthpack);
+				ItemFactory.createItem(itemType, itemPosition);
 			}
 		}
 
@@ -246,8 +244,7 @@ public class Map {
 			if (itemPosition != null) {
 				itemType = ItemType.ENERGY_PACK;
 
-				Item energypack = new ItemFactory(itemType, itemPosition).createEntity();
-				this.addItem(energypack);
+				ItemFactory.createItem(itemType, itemPosition);
 			}
 		}
 	}
