@@ -8,73 +8,44 @@ import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.ShootAction;
 import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
-import eea.engine.interfaces.IEntityFactory;
 import entities.Ape;
 import entities.Planet;
 import factories.ProjectileFactory.MovementType;
+import map.Map;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
 
-public class ApeFactory implements IEntityFactory {
+public abstract class ApeFactory {
 
-	private final String name;
-	private final Planet homePlanet;
-	private final int health;
-	private final int energy;
-	private final int apeImageIndex;
-	private final boolean isActive;
-	private final boolean isInteractionAllowed;
-	private final float angleOnPlanet;
-	private final float angleOfView;
-	private final float throwStrength;
-	private final float movementSpeed;
-	// private final MovementType projectileMovementType;
+	public static Ape createApe(String name, Planet homePlanet, float angleOnPlanet, int apeImageIndex, boolean isActive,
+			boolean isInteractionAllowed) {
 
-	public final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
-	private final float distancePlanetCenter;
-
-	public ApeFactory(String name, Planet homePlanet, int health, int energy, int apeImageIndex, boolean isActive,
-			boolean isInteractionAllowed, float movementSpeed, float angleOnPlanet, float angleOfView,
-			float throwStrength) {
-		this.name = name;
-		this.homePlanet = homePlanet;
-		this.health = health;
-		this.energy = energy;
-		this.apeImageIndex = apeImageIndex;
-		this.isActive = isActive;
-		this.isInteractionAllowed = isInteractionAllowed;
-		this.movementSpeed = movementSpeed;
-		this.angleOnPlanet = angleOnPlanet;
-		this.angleOfView = angleOfView;
-		this.throwStrength = throwStrength;
-		this.distancePlanetCenter = homePlanet.getRadius()
+		final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
+		final float distancePlanetCenter = homePlanet.getRadius()
 				+ Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_FEET_TO_CENTER * scalingFactor);
 		if (distancePlanetCenter < 0.1f) {
 			throw new RuntimeException("Radius ist zu nah an null");
 		}
-	}
-
-	@Override
-	public Ape createEntity() {
-
+		
 		Ape ape = new Ape(name);
 
 		ape.setPlanet(homePlanet);
 		homePlanet.setApe(ape);
 		ape.setDistanceToPlanetCenter(distancePlanetCenter);
 		ape.setAngleOnPlanet(angleOnPlanet);
-		ape.setAngleOfView(angleOfView);
-		ape.setHealth(health);
-		ape.setEnergy(energy);
-		ape.setMovementSpeed(movementSpeed);
-		ape.setThrowStrength(throwStrength);
+		ape.setAngleOfView(0);
+		ape.setHealth(Constants.APE_MAX_HEALTH);
+		ape.setEnergy(Constants.APE_MAX_ENERGY);
+		ape.setMovementSpeed(Constants.APE_MOVMENT_SPEED);
+		ape.setThrowStrength(5f);
 		ape.setActive(isActive);
 		ape.setInteractionAllowed(isInteractionAllowed);
 		ape.setPosition(Utils.toPixelCoordinates(ape.getWorldCoordinates()));
@@ -91,10 +62,8 @@ public class ApeFactory implements IEntityFactory {
 					System.err.println("Problem with image for ape");
 				}
 			}
-		} else {
-			//System.out.println("noRenderImages: assign ape image.");
 		}
-
+		
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
 		// am Zug ist!)
 		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
@@ -118,7 +87,11 @@ public class ApeFactory implements IEntityFactory {
 		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
 		spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER));
 		ape.addComponent(spaceKeyPressed);
-
+		
+		// Zuweisung zur Map und zum EntityManager
+		Map.getInstance().addApe(ape);
+		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
+		
 		return ape;
 	}
 

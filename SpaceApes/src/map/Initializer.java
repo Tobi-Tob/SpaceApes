@@ -132,21 +132,13 @@ public class Initializer {
 			} else {
 				homePlanet = (Planet) playerPlanets.get(i);
 			}
-			int health = Constants.APE_MAX_HEALTH;
-			int energy = Constants.APE_MAX_ENERGY;
 			int apeImage = i + 1;
 			boolean apeActive = (i == 0);
 			boolean apeInteraction = (i == 0);
-			float movementSpeed = Constants.APE_MOVMENT_SPEED;
 			float angleOnPlanet = Utils.randomFloat(0, 360);
-			float angleOfView = 0;
-			float throwStrength = 5f;
 
-			Ape ape = new ApeFactory(nameApe, homePlanet, health, energy, apeImage, apeActive, apeInteraction,
-					movementSpeed, angleOnPlanet, angleOfView, throwStrength).createEntity();
-			// eine Apefactory fuer alle Apes?
-			map.addApe(ape);
-			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, ape);
+			ApeFactory.createApe(nameApe, homePlanet, angleOnPlanet, apeImage, apeActive, apeInteraction);
+			
 		}
 	}
 
