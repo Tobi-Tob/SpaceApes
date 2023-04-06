@@ -7,49 +7,34 @@ import org.newdawn.slick.geom.Vector2f;
 import actions.CollisionAction;
 import actions.ProjectileBehaviorAction;
 import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
-import eea.engine.interfaces.IEntityFactory;
 import entities.Projectile;
 import utils.Utils;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
 
-public class ProjectileFactory implements IEntityFactory {
+public abstract class ProjectileFactory {
 
 	public enum ProjectileType {
 		COCONUT, SPIKEBALL, BOMB, SHARD, CRYSTAL, TURTLE
 	};
-	
+
 	public enum MovementType {
 		LINEAR, EXPLICIT_EULER
 	};
 
-	private final String iD;
-	private final Vector2f position;
-	private final Vector2f velocity;
-	private final boolean visible;
-	private final boolean isAffectedByEnvironment;
-	private final ProjectileType type;
-	private final MovementType movementType;
-
-	public ProjectileFactory(String iD, Vector2f position, Vector2f velocity, boolean visible,
-			boolean isAffectedByEnvironment, ProjectileType type, MovementType movementType) {
-		this.iD = iD;
-		this.position = position;
-		this.velocity = velocity;
-		this.visible = visible;
-		this.isAffectedByEnvironment = isAffectedByEnvironment;
-		this.type = type;
-		this.movementType = movementType;
-	}
-
-	@Override
-	public Projectile createEntity() {
+	public static Projectile createProjectile(String iD, ProjectileType type, Vector2f position, Vector2f velocity, boolean visible,
+			boolean isAffectedByEnvironment, MovementType movementType) {
 
 		Projectile projectile = new Projectile(iD, position, velocity);
 		projectile.setType(type);
 		projectile.setVisible(visible);
+
+		if (iD != Constants.DUMMY_PROJECTILE_ID) {
+			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, projectile);
+		}
 
 		if (visible) { // Image und Typspezifische Attributzuweisung
 			try {
@@ -64,8 +49,6 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setScale(Constants.COCONUT_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.COCONUT_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
-					} else {
-						//System.out.println("noRenderImages: assign coconut image.");
 					}
 					break;
 
@@ -75,11 +58,10 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setMaxDamage(Constants.SPIKEBALL_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SPIKEBALL_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.SPIKEBALL_SIZE_IN_COORDINATES);
-					projectile.setScale(Constants.SPIKEBALL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SPIKEBALL_SIZE_IN_PIXEL));
+					projectile.setScale(
+							Constants.SPIKEBALL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SPIKEBALL_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/spikeball.png")));
-					} else {
-						//System.out.println("noRenderImages: assign spikeball image.");
 					}
 					break;
 
@@ -92,8 +74,6 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setScale(Constants.BOMB_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.BOMB_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/bomb.png")));
-					} else {
-						//System.out.println("noRenderImages: assign bomb image.");
 					}
 					break;
 
@@ -103,11 +83,10 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setMaxDamage(Constants.SHARD_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SHARD_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.SHARD_SIZE_IN_COORDINATES);
-					projectile.setScale(Constants.SHARD_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SHARD_SIZE_IN_PIXEL));
+					projectile
+							.setScale(Constants.SHARD_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SHARD_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/shard.png")));
-					} else {
-						//System.out.println("noRenderImages: assign shard image.");
 					}
 					break;
 
@@ -117,11 +96,10 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setMaxDamage(Constants.CRYSTAL_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.CRYSTAL_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.CRYSTAL_SIZE_IN_COORDINATES);
-					projectile.setScale(Constants.CRYSTAL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.CRYSTAL_SIZE_IN_PIXEL));
+					projectile.setScale(
+							Constants.CRYSTAL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.CRYSTAL_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/crystal.png")));
-					} else {
-						//System.out.println("noRenderImages: assign crystal image.");
 					}
 					break;
 
@@ -131,11 +109,10 @@ public class ProjectileFactory implements IEntityFactory {
 					projectile.setMaxDamage(Constants.TURTLE_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.TURTLE_DAMAGE_RADIUS);
 					projectile.setDesiredProjectileSize(Constants.TURTLE_SIZE_IN_COORDINATES);
-					projectile.setScale(Constants.TURTLE_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.TURTLE_SIZE_IN_PIXEL));
+					projectile.setScale(
+							Constants.TURTLE_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.TURTLE_SIZE_IN_PIXEL));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/turtle.png")));
-					} else {
-						//System.out.println("noRenderImages: assign turtle image.");
 					}
 					break;
 
@@ -151,12 +128,12 @@ public class ProjectileFactory implements IEntityFactory {
 			projectileLoop.addAction(new ProjectileBehaviorAction(projectile, movementType));
 			projectile.addComponent(projectileLoop);
 		}
-		
+
 		// Collision Event
 		CollisionEvent projectileCollision = new CollisionEvent();
 		projectileCollision.addAction(new CollisionAction());
 		projectile.addComponent(projectileCollision);
-		
+
 		return projectile;
 	}
 

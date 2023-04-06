@@ -58,7 +58,8 @@ public class Map {
 
 	public void init() {
 		Integer level = null; // TODO Hierrueber kann spaeter die gewuenschte Level Datei ausgewaehlt
-		// werden. NULL = Random Level. Wichtig: Level Datei solle modulare Struktur haben, damit neue
+		// werden. NULL = Random Level. Wichtig: Level Datei solle modulare Struktur
+		// haben, damit neue
 		// Features einfach den Leveln hinzugefuegt werden koennen.
 		new Initializer().initMap(level);
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO Location kann durchs Level bestimmt werden, sonst FREE
@@ -292,8 +293,9 @@ public class Map {
 			int iterations = Math.round(flightTime / updateFrequency);
 
 			// Hilfsprojektil wird erzeugt
-			Projectile dummyProjectile = new ProjectileFactory(Constants.DUMMY_PROJECTILE_ID, positionOfProjectileLaunch,
-					velocity, false, true, ProjectileType.COCONUT, MovementType.EXPLICIT_EULER).createEntity();
+			Projectile dummyProjectile = ProjectileFactory.createProjectile(Constants.DUMMY_PROJECTILE_ID, ProjectileType.COCONUT,
+					positionOfProjectileLaunch, velocity, false, true, MovementType.EXPLICIT_EULER);
+
 			for (int i = 0; i <= iterations; i++) {
 				if (dummyProjectile.explizitEulerStep((int) updateFrequency, useAirFriction)) {
 					// Wenn Kollision mit einem Objekt

@@ -6,7 +6,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
 import eea.engine.component.Component;
-import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.Projectile;
 import factories.ProjectileFactory;
@@ -14,13 +13,12 @@ import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
-import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class ShootAction implements Action {
-	
+
 	private final MovementType movementType;
-	
+
 	public ShootAction(MovementType movementType) {
 		super();
 		this.movementType = movementType;
@@ -33,18 +31,16 @@ public class ShootAction implements Action {
 		Ape activeApe = map.getActiveApe();
 
 		if (activeApe.isInteractionAllowed()) {
-			
-			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 
 			// Abfragen der ausgewaehlten Waffe
 			Projectile selectedProjectile = map.getControlPanel().getSelectedProjectile();
 			ProjectileType selectedType = selectedProjectile.getType();
 			if (selectedProjectile.getPrice() > activeApe.getCoins()) {
-				
+
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
-				
+
 			} else {
-				
+
 				activeApe.reduceCoins(selectedProjectile.getPrice());
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 				// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
@@ -63,11 +59,8 @@ public class ShootAction implements Action {
 						Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
 
 				// Projektil wird erzeugt
-				Projectile projectile = new ProjectileFactory(Constants.PROJECTILE_ID, positionOfProjectileLaunch,
-						velocity, true, true, selectedType, movementType).createEntity();
-
-				entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, projectile);
-				
+				ProjectileFactory.createProjectile(Constants.PROJECTILE_ID, selectedType, positionOfProjectileLaunch, velocity, true, true,
+						movementType);
 			}
 		}
 	}

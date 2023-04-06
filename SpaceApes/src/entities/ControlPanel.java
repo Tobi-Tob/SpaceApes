@@ -209,10 +209,9 @@ public class ControlPanel extends Entity {
 	}
 
 	private void initShopProjectiles(List<ProjectileType> types) {
-		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		for (ProjectileType type : types) {
-			Projectile shopProjectile = new ProjectileFactory(Constants.SHOP_PROJECTILE_ID, new Vector2f(), new Vector2f(),
-					true, false, type, MovementType.EXPLICIT_EULER).createEntity();
+			Projectile shopProjectile = ProjectileFactory.createProjectile(Constants.SHOP_PROJECTILE_ID, type,
+					new Vector2f(), new Vector2f(), true, false, MovementType.EXPLICIT_EULER);
 			shopProjectile.setPosition(relativPosOnPanelToPixelPos(380, -230));
 			shopProjectile.setVisible(false);
 
@@ -250,7 +249,6 @@ public class ControlPanel extends Entity {
 			}
 
 			listOfShopProjectiles.add(shopProjectile);
-			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, shopProjectile);
 		}
 		makeFirstShopProjectileVisible();
 	}
