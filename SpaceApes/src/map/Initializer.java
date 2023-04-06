@@ -146,8 +146,8 @@ public class Initializer {
 		for (int i = 0; i < map.getApes().size(); i++) {
 			Ape ape = map.getApes().get(i);
 
-			ApeInfoSign apeInfoSign = new ApeInfoSign(ape);
-			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, apeInfoSign);
+			ApeInfoSign apeInfoSign = new ApeInfoSign();
+			apeInfoSign.initApeInfoSign(ape);
 		}
 	}
 }

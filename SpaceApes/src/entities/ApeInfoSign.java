@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
@@ -26,18 +27,24 @@ public class ApeInfoSign extends Entity {
 
 	private ImageRenderComponent imageRenderComponent = null;
 	private TrueTypeFont font;
-	private Ape ape;
+	private Ape ape; // zugehoeriger Ape
 
-	public ApeInfoSign(Ape ape) {
-		
+	public ApeInfoSign() {
 		super(Constants.APE_INFO_SIGN_ID);
+	}
 
+	/**
+	 * Instanciate ApeInfoSign for the given Ape
+	 */
+	public void initApeInfoSign(Ape ape) {
 		Vector2f coordinates = ape.getPlanet().getCoordinates();
 
 		this.setPosition(Utils.toPixelCoordinates(coordinates));
 		this.setRotation(0);
 		this.setScale(signScalingFactor);
 		this.setApe(ape);
+		
+		StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, this);
 
 		if (SpaceApes.renderImages) {
 			this.setFont(new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true));
