@@ -51,7 +51,7 @@ public class Projectile extends Entity {
 		this.x = coordinates.x;
 		this.y = coordinates.y;
 	}
-	
+
 	public Vector2f getCoordinates() {
 		return new Vector2f((float) x, (float) y);
 	}
@@ -127,6 +127,7 @@ public class Projectile extends Entity {
 	 */
 	public boolean explizitEulerStep(int timeDelta, boolean useAirFriction) {
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
+		float G = Constants.GRAVITATION_CONSTANT;
 		boolean projectileIsVisible = this.isVisible();
 		// Positionsupdate:
 		// X1 = X0 + dt * V0
@@ -159,20 +160,25 @@ public class Projectile extends Entity {
 			}
 
 			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des
-			// Planeten und ggf. durch den Luftwiederstand in der Atmosphäre
+			// Planeten und ggf. durch den Luftwiederstand in der Atmosphaere
 			if (!useAirFriction) {
-				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
+				ddx.add(distanceVector.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
 			} else {
 				float airFrictionAcceleration = 0;
-				if (distanceVector.length() < planet.getAtmosphereRadius()) {
+				if (planet.hasAtmosphere() && distanceVector.length() < planet.getAtmosphereRadius1()) {
 					float airDensity = 1.293f;
 					float C = 2.1f;
-					float halfSurfaceArea = (float) (2 *  Math.PI * Math.pow(getRadiusInWorldUnits(), 2));
-					Vector2f airSpeed = new Vector2f(0, 0);
+					float halfSurfaceArea = (float) (2 * Math.PI * Math.pow(getRadiusInWorldUnits(), 2));
+					Vector2f airSpeed = new Vector2f(0, 0); // TODO vllt Berechnung vereinfachen
 					Vector2f relativeSpeedToAirSpeed = new Vector2f((float) vx - airSpeed.x, (float) vy - airSpeed.y);
-					airFrictionAcceleration = (float) (0.5 * airDensity * C * halfSurfaceArea * Math.pow(relativeSpeedToAirSpeed.length(), 2));
+					airFrictionAcceleration = (float) (0.5 * airDensity * C * halfSurfaceArea
+							* Math.pow(relativeSpeedToAirSpeed.length(), 2));
 				}
-				ddx.add(distanceVector.scale(Map.getInstance().getGravitationConstant() * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration));
+				ddx.add(distanceVector
+						.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration)); // TODO
+																																	// warum
+																																	// +
+																																	// airFrictionAcceleration
 			}
 		}
 		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
@@ -189,9 +195,9 @@ public class Projectile extends Entity {
 		}
 		return false; // Keine Kollision
 	}
-	
+
 	/**
-	 * Berechnet die neue Position des Projektils für eine linearer Flugbahn
+	 * Berechnet die neue Position des Projektils fuer eine linearer Flugbahn
 	 * 
 	 * @param timeDelta int in Millisekunden
 	 * @return true, falls eine Kollision mit einem Planeten/Affen in diesem Schritt
@@ -210,7 +216,7 @@ public class Projectile extends Entity {
 
 		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
 		// png-files, da auch transparente Ecken in die Hitbox einfliessen...
-		
+
 		// Pruefe auf Kollision mit einem Affen
 		if (projectileIsVisible) {
 			for (Ape ape : apes) {
@@ -229,9 +235,9 @@ public class Projectile extends Entity {
 
 		this.x = xNew;
 		this.y = yNew;
-		//this.vx = vx; // no update necessary
-		//this.vy = vy; // no update necessary
-		
+		// this.vx = vx; // no update necessary
+		// this.vy = vy; // no update necessary
+
 		setRotation(direction + 90f);
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		return false; // Keine Kollision

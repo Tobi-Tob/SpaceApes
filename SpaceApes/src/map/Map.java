@@ -36,7 +36,6 @@ public class Map {
 	private List<Planet> planets; // Liste aller Planeten
 	private List<Item> items; // Liste aller Items
 	private ControlPanel controlPanel;
-	private float gravitationConstant = 0.25f;
 	private boolean useAirFriction = false;
 
 	/**
@@ -92,14 +91,6 @@ public class Map {
 
 	public ControlPanel getControlPanel() {
 		return controlPanel;
-	}
-
-	public void setGravitationConstant(float gravitation) {
-		this.gravitationConstant = gravitation;
-	}
-
-	public float getGravitationConstant() {
-		return gravitationConstant;
 	}
 
 	public void useAirFriction(boolean useAirFriction) {

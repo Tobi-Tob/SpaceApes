@@ -28,7 +28,6 @@ public class Initializer {
 		initPlanets(level);
 		initApes(); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
-		Map.getInstance().setGravitationConstant(Constants.GRAVITATION_CONSTANT);
 		Map.getInstance().useAirFriction(false);
 	}
 
@@ -56,7 +55,13 @@ public class Initializer {
 
 			int massPlanet1 = (int) (radiusPlanet1 * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-			Planet planet1 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet1", coordinatesPlanet1, radiusPlanet1, massPlanet1, null);
+			Float atmosphereRadius1 = null;
+			if (Utils.randomFloat(0, 1) < Constants.ATMOSPHERE_PROBABILITY) {
+				atmosphereRadius1 = radiusPlanet1 + Utils.randomFloat(Constants.ATMOSPHERE_MINIMUM_RADIUS, Constants.ATMOSPHERE_MAXIMUM_RADIUS);
+			}
+
+			Planet planet1 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet1", coordinatesPlanet1, radiusPlanet1, massPlanet1,
+					atmosphereRadius1);
 			playerPlanets.add(planet1);
 
 			// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
@@ -68,7 +73,13 @@ public class Initializer {
 
 			int massPlanet2 = (int) (radiusPlanet2 * Utils.randomFloat(0.91f, 1.1f) * 65);
 
-			Planet planet2 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet2", coordinatesPlanet2, radiusPlanet2, massPlanet2, null);
+			Float atmosphereRadius2 = null;
+			if (Utils.randomFloat(0, 1) < Constants.ATMOSPHERE_PROBABILITY) {
+				atmosphereRadius2 = radiusPlanet2 + Utils.randomFloat(Constants.ATMOSPHERE_MINIMUM_RADIUS, Constants.ATMOSPHERE_MAXIMUM_RADIUS);
+			}
+
+			Planet planet2 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet2", coordinatesPlanet2, radiusPlanet2, massPlanet2,
+					atmosphereRadius2);
 			playerPlanets.add(planet2);
 
 			// Versuche Schwarzes Loch zu platzieren
@@ -108,9 +119,12 @@ public class Initializer {
 					String namePlanet = "Planet" + (i + 3);
 					float radiusPlanet = Utils.randomFloat(0.75f, 1.5f);
 					int massPlanet = (int) (radiusPlanet * Utils.randomFloat(0.91f, 1.1f) * 65);
-					float radiusAtmosphere = radiusPlanet * 1.5f;
+					Float atmosphereRadius = null;
+					if (Utils.randomFloat(0, 1) < Constants.ATMOSPHERE_PROBABILITY) {
+						atmosphereRadius = radiusPlanet + Utils.randomFloat(Constants.ATMOSPHERE_MINIMUM_RADIUS, Constants.ATMOSPHERE_MAXIMUM_RADIUS);
+					}
 
-					PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet, massPlanet, radiusAtmosphere);
+					PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet, massPlanet, atmosphereRadius);
 				}
 			}
 		}
@@ -135,7 +149,7 @@ public class Initializer {
 			float angleOnPlanet = Utils.randomFloat(0, 360);
 
 			ApeFactory.createApe(nameApe, homePlanet, angleOnPlanet, apeImage, apeActive, apeInteraction);
-			
+
 		}
 	}
 

@@ -47,6 +47,7 @@ public abstract class PlanetFactory {
 		planet.setPosition(Utils.toPixelCoordinates(coordinates));
 		planet.setMass(mass);
 		planet.setRadius(radius);
+		planet.setAtmosphereRadius1(atmosphereRadius);
 		planet.setRotation(Utils.randomFloat(-30, 30));
 		planet.setPlanetType(type);
 

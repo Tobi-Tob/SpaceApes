@@ -21,6 +21,10 @@ public class Constants {
 
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
 	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;
+	
+	public static final float ATMOSPHERE_PROBABILITY = 0.5f;
+	public static final float ATMOSPHERE_MINIMUM_RADIUS = 0.6f;
+	public static final float ATMOSPHERE_MAXIMUM_RADIUS = 1f;
 
 	public static final float BLACKHOLE_PROBABILITY = 0.4f;
 	public static final float ANTI_PLANET_PROBABILITY = 0.3f;
