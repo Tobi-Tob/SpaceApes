@@ -4,7 +4,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -14,75 +13,94 @@ import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyPressedEvent;
+import eea.engine.event.basicevents.MouseClickedEvent;
+import eea.engine.event.basicevents.MouseEnteredEvent;
 import utils.Utils;
 
 public class HighscoreState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
-	private StateBasedEntityManager entityManager; // zugehoeriger entityManager
-	private Music music; // Musik dieses GameStates
+	private Entity highScoreSignLeft;
+	private Entity highScoreSignRight;
+	private int maxPixelToShift = 0;
 
 	HighscoreState(int stateID) {
 		this.stateID = stateID;
-		this.entityManager = StateBasedEntityManager.getInstance();
-		try {
-			this.music = new Music("snd/song1.ogg");
-		} catch (SlickException e) {
-			System.err.println("Problem with highscore menu music");
-		}
 	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		Entity highscoreBackground = new Entity("Highscore");
+
+		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
+		
+		/* Background-Entitaet */
+		Entity highscoreBackground = new Entity("HighscoreBackground");
 		highscoreBackground.setPosition(Utils.toPixelCoordinates(0, 0));
 		if (SpaceApes.renderImages) {
-			Image image = new Image("img/assets/menuSP.jpg");
+			Image image = new Image("img/assets/space1.jpg");
 			highscoreBackground.addComponent(new ImageRenderComponent(image));
 			highscoreBackground.setScale((float) SpaceApes.HEIGHT / image.getHeight());
 		} else {
-			//System.out.println("noRenderImages: assign HighscoreState image.");
+			System.err.println("Problem with HighscoreBackground image");
 		}
 		entityManager.addEntity(stateID, highscoreBackground);
+		
+		/* HighScoreSign-Entitaeten */
+		Entity highScoreSign = new Entity("highScoreSign"); // Entitaet fuer Hintergrund erzeugen
+		highScoreSign.setPosition(Utils.toPixelCoordinates(0, 0)); // Mitte des Fensters
+		Entity highScoreSignLeft = new Entity("highScoreSignLeft");
+		Entity highScoreSignRight = new Entity("highScoreSignRight");
 
-		/* Neues Spiel starten-Entitaet */
-
-		Entity highscoreImage = new Entity("HighscoreImage");
-		// Setze Position und Bildkomponente
-		highscoreImage.setPosition(new Vector2f(SpaceApes.WIDTH / 4.5f, SpaceApes.HEIGHT / 2.5f));
-		highscoreImage.setScale((float) SpaceApes.HEIGHT / 1500);
 		if (SpaceApes.renderImages) {
-			highscoreImage.addComponent(new ImageRenderComponent(new Image("img/assets/highscore.png")));
-		} else {
-			//System.out.println("noRenderImages: assign highscore image.");
+			Image imageMid = new Image("img/assets/highscoreSign.png");
+			highScoreSign.addComponent(new ImageRenderComponent(imageMid));
+			float scale1 = (float) SpaceApes.HEIGHT / (1.2f * imageMid.getHeight());
+			highScoreSign.setScale(scale1);
+			Image imageLeft = new Image("img/assets/highscoreSignLeft.png");
+			highScoreSignLeft.addComponent(new ImageRenderComponent(imageLeft));
+			highScoreSignLeft.setScale((float) SpaceApes.HEIGHT / (1.5f * imageLeft.getHeight()));
+			Image imageRight = new Image("img/assets/highscoreSignRight.png");
+			highScoreSignRight.addComponent(new ImageRenderComponent(imageRight));
+			highScoreSignRight.setScale((float) SpaceApes.HEIGHT / (3f * imageRight.getHeight()));
+			
+			this.maxPixelToShift = SpaceApes.WIDTH / 30;
 		}
-		entityManager.addEntity(this.stateID, highscoreImage);
+		entityManager.addEntity(stateID, highScoreSignLeft);
+		entityManager.addEntity(stateID, highScoreSignRight);
+		entityManager.addEntity(stateID, highScoreSign);
+		this.highScoreSignLeft = highScoreSignLeft;
+		this.highScoreSignRight = highScoreSignRight;
 
-		// Die dummyEntity steuert die Wechsel der States
-		Entity dummyEntity = new Entity("DummyHighscore");
+		/* Quit-Highscore-Entitaet */
+		Entity quitHighscoreEntity = new Entity("QuitHighscoreEntity");
+		quitHighscoreEntity.setPosition(new Vector2f(SpaceApes.WIDTH / 1.68f, SpaceApes.HEIGHT / 1.15f));
+		quitHighscoreEntity.setScale((float) SpaceApes.HEIGHT * 0.00035f);
+		if (SpaceApes.renderImages) {
+			quitHighscoreEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_quit.png")));
+		} else {
+			System.err.println("Problem with quitHighscoreEntity image");
+		}
+		ANDEvent quitHighscoreMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		quitHighscoreMouseEvent.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
+		quitHighscoreEntity.addComponent(quitHighscoreMouseEvent);
+		entityManager.addEntity(stateID, quitHighscoreEntity);
 
 		/* ESC-Taste */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
+		Entity dummyEntity = new Entity("DummyHighscore");
+		entityManager.addEntity(stateID, dummyEntity);
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
 		dummyEntity.addComponent(escPressed);
 
-		entityManager.addEntity(stateID, dummyEntity);
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		entityManager.renderEntities(container, game, g);
-		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
-			this.startMusic(1, 0.15f, 1000);
-		}
-	}
-
-	private void startMusic(float pitch, float volume, int fadeInTime) {
-		music.loop(pitch, 0);
-		music.fade(fadeInTime, volume, false);
+		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
 	}
 
 	/**
@@ -90,7 +108,12 @@ public class HighscoreState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		entityManager.updateEntities(container, game, delta);
+		float mouseX = container.getInput().getMouseX();
+		float halfScreenWidth = SpaceApes.WIDTH / 2;
+		float pixelToShift = -this.maxPixelToShift * (mouseX - halfScreenWidth) / halfScreenWidth;
+		highScoreSignLeft.setPosition(new Vector2f(pixelToShift + SpaceApes.WIDTH / 3f, SpaceApes.HEIGHT / 2));
+		highScoreSignRight.setPosition(new Vector2f(SpaceApes.WIDTH / 1.5f, pixelToShift + SpaceApes.HEIGHT / 2));
+		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 	}
 
 	@Override

@@ -1,16 +1,13 @@
 package events;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-
-import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.Event;
 import map.Map;
-import spaceapes.Constants;
-import utils.Utils;
 
 public class LessThan2ApesLeftEvent extends Event {
+	
+	private int timeWaited = 0;
 	
 	public LessThan2ApesLeftEvent() {
 		super("LessThan2ApesLeftEvent");
@@ -19,7 +16,10 @@ public class LessThan2ApesLeftEvent extends Event {
 	@Override
 	protected boolean performAction(GameContainer gc, StateBasedGame sb, int delta) {
 		if (Map.getInstance().getApes().size() < 2) {
-			return true;
+			this.timeWaited += delta;
+			if (this.timeWaited >= 1500) { // Verzoegerung des Events
+				return true;
+			}
 		}
 		return false;
 	}

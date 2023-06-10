@@ -17,7 +17,7 @@ public class SpaceApes extends StateBasedGame {
 	// Jeder State wird durch einen Integer-Wert gekennzeichnet
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
-	//public static final int HIGHSCORE_STATE = 2; // Not used yet
+	public static final int HIGHSCORE_STATE = 2;
 
 	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
 
@@ -71,15 +71,15 @@ public class SpaceApes extends StateBasedGame {
 	public void initStatesList(GameContainer arg0) throws SlickException {
 
 		// Fuege dem StateBasedGame die States hinzu
-		// (der zuerst hinzugefuegte State wird als erster State gestartet)
+		// Der zuerst hinzugefuegte State wird als erster State gestartet
 		addState(new MainMenuState(MAINMENU_STATE));
 		addState(new GameplayState(GAMEPLAY_STATE));
-		//addState(new HighscoreState(HIGHSCORE_STATE)); // Not used yet
+		addState(new HighscoreState(HIGHSCORE_STATE));
 
 		// Fuege dem StateBasedEntityManager die States hinzu
 		StateBasedEntityManager.getInstance().addState(MAINMENU_STATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
-		//StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE); // Not used yet
+		StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE);
 	}
 	
 	public void setRenderImages(boolean renderImages1) {

@@ -76,7 +76,7 @@ public class GameplayState extends BasicGameState {
 		/* Weniger als 2 Affen uebrig Event */
 		// zurueck ins Hauptmenue wechseln
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
-		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
+		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
 		dummyEntity.addComponent(lessThan2Apes);
 
 		entityManager.addEntity(stateID, dummyEntity);

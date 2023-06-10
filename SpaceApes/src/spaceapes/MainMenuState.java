@@ -93,7 +93,7 @@ public class MainMenuState extends BasicGameState {
 		if (SpaceApes.renderImages) {
 			newGameEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_start.png")));
 		} else {
-			// System.out.println("noRenderImages: assign start button image.");
+			System.err.println("Problem with start button image");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action
@@ -116,7 +116,7 @@ public class MainMenuState extends BasicGameState {
 		if (SpaceApes.renderImages) {
 			quitEntity.addComponent(new ImageRenderComponent(new Image("img/assets/button_quit.png")));
 		} else {
-			// System.out.println("noRenderImages: assign beenden button image.");
+			System.err.println("Problem with quit button image");
 		}
 
 		// Erstelle das Ausloese-Event und die zugehoerige Action

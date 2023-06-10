@@ -60,8 +60,7 @@ public class Map {
 	public void init() {
 		Integer level = null; // TODO Hierrueber kann spaeter die gewuenschte Level Datei ausgewaehlt
 		// werden. NULL = Random Level. Wichtig: Level Datei solle modulare Struktur
-		// haben, damit neue
-		// Features einfach den Leveln hinzugefuegt werden koennen.
+		// haben, damit neue Features einfach den Leveln hinzugefuegt werden koennen.
 		new Initializer().initMap(level);
 		this.controlPanel = new ControlPanel(Location.FREE); // TODO Location kann durchs Level bestimmt werden, sonst FREE
 		controlPanel.initControlPanel();
@@ -90,7 +89,7 @@ public class Map {
 	public void addApe(Ape ape) {
 		apes.add(ape);
 	}
-	
+
 	public List<Entity> getMoons() {
 		return moons;
 	}
@@ -121,7 +120,6 @@ public class Map {
 			}
 		}
 		if (amountOfActiveApes == 0) {
-			// throw new RuntimeException("No ape is active");
 			System.out.println("No ape is active");
 		}
 		if (amountOfActiveApes > 1) {
@@ -187,7 +185,7 @@ public class Map {
 					+ " | health = " + nextApe.getHealth() + " | coins = " + nextApe.getCoins());
 			controlPanel.setPanelAndComponentsVisible(true);
 			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
-					Constants.ENERGY_PACK_SPAWN_POSSIBILITY);
+					Constants.ENERGY_PACK_SPAWN_POSSIBILITY); // TODO muss eigl nicht übergeben werden, wenn Konstante
 		}
 	}
 
