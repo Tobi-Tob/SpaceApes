@@ -28,6 +28,11 @@ public class Constants {
 
 	public static final float BLACKHOLE_PROBABILITY = 0.4f;
 	public static final float ANTI_PLANET_PROBABILITY = 0.3f;
+	
+	public static final float MOON_ORBIT_HEIGHT = 1f;
+	public static final float MOON_RADIUS = 0.25f;
+	public static final int TIME_FOR_COMPLETE_MOON_ORBIT = 10000; // in ms
+	
 
 /////////////////////// Ape Constants //////////////////////////////
 

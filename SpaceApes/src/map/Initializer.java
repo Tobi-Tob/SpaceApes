@@ -61,7 +61,7 @@ public class Initializer {
 			}
 
 			Planet planet1 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet1", coordinatesPlanet1, radiusPlanet1, massPlanet1,
-					atmosphereRadius1);
+					atmosphereRadius1, 5f);
 			playerPlanets.add(planet1);
 
 			// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
@@ -79,7 +79,7 @@ public class Initializer {
 			}
 
 			Planet planet2 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet2", coordinatesPlanet2, radiusPlanet2, massPlanet2,
-					atmosphereRadius2);
+					atmosphereRadius2, 3f);
 			playerPlanets.add(planet2);
 
 			// Versuche Schwarzes Loch zu platzieren
@@ -90,7 +90,7 @@ public class Initializer {
 					float radiusBlackHole = Utils.randomFloat(0.4f, 0.5f);
 					int massBlackHole = (int) (radiusBlackHole * 275);
 
-					PlanetFactory.createPlanet(PlanetType.BLACKHOLE, "BlackHole", blackHolePosition, radiusBlackHole, massBlackHole, null);
+					PlanetFactory.createPlanet(PlanetType.BLACKHOLE, "BlackHole", blackHolePosition, radiusBlackHole, massBlackHole, null, null);
 				}
 			}
 
@@ -102,7 +102,7 @@ public class Initializer {
 					float radiusAntiPlanet = Utils.randomFloat(0.9f, 1.3f);
 					int massAntiPlanet = (int) (-radiusAntiPlanet * 50);
 
-					PlanetFactory.createPlanet(PlanetType.ANTI, "AntiPlanet", antiPlanetPosition, radiusAntiPlanet, massAntiPlanet, null);
+					PlanetFactory.createPlanet(PlanetType.ANTI, "AntiPlanet", antiPlanetPosition, radiusAntiPlanet, massAntiPlanet, null, null);
 				}
 			}
 
@@ -124,7 +124,7 @@ public class Initializer {
 						atmosphereRadius = radiusPlanet + Utils.randomFloat(Constants.ATMOSPHERE_MINIMUM_RADIUS, Constants.ATMOSPHERE_MAXIMUM_RADIUS);
 					}
 
-					PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet, massPlanet, atmosphereRadius);
+					PlanetFactory.createPlanet(PlanetType.NORMAL, namePlanet, validePosition, radiusPlanet, massPlanet, atmosphereRadius, null);
 				}
 			}
 		}

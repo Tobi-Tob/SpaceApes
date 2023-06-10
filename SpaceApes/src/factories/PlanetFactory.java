@@ -3,6 +3,7 @@ package factories;
 import org.newdawn.slick.geom.Vector2f;
 
 import actions.DisplayPlanetInfoAction;
+import actions.MoveInOrbitAction;
 
 import java.util.Random;
 
@@ -14,6 +15,7 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Planet;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
 import eea.engine.event.basicevents.*;
@@ -38,7 +40,8 @@ public abstract class PlanetFactory {
 	 *                         atmosphere is desired
 	 * @return Planet
 	 */
-	public static Planet createPlanet(PlanetType type, String name, Vector2f coordinates, float radius, int mass, Float atmosphereRadius) {
+	public static Planet createPlanet(PlanetType type, String name, Vector2f coordinates, float radius, int mass, Float atmosphereRadius,
+			Float moons) {
 
 		Planet planet = new Planet(name);
 
@@ -121,6 +124,29 @@ public abstract class PlanetFactory {
 			}
 
 			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, atmosphere);
+		}
+
+		// Moons
+		if (moons != null && moons > 0) {
+			float orbitRadius = radius + Constants.MOON_ORBIT_HEIGHT;
+			float orbitPartition = 360f / moons;
+			Event orbitLoopEvent = new LoopEvent();
+			planet.addComponent(orbitLoopEvent);
+			for (int i = 1; i <= moons; i++) {
+				Entity moon = new Entity("Moon" + i + "Of" + name);
+				moon.setPassable(false);
+				moon.setRotation(Utils.randomFloat(0, 360));
+
+				try {
+					addRandomImageToMoon(moon);
+				} catch (SlickException e) {
+					System.err.println("Problem with moon image");
+				}
+				orbitLoopEvent.addAction(
+						new MoveInOrbitAction(moon, coordinates, orbitRadius, i * orbitPartition, Constants.TIME_FOR_COMPLETE_MOON_ORBIT));
+				// TODO add moon to map
+				StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, moon);
+			}
 		}
 
 		// Zeige Planeteninformationen, wenn auf ihn geklickt wird
@@ -252,6 +278,53 @@ public abstract class PlanetFactory {
 			atmosphereRadiusInPixel = 400;
 			atmosphereRadiusInWorldUnits = Utils.pixelLengthToWorldLength(atmosphereRadiusInPixel);
 			atmosphere.setScale(atmosphereRadius / atmosphereRadiusInWorldUnits);
+			break;
+		}
+	}
+
+	/**
+	 * Adds a random image to moons
+	 * 
+	 * @param moon Entity
+	 * @throws SlickException
+	 */
+	public static void addRandomImageToMoon(Entity moon) throws SlickException {
+
+		if (!SpaceApes.renderImages) {
+			return; // do not add any image
+		}
+
+		Random r = new Random();
+		int imageNumber = r.nextInt(4) + 1; // Integer im Intervall [1, 4]
+
+		switch (imageNumber) {
+		default: // Eqivalent zu case 1
+			moon.addComponent(new ImageRenderComponent(new Image("img/planets/moon1.png")));
+
+			float moonRadiusInPixel = 180;
+			float moonRadiusInWorldUnits = Utils.pixelLengthToWorldLength(moonRadiusInPixel);
+			moon.setScale(Constants.MOON_RADIUS / moonRadiusInWorldUnits);
+			break;
+		case 2:
+			moon.addComponent(new ImageRenderComponent(new Image("img/planets/moon2.png")));
+
+			moonRadiusInPixel = 180;
+			moonRadiusInWorldUnits = Utils.pixelLengthToWorldLength(moonRadiusInPixel);
+			moon.setScale(Constants.MOON_RADIUS / moonRadiusInWorldUnits);
+			break;
+		case 3:
+			moon.addComponent(new ImageRenderComponent(new Image("img/planets/moon3.png")));
+
+			moonRadiusInPixel = 180;
+			moonRadiusInWorldUnits = Utils.pixelLengthToWorldLength(moonRadiusInPixel);
+			moon.setScale(Constants.MOON_RADIUS / moonRadiusInWorldUnits);
+			break;
+		case 4:
+			moon.addComponent(new ImageRenderComponent(new Image("img/planets/moon4.png")));
+
+			moonRadiusInPixel = 180;
+			moonRadiusInWorldUnits = Utils.pixelLengthToWorldLength(moonRadiusInPixel);
+			moon.setScale(Constants.MOON_RADIUS / moonRadiusInWorldUnits);
 			break;
 		}
 	}
