@@ -7,7 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.component.Component;
 import eea.engine.entity.Entity;
-import map.Map;
 import utils.Utils;
 
 public class MoveInOrbitAction implements Action {

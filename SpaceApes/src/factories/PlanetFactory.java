@@ -130,8 +130,15 @@ public abstract class PlanetFactory {
 		if (moons != null && moons > 0) {
 			float orbitRadius = radius + Constants.MOON_ORBIT_HEIGHT;
 			float orbitPartition = 360f / moons;
+			
+			int timeForCompleteOrbit = Constants.TIME_FOR_COMPLETE_MOON_ORBIT;
+			if (new Random().nextBoolean()) {
+				timeForCompleteOrbit = - timeForCompleteOrbit;
+			}
+			
 			Event orbitLoopEvent = new LoopEvent();
 			planet.addComponent(orbitLoopEvent);
+			
 			for (int i = 1; i <= moons; i++) {
 				Entity moon = new Entity("Moon" + i + "Of" + name);
 				moon.setPassable(false);
@@ -142,9 +149,10 @@ public abstract class PlanetFactory {
 				} catch (SlickException e) {
 					System.err.println("Problem with moon image");
 				}
+				float angleInOrbit = i * orbitPartition + Utils.randomFloat(- orbitPartition/3, orbitPartition/3);
 				orbitLoopEvent.addAction(
-						new MoveInOrbitAction(moon, coordinates, orbitRadius, i * orbitPartition, Constants.TIME_FOR_COMPLETE_MOON_ORBIT));
-				// TODO add moon to map
+						new MoveInOrbitAction(moon, coordinates, orbitRadius, angleInOrbit, timeForCompleteOrbit));
+				Map.getInstance().addMoon(moon);
 				StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, moon);
 			}
 		}
@@ -283,7 +291,7 @@ public abstract class PlanetFactory {
 	}
 
 	/**
-	 * Adds a random image to moons
+	 * Adds a random image to moon
 	 * 
 	 * @param moon Entity
 	 * @throws SlickException

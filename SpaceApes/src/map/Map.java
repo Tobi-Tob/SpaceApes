@@ -35,6 +35,7 @@ public class Map {
 	private List<Ape> apes; // Liste aller lebenden Affen
 	private List<Planet> planets; // Liste aller Planeten
 	private List<Item> items; // Liste aller Items
+	private List<Entity> moons; // Liste aller Monde
 	private ControlPanel controlPanel;
 	private boolean useAirFriction = false;
 
@@ -46,6 +47,7 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
+		moons = new ArrayList<Entity>();
 	}
 
 	public static Map getInstance() {
@@ -87,6 +89,14 @@ public class Map {
 
 	public void addApe(Ape ape) {
 		apes.add(ape);
+	}
+	
+	public List<Entity> getMoons() {
+		return moons;
+	}
+
+	public void addMoon(Entity moon) {
+		moons.add(moon);
 	}
 
 	public ControlPanel getControlPanel() {
@@ -416,6 +426,7 @@ public class Map {
 		apes = new ArrayList<Ape>();
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
+		moons = new ArrayList<Entity>();
 	}
 
 }
