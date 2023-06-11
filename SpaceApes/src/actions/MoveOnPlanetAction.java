@@ -23,7 +23,11 @@ public class MoveOnPlanetAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		if (ape.isInteractionAllowed() && ape.hasEnergy()) {
 			ape.stepOnPlanet(direction);
-			ape.changeEnergy(-0.003f * SpaceApes.UPDATE_INTERVAL);
+			float energyUsed = 0.003f * SpaceApes.UPDATE_INTERVAL;
+			ape.changeEnergy(-energyUsed);
+			if (ape.getEnergy() > 0) { // Update statistics
+				ape.increaseEnergyUsedStatistics(energyUsed);
+			}
 			Map.getInstance().updateAimline();
 		}
 	}

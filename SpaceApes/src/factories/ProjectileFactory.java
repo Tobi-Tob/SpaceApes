@@ -4,7 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-import actions.CollisionAction;
+import actions.ItemCollisionAction;
 import actions.ProjectileBehaviorAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.StateBasedEntityManager;
@@ -131,7 +131,7 @@ public abstract class ProjectileFactory {
 
 		// Collision Event
 		CollisionEvent projectileCollision = new CollisionEvent();
-		projectileCollision.addAction(new CollisionAction());
+		projectileCollision.addAction(new ItemCollisionAction());
 		projectile.addComponent(projectileCollision);
 
 		return projectile;

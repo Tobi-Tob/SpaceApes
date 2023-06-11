@@ -183,10 +183,8 @@ public class Projectile extends Entity {
 							* Math.pow(relativeSpeedToAirSpeed.length(), 2));
 				}
 				ddx.add(distanceVector
-						.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration)); // TODO
-																																	// warum
-																																	// +
-																																	// airFrictionAcceleration
+						.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration));
+				// TODO warum +airFrictionAcceleration
 			}
 		}
 		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
@@ -221,14 +219,21 @@ public class Projectile extends Entity {
 
 		List<Planet> planets = Map.getInstance().getPlanets();
 		List<Ape> apes = Map.getInstance().getApes();
+		List<Entity> moons = Map.getInstance().getMoons();
 
 		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
 		// png-files, da auch transparente Ecken in die Hitbox einfliessen...
-
-		// Pruefe auf Kollision mit einem Affen
 		if (projectileIsVisible) {
+			// Pruefe auf Kollision mit einem Affen
 			for (Ape ape : apes) {
 				if (ape.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
+					return true;
+				}
+			}
+			// Pruefe auf Kollision mit einem Mond
+			for (Entity moon : moons) {
+				Vector2f distanceVector = Utils.toWorldCoordinates(moon.getPosition()).sub(new Vector2f((float) x, (float) y));
+				if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(Constants.MOON_RADIUS, 2)) {
 					return true;
 				}
 			}

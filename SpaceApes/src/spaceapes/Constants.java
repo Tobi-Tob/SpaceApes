@@ -53,7 +53,7 @@ public class Constants {
 
 	// Coconut
 	public static final int COCONUT_PRIZE = 0;
-	public static final int COCONUT_MAX_DAMAGE = 20;
+	public static final int COCONUT_MAX_DAMAGE = 2220;
 	public static final float COCONUT_DAMAGE_RADIUS = 0.5f;
 	public static final float COCONUT_DESIRED_SIZE = 0.32f;
 	public static final float COCONUT_SIZE_IN_PIXEL = 490;

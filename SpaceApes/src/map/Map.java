@@ -1,6 +1,7 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.newdawn.slick.Image;
@@ -37,7 +38,8 @@ public class Map {
 	private List<Item> items; // Liste aller Items
 	private List<Entity> moons; // Liste aller Monde
 	private ControlPanel controlPanel;
-	private boolean useAirFriction = false;
+	private boolean useAirFriction = false; // TODO hier benötigt?
+	private HashMap<String, String[]> statisticsTable; // Tabelle zum speichern aller Statistiken
 
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
@@ -48,6 +50,17 @@ public class Map {
 		planets = new ArrayList<Planet>();
 		items = new ArrayList<Item>();
 		moons = new ArrayList<Entity>();
+		int numberOfPlayers = SpaceApes.players.size();
+		this.statisticsTable = new HashMap<String, String[]>() {
+			{
+				put("Ape", new String[numberOfPlayers]);
+				put("Damage dealt:", new String[numberOfPlayers]);
+				put("Damage received:", new String[numberOfPlayers]);
+				put("Energy used:", new String[numberOfPlayers]);
+				put("Items collected:", new String[numberOfPlayers]);
+				put("Money spend:", new String[numberOfPlayers]);
+			}
+		};
 	}
 
 	public static Map getInstance() {
@@ -155,6 +168,7 @@ public class Map {
 						}
 					}
 				}
+				this.fillStatisticsTable(ape); // Speichere Statistik des toten Affen
 				System.out.println(ape.getID() + " is dead");
 
 				// Ape faellt nach unten
@@ -171,10 +185,10 @@ public class Map {
 		apes = livingApes;
 		if (apes.isEmpty()) {
 			System.out.println(activeApe.getID() + " has killed all apes");
-			// Change State
+			// Change State 
 		} else if (apes.size() == 1) {
 			System.out.println(apes.get(0).getID() + " has won!!!!!!!!!!!!!!!!! SUIII");
-			// Change State
+			this.fillStatisticsTable(apes.get(0)); // Speichere Statistik des Siegers
 		} else {
 			activeApe.setActive(false);
 			activeApe.setInteractionAllowed(false);
@@ -418,6 +432,29 @@ public class Map {
 		}
 
 		return false;
+	}
+
+	public HashMap<String, String[]> getStatistics() {
+		return this.statisticsTable;
+	}
+	
+	private void fillStatisticsTable(Ape ape) {
+		boolean collumFilled = false;
+		for (int i = SpaceApes.players.size() - 1; i >= 0; i--) { // fill last collum first
+			if (statisticsTable.get("Ape")[i] == null) {
+				statisticsTable.get("Ape")[i] = ape.getID();
+				statisticsTable.get("Damage dealt:")[i] = ape.getDamageDealtStatistics();
+				statisticsTable.get("Damage received:")[i] = ape.getDamageReceivedStatistics();
+				statisticsTable.get("Energy used:")[i] = ape.getEnergyUsedStatistics();
+				statisticsTable.get("Items collected:")[i] = ape.getItemsCollectedStatistics();
+				statisticsTable.get("Money spend:")[i] = ape.getMoneySpendStatistics();
+				collumFilled = true;
+				break;
+			}
+		}
+		if (! collumFilled) {
+			System.err.println("No collum was filled after call of fillStatisticsTable()");
+		}
 	}
 
 	public void resetToDefault() {

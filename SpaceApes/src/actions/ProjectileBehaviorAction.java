@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.action.Action;
@@ -48,7 +47,7 @@ public class ProjectileBehaviorAction implements Action {
 			Map map = Map.getInstance();
 			// Im Kollisionsfall:
 			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, projectile);
-			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>();
+			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>(); // Saving damage of this round
 
 			for (Ape ape : map.getApes()) {
 				float distanceApeToExplosion = ape.getWorldCoordinates().distance(projectile.getCoordinates());
@@ -71,18 +70,24 @@ public class ProjectileBehaviorAction implements Action {
 					damageApeTable.put(damage, ape);
 				}
 			}
-
-			map.changeTurn();
 			
+			// Erzeuge DamageDisplays zur Schadens Visualisierung
 			if (SpaceApes.renderImages) {
-				// Erzeuge DamageDisplays zur Schadens Visualisierung
+				Ape activeApe = map.getActiveApe();
 				for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
 				    Integer damage = entry.getKey();
 				    Ape damagedApe = entry.getValue();
 				    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
 					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, display);
+					// Updating statistics
+					damagedApe.increaseDamageReceivedStatistics(damage);
+					if (!damagedApe.equals(activeApe)) { 
+						activeApe.increaseDamageDealtStatistics(damage);
+					}
 				}
 			}
+			
+			map.changeTurn();
 
 			// Zeige Explosion
 			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
@@ -100,8 +105,6 @@ public class ProjectileBehaviorAction implements Action {
 				explosion.setImages(images);
 				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 				explosion.addAnimation(0.012f, false);
-			} else {
-				//System.out.println("noRenderImages: assign explosion animation images.");
 			}
 			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, explosion);
 

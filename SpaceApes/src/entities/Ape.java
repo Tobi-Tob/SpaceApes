@@ -26,6 +26,14 @@ public class Ape extends Entity {
 
 	private boolean isActive;
 	private boolean isInteractionAllowed;
+	
+	/* Game statistics to save */
+	private int damageDealt = 0;
+	private int damageReceived = 0;
+	private float energyUsed = 0;
+	private int itemsCollected = 0;
+	private int moneySpend = 0;
+	
 
 	public Ape(String entityID) {
 		super(entityID);
@@ -279,6 +287,46 @@ public class Ape extends Entity {
 
 	public float getScalingFactor() {
 		return scalingFactor;
+	}
+
+	public String getDamageDealtStatistics() {
+		return Integer.toString(damageDealt);
+	}
+
+	public void increaseDamageDealtStatistics(int damage) {
+		this.damageDealt += damage;
+	}
+
+	public String getDamageReceivedStatistics() {
+		return Integer.toString(damageReceived);
+	}
+
+	public void increaseDamageReceivedStatistics(int damage) {
+		this.damageReceived += damage;
+	}
+
+	public String getEnergyUsedStatistics() {
+		return Integer.toString((int) Math.ceil(energyUsed));
+	}
+
+	public void increaseEnergyUsedStatistics(float energyUsed) {
+		this.energyUsed += energyUsed;
+	}
+
+	public String getItemsCollectedStatistics() {
+		return Integer.toString(itemsCollected);
+	}
+
+	public void increaseItemsCollectedStatistics() {
+		this.itemsCollected ++;
+	}
+
+	public String getMoneySpendStatistics() {
+		return Integer.toString(moneySpend);
+	}
+
+	public void increaseMoneySpendStatistics(int moneySpend) {
+		this.moneySpend += moneySpend;
 	}
 
 }
