@@ -2,6 +2,7 @@ package spaceapes;
 
 import java.awt.Font;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.newdawn.slick.Color;
@@ -35,6 +36,7 @@ public class HighscoreState extends BasicGameState {
 	private Entity highScoreSignRight;
 	private int maxPixelToShift = 0;
 	TrueTypeFont font;
+	TrueTypeFont fontBig;
 
 	HighscoreState(int stateID) {
 		this.stateID = stateID;
@@ -106,33 +108,44 @@ public class HighscoreState extends BasicGameState {
 		dummyEntity.addComponent(escPressed);
 
 		if (SpaceApes.renderImages) {
-			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, 20), true);
+			int fontSizeBig = Math.round(SpaceApes.WIDTH / 35);
+			fontBig = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSizeBig), true);
+
+			int fontSize = Math.round(SpaceApes.WIDTH / 70);
+			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
 		}
 
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
 		if (SpaceApes.renderImages) {
-			HashMap<String, String[]> statisticsTable = Map.getInstance().getStatistics();
+
+			LinkedHashMap<String, String[]> statisticsTable = Map.getInstance().getStatistics();
+
+			Vector2f textPos = Utils.toPixelCoordinates(-2.3f, -3.5f);
+			String winnerString = statisticsTable.get("Ape")[0] + " has won!";
+			fontBig.drawString(textPos.x, textPos.y, winnerString, Color.black);
+
 			int row = 0;
 			for (Entry<String, String[]> entry : statisticsTable.entrySet()) {
 				String key = entry.getKey();
 				String[] value = entry.getValue();
-				
-				Vector2f keyPos = new Vector2f(0, row * 30);
-				font.drawString(keyPos.x, keyPos.y, key, Color.black);
+
+				if (key != "Ape") {
+					Vector2f keyPos = Utils.toPixelCoordinates(-2.3f, -2.5f + row * 0.7f);
+					font.drawString(keyPos.x, keyPos.y, key, Color.black);
+				}
 
 				for (int collum = 0; collum < value.length; collum++) {
-					Vector2f valuePos = new Vector2f(30 + collum * 30, row * 30);
+					Vector2f valuePos = Utils.toPixelCoordinates(-0.6f + collum, -2.5f + row * 0.7f);
 					font.drawString(valuePos.x, valuePos.y, value[collum], Color.black);
-					// System.out.println("joooooo");
 				}
-				row ++;
+				row++;
 			}
 
 		}
-		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
 
 	}
 
@@ -144,7 +157,7 @@ public class HighscoreState extends BasicGameState {
 		float mouseX = container.getInput().getMouseX();
 		float halfScreenWidth = SpaceApes.WIDTH / 2;
 		float pixelToShift = -this.maxPixelToShift * (mouseX - halfScreenWidth) / halfScreenWidth;
-		highScoreSignLeft.setPosition(new Vector2f(pixelToShift + SpaceApes.WIDTH / 3f, SpaceApes.HEIGHT / 2));
+		highScoreSignLeft.setPosition(new Vector2f(pixelToShift + SpaceApes.WIDTH / 3.1f, SpaceApes.HEIGHT / 2));
 		highScoreSignRight.setPosition(new Vector2f(SpaceApes.WIDTH / 1.5f, pixelToShift + SpaceApes.HEIGHT / 2));
 		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 	}

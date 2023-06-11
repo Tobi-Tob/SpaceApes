@@ -2,6 +2,7 @@ package map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.newdawn.slick.Image;
@@ -39,7 +40,7 @@ public class Map {
 	private List<Entity> moons; // Liste aller Monde
 	private ControlPanel controlPanel;
 	private boolean useAirFriction = false; // TODO hier benötigt?
-	private HashMap<String, String[]> statisticsTable; // Tabelle zum speichern aller Statistiken
+	private LinkedHashMap<String, String[]> statisticsTable; // Tabelle zum speichern aller Statistiken
 
 	/**
 	 * Erzeugt ein leeres Map Objekt. Mit den init-Methoden koennen Entitys der Map
@@ -51,11 +52,11 @@ public class Map {
 		items = new ArrayList<Item>();
 		moons = new ArrayList<Entity>();
 		int numberOfPlayers = SpaceApes.players.size();
-		this.statisticsTable = new HashMap<String, String[]>() {
+		this.statisticsTable = new LinkedHashMap<String, String[]>() {
 			{
 				put("Ape", new String[numberOfPlayers]);
 				put("Damage dealt:", new String[numberOfPlayers]);
-				put("Damage received:", new String[numberOfPlayers]);
+				put("Health lost:", new String[numberOfPlayers]);
 				put("Energy used:", new String[numberOfPlayers]);
 				put("Items collected:", new String[numberOfPlayers]);
 				put("Money spend:", new String[numberOfPlayers]);
@@ -434,7 +435,7 @@ public class Map {
 		return false;
 	}
 
-	public HashMap<String, String[]> getStatistics() {
+	public LinkedHashMap<String, String[]> getStatistics() {
 		return this.statisticsTable;
 	}
 	
@@ -444,7 +445,7 @@ public class Map {
 			if (statisticsTable.get("Ape")[i] == null) {
 				statisticsTable.get("Ape")[i] = ape.getID();
 				statisticsTable.get("Damage dealt:")[i] = ape.getDamageDealtStatistics();
-				statisticsTable.get("Damage received:")[i] = ape.getDamageReceivedStatistics();
+				statisticsTable.get("Health lost:")[i] = ape.getDamageReceivedStatistics();
 				statisticsTable.get("Energy used:")[i] = ape.getEnergyUsedStatistics();
 				statisticsTable.get("Items collected:")[i] = ape.getItemsCollectedStatistics();
 				statisticsTable.get("Money spend:")[i] = ape.getMoneySpendStatistics();
