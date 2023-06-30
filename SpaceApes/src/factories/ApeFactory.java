@@ -115,11 +115,11 @@ public abstract class ApeFactory {
 			ape.addComponent(moveLeftPolicyEvent);
 
 			Event angleUpPolicyEvent = new PolicyEvent(policy, PolicyAction.AngleUp);
-			angleUpPolicyEvent.addAction(new ChangeAngleAction(0.1f, null));
+			angleUpPolicyEvent.addAction(new ChangeAngleAction(0.3f, null));
 			ape.addComponent(angleUpPolicyEvent);
 
 			Event angleDownPolicyEvent = new PolicyEvent(policy, PolicyAction.AngleDown);
-			angleDownPolicyEvent.addAction(new ChangeAngleAction(-0.1f, null));
+			angleDownPolicyEvent.addAction(new ChangeAngleAction(-0.3f, null));
 			ape.addComponent(angleDownPolicyEvent);
 
 			Event powerUpPolicyEvent = new PolicyEvent(policy, PolicyAction.PowerUp);

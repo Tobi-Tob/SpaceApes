@@ -63,8 +63,13 @@ public class Ape extends Entity {
 	 * @param direction fuer Bewegung nach links -1 und fuer Bewegung nach rechts +1
 	 */
 	public void stepOnPlanet(float direction) {
-		this.angleOnPlanet += direction * movementSpeed * SpaceApes.UPDATE_INTERVAL / distancePlanetCenter; // Update des
-																											// Winkels
+		this.angleOnPlanet += direction * movementSpeed * SpaceApes.UPDATE_INTERVAL / distancePlanetCenter;
+		if (angleOnPlanet < 0) {
+			this.angleOnPlanet += 360f;
+		}
+		if (angleOnPlanet >= 360f) {
+			this.angleOnPlanet -= 360f;
+		}
 		this.worldCoordinates = calcWorldCoordinates(); // Update der Koordinaten
 		setPosition(Utils.toPixelCoordinates(getWorldCoordinates()));
 		setRotation(angleOnPlanet + 90f);
@@ -109,7 +114,13 @@ public class Ape extends Entity {
 	}
 
 	public void setAngleOnPlanet(float alpha) {
-		angleOnPlanet = alpha;
+		if (alpha < 0) {
+			alpha += 360f;
+		}
+		if (alpha >= 360f) {
+			alpha -= 360f;
+		}
+		this.angleOnPlanet = alpha;
 		this.worldCoordinates = calcWorldCoordinates();
 	}
 

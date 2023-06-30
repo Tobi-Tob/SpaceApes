@@ -199,7 +199,9 @@ public class Map {
 			// java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " +
 			// nextApe.getEnergy() + " | health = " + nextApe.getHealth() + " | coins = " +
 			// nextApe.getCoins());
-			if (!nextApe.isAIControlled()) {
+			if (nextApe.isAIControlled()) {
+				nextApe.getPolicy().initTurn(nextApe);;
+			} else {
 				controlPanel.setPanelAndComponentsVisible(true);
 			}
 			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
