@@ -4,6 +4,7 @@ import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
+import utils.Policy;
 import utils.Utils;
 
 public class Ape extends Entity {
@@ -26,6 +27,8 @@ public class Ape extends Entity {
 
 	private boolean isActive;
 	private boolean isInteractionAllowed;
+	
+	private Policy policy = null;
 	
 	/* Game statistics to save */
 	private int damageDealt = 0;
@@ -327,6 +330,23 @@ public class Ape extends Entity {
 
 	public void increaseMoneySpendStatistics(int moneySpend) {
 		this.moneySpend += moneySpend;
+	}
+
+	public void setPolicy(Policy policy) {
+		this.policy = policy;
+	}
+	
+	public Policy getPolicy() {
+		return this.policy;
+	}
+	
+	public boolean isAIControlled() {
+		if (this.policy == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 }

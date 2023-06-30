@@ -186,7 +186,7 @@ public class Map {
 		apes = livingApes;
 		if (apes.isEmpty()) {
 			System.out.println(activeApe.getID() + " has killed all apes");
-			// Change State 
+			// Change State
 		} else if (apes.size() == 1) {
 			System.out.println(apes.get(0).getID() + " has won!!!!!!!!!!!!!!!!! SUIII");
 			this.fillStatisticsTable(apes.get(0)); // Speichere Statistik des Siegers
@@ -196,9 +196,12 @@ public class Map {
 			nextApe.setActive(true);
 			nextApe.setInteractionAllowed(true);
 			updateAimline();
-			java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " + nextApe.getEnergy()
-					+ " | health = " + nextApe.getHealth() + " | coins = " + nextApe.getCoins());
-			controlPanel.setPanelAndComponentsVisible(true);
+			// java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " +
+			// nextApe.getEnergy() + " | health = " + nextApe.getHealth() + " | coins = " +
+			// nextApe.getCoins());
+			if (!nextApe.isAIControlled()) {
+				controlPanel.setPanelAndComponentsVisible(true);
+			}
 			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
 					Constants.ENERGY_PACK_SPAWN_POSSIBILITY); // TODO muss eigl nicht übergeben werden, wenn Konstante
 		}
@@ -438,7 +441,7 @@ public class Map {
 	public LinkedHashMap<String, String[]> getStatistics() {
 		return this.statisticsTable;
 	}
-	
+
 	private void fillStatisticsTable(Ape ape) {
 		boolean collumFilled = false;
 		for (int i = SpaceApes.players.size() - 1; i >= 0; i--) { // fill last collum first
@@ -453,7 +456,7 @@ public class Map {
 				break;
 			}
 		}
-		if (! collumFilled) {
+		if (!collumFilled) {
 			System.err.println("No collum was filled after call of fillStatisticsTable()");
 		}
 	}

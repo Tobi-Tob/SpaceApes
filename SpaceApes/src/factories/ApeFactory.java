@@ -4,23 +4,26 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-import actions.DisplayApeInfoAction;
+import actions.ChangeAngleAction;
+import actions.ChangePowerAction;
 import actions.MoveOnPlanetAction;
+import actions.PolicyNextMoveAction;
 import actions.ShootAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.StateBasedEntityManager;
-import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
-import eea.engine.event.basicevents.MouseClickedEvent;
-import eea.engine.event.basicevents.MouseEnteredEvent;
+import eea.engine.event.basicevents.LoopEvent;
 import entities.Ape;
 import entities.Planet;
+import events.PolicyEvent;
 import factories.ProjectileFactory.MovementType;
 import map.Map;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
+import utils.Policy;
+import utils.Policy.PolicyAction;
 import utils.Utils;
 
 public abstract class ApeFactory {
@@ -35,10 +38,12 @@ public abstract class ApeFactory {
 	 * @param apeImageIndex        int as index for the desired image
 	 * @param isActive             boolean whether it is the apes turn
 	 * @param isInteractionAllowed boolean whether ape/player intraction is allowed
+	 * @param AIPolicy             Null if Ape is controlled by Player, else Policy
+	 *                             object which defines behaviour
 	 * @return Ape
 	 */
 	public static Ape createApe(String name, Planet homePlanet, float angleOnPlanet, int apeImageIndex, boolean isActive,
-			boolean isInteractionAllowed) {
+			boolean isInteractionAllowed, Policy policy) {
 
 		final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
 		final float distancePlanetCenter = homePlanet.getRadius()
@@ -60,6 +65,7 @@ public abstract class ApeFactory {
 		ape.setThrowStrength(5f);
 		ape.setActive(isActive);
 		ape.setInteractionAllowed(isInteractionAllowed);
+		ape.setPolicy(policy);
 		ape.setPosition(Utils.toPixelCoordinates(ape.getWorldCoordinates()));
 		ape.setScale(scalingFactor);
 		ape.setRotation(angleOnPlanet + 90f);
@@ -78,27 +84,60 @@ public abstract class ApeFactory {
 
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
 		// am Zug ist!)
-		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		clickOnApeEvent.addAction(new DisplayApeInfoAction());
-		ape.addComponent(clickOnApeEvent);
+		// Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new
+		// MouseClickedEvent());
+		// clickOnApeEvent.addAction(new DisplayApeInfoAction());
+		// ape.addComponent(clickOnApeEvent);
 
-		// Bewege den Affen mit der rechten Pfeiltaste nach rechts (nur wenn der Spieler
-		// am Zug ist!)
-		Event rightKeyPressed = new KeyDownEvent(Input.KEY_RIGHT);
-		rightKeyPressed.addAction(new MoveOnPlanetAction(1.0f, ape));
-		ape.addComponent(rightKeyPressed);
+		if (policy == null) { // Direct key pressed events for apes which are controlled by a Player
+			// Bewege den Affen mit der rechten Pfeiltaste nach rechts
+			Event rightKeyPressed = new KeyDownEvent(Input.KEY_RIGHT);
+			rightKeyPressed.addAction(new MoveOnPlanetAction(1.0f, ape));
+			ape.addComponent(rightKeyPressed);
 
-		// Bewege den Affen mit der linken Pfeiltaste nach links... (nur wenn der
-		// Spieler am Zug ist!)
-		// und erzeuge eine Ziellinie
-		Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
-		leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape));
-		ape.addComponent(leftKeyPressed);
+			// Bewege den Affen mit der linken Pfeiltaste nach links (nur wenn der Spieler
+			// am Zug ist!) Und erzeuge eine Ziellinie
+			Event leftKeyPressed = new KeyDownEvent(Input.KEY_LEFT);
+			leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape));
+			ape.addComponent(leftKeyPressed);
 
-		// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
-		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
-		spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER));
-		ape.addComponent(spaceKeyPressed);
+			// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
+			Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
+			spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER, ape));
+			ape.addComponent(spaceKeyPressed);
+		} else { // Automatic Policy Events for apes which are controlled by computer
+			Event moveRightPolicyEvent = new PolicyEvent(policy, PolicyAction.MoveRight);
+			moveRightPolicyEvent.addAction(new MoveOnPlanetAction(1.0f, ape));
+			ape.addComponent(moveRightPolicyEvent);
+
+			Event moveLeftPolicyEvent = new PolicyEvent(policy, PolicyAction.MoveLeft);
+			moveLeftPolicyEvent.addAction(new MoveOnPlanetAction(-1.0f, ape));
+			ape.addComponent(moveLeftPolicyEvent);
+
+			Event angleUpPolicyEvent = new PolicyEvent(policy, PolicyAction.AngleUp);
+			angleUpPolicyEvent.addAction(new ChangeAngleAction(0.1f, null));
+			ape.addComponent(angleUpPolicyEvent);
+
+			Event angleDownPolicyEvent = new PolicyEvent(policy, PolicyAction.AngleDown);
+			angleDownPolicyEvent.addAction(new ChangeAngleAction(-0.1f, null));
+			ape.addComponent(angleDownPolicyEvent);
+
+			Event powerUpPolicyEvent = new PolicyEvent(policy, PolicyAction.PowerUp);
+			powerUpPolicyEvent.addAction(new ChangePowerAction(0.01f, null));
+			ape.addComponent(powerUpPolicyEvent);
+
+			Event powerDownPolicyEvent = new PolicyEvent(policy, PolicyAction.PowerDown);
+			powerDownPolicyEvent.addAction(new ChangePowerAction(-0.01f, null));
+			ape.addComponent(powerDownPolicyEvent);
+
+			Event shootPolicyEvent = new PolicyEvent(policy, PolicyAction.Shoot);
+			shootPolicyEvent.addAction(new ShootAction(MovementType.EXPLICIT_EULER, ape));
+			ape.addComponent(shootPolicyEvent);
+
+			Event loopPolicyEvent = new LoopEvent();
+			loopPolicyEvent.addAction(new PolicyNextMoveAction(ape));
+			ape.addComponent(loopPolicyEvent);
+		}
 
 		// Zuweisung zur Map und zum EntityManager
 		Map.getInstance().addApe(ape);

@@ -158,9 +158,9 @@ public abstract class PlanetFactory {
 		}
 
 		// Zeige Planeteninformationen, wenn auf ihn geklickt wird
-		Event clickOnPlanetEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		clickOnPlanetEvent.addAction(new DisplayPlanetInfoAction());
-		planet.addComponent(clickOnPlanetEvent);
+		// Event clickOnPlanetEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		// clickOnPlanetEvent.addAction(new DisplayPlanetInfoAction());
+		// planet.addComponent(clickOnPlanetEvent);
 
 		return planet;
 	}

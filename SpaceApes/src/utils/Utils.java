@@ -80,5 +80,6 @@ public final class Utils {
 	 */
 	public static float angleInPolarCoordinates(float x, float y) {
 		return (float) Math.toDegrees(Math.atan2(y, x));
-	}
+	}	
+	
 }

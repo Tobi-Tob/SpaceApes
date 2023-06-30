@@ -19,7 +19,7 @@ public class SpaceApes extends StateBasedGame {
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HIGHSCORE_STATE = 2;
 
-	public static final List<String> players = new ArrayList<>(List.of("Player1", "Player2"));
+	public static final List<String> players = new ArrayList<>(List.of("Player1", "AI"));
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true

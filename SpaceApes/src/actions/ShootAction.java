@@ -18,46 +18,51 @@ import utils.Utils;
 public class ShootAction implements Action {
 
 	private final MovementType movementType;
+	private Ape ape;
 
-	public ShootAction(MovementType movementType) {
+	public ShootAction(MovementType movementType, Ape ape) {
 		super();
 		this.movementType = movementType;
+		this.ape = ape;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 
-		Map map = Map.getInstance();
-		Ape activeApe = map.getActiveApe();
-
-		if (activeApe.isInteractionAllowed()) {
-
+		if (ape.isInteractionAllowed() && ape.isActive()) {
+			
 			// Abfragen der ausgewaehlten Waffe
-			Projectile selectedProjectile = map.getControlPanel().getSelectedProjectile();
-			ProjectileType selectedType = selectedProjectile.getType();
-			if (selectedProjectile.getPrice() > activeApe.getCoins()) {
+			ProjectileType selectedType = ProjectileType.COCONUT;
+			int projectilePrice = 0;
+			
+			if (Map.getInstance().getControlPanel().isVisible()) {
+				Projectile selectedProjectile = Map.getInstance().getControlPanel().getSelectedProjectile();
+				selectedType = selectedProjectile.getType();
+				projectilePrice = selectedProjectile.getPrice();
+			}
+			if (projectilePrice > ape.getCoins()) {
 
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
 
 			} else {
 
-				activeApe.reduceCoins(selectedProjectile.getPrice());
-				activeApe.increaseMoneySpendStatistics(selectedProjectile.getPrice());
+				ape.reduceCoins(projectilePrice);
+				ape.increaseMoneySpendStatistics(projectilePrice);
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 				// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
-				activeApe.setInteractionAllowed(false);
-				map.getControlPanel().setPanelAndComponentsVisible(false);
-				map.removeAimeLine();
+				ape.setInteractionAllowed(false);
+				Map.getInstance().getControlPanel().setPanelAndComponentsVisible(false);
+				Map.getInstance().removeAimeLine();
 
 				// Abfragen von initialer Position und Geschwindigkeit
-				float startDirection = activeApe.getGlobalAngleOfView();
-				float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
+				float startDirection = ape.getGlobalAngleOfView();
+				float startVelocity = ape.getThrowStrength(); // Einheit: Koordinaten/Sekunde
 				Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-				Vector2f positionOfApe = activeApe.getWorldCoordinates();
+				Vector2f positionOfApe = ape.getWorldCoordinates();
 				// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
 				// eine Kollision eintritt...
 				Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe).add(
-						Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
+						Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
 				// Projektil wird erzeugt
 				ProjectileFactory.createProjectile(Constants.PROJECTILE_ID, selectedType, positionOfProjectileLaunch, velocity, true, true,
