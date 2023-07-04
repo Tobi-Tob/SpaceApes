@@ -23,7 +23,6 @@ public class LeavingWorldEvent extends Event {
 		Vector2f coordinates = Utils.toWorldCoordinates(entity.getPosition());
 		if (coordinates.x > Constants.WORLD_WIDTH / 2 || coordinates.x < -Constants.WORLD_WIDTH / 2
 				|| coordinates.y > Constants.WORLD_HEIGHT / 2 || coordinates.y < -Constants.WORLD_HEIGHT / 2) {
-			System.out.println(entity.getID() + " left world...");
 			return true;
 		}
 		return false;

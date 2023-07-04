@@ -21,7 +21,6 @@ public class ChangePowerAction extends ButtonAnimationAction {
 		Ape ape = Map.getInstance().getActiveApe();
 		if (ape.isInteractionAllowed()) {
 			ape.changeThrowStrength(powerToChange);
-			//java.lang.System.out.println("ThrowStrength = " + ape.getThrowStrength());
 			Map.getInstance().updateAimline();
 		}
 

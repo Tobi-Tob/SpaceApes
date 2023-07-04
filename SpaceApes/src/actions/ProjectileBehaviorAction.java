@@ -57,8 +57,6 @@ public class ProjectileBehaviorAction implements Action {
 																											// Treffer = 0
 				int maxDamage = projectile.getMaxDamage();
 				float damageRadius = projectile.getDamageRadius();
-				// System.out.println(ape.getID() + " distanceApeHitbox: " +
-				// distanceApeHitboxToExplosion);
 				if (distanceApeHitboxToExplosion <= damageRadius) { // Test ob die Explosion nah genug
 																	// am Affen ist
 					int damage = (int) Math.ceil(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
@@ -68,7 +66,6 @@ public class ProjectileBehaviorAction implements Action {
 											// wird
 					}
 					ape.changeHealth(-damage); // damage muss negativ uebergeben werden, da in der Methode addiert wird
-					System.out.println("Health of " + ape.getID() + " is " + ape.getHealth() + ". Damage was " + damage);
 					damageApeTable.put(damage, ape);
 				}
 			}

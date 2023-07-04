@@ -151,7 +151,6 @@ public class MainMenuState extends BasicGameState {
 		menuFirstLayer.setPosition(new Vector2f(pixelToShiftFirstLayer + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		menuMidLayer.setPosition(new Vector2f(pixelToShiftFirstLayer / 2 + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
-		// System.out.println("Main Menu Updatefrequenz: " + delta + " ms");
 	}
 
 	/**
@@ -163,7 +162,6 @@ public class MainMenuState extends BasicGameState {
 		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
 			this.startMusic(1, 0.15f, 1000);
 		}
-		// System.out.println("Main Menu Render");
 	}
 
 	@Override

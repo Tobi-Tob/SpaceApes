@@ -24,15 +24,12 @@ public class ItemCollisionAction implements Action {
 			activeApe.increaseItemsCollectedStatistics(); // Updating statistics
 			if (collidedItem.getItemType().equals(ItemType.ENERGY_PACK)) {
 				activeApe.changeEnergy(collidedItem.getValue());
-				System.out.println("Energy of " + activeApe.getID() + " increased to " + activeApe.getEnergy());
 				
 			} else if (collidedItem.getItemType().equals(ItemType.HEALTH_PACK)) {
 				activeApe.changeHealth(collidedItem.getValue());
-				System.out.println("Health of " + activeApe.getID() + " increased to " + activeApe.getHealth());
 				
 			} else { // some type of coin
 				activeApe.increaseCoins(collidedItem.getValue());
-				System.out.println("Coins of " + activeApe.getID() + " increased to " + activeApe.getCoins());
 			}
 			StateBasedEntityManager.getInstance().removeEntity(sb.getCurrentState().getID(), collidedEntity);
 		}

@@ -13,8 +13,7 @@ public class DisplayApeInfoAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		Ape ape = (Ape) event.getOwnerEntity();
 		java.lang.System.out.println(ape.getID());
-		java.lang.System.out
-				.println("Health: " + ape.getHealth() + " Energie: " + ape.getEnergy() + " Coins: " + ape.getCoins());
+		java.lang.System.out.println("Health: " + ape.getHealth() + " Energie: " + ape.getEnergy() + " Coins: " + ape.getCoins());
 	}
 
 }

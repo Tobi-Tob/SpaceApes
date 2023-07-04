@@ -163,7 +163,6 @@ public class Map {
 					if (e.getID() == Constants.APE_INFO_SIGN_ID) {
 						if (((ApeInfoSign) e).getApe().equals(ape)) {
 							entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, e);
-							System.out.println("ApeInfoSign removed");
 							break;
 						}
 					}
@@ -195,9 +194,6 @@ public class Map {
 			nextApe.setActive(true);
 			nextApe.setInteractionAllowed(true);
 			updateAimline();
-			// java.lang.System.out.println("Am Zug: " + nextApe.getID() + " | energy = " +
-			// nextApe.getEnergy() + " | health = " + nextApe.getHealth() + " | coins = " +
-			// nextApe.getCoins());
 			if (nextApe.isAIControlled()) {
 				controlPanel.setPanelAndComponentsVisible(false);
 				nextApe.getPolicy().initTurn();
@@ -332,9 +328,6 @@ public class Map {
 					try {
 						if (SpaceApes.renderImages) {
 							dot.addComponent(new ImageRenderComponent(new Image("img/assets/dot.png")));
-							// System.out.println("add dot");
-						} else {
-							// System.out.println("noRenderImages: assign dot image.");
 						}
 					} catch (SlickException e) {
 						System.err.println("Problem with dot image");
@@ -386,7 +379,6 @@ public class Map {
 					}
 				}
 				if (positionIsValide) {
-					// java.lang.System.out.println("Planet spawning after: n=" + n);
 					return randomPosition; // Wenn gueltige Position gefunden, gib diese zurueck
 				}
 			}
@@ -396,7 +388,6 @@ public class Map {
 		}
 
 		// Falls Such-Schleife bis zum Ende durch laeuft:
-		// java.lang.System.out.println("Planet spawning after: null");
 		return null;
 	}
 

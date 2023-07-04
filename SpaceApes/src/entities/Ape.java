@@ -256,7 +256,7 @@ public class Ape extends Entity {
 
 	public Planet getPlanet() {
 		if (homePlanet == null) {
-			System.out.println("homePlanet not set yet!");
+			throw new RuntimeException("homePlanet not set yet!");
 		}
 		return homePlanet;
 	}
