@@ -41,6 +41,7 @@ public class Constants {
 	public static final int APE_MAX_HEALTH = 100;
 	public static final int APE_MAX_ENERGY = 100;
 	public static final float APE_MOVMENT_SPEED = 0.05f;
+	public static final float ENERGY_USED_PER_STEP = 0.01f;
 
 	public static final int APE_PIXEL_HEIGHT = 300;
 	public static final int APE_PIXEL_FEET_TO_CENTER = 130;
@@ -97,17 +98,17 @@ public class Constants {
 
 	// Energy Pack
 	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
-	public static final int ENERGY_PACK_VALUE = 20;
-	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.15f;
+	public static final int ENERGY_PACK_VALUE = 40;
+	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.03f;
 
 	// Health Pack
 	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
 	public static final int HEALTH_PACK_VALUE = 20;
-	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.15f;
+	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.06f;
 
 	// Coins general
 	public static final String COIN_ID = "COIN";
-	public static final float COIN_SPAWN_POSSIBILITY = 0.4f;
+	public static final float COIN_SPAWN_POSSIBILITY = 0.2f;
 	// This is the possibility if any coin is spawned
 
 	// Copper Coin

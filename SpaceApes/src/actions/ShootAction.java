@@ -18,18 +18,19 @@ import utils.Utils;
 public class ShootAction implements Action {
 
 	private final MovementType movementType;
-	private Ape ape;
+	private final boolean isAIControlled;
 
-	public ShootAction(MovementType movementType, Ape ape) {
+	public ShootAction(MovementType movementType, boolean isAIControlled) {
 		super();
 		this.movementType = movementType;
-		this.ape = ape;
+		this.isAIControlled = isAIControlled;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-
-		if (ape.isInteractionAllowed() && ape.isActive()) {
+		
+		Ape activeApe = Map.getInstance().getActiveApe();
+		if (activeApe.isInteractionAllowed() && (activeApe.isAIControlled() == this.isAIControlled)) {
 			
 			// Abfragen der ausgewaehlten Waffe
 			ProjectileType selectedType = ProjectileType.COCONUT;
@@ -40,29 +41,29 @@ public class ShootAction implements Action {
 				selectedType = selectedProjectile.getType();
 				projectilePrice = selectedProjectile.getPrice();
 			}
-			if (projectilePrice > ape.getCoins()) {
+			if (projectilePrice > activeApe.getCoins()) {
 
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
 
 			} else {
 
-				ape.reduceCoins(projectilePrice);
-				ape.increaseMoneySpendStatistics(projectilePrice);
+				activeApe.reduceCoins(projectilePrice);
+				activeApe.increaseMoneySpendStatistics(projectilePrice);
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das
 				// ControlPanel wird zur besseren Sichtbarkeit unsichtbar gemacht
-				ape.setInteractionAllowed(false);
+				activeApe.setInteractionAllowed(false);
 				Map.getInstance().getControlPanel().setPanelAndComponentsVisible(false);
 				Map.getInstance().removeAimeLine();
 
 				// Abfragen von initialer Position und Geschwindigkeit
-				float startDirection = ape.getGlobalAngleOfView();
-				float startVelocity = ape.getThrowStrength(); // Einheit: Koordinaten/Sekunde
+				float startDirection = activeApe.getGlobalAngleOfView();
+				float startVelocity = activeApe.getThrowStrength(); // Einheit: Koordinaten/Sekunde
 				Vector2f velocity = Utils.toCartesianCoordinates(startVelocity, startDirection);
-				Vector2f positionOfApe = ape.getWorldCoordinates();
+				Vector2f positionOfApe = activeApe.getWorldCoordinates();
 				// Das Projektil wird leicht ausserhalb des Apes gestartet, damit nicht sofort
 				// eine Kollision eintritt...
 				Vector2f positionOfProjectileLaunch = new Vector2f(positionOfApe).add(
-						Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
+						Utils.toCartesianCoordinates(activeApe.getRadiusInWorldUnits(), activeApe.getAngleOnPlanet()));
 
 				// Projektil wird erzeugt
 				ProjectileFactory.createProjectile(Constants.PROJECTILE_ID, selectedType, positionOfProjectileLaunch, velocity, true, true,

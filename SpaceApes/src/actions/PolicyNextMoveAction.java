@@ -21,7 +21,7 @@ public class PolicyNextMoveAction implements Action {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		if (ape.isActive() && ape.isInteractionAllowed()) {
-			policy.calcNextAction(ape, delta);
+			policy.calcNextAction(delta);
 		}
 	}
 }

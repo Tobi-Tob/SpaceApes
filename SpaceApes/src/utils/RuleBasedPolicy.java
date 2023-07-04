@@ -1,7 +1,5 @@
 package utils;
 
-import entities.Ape;
-
 public class RuleBasedPolicy extends Policy {
 
 	public RuleBasedPolicy() {
@@ -9,14 +7,14 @@ public class RuleBasedPolicy extends Policy {
 	}
 
 	@Override
-	public void initTurn(Ape ape) {
+	public void initTurn() {
 		// Nothing to do
 	}
 
 	@Override
-	public void calcNextAction(Ape ape, int delta) {
+	public void calcNextAction(int delta) {
 		PolicyAction action = PolicyAction.MoveRight;
-		if (ape.getEnergy() < 80) {
+		if (getApe().getEnergy() < 80) {
 			action = PolicyAction.Shoot;
 		}
 

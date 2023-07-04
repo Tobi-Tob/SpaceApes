@@ -9,6 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import actions.DisplayCoordinatesAction;
+import actions.ShootAction;
 import eea.engine.action.basicactions.*;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -17,6 +18,7 @@ import eea.engine.event.Event;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
 import events.LessThan2ApesLeftEvent;
+import factories.ProjectileFactory.MovementType;
 import map.Map;
 import utils.Utils;
 
@@ -78,13 +80,19 @@ public class GameplayState extends BasicGameState {
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
 		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
 		dummyEntity.addComponent(lessThan2Apes);
+		
+		/* Schuss Event */
+		// Event, dass auf Druecken der Space Taste reagiert. Ausgeloest wird ein Schuss
+		// des aktiven Affen, falls interactionAllowed = true und isAIControlled = false
+		Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
+		spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER, false));
+		dummyEntity.addComponent(spaceKeyPressed);
 
 		entityManager.addEntity(stateID, dummyEntity);
-
-		if (SpaceApes.renderImages) { // muss im Test manuell gemacht werden, da sonst die map entities noch nicht
-										// erzeugt sind...!
-			// Initialisierung der Aimline
-			Map.getInstance().updateAimline();
+		
+		int random = (int) Utils.randomFloat(0, SpaceApes.players.size());
+		for (int i = 0; i <= random; i++) {
+			Map.getInstance().changeTurn(); // Method is called between 1 and numOfPlayers times
 		}
 	}
 

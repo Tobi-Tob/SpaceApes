@@ -6,15 +6,19 @@ import org.newdawn.slick.SlickException;
 
 import actions.ChangeAngleAction;
 import actions.ChangePowerAction;
+import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.PolicyNextMoveAction;
 import actions.ShootAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.StateBasedEntityManager;
+import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LoopEvent;
+import eea.engine.event.basicevents.MouseClickedEvent;
+import eea.engine.event.basicevents.MouseEnteredEvent;
 import entities.Ape;
 import entities.Planet;
 import events.PolicyEvent;
@@ -84,10 +88,9 @@ public abstract class ApeFactory {
 
 		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
 		// am Zug ist!)
-		// Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new
-		// MouseClickedEvent());
-		// clickOnApeEvent.addAction(new DisplayApeInfoAction());
-		// ape.addComponent(clickOnApeEvent);
+		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
+		clickOnApeEvent.addAction(new DisplayApeInfoAction());
+		ape.addComponent(clickOnApeEvent);
 
 		if (policy == null) { // Direct key pressed events for apes which are controlled by a Player
 			// Bewege den Affen mit der rechten Pfeiltaste nach rechts
@@ -101,11 +104,10 @@ public abstract class ApeFactory {
 			leftKeyPressed.addAction(new MoveOnPlanetAction(-1.0f, ape));
 			ape.addComponent(leftKeyPressed);
 
-			// Scheisse mit der Leertaste (nur wenn der Spieler am Zug ist!)
-			Event spaceKeyPressed = new KeyPressedEvent(Input.KEY_SPACE);
-			spaceKeyPressed.addAction(new ShootAction(MovementType.EXPLICIT_EULER, ape));
-			ape.addComponent(spaceKeyPressed);
 		} else { // Automatic Policy Events for apes which are controlled by computer
+			
+			policy.setApe(ape); // Save ape object in policy
+			
 			Event moveRightPolicyEvent = new PolicyEvent(policy, PolicyAction.MoveRight);
 			moveRightPolicyEvent.addAction(new MoveOnPlanetAction(1.0f, ape));
 			ape.addComponent(moveRightPolicyEvent);
@@ -131,7 +133,7 @@ public abstract class ApeFactory {
 			ape.addComponent(powerDownPolicyEvent);
 
 			Event shootPolicyEvent = new PolicyEvent(policy, PolicyAction.Shoot);
-			shootPolicyEvent.addAction(new ShootAction(MovementType.EXPLICIT_EULER, ape));
+			shootPolicyEvent.addAction(new ShootAction(MovementType.EXPLICIT_EULER, true));
 			ape.addComponent(shootPolicyEvent);
 
 			Event loopPolicyEvent = new LoopEvent();

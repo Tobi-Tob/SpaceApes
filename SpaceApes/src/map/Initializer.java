@@ -15,6 +15,7 @@ import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
+import utils.InverseTrajectoryPolicy;
 import utils.Policy;
 import utils.RandomPolicy;
 import utils.RuleBasedPolicy;
@@ -153,7 +154,8 @@ public class Initializer {
 			Policy policy = null;
 			if (SpaceApes.players.get(i) == "AI") {
 				// policy = new RuleBasedPolicy();
-				policy = new RandomPolicy();
+				// policy = new RandomPolicy();
+				policy = new InverseTrajectoryPolicy();
 			}
 
 			ApeFactory.createApe(nameApe, homePlanet, angleOnPlanet, apeImage, apeActive, apeInteraction, policy);

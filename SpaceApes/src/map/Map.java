@@ -1,7 +1,6 @@
 package map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -200,7 +199,8 @@ public class Map {
 			// nextApe.getEnergy() + " | health = " + nextApe.getHealth() + " | coins = " +
 			// nextApe.getCoins());
 			if (nextApe.isAIControlled()) {
-				nextApe.getPolicy().initTurn(nextApe);;
+				controlPanel.setPanelAndComponentsVisible(false);
+				nextApe.getPolicy().initTurn();
 			} else {
 				controlPanel.setPanelAndComponentsVisible(true);
 			}
@@ -291,7 +291,7 @@ public class Map {
 
 		Ape ape = Map.getInstance().getActiveApe();
 
-		if (ape.isInteractionAllowed()) {
+		if (SpaceApes.renderImages && ape.isInteractionAllowed()) {
 
 			removeAimeLine();
 

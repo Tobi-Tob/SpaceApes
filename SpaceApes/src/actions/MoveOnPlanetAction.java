@@ -7,6 +7,7 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import entities.Ape;
 import map.Map;
+import spaceapes.Constants;
 import spaceapes.SpaceApes;
 
 public class MoveOnPlanetAction implements Action {
@@ -23,7 +24,7 @@ public class MoveOnPlanetAction implements Action {
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
 		if (ape.isInteractionAllowed() && ape.hasEnergy()) {
 			ape.stepOnPlanet(direction);
-			float energyUsed = 0.003f * SpaceApes.UPDATE_INTERVAL;
+			float energyUsed = Constants.ENERGY_USED_PER_STEP * SpaceApes.UPDATE_INTERVAL;
 			ape.changeEnergy(-energyUsed);
 			if (ape.getEnergy() > 0) { // Update statistics
 				ape.increaseEnergyUsedStatistics(energyUsed);

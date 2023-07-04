@@ -1,20 +1,33 @@
 package utils;
 
-import entities.Ape;
+import static org.junit.Assert.assertTrue;
 
-public class RandomPolicy extends Policy {
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.geom.Vector2f;
+
+import entities.Ape;
+import map.Map;
+
+public class InverseTrajectoryPolicy extends Policy {
 	private float desiredPosition;
 	private float desiredPositionInInterval; // cliped to [0, 360)
 	private float desiredPower;
 	private float desiredAngle;
+	
+	private Vector2f target;
+	private boolean trajectoryFound;
 
-	public RandomPolicy() {
+	public InverseTrajectoryPolicy() {
 		super("RandomPolicy");
 	}
 
 	@Override
 	public void initTurn() {
-
+		this.trajectoryFound = false;
+		this.target = findEnemyApePosition();
+		
 		this.desiredPosition = getApe().getAngleOnPlanet() + Utils.randomFloat(-180, 180);
 		this.desiredPositionInInterval = desiredPosition;
 		if (desiredPositionInInterval < 0) {
@@ -49,6 +62,19 @@ public class RandomPolicy extends Policy {
 		}
 
 		this.setCurrentAction(action);
+	}
+	
+	private Vector2f findEnemyApePosition() {
+		
+		List<Ape> enemyApes = new ArrayList<Ape>(Map.getInstance().getApes());
+		assertTrue("Ape self is not in list of Apes", enemyApes.remove(getApe()));
+		int numberOfApes = enemyApes.size();
+		System.out.println("enemyApes: " + numberOfApes);
+		int indexOfTarget = (int) Utils.randomFloat(0, numberOfApes);
+		Ape targetApe = Map.getInstance().getApes().get(indexOfTarget);
+		System.out.println("targetApe: " + targetApe.getID());
+		
+		return targetApe.getWorldCoordinates();
 	}
 
 }
