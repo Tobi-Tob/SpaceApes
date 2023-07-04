@@ -25,7 +25,7 @@ public class ProjectileBehaviorAction implements Action {
 
 	private Projectile projectile;
 	private MovementType movementType; // which method calculate the flight trajectory should be used?
-								// 0: linearMovement | 1: explicitEuler
+	// 0: linearMovement | 1: explicitEuler
 
 	public ProjectileBehaviorAction(Projectile projectile, MovementType movementType) {
 		this.projectile = projectile;
@@ -37,11 +37,13 @@ public class ProjectileBehaviorAction implements Action {
 
 		boolean collision = false;
 		boolean airFriction = Map.getInstance().isAirFrictionUsed();
-		if (movementType==MovementType.LINEAR && projectile.linearMovementStep(delta) || movementType==MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta, airFriction)) {
-			// linearMovementStep und explizitEulerStep geben jeweils true zurück bei Kollision mit Affen/Planeten
+		if (movementType == MovementType.LINEAR && projectile.linearMovementStep(delta)
+				|| movementType == MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta, airFriction)) {
+			// linearMovementStep und explizitEulerStep geben jeweils true zurück bei
+			// Kollision mit Affen/Planeten
 			collision = true;
 		}
-		
+
 		if (collision) {
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
@@ -59,8 +61,8 @@ public class ProjectileBehaviorAction implements Action {
 				// distanceApeHitboxToExplosion);
 				if (distanceApeHitboxToExplosion <= damageRadius) { // Test ob die Explosion nah genug
 																	// am Affen ist
-					int damage = Math.round(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
-																												// Interpolation
+					int damage = (int) Math.ceil(maxDamage * (1 - (distanceApeHitboxToExplosion / damageRadius))); // lineare
+																													// Interpolation
 					if (distanceApeHitboxToExplosion < 0.1f) {
 						damage = maxDamage; // Stellt sicher, dass bei einem direkten Treffer maximaler Schaden verursacht
 											// wird
@@ -70,23 +72,23 @@ public class ProjectileBehaviorAction implements Action {
 					damageApeTable.put(damage, ape);
 				}
 			}
-			
+
 			// Erzeuge DamageDisplays zur Schadens Visualisierung
 			if (SpaceApes.renderImages) {
 				Ape activeApe = map.getActiveApe();
-				for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) { 
-				    Integer damage = entry.getKey();
-				    Ape damagedApe = entry.getValue();
-				    DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
+				for (Entry<Integer, Ape> entry : damageApeTable.entrySet()) {
+					Integer damage = entry.getKey();
+					Ape damagedApe = entry.getValue();
+					DamageDisplay display = new DamageDisplay(damagedApe, damage, 1500);
 					entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, display);
 					// Updating statistics
 					damagedApe.increaseDamageReceivedStatistics(damage);
-					if (!damagedApe.equals(activeApe)) { 
+					if (!damagedApe.equals(activeApe)) {
 						activeApe.increaseDamageDealtStatistics(damage);
 					}
 				}
 			}
-			
+
 			map.changeTurn();
 
 			// Zeige Explosion
@@ -98,7 +100,7 @@ public class ProjectileBehaviorAction implements Action {
 					images[1] = new Image("img/explosions/explosion2.png");
 					images[2] = new Image("img/explosions/explosion3.png");
 					images[3] = new Image("img/explosions/explosion4.png");
-	
+
 				} catch (SlickException e) {
 					System.err.println("Problem with image for explosion");
 				}

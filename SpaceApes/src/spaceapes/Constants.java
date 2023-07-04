@@ -108,7 +108,7 @@ public class Constants {
 
 	// Coins general
 	public static final String COIN_ID = "COIN";
-	public static final float COIN_SPAWN_POSSIBILITY = 0.2f;
+	public static final float COIN_SPAWN_POSSIBILITY = 0.25f;
 	// This is the possibility if any coin is spawned
 
 	// Copper Coin

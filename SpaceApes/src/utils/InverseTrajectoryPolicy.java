@@ -1,7 +1,5 @@
 package utils;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +11,9 @@ import map.Map;
 public class InverseTrajectoryPolicy extends Policy {
 	private float desiredPosition;
 	private float desiredPositionInInterval; // cliped to [0, 360)
-	private float desiredPower;
-	private float desiredAngle;
-	
+	private float desiredPower = 6;
+	private float desiredAngle = 30;
+
 	private Vector2f target;
 	private boolean trajectoryFound;
 
@@ -25,10 +23,11 @@ public class InverseTrajectoryPolicy extends Policy {
 
 	@Override
 	public void initTurn() {
-		this.trajectoryFound = false;
-		this.target = findEnemyApePosition();
-		
-		this.desiredPosition = getApe().getAngleOnPlanet() + Utils.randomFloat(-180, 180);
+		if (Utils.randomFloat(0, 1) < 0.4) { // Wahrscheinlichkeit fuer Bewegung
+			this.desiredPosition = getApe().getAngleOnPlanet() + Utils.randomFloat(-180, 180);
+		} else {
+			this.desiredPosition = getApe().getAngleOnPlanet();
+		}
 		this.desiredPositionInInterval = desiredPosition;
 		if (desiredPositionInInterval < 0) {
 			this.desiredPositionInInterval += 360f;
@@ -36,44 +35,57 @@ public class InverseTrajectoryPolicy extends Policy {
 		if (desiredPositionInInterval >= 360f) {
 			this.desiredPositionInInterval -= 360f;
 		}
-		this.desiredPower = Utils.randomFloat(3, 6);
-		this.desiredAngle = Utils.randomFloat(-80, 80);
+
+		this.trajectoryFound = false;
+		this.target = findEnemyApePosition();
 	}
 
 	@Override
 	public void calcNextAction(int delta) {
-
 		Ape ape = getApe();
-		PolicyAction action = PolicyAction.Shoot;
+		PolicyAction action = null;
+
+		/* 1. Movement */
 		if (Math.abs(ape.getAngleOnPlanet() - desiredPositionInInterval) > 5 && ape.getEnergy() > 0) {
 			if (ape.getAngleOnPlanet() < desiredPosition) {
 				action = PolicyAction.MoveRight;
 			} else {
 				action = PolicyAction.MoveLeft;
 			}
-		} else if (ape.getThrowStrength() > desiredPower + 0.05f) {
-			action = PolicyAction.PowerDown;
-		} else if (ape.getThrowStrength() < desiredPower - 0.05f) {
-			action = PolicyAction.PowerUp;
-		} else if (ape.getLocalAngleOfView() > desiredAngle + 1) {
-			action = PolicyAction.AngleDown;
-		} else if (ape.getLocalAngleOfView() < desiredAngle - 1) {
-			action = PolicyAction.AngleUp;
-		}
 
+		} else if (!trajectoryFound) {
+			trajectoryFound = true;
+
+		} else if (trajectoryFound) {
+			action = PolicyAction.Shoot;
+			if (ape.getThrowStrength() > desiredPower + 0.05f) {
+				action = PolicyAction.PowerDown;
+			} else if (ape.getThrowStrength() < desiredPower - 0.05f) {
+				action = PolicyAction.PowerUp;
+			} else if (ape.getLocalAngleOfView() > desiredAngle + 1) {
+				action = PolicyAction.AngleDown;
+			} else if (ape.getLocalAngleOfView() < desiredAngle - 1) {
+				action = PolicyAction.AngleUp;
+			}
+		}
 		this.setCurrentAction(action);
+
 	}
-	
+
+	/**
+	 * Sampels a random enemy ape as target.
+	 * 
+	 * @return Vector2f in world coordinates
+	 */
 	private Vector2f findEnemyApePosition() {
-		
+
 		List<Ape> enemyApes = new ArrayList<Ape>(Map.getInstance().getApes());
-		assertTrue("Ape self is not in list of Apes", enemyApes.remove(getApe()));
+		enemyApes.remove(getApe());
+
 		int numberOfApes = enemyApes.size();
-		System.out.println("enemyApes: " + numberOfApes);
 		int indexOfTarget = (int) Utils.randomFloat(0, numberOfApes);
-		Ape targetApe = Map.getInstance().getApes().get(indexOfTarget);
-		System.out.println("targetApe: " + targetApe.getID());
-		
+		Ape targetApe = enemyApes.get(indexOfTarget);
+
 		return targetApe.getWorldCoordinates();
 	}
 

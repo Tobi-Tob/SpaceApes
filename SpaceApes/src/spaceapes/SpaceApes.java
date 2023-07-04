@@ -19,7 +19,7 @@ public class SpaceApes extends StateBasedGame {
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HIGHSCORE_STATE = 2;
 
-	public static final List<String> players = new ArrayList<>(List.of("AI", "Player2"));
+	public static final List<String> players = new ArrayList<>(List.of("AI", "AI", "AI"));
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
@@ -29,8 +29,9 @@ public class SpaceApes extends StateBasedGame {
 
 	// Sollte das Spiel anfangen zu laggen, vergroessere das Update Intervall
 	public static final int UPDATE_INTERVAL = 20; // Updatefrequenz der Gameloop in ms
-	
-	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird fuer die Tests benoetigt.
+
+	public static boolean renderImages = true; // wenn das auf false gesetzt wird, werden keine Images erzeugt. Das wird fuer
+												// die Tests benoetigt.
 
 	public SpaceApes(boolean renderImages) {
 		super("Space Apes"); // Name des Spiels
@@ -81,7 +82,7 @@ public class SpaceApes extends StateBasedGame {
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
 		StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE);
 	}
-	
+
 	public void setRenderImages(boolean renderImages1) {
 		renderImages = renderImages1;
 	}
