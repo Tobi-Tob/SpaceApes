@@ -38,13 +38,13 @@ public class RandomPolicy extends Policy {
 			} else {
 				action = PolicyAction.MoveLeft;
 			}
-		} else if (ape.getThrowStrength() > desiredPower + 0.05f) {
+		} else if (ape.getThrowStrength() > desiredPower + 0.01f) {
 			action = PolicyAction.PowerDown;
-		} else if (ape.getThrowStrength() < desiredPower - 0.05f) {
+		} else if (ape.getThrowStrength() < desiredPower - 0.01f) {
 			action = PolicyAction.PowerUp;
-		} else if (ape.getLocalAngleOfView() > desiredAngle + 1) {
+		} else if (ape.getLocalAngleOfView() > desiredAngle + 0.3f) {
 			action = PolicyAction.AngleDown;
-		} else if (ape.getLocalAngleOfView() < desiredAngle - 1) {
+		} else if (ape.getLocalAngleOfView() < desiredAngle - 0.3f) {
 			action = PolicyAction.AngleUp;
 		}
 

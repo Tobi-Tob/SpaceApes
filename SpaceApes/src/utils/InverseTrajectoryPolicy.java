@@ -3,13 +3,8 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-import eea.engine.component.render.ImageRenderComponent;
-import eea.engine.entity.Entity;
-import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
 import entities.Projectile;
 import factories.ProjectileFactory;
@@ -23,11 +18,13 @@ import spaceapes.SpaceApes;
 public class InverseTrajectoryPolicy extends Policy {
 	private float desiredPosition;
 	private float desiredPositionInInterval; // cliped to [0, 360)
-	private float desiredPower = 6;
-	private float desiredAngle = 30;
+	private float desiredPower;
+	private float desiredAngle;
 
 	private Vector2f target;
 	private boolean trajectoryFound;
+	private int timeSpend; // in ms
+	private int failedActionsInRow = 0;
 
 	public InverseTrajectoryPolicy() {
 		super("RandomPolicy");
@@ -50,10 +47,12 @@ public class InverseTrajectoryPolicy extends Policy {
 
 		this.trajectoryFound = false;
 		this.target = findEnemyApePosition();
+		this.timeSpend = 0;
 	}
 
 	@Override
 	public void calcNextAction(int delta) {
+		this.timeSpend += delta;
 		Ape ape = getApe();
 		PolicyAction action = null;
 
@@ -67,23 +66,32 @@ public class InverseTrajectoryPolicy extends Policy {
 
 			/* 2. Find Trajectory */
 		} else if (!trajectoryFound) {
-			if (findTrajectory(10, 10000)) {
-				trajectoryFound = true;
-			}
-			trajectoryFound = true;
+			findTrajectory(100, 10000, 0.8f);
 
 			/* 3. Adjust Parameters */
 		} else if (trajectoryFound) {
 			action = PolicyAction.Shoot;
-			if (ape.getThrowStrength() > desiredPower + 0.05f) {
+			if (ape.getThrowStrength() > desiredPower + 0.01f) {
 				action = PolicyAction.PowerDown;
-			} else if (ape.getThrowStrength() < desiredPower - 0.05f) {
+			} else if (ape.getThrowStrength() < desiredPower - 0.01f) {
 				action = PolicyAction.PowerUp;
-			} else if (ape.getLocalAngleOfView() > desiredAngle + 1) {
+			} else if (ape.getLocalAngleOfView() > desiredAngle + 0.3f) {
 				action = PolicyAction.AngleDown;
-			} else if (ape.getLocalAngleOfView() < desiredAngle - 1) {
+			} else if (ape.getLocalAngleOfView() < desiredAngle - 0.3f) {
 				action = PolicyAction.AngleUp;
 			}
+		}
+		/* 4. Init new Action if stuck */
+		if (timeSpend > 10000) { // after 10 seconds
+			failedActionsInRow++;
+			initTurn();
+		}
+		/* 5. Random Action if completely stuck */
+		if (failedActionsInRow >= 3) {
+			action = PolicyAction.Shoot;
+		}
+		if (action == PolicyAction.Shoot) {
+			failedActionsInRow = 0;
 		}
 		this.setCurrentAction(action);
 
@@ -107,19 +115,25 @@ public class InverseTrajectoryPolicy extends Policy {
 	}
 
 	/**
+	 * The method tries to find a set of parameters that lead to a trajectory that
+	 * hits the target. Random search algorithm for the complex inverse equations is
+	 * used.
 	 * 
-	 * @param iterations
-	 * @param maxFlightTime
-	 * @return
+	 * @param iterations int number of interations to test parameters
+	 * @param maxFlightTime int time in ms for the longest possible trajectory to find
+	 * @param epsilon float max distance to target 
 	 */
-	private boolean findTrajectory(int iterations, int maxFlightTime) {
+	private void findTrajectory(int iterations, int maxFlightTime, float epsilon) {
 		Ape ape = getApe();
 		int searchDepth = Math.round(maxFlightTime / SpaceApes.UPDATE_INTERVAL);
 		Vector2f positionOfProjectileLaunch = new Vector2f(ape.getWorldCoordinates())
 				.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
 
 		for (int i = 0; i <= iterations; i++) {
-			float parameterAngle = Utils.randomFloat(-180, 180);
+			if (trajectoryFound) {
+				break; // Beende Suche bei gefundenen Parametern
+			}
+			float parameterAngle = Utils.randomFloat(-90, 90);
 			float parameterPower = Utils.randomFloat(3, 7);
 
 			Vector2f velocity = Utils.toCartesianCoordinates(parameterPower, ape.getAngleOnPlanet() + parameterAngle);
@@ -127,14 +141,19 @@ public class InverseTrajectoryPolicy extends Policy {
 			Projectile dummyProjectile = ProjectileFactory.createProjectile(Constants.DUMMY_PROJECTILE_ID, ProjectileType.COCONUT,
 					positionOfProjectileLaunch, velocity, false, true, MovementType.EXPLICIT_EULER);
 
-			for (int j = 0; j <= searchDepth; j++) {
-				if (dummyProjectile.explizitEulerStep(SpaceApes.UPDATE_INTERVAL) != ProjectileStatus.flying) {
-					// Wenn Kollision mit einem Objekt
-					break;
+			for (int j = 0; j <= searchDepth; j++) { // Berechne Bahn des Projektils
+				ProjectileStatus status = dummyProjectile.explizitEulerStep(SpaceApes.UPDATE_INTERVAL);
+				if (status != ProjectileStatus.flying) { // Wenn Kollision mit einem Objekt
+					if (dummyProjectile.getCoordinates().sub(target).length() < epsilon) { // Kollision nah am Target Affen
+						// Merke gefundene Parameter
+						this.desiredAngle = parameterAngle;
+						this.desiredPower = parameterPower;
+						this.trajectoryFound = true;
+					}
+					break; // Beende Bahnberechnung bei Kollision
 				}
 			}
 		}
-		return false;
 	}
 
 }

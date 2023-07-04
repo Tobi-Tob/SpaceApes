@@ -24,9 +24,9 @@ public abstract class ProjectileFactory {
 	public enum MovementType {
 		LINEAR, EXPLICIT_EULER
 	};
-	
+
 	public enum ProjectileStatus {
-		flying, crashingPlanet, crashingMoon, hittingApe, leavingWorld, inBlackHole, inArea 
+		flying, crashingPlanet, crashingMoon, hittingApe, leavingWorld, inBlackHole, inArea
 	};
 
 	public static Projectile createProjectile(String iD, ProjectileType type, Vector2f position, Vector2f velocity, boolean visible,
@@ -36,7 +36,7 @@ public abstract class ProjectileFactory {
 		projectile.setType(type);
 		projectile.setVisible(visible);
 
-		if (iD != Constants.DUMMY_PROJECTILE_ID) {
+		if (iD != Constants.DUMMY_PROJECTILE_ID) { // Dummy Projektile sollen nicht geupdatet werden
 			StateBasedEntityManager.getInstance().addEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 		}
 
@@ -133,10 +133,12 @@ public abstract class ProjectileFactory {
 			projectile.addComponent(projectileLoop);
 		}
 
-		// Collision Event
-		CollisionEvent projectileCollision = new CollisionEvent();
-		projectileCollision.addAction(new ItemCollisionAction());
-		projectile.addComponent(projectileCollision);
+		if (isAffectedByEnvironment && visible) {
+			// Item Event
+			CollisionEvent projectileCollision = new CollisionEvent();
+			projectileCollision.addAction(new ItemCollisionAction());
+			projectile.addComponent(projectileCollision);
+		}
 
 		return projectile;
 	}

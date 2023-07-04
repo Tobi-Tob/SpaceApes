@@ -64,7 +64,7 @@ public class Initializer {
 			}
 
 			Planet planet1 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet1", coordinatesPlanet1, radiusPlanet1, massPlanet1,
-					atmosphereRadius1, 5f);
+					atmosphereRadius1, 3f);
 			playerPlanets.add(planet1);
 
 			// Planet 2 fuer Spieler 2 in der rechten Haelfte platzieren
@@ -82,7 +82,7 @@ public class Initializer {
 			}
 
 			Planet planet2 = PlanetFactory.createPlanet(PlanetType.PLAYER, "Planet2", coordinatesPlanet2, radiusPlanet2, massPlanet2,
-					atmosphereRadius2, 3f);
+					atmosphereRadius2, 2f);
 			playerPlanets.add(planet2);
 
 			// Versuche Schwarzes Loch zu platzieren
