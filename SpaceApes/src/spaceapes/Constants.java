@@ -23,7 +23,7 @@ public class Constants {
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
 	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;
 	
-	public static final float ATMOSPHERE_PROBABILITY = 0.5f;
+	public static final float ATMOSPHERE_PROBABILITY = 0.4f;
 	public static final float ATMOSPHERE_MINIMUM_RADIUS = 0.6f;
 	public static final float ATMOSPHERE_MAXIMUM_RADIUS = 1f;
 
@@ -62,13 +62,13 @@ public class Constants {
 
 	// Spikeball
 	public static final int SPIKEBALL_PRIZE = 3;
-	public static final int SPIKEBALL_MAX_DAMAGE = 30;
-	public static final float SPIKEBALL_DAMAGE_RADIUS = 0.4f;
+	public static final int SPIKEBALL_MAX_DAMAGE = 40;
+	public static final float SPIKEBALL_DAMAGE_RADIUS = 0.5f;
 	public static final float SPIKEBALL_SIZE_IN_COORDINATES = 0.3f;
 	public static final float SPIKEBALL_SIZE_IN_PIXEL = 625;
 
 	// Bomb
-	public static final int BOMB_PRIZE = 4;
+	public static final int BOMB_PRIZE = 5;
 	public static final int BOMB_MAX_DAMAGE = 60;
 	public static final float BOMB_DAMAGE_RADIUS = 0.8f;
 	public static final float BOMB_SIZE_IN_COORDINATES = 0.35f;
@@ -90,8 +90,8 @@ public class Constants {
 
 	// Turtle
 	public static final int TURTLE_PRIZE = 2;
-	public static final int TURTLE_MAX_DAMAGE = 40;
-	public static final float TURTLE_DAMAGE_RADIUS = 0.5f;
+	public static final int TURTLE_MAX_DAMAGE = 30;
+	public static final float TURTLE_DAMAGE_RADIUS = 0.2f;
 	public static final float TURTLE_SIZE_IN_COORDINATES = 0.35f;
 	public static final float TURTLE_SIZE_IN_PIXEL = 530;
 
@@ -99,12 +99,12 @@ public class Constants {
 
 	// Energy Pack
 	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
-	public static final int ENERGY_PACK_VALUE = 40;
+	public static final int ENERGY_PACK_VALUE = 50;
 	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.03f;
 
 	// Health Pack
 	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
-	public static final int HEALTH_PACK_VALUE = 20;
+	public static final int HEALTH_PACK_VALUE = 30;
 	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.06f;
 
 	// Coins general
@@ -113,15 +113,15 @@ public class Constants {
 	// This is the possibility if any coin is spawned
 
 	// Copper Coin
-	public static final int COPPER_COIN_VALUE = 1;
+	public static final int COPPER_COIN_VALUE = 2;
 	public static final float COPPER_COIN_SPAWN_POSSIBILITY = 0.6f;
 
 	// Gold Coin
-	public static final int GOLD_COIN_VALUE = 3;
+	public static final int GOLD_COIN_VALUE = 5;
 	public static final float GOLD_COIN_SPAWN_POSSIBILITY = 0.3f;
 
 	// Diamond Coin
-	public static final int DIAMOND_COIN_VALUE = 5;
+	public static final int DIAMOND_COIN_VALUE = 8;
 	// DIAMOND_COIN_SPAWN_POSSIBILITY = 1 - (COPPER_COIN_SPAWN_POSSIBILITY +
 	// GOLD_COIN_SPAWN_POSSIBILITY)
 
