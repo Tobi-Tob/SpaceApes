@@ -3,10 +3,22 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import eea.engine.component.render.ImageRenderComponent;
+import eea.engine.entity.Entity;
+import eea.engine.entity.StateBasedEntityManager;
 import entities.Ape;
+import entities.Projectile;
+import factories.ProjectileFactory;
+import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileStatus;
+import factories.ProjectileFactory.ProjectileType;
 import map.Map;
+import spaceapes.Constants;
+import spaceapes.SpaceApes;
 
 public class InverseTrajectoryPolicy extends Policy {
 	private float desiredPosition;
@@ -53,9 +65,14 @@ public class InverseTrajectoryPolicy extends Policy {
 				action = PolicyAction.MoveLeft;
 			}
 
+			/* 2. Find Trajectory */
 		} else if (!trajectoryFound) {
+			if (findTrajectory(10, 10000)) {
+				trajectoryFound = true;
+			}
 			trajectoryFound = true;
 
+			/* 3. Adjust Parameters */
 		} else if (trajectoryFound) {
 			action = PolicyAction.Shoot;
 			if (ape.getThrowStrength() > desiredPower + 0.05f) {
@@ -87,6 +104,37 @@ public class InverseTrajectoryPolicy extends Policy {
 		Ape targetApe = enemyApes.get(indexOfTarget);
 
 		return targetApe.getWorldCoordinates();
+	}
+
+	/**
+	 * 
+	 * @param iterations
+	 * @param maxFlightTime
+	 * @return
+	 */
+	private boolean findTrajectory(int iterations, int maxFlightTime) {
+		Ape ape = getApe();
+		int searchDepth = Math.round(maxFlightTime / SpaceApes.UPDATE_INTERVAL);
+		Vector2f positionOfProjectileLaunch = new Vector2f(ape.getWorldCoordinates())
+				.add(Utils.toCartesianCoordinates(ape.getRadiusInWorldUnits(), ape.getAngleOnPlanet()));
+
+		for (int i = 0; i <= iterations; i++) {
+			float parameterAngle = Utils.randomFloat(-180, 180);
+			float parameterPower = Utils.randomFloat(3, 7);
+
+			Vector2f velocity = Utils.toCartesianCoordinates(parameterPower, ape.getAngleOnPlanet() + parameterAngle);
+
+			Projectile dummyProjectile = ProjectileFactory.createProjectile(Constants.DUMMY_PROJECTILE_ID, ProjectileType.COCONUT,
+					positionOfProjectileLaunch, velocity, false, true, MovementType.EXPLICIT_EULER);
+
+			for (int j = 0; j <= searchDepth; j++) {
+				if (dummyProjectile.explizitEulerStep(SpaceApes.UPDATE_INTERVAL) != ProjectileStatus.flying) {
+					// Wenn Kollision mit einem Objekt
+					break;
+				}
+			}
+		}
+		return false;
 	}
 
 }

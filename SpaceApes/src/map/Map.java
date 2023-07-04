@@ -26,6 +26,7 @@ import factories.ItemFactory;
 import factories.ItemFactory.ItemType;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
@@ -38,7 +39,6 @@ public class Map {
 	private List<Item> items; // Liste aller Items
 	private List<Entity> moons; // Liste aller Monde
 	private ControlPanel controlPanel;
-	private boolean useAirFriction = false; // TODO hier benötigt?
 	private LinkedHashMap<String, String[]> statisticsTable; // Tabelle zum speichern aller Statistiken
 
 	/**
@@ -113,14 +113,6 @@ public class Map {
 
 	public ControlPanel getControlPanel() {
 		return controlPanel;
-	}
-
-	public void useAirFriction(boolean useAirFriction) {
-		this.useAirFriction = useAirFriction;
-	}
-
-	public boolean isAirFrictionUsed() {
-		return useAirFriction;
 	}
 
 	public Ape getActiveApe() {
@@ -312,10 +304,9 @@ public class Map {
 					positionOfProjectileLaunch, velocity, false, true, MovementType.EXPLICIT_EULER);
 
 			for (int i = 0; i <= iterations; i++) {
-				if (dummyProjectile.explizitEulerStep((int) updateFrequency, useAirFriction)) {
+				if (dummyProjectile.explizitEulerStep((int) updateFrequency) != ProjectileStatus.flying) {
 					// Wenn Kollision mit einem Objekt
-					break; // -> laufe trotzdem durch die schleife, damit es nicht so wirkt als wuerde es
-							// laggen TL: laggt jz nicht mehr
+					break;
 				}
 				if (draw && i % Math.round(60 / updateFrequency) == 0) { // In bestimmten Abstaenden
 					// werden Punkte der Hilfslinie gesetzt

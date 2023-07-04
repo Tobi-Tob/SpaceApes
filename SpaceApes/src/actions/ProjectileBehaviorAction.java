@@ -15,7 +15,7 @@ import entities.AnimatedEntity;
 import entities.Ape;
 import entities.DamageDisplay;
 import entities.Projectile;
-import factories.ProjectileFactory.MovementType;
+import factories.ProjectileFactory.ProjectileStatus;
 import map.Map;
 import spaceapes.Constants;
 import spaceapes.SpaceApes;
@@ -24,30 +24,20 @@ import utils.Utils;
 public class ProjectileBehaviorAction implements Action {
 
 	private Projectile projectile;
-	private MovementType movementType; // which method calculate the flight trajectory should be used?
-	// 0: linearMovement | 1: explicitEuler
 
-	public ProjectileBehaviorAction(Projectile projectile, MovementType movementType) {
+	public ProjectileBehaviorAction(Projectile projectile) {
 		this.projectile = projectile;
-		this.movementType = movementType;
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+		
+		ProjectileStatus status = projectile.explizitEulerStep(delta);
 
-		boolean collision = false;
-		boolean airFriction = Map.getInstance().isAirFrictionUsed();
-		if (movementType == MovementType.LINEAR && projectile.linearMovementStep(delta)
-				|| movementType == MovementType.EXPLICIT_EULER && projectile.explizitEulerStep(delta, airFriction)) {
-			// linearMovementStep und explizitEulerStep geben jeweils true zurück bei
-			// Kollision mit Affen/Planeten
-			collision = true;
-		}
-
-		if (collision) {
+		if (status != ProjectileStatus.flying) { // Kollision
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
-			// Im Kollisionsfall:
+			
 			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>(); // Saving damage of this round
 
@@ -89,8 +79,8 @@ public class ProjectileBehaviorAction implements Action {
 			map.changeTurn();
 
 			// Zeige Explosion
-			AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
-			if (SpaceApes.renderImages) {
+			if (SpaceApes.renderImages && status != ProjectileStatus.inBlackHole) {
+				AnimatedEntity explosion = new AnimatedEntity(Constants.EXPLOSION_ID, projectile.getCoordinates());
 				Image[] images = new Image[4];
 				try {
 					images[0] = new Image("img/explosions/explosion1.png");
@@ -104,8 +94,8 @@ public class ProjectileBehaviorAction implements Action {
 				explosion.setImages(images);
 				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 				explosion.addAnimation(0.012f, false);
+				entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, explosion);
 			}
-			entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, explosion);
 
 		}
 		if (Math.abs(projectile.getCoordinates().x) > 10 || Math.abs(projectile.getCoordinates().y) > 8) {

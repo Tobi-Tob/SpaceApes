@@ -32,7 +32,6 @@ public class Initializer {
 		initPlanets(level);
 		initApes(); // initPlanets() muss unbedingt davor ausgefuehrt werden!
 		initApeInfoSigns(); // initPlanets() und initApes() muessen unbedingt davor ausgefuehrt werden!
-		Map.getInstance().useAirFriction(false);
 	}
 
 	protected void initPlanets(Integer level) {

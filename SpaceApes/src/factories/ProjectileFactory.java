@@ -24,6 +24,10 @@ public abstract class ProjectileFactory {
 	public enum MovementType {
 		LINEAR, EXPLICIT_EULER
 	};
+	
+	public enum ProjectileStatus {
+		flying, crashingPlanet, crashingMoon, hittingApe, leavingWorld, inBlackHole, inArea 
+	};
 
 	public static Projectile createProjectile(String iD, ProjectileType type, Vector2f position, Vector2f velocity, boolean visible,
 			boolean isAffectedByEnvironment, MovementType movementType) {
@@ -125,7 +129,7 @@ public abstract class ProjectileFactory {
 		if (isAffectedByEnvironment) {
 			// Loop Event
 			LoopEvent projectileLoop = new LoopEvent();
-			projectileLoop.addAction(new ProjectileBehaviorAction(projectile, movementType));
+			projectileLoop.addAction(new ProjectileBehaviorAction(projectile));
 			projectile.addComponent(projectileLoop);
 		}
 

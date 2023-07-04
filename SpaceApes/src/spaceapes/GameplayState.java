@@ -64,7 +64,6 @@ public class GameplayState extends BasicGameState {
 
 		/* Initialisiern der Map */
 		Map.getInstance().init();
-		Map.getInstance().useAirFriction(true); // needs to be done here so that the tests work
 
 		// Die dummyEntity steuert entitaetslose Events
 		Entity dummyEntity = new Entity("Dummy");

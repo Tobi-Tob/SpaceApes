@@ -16,6 +16,7 @@ public class Constants {
 	// beim oberen abgebrochen ist.
 	// MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
 	public static final float GRAVITATION_CONSTANT = 0.25f;
+	public static final float AIR_RESISTANCE = 0.15f;
 
 /////////////////////// Planet Constants //////////////////////////////
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
+import factories.PlanetFactory.PlanetType;
+import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
 import map.Map;
 import spaceapes.Constants;
@@ -125,72 +127,62 @@ public class Projectile extends Entity {
 	 * @return true, falls eine Kollision mit einem Planeten/Affen in diesem Schritt
 	 *         vorliegt
 	 */
-	public boolean explizitEulerStep(int timeDelta, boolean useAirFriction) {
+	public ProjectileStatus explizitEulerStep(int timeDelta) {
 		double dt = timeDelta * 1e-3d; // dt in Sekunden
-		float G = Constants.GRAVITATION_CONSTANT;
 		boolean projectileIsVisible = this.isVisible();
 		// Positionsupdate:
 		// X1 = X0 + dt * V0
-		double xNew = x + dt * vx;
-		double yNew = y + dt * vy;
-		// Geschwindigkeitsupdate:
-		// V1 = V0 + dt * ddX
+		this.x = x + dt * vx;
+		this.y = y + dt * vy;
+
+		// ddx soll die summierten Beschleunigungsanteile aller Planeten und
+		// ggf. Abbremswirkung durch Luftwiederstand enthalten
 		Vector2f ddx = new Vector2f(0, 0);
 
-		List<Planet> planets = Map.getInstance().getPlanets();
-		List<Ape> apes = Map.getInstance().getApes();
-		List<Entity> moons = Map.getInstance().getMoons();
-
-		// Da wir nahezu runde Objekte haben, berechnen wir die Hitbox nicht anhand des
-		// png-files, da auch transparente Ecken in die Hitbox einfliessen...
 		if (projectileIsVisible) {
 			// Pruefe auf Kollision mit einem Affen
-			for (Ape ape : apes) {
-				if (ape.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
-					return true;
+			for (Ape ape : Map.getInstance().getApes()) {
+				if (ape.checkCollision(new Vector2f((float) x, (float) y), 0)) {
+					return ProjectileStatus.hittingApe;
 				}
 			}
 			// Pruefe auf Kollision mit einem Mond
-			for (Entity moon : moons) {
+			for (Entity moon : Map.getInstance().getMoons()) {
 				Vector2f distanceVector = Utils.toWorldCoordinates(moon.getPosition()).sub(new Vector2f((float) x, (float) y));
 				if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(Constants.MOON_RADIUS, 2)) {
-					return true;
+					return ProjectileStatus.crashingMoon;
 				}
 			}
 		}
 
 		// Pruefe auf Kollision mit einem Planeten
-		for (Planet planet : planets) {
+		boolean isInAmosphere = false;
+		for (Planet planet : Map.getInstance().getPlanets()) {
 			Vector2f distanceVector = new Vector2f(planet.getX() - (float) x, planet.getY() - (float) y);
-			// Wenn man xNew und yNew nimmt fuer Berechnung von ddx: implizites Verhalten?
-			if (planet.checkCollision(new Vector2f((float) xNew, (float) yNew), 0)) {
-				return true;
-			}
 
-			// aktualisiere den Beschleinigungsvektor durch die neue Gravitation des
-			// Planeten und ggf. durch den Luftwiederstand in der Atmosphaere
-			if (!useAirFriction) {
-				ddx.add(distanceVector.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
-			} else {
-				float airFrictionAcceleration = 0;
-				if (planet.hasAtmosphere() && distanceVector.length() < planet.getAtmosphereRadius1()) {
-					float airDensity = 1.293f;
-					float C = 2.1f;
-					float halfSurfaceArea = (float) (2 * Math.PI * Math.pow(getRadiusInWorldUnits(), 2));
-					Vector2f airSpeed = new Vector2f(0, 0); // TODO vllt Berechnung vereinfachen
-					Vector2f relativeSpeedToAirSpeed = new Vector2f((float) vx - airSpeed.x, (float) vy - airSpeed.y);
-					airFrictionAcceleration = (float) (0.5 * airDensity * C * halfSurfaceArea
-							* Math.pow(relativeSpeedToAirSpeed.length(), 2));
+			if (planet.checkCollision(new Vector2f((float) x, (float) y), 0)) {
+				if (planet.getPlanetType() == PlanetType.BLACKHOLE) {
+					return ProjectileStatus.inBlackHole;
+				} else {
+					return ProjectileStatus.crashingPlanet;
 				}
-				ddx.add(distanceVector
-						.scale(G * planet.getMass() * (float) Math.pow(distanceVector.length(), -3) + airFrictionAcceleration));
-				// TODO warum +airFrictionAcceleration
 			}
+			if (planet.hasAtmosphere()) { // Test ob sich das Projektil in einer Atmosphaere befindet
+				if (distanceVector.length() < planet.getAtmosphereRadius1()) {
+					isInAmosphere = true;
+				}
+			}
+			// Aktualisiere den Beschleinigungsvektor durch die Gravitation eines Planeten
+			ddx.add(distanceVector
+					.scale(Constants.GRAVITATION_CONSTANT * planet.getMass() * (float) Math.pow(distanceVector.length(), -3)));
 		}
-		// ddx enthaelt nun die summierten Beschleunigungsanteile aller Planeten
-
-		this.x = xNew;
-		this.y = yNew;
+		if (isInAmosphere) { // Luftbremswirkung abziehen
+			Vector2f speedVector = new Vector2f((float) vx, (float) vy);
+			float factor = (float) (Constants.AIR_RESISTANCE * Math.pow(speedVector.length(), 2));
+			ddx.sub(speedVector.scale(factor));
+		}
+		// Geschwindigkeitsupdate:
+		// V1 = V0 + dt * ddX
 		this.vx = vx + dt * ddx.x;
 		this.vy = vy + dt * ddx.y;
 		// Aendern der direction in Richtung der Beschleunigung
@@ -199,7 +191,7 @@ public class Projectile extends Entity {
 			setRotation(direction + 90f);
 			setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 		}
-		return false; // Keine Kollision
+		return ProjectileStatus.flying; // Keine Kollision
 	}
 
 	/**
