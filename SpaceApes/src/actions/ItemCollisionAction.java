@@ -11,7 +11,7 @@ import eea.engine.event.basicevents.CollisionEvent;
 import entities.Ape;
 import entities.Item;
 import factories.ItemFactory.ItemType;
-import map.Map;
+import spaceapes.Map;
 
 public class ItemCollisionAction implements Action {
 

@@ -12,7 +12,7 @@ import eea.engine.event.basicevents.CollisionEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import entities.Projectile;
 import utils.Utils;
-import spaceapes.Constants;
+import utils.Constants;
 import spaceapes.SpaceApes;
 
 public abstract class ProjectileFactory {
@@ -45,76 +45,82 @@ public abstract class ProjectileFactory {
 				switch (type) {
 
 				default: // entspricht Case COCONUT
-
+					
+					float sizeInPixel = 490;
 					projectile.setPrice(Constants.COCONUT_PRIZE);
 					projectile.setMaxDamage(Constants.COCONUT_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.COCONUT_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.COCONUT_DESIRED_SIZE);
-					projectile.setScale(Constants.COCONUT_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.COCONUT_SIZE_IN_PIXEL));
+					projectile.setDesiredProjectileSize(Constants.COCONUT_SIZE);
+					projectile.setScale(Constants.COCONUT_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/coconut.png")));
 					}
 					break;
 
 				case SPIKEBALL:
-
+					
+					sizeInPixel = 625;
 					projectile.setPrice(Constants.SPIKEBALL_PRIZE);
 					projectile.setMaxDamage(Constants.SPIKEBALL_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SPIKEBALL_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.SPIKEBALL_SIZE_IN_COORDINATES);
+					projectile.setDesiredProjectileSize(Constants.SPIKEBALL_SIZE);
 					projectile.setScale(
-							Constants.SPIKEBALL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SPIKEBALL_SIZE_IN_PIXEL));
+							Constants.SPIKEBALL_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/spikeball.png")));
 					}
 					break;
 
 				case BOMB:
-
+					
+					sizeInPixel = 650;
 					projectile.setPrice(Constants.BOMB_PRIZE);
 					projectile.setMaxDamage(Constants.BOMB_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.BOMB_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.BOMB_SIZE_IN_COORDINATES);
-					projectile.setScale(Constants.BOMB_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.BOMB_SIZE_IN_PIXEL));
+					projectile.setDesiredProjectileSize(Constants.BOMB_SIZE);
+					projectile.setScale(Constants.BOMB_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/bomb.png")));
 					}
 					break;
 
 				case SHARD:
-
+					
+					sizeInPixel = 500;
 					projectile.setPrice(Constants.SHARD_PRIZE);
 					projectile.setMaxDamage(Constants.SHARD_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.SHARD_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.SHARD_SIZE_IN_COORDINATES);
+					projectile.setDesiredProjectileSize(Constants.SHARD_SIZE);
 					projectile
-							.setScale(Constants.SHARD_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.SHARD_SIZE_IN_PIXEL));
+							.setScale(Constants.SHARD_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/shard.png")));
 					}
 					break;
 
 				case CRYSTAL:
-
+					
+					sizeInPixel = 510;
 					projectile.setPrice(Constants.CRYSTAL_PRIZE);
 					projectile.setMaxDamage(Constants.CRYSTAL_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.CRYSTAL_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.CRYSTAL_SIZE_IN_COORDINATES);
+					projectile.setDesiredProjectileSize(Constants.CRYSTAL_SIZE);
 					projectile.setScale(
-							Constants.CRYSTAL_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.CRYSTAL_SIZE_IN_PIXEL));
+							Constants.CRYSTAL_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/crystal.png")));
 					}
 					break;
 
 				case TURTLE:
-
+					
+					sizeInPixel = 530;
 					projectile.setPrice(Constants.TURTLE_PRIZE);
 					projectile.setMaxDamage(Constants.TURTLE_MAX_DAMAGE);
 					projectile.setDamageRadius(Constants.TURTLE_DAMAGE_RADIUS);
-					projectile.setDesiredProjectileSize(Constants.TURTLE_SIZE_IN_COORDINATES);
+					projectile.setDesiredProjectileSize(Constants.TURTLE_SIZE);
 					projectile.setScale(
-							Constants.TURTLE_SIZE_IN_COORDINATES / Utils.pixelLengthToWorldLength(Constants.TURTLE_SIZE_IN_PIXEL));
+							Constants.TURTLE_SIZE / Utils.pixelLengthToWorldLength(sizeInPixel));
 					if (SpaceApes.renderImages) {
 						projectile.addComponent(new ImageRenderComponent(new Image("img/projectiles/turtle.png")));
 					}

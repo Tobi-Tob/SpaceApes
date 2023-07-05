@@ -2,7 +2,6 @@ package utils;
 
 import java.util.Random;
 import org.newdawn.slick.geom.Vector2f;
-import spaceapes.Constants;
 import spaceapes.SpaceApes;
 
 public final class Utils {

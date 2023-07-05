@@ -30,9 +30,9 @@ import events.MouseDownEvent;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
-import map.Map;
-import spaceapes.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
+import utils.Constants;
 import utils.Utils;
 
 public class ControlPanel extends Entity {

@@ -7,8 +7,8 @@ import eea.engine.entity.Entity;
 import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
-import map.Map;
-import spaceapes.Constants;
+import spaceapes.Map;
+import utils.Constants;
 import utils.Utils;
 
 public class Projectile extends Entity {
@@ -18,8 +18,8 @@ public class Projectile extends Entity {
 	private double vx; // Geschwindigkeit in x-Richtung
 	private double vy; // Geschwindigkeit in y-Richtung
 	private float direction; // Winkel Spitze des Projektils gegenueber x-Achse
-	private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
-	private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
+	// private float rotationSpeed; // Rotationsgeschwindigkeit (wird nicht benutzt)
+	// private final float mass; // verschiede Massen der Geschosse moeglich (wird nicht benutzt)
 	private ProjectileType type;
 	private int price = 0; // default
 	private int maxDamage = 10; // default
@@ -38,8 +38,6 @@ public class Projectile extends Entity {
 		this.setCoordinates(coordinates);
 		this.setVelocity(velocity);
 		this.direction = getMovementDirection();
-		this.rotationSpeed = 0f;
-		this.mass = 1f;
 
 		setPosition(Utils.toPixelCoordinates((float) x, (float) y));
 	}

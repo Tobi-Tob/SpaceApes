@@ -1,6 +1,7 @@
-package utils;
+package policys;
 
 import entities.Ape;
+import utils.Utils;
 
 public class RandomPolicy extends Policy {
 	private float desiredPosition;

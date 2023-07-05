@@ -1,20 +1,18 @@
-package spaceapes;
+package utils;
 
 import java.awt.Font;
-
 import org.newdawn.slick.TrueTypeFont;
 
+import spaceapes.SpaceApes;
+
 public class Constants {
-// TODO Constants vllt ins package utils verschieben? und package spaceapes in gamestates umbennen?
 // TODO vllt zum Interface machen. Alle Klassen die Zugriff auf die Konstanten benoetigen koennen das dann implementieren
 
 //////////////////////// World Constants //////////////////////////
 
 	public static final float WORLD_WIDTH = 16;
 	public static final float WORLD_HEIGHT = WORLD_WIDTH * SpaceApes.HEIGHT / SpaceApes.WIDTH;
-	// public static final float WORLD_HEIGHT = 12; //MR Habe das aktiviert, weil es
-	// beim oberen abgebrochen ist.
-	// MR da ist anscheinend ein Initialisierungsproblem zur Laufzeit
+
 	public static final float GRAVITATION_CONSTANT = 0.25f;
 	public static final float AIR_RESISTANCE = 0.15f;
 
@@ -22,20 +20,19 @@ public class Constants {
 
 	public static final float MINIMUM_RADIUS_PLAYER_PLANET = 0.75f;
 	public static final float MAXIMUM_RADIUS_PLAYER_PLANET = 1.5f;
-	
+
+	// Moon
+	public static final float MOON_ORBIT_HEIGHT = 1f;
+	public static final float MOON_RADIUS = 0.25f;
+	public static final int TIME_FOR_COMPLETE_MOON_ORBIT = 10000; // in ms
+
+	// Atmosphere
 	public static final float ATMOSPHERE_PROBABILITY = 0.4f;
 	public static final float ATMOSPHERE_MINIMUM_RADIUS = 0.6f;
 	public static final float ATMOSPHERE_MAXIMUM_RADIUS = 1f;
 
 	public static final float BLACKHOLE_PROBABILITY = 0.4f;
 	public static final float ANTI_PLANET_PROBABILITY = 0.3f;
-	
-/////////////////////// Moon Constants //////////////////////////////
-	
-	public static final float MOON_ORBIT_HEIGHT = 1f;
-	public static final float MOON_RADIUS = 0.25f;
-	public static final int TIME_FOR_COMPLETE_MOON_ORBIT = 10000; // in ms
-	
 
 /////////////////////// Ape Constants //////////////////////////////
 
@@ -43,10 +40,7 @@ public class Constants {
 	public static final int APE_MAX_ENERGY = 100;
 	public static final float APE_MOVMENT_SPEED = 0.05f;
 	public static final float ENERGY_USED_PER_STEP = 0.01f;
-
-	public static final int APE_PIXEL_HEIGHT = 300;
-	public static final int APE_PIXEL_FEET_TO_CENTER = 130;
-	public static final float APE_DESIRED_SIZE = 0.6f; // desired size in world units
+	public static final float APE_SIZE = 0.6f;
 
 ////////////////////// Projectile Constants //////////////////////////////
 
@@ -54,62 +48,53 @@ public class Constants {
 	public static final int AIMLINE_LENGTH = 500; // TODO Projektile koennen unterschiedlich Lange Hilfslinien haben
 
 	// Coconut
-	public static final int COCONUT_PRIZE = 0;
 	public static final int COCONUT_MAX_DAMAGE = 20;
 	public static final float COCONUT_DAMAGE_RADIUS = 0.5f;
-	public static final float COCONUT_DESIRED_SIZE = 0.32f;
-	public static final float COCONUT_SIZE_IN_PIXEL = 490;
+	public static final int COCONUT_PRIZE = 0;
+	public static final float COCONUT_SIZE = 0.32f;
 
 	// Spikeball
-	public static final int SPIKEBALL_PRIZE = 3;
 	public static final int SPIKEBALL_MAX_DAMAGE = 40;
 	public static final float SPIKEBALL_DAMAGE_RADIUS = 0.5f;
-	public static final float SPIKEBALL_SIZE_IN_COORDINATES = 0.3f;
-	public static final float SPIKEBALL_SIZE_IN_PIXEL = 625;
+	public static final int SPIKEBALL_PRIZE = 3;
+	public static final float SPIKEBALL_SIZE = 0.3f;
 
 	// Bomb
-	public static final int BOMB_PRIZE = 5;
 	public static final int BOMB_MAX_DAMAGE = 60;
 	public static final float BOMB_DAMAGE_RADIUS = 0.8f;
-	public static final float BOMB_SIZE_IN_COORDINATES = 0.35f;
-	public static final float BOMB_SIZE_IN_PIXEL = 650;
+	public static final int BOMB_PRIZE = 5;
+	public static final float BOMB_SIZE = 0.35f;
 
 	// Shard
-	public static final int SHARD_PRIZE = 1;
 	public static final int SHARD_MAX_DAMAGE = 10;
 	public static final float SHARD_DAMAGE_RADIUS = 0.2f;
-	public static final float SHARD_SIZE_IN_COORDINATES = 0.22f;
-	public static final float SHARD_SIZE_IN_PIXEL = 500;
+	public static final int SHARD_PRIZE = 1;
+	public static final float SHARD_SIZE = 0.22f;
 
 	// Crystal
-	public static final int CRYSTAL_PRIZE = 8;
 	public static final int CRYSTAL_MAX_DAMAGE = 90;
 	public static final float CRYSTAL_DAMAGE_RADIUS = 0.2f;
-	public static final float CRYSTAL_SIZE_IN_COORDINATES = 0.4f;
-	public static final float CRYSTAL_SIZE_IN_PIXEL = 510;
+	public static final int CRYSTAL_PRIZE = 8;
+	public static final float CRYSTAL_SIZE = 0.4f;
 
 	// Turtle
-	public static final int TURTLE_PRIZE = 2;
 	public static final int TURTLE_MAX_DAMAGE = 30;
 	public static final float TURTLE_DAMAGE_RADIUS = 0.2f;
-	public static final float TURTLE_SIZE_IN_COORDINATES = 0.35f;
-	public static final float TURTLE_SIZE_IN_PIXEL = 530;
+	public static final int TURTLE_PRIZE = 2;
+	public static final float TURTLE_SIZE = 0.35f;
 
 ////////////////////// Item Constants //////////////////////////////
 
 	// Energy Pack
-	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
 	public static final int ENERGY_PACK_VALUE = 50;
-	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.03f;
+	public static final float ENERGY_PACK_SPAWN_POSSIBILITY = 0.04f;
 
 	// Health Pack
-	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
 	public static final int HEALTH_PACK_VALUE = 30;
 	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.06f;
 
 	// Coins general
-	public static final String COIN_ID = "COIN";
-	public static final float COIN_SPAWN_POSSIBILITY = 0.25f;
+	public static final float COIN_SPAWN_POSSIBILITY = 0.3f;
 	// This is the possibility if any coin is spawned
 
 	// Copper Coin
@@ -133,17 +118,21 @@ public class Constants {
 	public static final String PROJECTILE_ID = "PROJECTILE";
 	public static final String SHOP_PROJECTILE_ID = "SHOP_PROJECTILE";
 	public static final String DUMMY_PROJECTILE_ID = "DUMMY_PROJECTILE";
+	// ID Items
+	public static final String COIN_ID = "COIN";
+	public static final String ENERGY_PACK_ID = "ENERGY_PACK";
+	public static final String HEALTH_PACK_ID = "HEALTH_PACK";
 	// ID Hilfslinien Punkte
 	public static final String AIMLINE_DOT_ID = "AIMLINE_DOT";
 	// ID ApeInfoSign
 	public static final String APE_INFO_SIGN_ID = "APE_INFO_SIGN";
 	// ID Explosionen
 	public static final String EXPLOSION_ID = "EXPLOSION";
+	// ID Control Panel
+	public static final String CONTROL_PANEL_ID = "CONTROL_PANEL";
 	// Damage Display Entity
 	public static final String DAMAGE_DISPLAY_ID = "DAMAGE_DISPLAY";
 	public static final TrueTypeFont DAMAGE_FONT = new TrueTypeFont(
 			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * SpaceApes.WIDTH)), true);
-	// ID Control Panel
-	public static final String CONTROL_PANEL_ID = "CONTROL_PANEL";
 
 }

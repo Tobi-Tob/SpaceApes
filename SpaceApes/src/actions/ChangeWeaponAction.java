@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.component.Component;
 import eea.engine.entity.Entity;
 import entities.Ape;
-import map.Map;
+import spaceapes.Map;
 
 public class ChangeWeaponAction extends ButtonAnimationAction {
 	

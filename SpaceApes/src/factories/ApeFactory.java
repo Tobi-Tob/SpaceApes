@@ -15,7 +15,6 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.ANDEvent;
 import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyDownEvent;
-import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.LoopEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
@@ -23,11 +22,11 @@ import entities.Ape;
 import entities.Planet;
 import events.PolicyEvent;
 import factories.ProjectileFactory.MovementType;
-import map.Map;
-import spaceapes.Constants;
+import policys.Policy;
+import policys.Policy.PolicyAction;
+import utils.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
-import utils.Policy;
-import utils.Policy.PolicyAction;
 import utils.Utils;
 
 public abstract class ApeFactory {
@@ -49,18 +48,11 @@ public abstract class ApeFactory {
 	public static Ape createApe(String name, Planet homePlanet, float angleOnPlanet, int apeImageIndex, boolean isActive,
 			boolean isInteractionAllowed, Policy policy) {
 
-		final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
-		final float distancePlanetCenter = homePlanet.getRadius()
-				+ Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_FEET_TO_CENTER * scalingFactor);
-		if (distancePlanetCenter < 0.1f) {
-			throw new RuntimeException("Radius ist zu nah an null");
-		}
-
 		Ape ape = new Ape(name);
 
 		ape.setPlanet(homePlanet);
 		homePlanet.setApe(ape);
-		ape.setDistanceToPlanetCenter(distancePlanetCenter);
+		ape.setDistanceToPlanetCenter();
 		ape.setAngleOnPlanet(angleOnPlanet);
 		ape.setAngleOfView(0);
 		ape.setHealth(Constants.APE_MAX_HEALTH);
@@ -71,7 +63,7 @@ public abstract class ApeFactory {
 		ape.setInteractionAllowed(isInteractionAllowed);
 		ape.setPolicy(policy);
 		ape.setPosition(Utils.toPixelCoordinates(ape.getWorldCoordinates()));
-		ape.setScale(scalingFactor);
+		ape.setScale(ape.getScalingFactor());
 		ape.setRotation(angleOnPlanet + 90f);
 
 		if (SpaceApes.renderImages) {

@@ -1,4 +1,4 @@
-package spaceapes;
+package gamestates;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,6 +20,7 @@ import eea.engine.event.ANDEvent;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 /**
@@ -34,7 +35,7 @@ public class MainMenuState extends BasicGameState {
 	private Entity menuMidLayer;
 	private int maxPixelToShiftFirstLayer = 0;
 
-	MainMenuState(int sid) {
+	public MainMenuState(int sid) {
 		stateID = sid; // MAINMENU_STATE = 0
 		try {
 			this.music = new Music("snd/song1.ogg");

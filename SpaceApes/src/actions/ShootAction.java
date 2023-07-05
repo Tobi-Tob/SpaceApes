@@ -11,8 +11,8 @@ import entities.Projectile;
 import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
-import map.Map;
-import spaceapes.Constants;
+import spaceapes.Map;
+import utils.Constants;
 import utils.Utils;
 
 public class ShootAction implements Action {

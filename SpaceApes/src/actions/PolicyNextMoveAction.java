@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.component.Component;
 import entities.Ape;
-import utils.Policy;
+import policys.Policy;
 
 public class PolicyNextMoveAction implements Action {
 	

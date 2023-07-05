@@ -1,4 +1,4 @@
-package map;
+package spaceapes;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,8 +28,7 @@ import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
+import utils.Constants;
 import utils.Utils;
 
 public class Map {
@@ -52,6 +51,8 @@ public class Map {
 		moons = new ArrayList<Entity>();
 		int numberOfPlayers = SpaceApes.players.size();
 		this.statisticsTable = new LinkedHashMap<String, String[]>() {
+			private static final long serialVersionUID = 1L;
+
 			{
 				put("Ape", new String[numberOfPlayers]);
 				put("Damage dealt:", new String[numberOfPlayers]);

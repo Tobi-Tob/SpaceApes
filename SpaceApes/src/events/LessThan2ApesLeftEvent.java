@@ -3,7 +3,7 @@ package events;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.event.Event;
-import map.Map;
+import spaceapes.Map;
 
 public class LessThan2ApesLeftEvent extends Event {
 	

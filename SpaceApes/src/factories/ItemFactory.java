@@ -9,8 +9,8 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.LoopEvent;
 import entities.Item;
-import map.Map;
-import spaceapes.Constants;
+import utils.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
 

@@ -11,6 +11,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.StateBasedEntityManager;
+import gamestates.GameplayState;
+import gamestates.HighscoreState;
+import gamestates.MainMenuState;
 
 public class SpaceApes extends StateBasedGame {
 

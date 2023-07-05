@@ -6,8 +6,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.component.Component;
 import entities.Ape;
-import map.Map;
-import spaceapes.Constants;
+import utils.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
 
 public class MoveOnPlanetAction implements Action {

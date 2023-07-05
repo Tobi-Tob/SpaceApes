@@ -1,4 +1,4 @@
-package spaceapes;
+package gamestates;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,8 +19,10 @@ import eea.engine.entity.StateBasedEntityManager;
 import eea.engine.event.basicevents.*;
 import events.LessThan2ApesLeftEvent;
 import factories.ProjectileFactory.MovementType;
-import map.Map;
+import spaceapes.Map;
+import spaceapes.SpaceApes;
 import utils.Utils;
+import utils.Constants;
 
 /**
  * Diese Klasse repraesentiert das Spielfenster
@@ -29,7 +31,7 @@ public class GameplayState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
 
-	GameplayState(int stateID) {
+	public GameplayState(int stateID) {
 		this.stateID = stateID;
 	}
 

@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.entity.Entity;
 import eea.engine.event.Event;
-import spaceapes.Constants;
+import utils.Constants;
 import utils.Utils;
 
 public class LeavingWorldEvent extends Event {

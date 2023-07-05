@@ -2,7 +2,6 @@ package factories;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import actions.DisplayPlanetInfoAction;
 import actions.MoveInOrbitAction;
 
 import java.util.Random;
@@ -14,8 +13,8 @@ import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import entities.Planet;
-import map.Map;
-import spaceapes.Constants;
+import utils.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
 import eea.engine.event.basicevents.*;

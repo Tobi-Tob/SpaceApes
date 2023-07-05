@@ -2,9 +2,9 @@ package entities;
 
 import org.newdawn.slick.geom.Vector2f;
 import eea.engine.entity.Entity;
-import spaceapes.Constants;
+import policys.Policy;
+import utils.Constants;
 import spaceapes.SpaceApes;
-import utils.Policy;
 import utils.Utils;
 
 public class Ape extends Entity {
@@ -17,7 +17,9 @@ public class Ape extends Entity {
 	private float movementSpeed; // Faktor fuer die Schrittweite des Affen
 	private float distancePlanetCenter; // Abstand des Planetenmittelpunkts zur Kreisbahn auf der sich der Affe bewegt
 
-	private final float scalingFactor = Constants.APE_DESIRED_SIZE / Utils.pixelLengthToWorldLength(Constants.APE_PIXEL_HEIGHT);
+	public final int apePixelHeight = 300;
+	public final int apePixelFeetToCenter = 130;
+	private final float scalingFactor = Constants.APE_SIZE / Utils.pixelLengthToWorldLength(apePixelHeight);
 
 	private final int maxHealth = Constants.APE_MAX_HEALTH;
 	private final int maxEnergy = Constants.APE_MAX_ENERGY;
@@ -235,7 +237,7 @@ public class Ape extends Entity {
 	public void changeEnergy(float value) {
 		if (energy + value > maxEnergy) {
 			energy = maxEnergy;
-		} else if (energy - value < 0) {
+		} else if (energy + value < 0) {
 			energy = 0;
 		} else {
 			energy += value;
@@ -246,8 +248,13 @@ public class Ape extends Entity {
 		return distancePlanetCenter;
 	}
 
-	public void setDistanceToPlanetCenter(float distancePlanetCenter) {
-		this.distancePlanetCenter = distancePlanetCenter;
+	public void setDistanceToPlanetCenter() {
+		float distance = homePlanet.getRadius()
+				+ Utils.pixelLengthToWorldLength(apePixelFeetToCenter * scalingFactor);
+		if (distance < 0.1f) {
+			throw new RuntimeException("Distance to planet center is to close to 0");
+		}
+		this.distancePlanetCenter = distance;
 	}
 
 	public void setPlanet(Planet planet) {
@@ -278,7 +285,7 @@ public class Ape extends Entity {
 	}
 
 	public float getRadiusInWorldUnits() { //necessary for collision check
-		return Constants.APE_DESIRED_SIZE / 2;
+		return Constants.APE_SIZE / 2;
 	}
 
 	/**

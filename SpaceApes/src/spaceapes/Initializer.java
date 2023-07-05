@@ -1,4 +1,4 @@
-package map;
+package spaceapes;
 
 import java.util.List;
 import java.util.Random;
@@ -13,12 +13,9 @@ import entities.Planet;
 import factories.ApeFactory;
 import factories.PlanetFactory;
 import factories.PlanetFactory.PlanetType;
-import spaceapes.Constants;
-import spaceapes.SpaceApes;
-import utils.InverseTrajectoryPolicy;
-import utils.Policy;
-import utils.RandomPolicy;
-import utils.RuleBasedPolicy;
+import policys.InverseTrajectoryPolicy;
+import policys.Policy;
+import utils.Constants;
 import utils.Utils;
 
 public class Initializer {

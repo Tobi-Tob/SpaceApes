@@ -16,8 +16,8 @@ import entities.Ape;
 import entities.DamageDisplay;
 import entities.Projectile;
 import factories.ProjectileFactory.ProjectileStatus;
-import map.Map;
-import spaceapes.Constants;
+import utils.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
 

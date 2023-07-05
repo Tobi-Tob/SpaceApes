@@ -7,8 +7,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
-import spaceapes.Constants;
 import spaceapes.SpaceApes;
+import utils.Constants;
 import utils.Utils;
 
 /**

@@ -4,8 +4,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import eea.engine.event.Event;
-import utils.Policy;
-import utils.Policy.PolicyAction;
+import policys.Policy;
+import policys.Policy.PolicyAction;
 
 public class PolicyEvent extends Event {
 	Policy policy;

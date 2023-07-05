@@ -1,4 +1,4 @@
-package utils;
+package policys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,10 @@ import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
-import map.Map;
-import spaceapes.Constants;
+import spaceapes.Map;
 import spaceapes.SpaceApes;
+import utils.Constants;
+import utils.Utils;
 
 public class InverseTrajectoryPolicy extends Policy {
 	private float desiredPosition;

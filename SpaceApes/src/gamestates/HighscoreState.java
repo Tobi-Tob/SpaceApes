@@ -1,7 +1,6 @@
-package spaceapes;
+package gamestates;
 
 import java.awt.Font;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -25,8 +24,8 @@ import eea.engine.event.Event;
 import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
-import entities.Ape;
-import map.Map;
+import spaceapes.Map;
+import spaceapes.SpaceApes;
 import utils.Utils;
 
 public class HighscoreState extends BasicGameState {
@@ -38,7 +37,7 @@ public class HighscoreState extends BasicGameState {
 	TrueTypeFont font;
 	TrueTypeFont fontBig;
 
-	HighscoreState(int stateID) {
+	public HighscoreState(int stateID) {
 		this.stateID = stateID;
 	}
 

@@ -14,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
-import spaceapes.Constants;
+import utils.Constants;
 import spaceapes.SpaceApes;
 import utils.Utils;
 
