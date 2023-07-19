@@ -8,6 +8,11 @@ import eea.engine.entity.Entity;
 import entities.Ape;
 import spaceapes.Map;
 
+/**
+ * Action to change the selected projectile
+ * @author Tobi
+ *
+ */
 public class ChangeWeaponAction extends ButtonAnimationAction {
 	
 	public ChangeWeaponAction(Entity button) {

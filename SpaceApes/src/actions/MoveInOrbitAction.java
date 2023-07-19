@@ -9,6 +9,11 @@ import eea.engine.component.Component;
 import eea.engine.entity.Entity;
 import utils.Utils;
 
+/**
+ * Action to follow a circular orbit
+ * @author Tobi
+ *
+ */
 public class MoveInOrbitAction implements Action {
 
 		private Entity entity;

@@ -8,6 +8,11 @@ import eea.engine.entity.Entity;
 import entities.Ape;
 import spaceapes.Map;
 
+/**
+ * Action to change the power parameter of an Ape
+ * @author Tobi
+ *
+ */
 public class ChangePowerAction extends ButtonAnimationAction {
 	private float powerToChange;
 

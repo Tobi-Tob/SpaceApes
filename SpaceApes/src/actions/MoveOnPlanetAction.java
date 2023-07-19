@@ -10,6 +10,11 @@ import utils.Constants;
 import spaceapes.Map;
 import spaceapes.SpaceApes;
 
+/**
+ * Action to make steps on a planet
+ * @author Tobi
+ *
+ */
 public class MoveOnPlanetAction implements Action {
 
 	private float direction; // Bewegung nach links -1 und Bewegung nach rechts +1

@@ -8,6 +8,11 @@ import eea.engine.component.Component;
 import entities.Ape;
 import policys.Policy;
 
+/**
+ * Action that triggers policy calculations to determine the next move
+ * @author Tobi
+ *
+ */
 public class PolicyNextMoveAction implements Action {
 	
 	private Ape ape;

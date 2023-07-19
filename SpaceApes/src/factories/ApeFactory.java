@@ -6,7 +6,6 @@ import org.newdawn.slick.SlickException;
 
 import actions.ChangeAngleAction;
 import actions.ChangePowerAction;
-import actions.DisplayApeInfoAction;
 import actions.MoveOnPlanetAction;
 import actions.PolicyNextMoveAction;
 import actions.ShootAction;
@@ -77,12 +76,6 @@ public abstract class ApeFactory {
 				}
 			}
 		}
-
-		// Zeige Informationen zum Ape, wenn auf ihn geklickt wird (nur wenn der Spieler
-		// am Zug ist!)
-		Event clickOnApeEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		clickOnApeEvent.addAction(new DisplayApeInfoAction());
-		ape.addComponent(clickOnApeEvent);
 
 		if (policy == null) { // Direct key pressed events for apes which are controlled by a Player
 			// Bewege den Affen mit der rechten Pfeiltaste nach rechts
