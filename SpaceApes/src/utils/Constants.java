@@ -1,8 +1,5 @@
 package utils;
 
-import java.awt.Font;
-import org.newdawn.slick.TrueTypeFont;
-
 import spaceapes.SpaceApes;
 
 public class Constants {
@@ -94,16 +91,16 @@ public class Constants {
 	public static final float HEALTH_PACK_SPAWN_POSSIBILITY = 0.06f;
 
 	// Coins general
-	public static final float COIN_SPAWN_POSSIBILITY = 0.3f;
+	public static final float COIN_SPAWN_POSSIBILITY = 0.30f;
 	// This is the possibility if any coin is spawned
 
 	// Copper Coin
 	public static final int COPPER_COIN_VALUE = 2;
-	public static final float COPPER_COIN_SPAWN_POSSIBILITY = 0.6f;
+	public static final float COPPER_COIN_SPAWN_POSSIBILITY = 0.60f;
 
 	// Gold Coin
 	public static final int GOLD_COIN_VALUE = 5;
-	public static final float GOLD_COIN_SPAWN_POSSIBILITY = 0.3f;
+	public static final float GOLD_COIN_SPAWN_POSSIBILITY = 0.30f;
 
 	// Diamond Coin
 	public static final int DIAMOND_COIN_VALUE = 8;
@@ -130,9 +127,7 @@ public class Constants {
 	public static final String EXPLOSION_ID = "EXPLOSION";
 	// ID Control Panel
 	public static final String CONTROL_PANEL_ID = "CONTROL_PANEL";
-	// Damage Display Entity
+	// ID Damage Display
 	public static final String DAMAGE_DISPLAY_ID = "DAMAGE_DISPLAY";
-	public static final TrueTypeFont DAMAGE_FONT = new TrueTypeFont(
-			new Font("Times New Roman", Font.BOLD, Math.round(0.02f * SpaceApes.WIDTH)), true);
 
 }

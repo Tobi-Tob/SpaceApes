@@ -9,6 +9,7 @@ import eea.engine.entity.Entity;
 import eea.engine.entity.StateBasedEntityManager;
 import spaceapes.SpaceApes;
 import utils.Constants;
+import utils.Resources;
 import utils.Utils;
 
 /**
@@ -37,8 +38,8 @@ public class DamageDisplay extends Entity {
 
 		Vector2f pos = getPositionAboveApe(0.6f);
 
-		this.posX = pos.x - Constants.DAMAGE_FONT.getWidth(damageString) / 2;
-		this.posY = pos.y - Constants.DAMAGE_FONT.getHeight() / 2;
+		this.posX = pos.x - Resources.DAMAGE_FONT.getWidth(damageString) / 2;
+		this.posY = pos.y - Resources.DAMAGE_FONT.getHeight() / 2;
 
 		this.timer = 0;
 		this.displayTime = displayTime;
@@ -79,7 +80,7 @@ public class DamageDisplay extends Entity {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
 		if (timer < displayTime) {
-			Constants.DAMAGE_FONT.drawString(posX, posY, damageString, color);
+			Resources.DAMAGE_FONT.drawString(posX, posY, damageString, color);
 		} else {
 			StateBasedEntityManager.getInstance().removeEntity(SpaceApes.GAMEPLAY_STATE, this);
 		}

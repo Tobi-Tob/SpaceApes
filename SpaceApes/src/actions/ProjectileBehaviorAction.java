@@ -17,6 +17,7 @@ import entities.DamageDisplay;
 import entities.Projectile;
 import factories.ProjectileFactory.ProjectileStatus;
 import utils.Constants;
+import utils.Resources;
 import spaceapes.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
@@ -31,13 +32,13 @@ public class ProjectileBehaviorAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		
+
 		ProjectileStatus status = projectile.explizitEulerStep(delta);
 
 		if (status != ProjectileStatus.flying) { // Kollision
 			StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 			Map map = Map.getInstance();
-			
+
 			entityManager.removeEntity(SpaceApes.GAMEPLAY_STATE, projectile);
 			HashMap<Integer, Ape> damageApeTable = new HashMap<Integer, Ape>(); // Saving damage of this round
 
@@ -95,6 +96,11 @@ public class ProjectileBehaviorAction implements Action {
 				explosion.scaleAndRotateAnimation(0.6f * projectile.getDamageRadius(), Utils.randomFloat(0, 360));
 				explosion.addAnimation(0.012f, false);
 				entityManager.addEntity(SpaceApes.GAMEPLAY_STATE, explosion);
+
+				// Explosion Sound
+				if (SpaceApes.PLAY_SOUNDS) {
+					Resources.EXPLOSION_SOUND.play(1f, 1f);
+				}
 			}
 
 		}

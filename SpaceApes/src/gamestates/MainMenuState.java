@@ -21,6 +21,7 @@ import eea.engine.event.basicevents.KeyPressedEvent;
 import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import spaceapes.SpaceApes;
+import utils.Resources;
 import utils.Utils;
 
 /**
@@ -29,7 +30,6 @@ import utils.Utils;
 public class MainMenuState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
-	private Music music; // Musik dieses GameStates
 
 	private Entity menuFirstLayer;
 	private Entity menuMidLayer;
@@ -37,11 +37,6 @@ public class MainMenuState extends BasicGameState {
 
 	public MainMenuState(int sid) {
 		stateID = sid; // MAINMENU_STATE = 0
-		try {
-			this.music = new Music("snd/song1.ogg");
-		} catch (SlickException e) {
-			System.err.println("Problem with main menu music");
-		}
 	}
 
 	/**
@@ -49,6 +44,8 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		Resources.init(); // Initialisiere Font und Sound Objekte
 		
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
 		
@@ -133,12 +130,8 @@ public class MainMenuState extends BasicGameState {
 	}
 
 	private void startMusic(float pitch, float volume, int fadeInTime) {
-		music.loop(pitch, 0);
-		music.fade(fadeInTime, volume, false);
-	}
-
-	public Music getMusic() {
-		return music;
+		Resources.MUSIC.loop(pitch, 0);
+		Resources.MUSIC.fade(fadeInTime, volume, false);
 	}
 
 	/**
@@ -160,8 +153,8 @@ public class MainMenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
-		if (SpaceApes.PLAY_MUSIC && !music.playing()) {
-			this.startMusic(1, 0.15f, 1000);
+		if (SpaceApes.PLAY_MUSIC && !Resources.MUSIC.playing()) {
+			this.startMusic(1f, 0.10f, 1000);
 		}
 	}
 

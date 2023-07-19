@@ -26,9 +26,10 @@ public class SpaceApes extends StateBasedGame {
 
 	public static int WIDTH = 1200;
 	public static int HEIGHT = 900; // Fenstergroesse wird ueberschrieben, wenn USE_FULL_SCREEN = true
+	
 	public static boolean USE_FULL_SCREEN = true;
-
 	public static boolean PLAY_MUSIC = true;
+	public static boolean PLAY_SOUNDS = true;
 
 	// Sollte das Spiel anfangen zu laggen, vergroessere das Update Intervall
 	public static final int UPDATE_INTERVAL = 20; // Updatefrequenz der Gameloop in ms

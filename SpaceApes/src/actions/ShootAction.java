@@ -13,6 +13,7 @@ import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Map;
 import utils.Constants;
+import utils.Resources;
 import utils.Utils;
 
 public class ShootAction implements Action {
@@ -44,9 +45,12 @@ public class ShootAction implements Action {
 			if (projectilePrice > activeApe.getCoins()) {
 
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
+				Resources.REFUSED.play(1.5f, 0.3f);
 
 			} else {
-
+				// Throw sound
+				Resources.THROW_SOUND.play(1f, 1f);
+				
 				activeApe.reduceCoins(projectilePrice);
 				activeApe.increaseMoneySpendStatistics(projectilePrice);
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das

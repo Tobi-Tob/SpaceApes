@@ -6,6 +6,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import eea.engine.action.Action;
 import eea.engine.component.Component;
 import eea.engine.entity.Entity;
+import spaceapes.SpaceApes;
+import utils.Resources;
 
 /**
  * This class is responsible for animating entities that act as buttons
@@ -31,6 +33,10 @@ public abstract class ButtonAnimationAction implements Action {
 				button.setScale(buttonScaleIfNotPressed * 0.9f);
 			} else {
 				button.setScale(buttonScaleIfNotPressed);
+			}
+			// Button Sound
+			if (SpaceApes.PLAY_SOUNDS && !Resources.PLOP_SOUND.playing()) {
+				Resources.PLOP_SOUND.play(1.5f, 0.3f);
 			}
 		}
 		updateToPerform(container, game, delta, event);
