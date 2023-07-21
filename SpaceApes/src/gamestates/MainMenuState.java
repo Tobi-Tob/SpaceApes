@@ -10,6 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import actions.ChangeAngleAction;
+import actions.StartGameAction;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.action.basicactions.QuitAction;
@@ -94,11 +96,12 @@ public class MainMenuState extends BasicGameState {
 			System.err.println("Problem with start button image");
 		}
 
-		// Erstelle das Ausloese-Event und die zugehoerige Action
+		// Erstelle das Ausloese-Event und die zugehoerige Action		
 		ANDEvent startGameByMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		Action startGameAction = new ChangeStateAction(SpaceApes.GAMEPLAY_STATE);
+		Action startGameAction = new StartGameAction(newGameEntity);
 		startGameByMouseEvent.addAction(startGameAction);
 		newGameEntity.addComponent(startGameByMouseEvent);
+		
 		// Ausserdem soll das Druecken der n-Taste das Spiel starten
 		KeyPressedEvent startGameByNKeyEvent = new KeyPressedEvent(Input.KEY_N);
 		startGameByNKeyEvent.addAction(new ChangeStateAction(SpaceApes.GAMEPLAY_STATE));

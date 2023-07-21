@@ -29,6 +29,7 @@ import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
 import utils.Constants;
+import utils.Resources;
 import utils.Utils;
 
 public class Map {
@@ -162,6 +163,11 @@ public class Map {
 				}
 				this.fillStatisticsTable(ape); // Speichere Statistik des toten Affen
 				System.out.println(ape.getID() + " is dead");
+				
+				// Todes Sound
+				if (SpaceApes.PLAY_SOUNDS) {
+					Resources.DEATH_SOUND.play(1f, 1f);
+				}
 
 				// Ape faellt nach unten
 				LoopEvent deathLoop = new LoopEvent();

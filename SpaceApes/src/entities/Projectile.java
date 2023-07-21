@@ -2,13 +2,18 @@ package entities;
 
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
+
 import eea.engine.entity.Entity;
 import factories.PlanetFactory.PlanetType;
 import factories.ProjectileFactory.ProjectileStatus;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Map;
+import spaceapes.SpaceApes;
 import utils.Constants;
+import utils.Resources;
 import utils.Utils;
 
 public class Projectile extends Entity {
@@ -150,6 +155,10 @@ public class Projectile extends Entity {
 				if (Math.pow(distanceVector.x, 2) + Math.pow(distanceVector.y, 2) < Math.pow(Constants.MOON_RADIUS, 2)) {
 					return ProjectileStatus.crashingMoon;
 				}
+			}
+			// Spiele Sound ab, wenn Projektil hohe Geschwindigkeit hat.
+			if (SpaceApes.PLAY_SOUNDS && !Resources.WHOOSH_SOUND.playing() && this.vx + this.vy >= 6) {
+				Resources.WHOOSH_SOUND.play();
 			}
 		}
 

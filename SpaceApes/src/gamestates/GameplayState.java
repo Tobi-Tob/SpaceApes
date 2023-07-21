@@ -9,6 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import actions.DisplayCoordinatesAction;
+import actions.PauseGameAction;
 import actions.ShootAction;
 import eea.engine.action.basicactions.*;
 import eea.engine.component.render.ImageRenderComponent;
@@ -73,7 +74,7 @@ public class GameplayState extends BasicGameState {
 		/* ESC Event */
 		// Bei Druecken der ESC-Taste zurueck ins Hauptmenue wechseln
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
+		escPressed.addAction(new PauseGameAction());
 		dummyEntity.addComponent(escPressed);
 
 		/* Weniger als 2 Affen uebrig Event */

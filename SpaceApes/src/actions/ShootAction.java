@@ -12,6 +12,7 @@ import factories.ProjectileFactory;
 import factories.ProjectileFactory.MovementType;
 import factories.ProjectileFactory.ProjectileType;
 import spaceapes.Map;
+import spaceapes.SpaceApes;
 import utils.Constants;
 import utils.Resources;
 import utils.Utils;
@@ -29,14 +30,14 @@ public class ShootAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
-		
+
 		Ape activeApe = Map.getInstance().getActiveApe();
 		if (activeApe.isInteractionAllowed() && (activeApe.isAIControlled() == this.isAIControlled)) {
-			
+
 			// Abfragen der ausgewaehlten Waffe
 			ProjectileType selectedType = ProjectileType.COCONUT;
 			int projectilePrice = 0;
-			
+
 			if (Map.getInstance().getControlPanel().isVisible()) {
 				Projectile selectedProjectile = Map.getInstance().getControlPanel().getSelectedProjectile();
 				selectedType = selectedProjectile.getType();
@@ -45,12 +46,16 @@ public class ShootAction implements Action {
 			if (projectilePrice > activeApe.getCoins()) {
 
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
-				Resources.REFUSED.play(1.5f, 0.3f);
+				if (SpaceApes.PLAY_SOUNDS) {
+					Resources.REFUSED.play(1.5f, 0.3f);
+				}
 
 			} else {
 				// Throw sound
-				Resources.THROW_SOUND.play(1f, 1f);
-				
+				if (SpaceApes.PLAY_SOUNDS) {
+					Resources.THROW_SOUND.play(1f, 1f);
+				}
+
 				activeApe.reduceCoins(projectilePrice);
 				activeApe.increaseMoneySpendStatistics(projectilePrice);
 				// Waehrend des Flugs des Projektils keine Spielerinteraktion erlaubt und das

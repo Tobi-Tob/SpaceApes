@@ -7,6 +7,8 @@ import eea.engine.action.Action;
 import eea.engine.component.Component;
 import entities.Ape;
 import utils.Constants;
+import utils.Resources;
+import utils.Utils;
 import spaceapes.Map;
 import spaceapes.SpaceApes;
 
@@ -33,6 +35,10 @@ public class MoveOnPlanetAction implements Action {
 			ape.changeEnergy(-energyUsed);
 			if (ape.getEnergy() > 0) { // Update statistics
 				ape.increaseEnergyUsedStatistics(energyUsed);
+			}
+			// Lauf Sound
+			if (SpaceApes.PLAY_SOUNDS && !Resources.STEP_SOUND.playing()) {
+				Resources.STEP_SOUND.play(Utils.randomFloat(1.1f, 1.6f), Utils.randomFloat(0.4f, 0.7f));
 			}
 			Map.getInstance().updateAimline();
 		}
