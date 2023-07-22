@@ -99,7 +99,7 @@ public class ProjectileBehaviorAction implements Action {
 
 				// Explosion Sound
 				if (SpaceApes.PLAY_SOUNDS) {
-					Resources.EXPLOSION_SMALL_SOUND.play(1f, 1f);
+					Resources.EXPLOSION_SMALL_SOUND.play(Utils.randomFloat(1.2f, 0.85f), 1f);
 				}
 			}
 			if (SpaceApes.renderImages && SpaceApes.PLAY_SOUNDS && status == ProjectileStatus.inBlackHole) {

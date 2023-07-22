@@ -26,6 +26,7 @@ import eea.engine.event.basicevents.MouseClickedEvent;
 import eea.engine.event.basicevents.MouseEnteredEvent;
 import spaceapes.Map;
 import spaceapes.SpaceApes;
+import utils.Resources;
 import utils.Utils;
 
 public class HighscoreState extends BasicGameState {
@@ -34,8 +35,6 @@ public class HighscoreState extends BasicGameState {
 	private Entity highScoreSignLeft;
 	private Entity highScoreSignRight;
 	private int maxPixelToShift = 0;
-	TrueTypeFont font;
-	TrueTypeFont fontBig;
 
 	public HighscoreState(int stateID) {
 		this.stateID = stateID;
@@ -105,15 +104,6 @@ public class HighscoreState extends BasicGameState {
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
 		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
 		dummyEntity.addComponent(escPressed);
-
-		if (SpaceApes.renderImages) {
-			int fontSizeBig = Math.round(SpaceApes.WIDTH / 35);
-			fontBig = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSizeBig), true);
-
-			int fontSize = Math.round(SpaceApes.WIDTH / 70);
-			font = new TrueTypeFont(new Font("Times New Roman", Font.BOLD, fontSize), true);
-		}
-
 	}
 
 	@Override
@@ -125,7 +115,7 @@ public class HighscoreState extends BasicGameState {
 
 			Vector2f textPos = Utils.toPixelCoordinates(-2.3f, -3.5f);
 			String winnerString = statisticsTable.get("Ape")[0] + " has won!";
-			fontBig.drawString(textPos.x, textPos.y, winnerString, Color.black);
+			Resources.HIGHSCORE_FONT_BIG.drawString(textPos.x, textPos.y, winnerString, Color.black);
 
 			int row = 0;
 			for (Entry<String, String[]> entry : statisticsTable.entrySet()) {
@@ -134,12 +124,12 @@ public class HighscoreState extends BasicGameState {
 
 				if (key != "Ape") {
 					Vector2f keyPos = Utils.toPixelCoordinates(-2.3f, -2.5f + row * 0.7f);
-					font.drawString(keyPos.x, keyPos.y, key, Color.black);
+					Resources.HIGHSCORE_FONT.drawString(keyPos.x, keyPos.y, key, Color.black);
 				}
 
 				for (int collum = 0; collum < value.length; collum++) {
 					Vector2f valuePos = Utils.toPixelCoordinates(-0.6f + collum, -2.5f + row * 0.7f);
-					font.drawString(valuePos.x, valuePos.y, value[collum], Color.black);
+					Resources.HIGHSCORE_FONT.drawString(valuePos.x, valuePos.y, value[collum], Color.black);
 				}
 				row++;
 			}

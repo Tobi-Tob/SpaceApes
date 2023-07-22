@@ -53,7 +53,7 @@ public class ShootAction implements Action {
 			} else {
 				// Throw sound
 				if (SpaceApes.PLAY_SOUNDS) {
-					Resources.THROW_SOUND.play(1f, 1f);
+					Resources.THROW_SOUND.play(Utils.randomFloat(1.2f, 0.85f), 1f);
 				}
 
 				activeApe.reduceCoins(projectilePrice);
