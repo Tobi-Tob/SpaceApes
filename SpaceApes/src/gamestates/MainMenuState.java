@@ -4,13 +4,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import actions.ChangeAngleAction;
 import actions.StartGameAction;
 import eea.engine.action.Action;
 import eea.engine.action.basicactions.ChangeStateAction;
@@ -46,11 +44,11 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
+
 		Resources.init(); // Initialisiere Font und Sound Objekte
-		
+
 		StateBasedEntityManager entityManager = StateBasedEntityManager.getInstance();
-		
+
 		/* Menu Hintergrund */
 		Entity menuLastLayer = new Entity("MenuLastLayer"); // Entitaet fuer Hintergrund erzeugen
 		menuLastLayer.setPosition(Utils.toPixelCoordinates(0, 0)); // Mitte des Fensters
@@ -96,12 +94,12 @@ public class MainMenuState extends BasicGameState {
 			System.err.println("Problem with start button image");
 		}
 
-		// Erstelle das Ausloese-Event und die zugehoerige Action		
+		// Erstelle das Ausloese-Event und die zugehoerige Action
 		ANDEvent startGameByMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
 		Action startGameAction = new StartGameAction(newGameEntity);
 		startGameByMouseEvent.addAction(startGameAction);
 		newGameEntity.addComponent(startGameByMouseEvent);
-		
+
 		// Ausserdem soll das Druecken der n-Taste das Spiel starten
 		KeyPressedEvent startGameByNKeyEvent = new KeyPressedEvent(Input.KEY_N);
 		startGameByNKeyEvent.addAction(new ChangeStateAction(SpaceApes.GAMEPLAY_STATE));
@@ -132,11 +130,6 @@ public class MainMenuState extends BasicGameState {
 		entityManager.addEntity(this.stateID, quitEntity); // Fuege die Entity zum StateBasedEntityManager hinzu
 	}
 
-	private void startMusic(float pitch, float volume, int fadeInTime) {
-		Resources.MUSIC.loop(pitch, 0);
-		Resources.MUSIC.fade(fadeInTime, volume, false);
-	}
-
 	/**
 	 * Wird vor dem Frame ausgefuehrt
 	 */
@@ -147,6 +140,11 @@ public class MainMenuState extends BasicGameState {
 		float pixelToShiftFirstLayer = -this.maxPixelToShiftFirstLayer * (mouseX - halfScreenWidth) / halfScreenWidth;
 		menuFirstLayer.setPosition(new Vector2f(pixelToShiftFirstLayer + halfScreenWidth, SpaceApes.HEIGHT / 2));
 		menuMidLayer.setPosition(new Vector2f(pixelToShiftFirstLayer / 2 + halfScreenWidth, SpaceApes.HEIGHT / 2));
+		
+		if (SpaceApes.PLAY_MUSIC && !Resources.TITLE_MUSIC.playing() && !container.isPaused()) {
+			Utils.startMusic(Resources.TITLE_MUSIC, 1f, 0.5f, 1000);
+		}
+		
 		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 	}
 
@@ -155,10 +153,7 @@ public class MainMenuState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		StateBasedEntityManager.getInstance().renderEntities(container, game, g);
-		if (SpaceApes.PLAY_MUSIC && !Resources.MUSIC.playing()) {
-			this.startMusic(1f, 0.10f, 1000);
-		}
+		StateBasedEntityManager.getInstance().renderEntities(container, game, g);	
 	}
 
 	@Override

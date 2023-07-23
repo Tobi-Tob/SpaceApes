@@ -1,15 +1,17 @@
 package utils;
 
 import java.util.Random;
+
+import org.newdawn.slick.Music;
 import org.newdawn.slick.geom.Vector2f;
 import spaceapes.SpaceApes;
 
 public final class Utils {
-	
+
 	public static float pixelWidth = SpaceApes.WIDTH;
 	public static float pixelHeight = SpaceApes.HEIGHT;
 	public static float worldWidth = Constants.WORLD_WIDTH;
- 	public static float worldHeight = Constants.WORLD_HEIGHT;
+	public static float worldHeight = Constants.WORLD_HEIGHT;
 
 	/**
 	 * Wandelt Welt-Koordinaten in Pixel-Koordinaten um
@@ -79,6 +81,21 @@ public final class Utils {
 	 */
 	public static float angleInPolarCoordinates(float x, float y) {
 		return (float) Math.toDegrees(Math.atan2(y, x));
-	}	
-	
+	}
+
+	/**
+	 * Starts to play music in a loop, in the first iteration the music fades in.
+	 * 
+	 * @param music      Music
+	 * @param pitch      float
+	 * @param volume     float
+	 * @param fadeInTime int
+	 */
+	public static void startMusic(Music music, float pitch, float volume, int fadeInTime) {
+		if (SpaceApes.PLAY_MUSIC) {
+			music.loop(pitch, 0);
+			music.fade(fadeInTime, volume, false);
+		}
+	}
+
 }

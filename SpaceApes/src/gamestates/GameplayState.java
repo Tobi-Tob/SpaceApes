@@ -24,6 +24,7 @@ import spaceapes.Map;
 import spaceapes.SpaceApes;
 import utils.Utils;
 import utils.Constants;
+import utils.Resources;
 
 /**
  * Diese Klasse repraesentiert das Spielfenster
@@ -31,9 +32,11 @@ import utils.Constants;
 public class GameplayState extends BasicGameState {
 
 	private int stateID; // Identifier dieses BasicGameState
+	private int gameTime; // in ms
 
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
+		this.gameTime = 0;
 	}
 
 	/**
@@ -82,7 +85,7 @@ public class GameplayState extends BasicGameState {
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
 		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
 		dummyEntity.addComponent(lessThan2Apes);
-		
+
 		/* Schuss Event */
 		// Event, dass auf Druecken der Space Taste reagiert. Ausgeloest wird ein Schuss
 		// des aktiven Affen, falls interactionAllowed = true und isAIControlled = false
@@ -91,7 +94,7 @@ public class GameplayState extends BasicGameState {
 		dummyEntity.addComponent(spaceKeyPressed);
 
 		entityManager.addEntity(stateID, dummyEntity);
-		
+
 		int random = (int) Utils.randomFloat(0, SpaceApes.players.size());
 		for (int i = 0; i <= random; i++) {
 			Map.getInstance().changeTurn(); // Method is called between 1 and numOfPlayers times
@@ -103,7 +106,15 @@ public class GameplayState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		// StatedBasedEntityManager soll alle Entities aktualisieren
+		this.gameTime += delta;
+		if (SpaceApes.PLAY_MUSIC && !Resources.GAMEPLAY_MUSIC.playing() && this.gameTime > 5000) {
+			if (Resources.GAMEPLAY_MUSIC.paused()) {
+				Resources.GAMEPLAY_MUSIC.play();
+			} else {
+				Utils.startMusic(Resources.GAMEPLAY_MUSIC, 1f, 0.5f, 3000);
+			}
+		}
+
 		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 	}
 

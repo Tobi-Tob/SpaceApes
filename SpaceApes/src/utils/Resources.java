@@ -19,7 +19,8 @@ public class Resources {
 
 //////////////////////// Music //////////////////////////
 
-	public static Music MUSIC;
+	public static Music TITLE_MUSIC;
+	public static Music GAMEPLAY_MUSIC;
 
 //////////////////////// Sounds /////////////////////////
 
@@ -64,9 +65,10 @@ public class Resources {
 		}
 		if (SpaceApes.PLAY_MUSIC) {
 			try {
-				MUSIC = new Music("snd/song1.ogg");
+				TITLE_MUSIC = new Music("snd/title_music.wav");
+				GAMEPLAY_MUSIC = new Music("snd/gameplay_music.wav");
 			} catch (SlickException e) {
-				System.err.println("Problem with main menu music");
+				System.err.println("Problem with music");
 			}
 		}
 

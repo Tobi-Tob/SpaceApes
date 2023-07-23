@@ -24,6 +24,10 @@ public class StartGameAction extends ButtonAnimationAction {
 
 	@Override
 	protected void updateToPerform(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+		Resources.TITLE_MUSIC.stop();
+		if (Resources.GAMEPLAY_MUSIC.paused()) {
+			Resources.GAMEPLAY_MUSIC.resume();
+		}
 		if (SpaceApes.PLAY_SOUNDS) {
 			if (gc.isPaused()) {
 				gc.setPaused(false);

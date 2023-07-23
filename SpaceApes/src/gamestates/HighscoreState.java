@@ -148,6 +148,7 @@ public class HighscoreState extends BasicGameState {
 		float pixelToShift = -this.maxPixelToShift * (mouseX - halfScreenWidth) / halfScreenWidth;
 		highScoreSignLeft.setPosition(new Vector2f(pixelToShift + SpaceApes.WIDTH / 3.1f, SpaceApes.HEIGHT / 2));
 		highScoreSignRight.setPosition(new Vector2f(SpaceApes.WIDTH / 1.5f, pixelToShift + SpaceApes.HEIGHT / 2));
+		
 		StateBasedEntityManager.getInstance().updateEntities(container, game, delta);
 	}
 

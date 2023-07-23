@@ -18,6 +18,7 @@ public class PauseGameAction implements Action {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sb, int delta, Component event) {
+		Resources.GAMEPLAY_MUSIC.pause();
 		
 		if (SpaceApes.PLAY_SOUNDS) {
 			Resources.PAUSE_SOUND.play(1f, 1f);
