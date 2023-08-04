@@ -9,6 +9,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import actions.DisplayCoordinatesAction;
+import actions.NextGameStateAction;
 import actions.PauseGameAction;
 import actions.ShootAction;
 import eea.engine.action.basicactions.*;
@@ -83,7 +84,7 @@ public class GameplayState extends BasicGameState {
 		/* Weniger als 2 Affen uebrig Event */
 		// zurueck ins Hauptmenue wechseln
 		Event lessThan2Apes = new LessThan2ApesLeftEvent();
-		lessThan2Apes.addAction(new ChangeStateAction(SpaceApes.HIGHSCORE_STATE));
+		lessThan2Apes.addAction(new NextGameStateAction());
 		dummyEntity.addComponent(lessThan2Apes);
 
 		/* Schuss Event */
@@ -107,7 +108,7 @@ public class GameplayState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		this.gameTime += delta;
-		if (SpaceApes.PLAY_MUSIC && !Resources.GAMEPLAY_MUSIC.playing() && this.gameTime > 5000) {
+		if (SpaceApes.PLAY_MUSIC && !Resources.GAMEPLAY_MUSIC.playing() && this.gameTime > 20000) {
 			if (Resources.GAMEPLAY_MUSIC.paused()) {
 				Resources.GAMEPLAY_MUSIC.play();
 			} else {

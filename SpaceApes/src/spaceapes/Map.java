@@ -148,11 +148,12 @@ public class Map {
 		for (Ape ape : apes) {
 			if (ape.isAlive()) {
 				livingApes.add(ape);
-			} else { // tote Affen aus Liste entfernen
-				ape.setActive(false); // Wird zwar eh aus der Liste entfernt aber safty first
+			} else {
+				/* Ape is dead */
+				ape.setActive(false);
 				ape.setInteractionAllowed(false);
 
-				// Entferne zugehoeriges ApeInfoSign
+				// Remove corresponding ApeInfoSign
 				for (Entity e : entityManager.getEntitiesByState(SpaceApes.GAMEPLAY_STATE)) {
 					if (e.getID() == Constants.APE_INFO_SIGN_ID) {
 						if (((ApeInfoSign) e).getApe().equals(ape)) {
@@ -161,20 +162,18 @@ public class Map {
 						}
 					}
 				}
-				this.fillStatisticsTable(ape); // Speichere Statistik des toten Affen
+				this.fillStatisticsTable(ape); // Save statistics of dead ape
 				System.out.println(ape.getID() + " is dead");
 				
-				// Todes Sound
 				if (SpaceApes.PLAY_SOUNDS) {
 					Resources.DEATH_SOUND.play(1f, 1f);
 				}
 
-				// Ape faellt nach unten
+				// Ape falls down
 				LoopEvent deathLoop = new LoopEvent();
 				deathLoop.addAction(new MoveDownAction(0.8f));
 				ape.addComponent(deathLoop);
 
-				// Wenn der Bildschirm verlassen wird, dann zerstoere den Ape
 				LeavingWorldEvent leavingWorldEvent = new LeavingWorldEvent(ape);
 				leavingWorldEvent.addAction(new DestroyEntityAction());
 				ape.addComponent(leavingWorldEvent);
@@ -182,12 +181,15 @@ public class Map {
 		}
 		apes = livingApes;
 		if (apes.isEmpty()) {
+			/* All apes died */
 			System.out.println(activeApe.getID() + " has killed all apes");
 			// Change State
 		} else if (apes.size() == 1) {
+			/* One ape is remaining */
 			System.out.println(apes.get(0).getID() + " has won!!!!!!!!!!!!!!!!! SUIII");
-			this.fillStatisticsTable(apes.get(0)); // Speichere Statistik des Siegers
+			this.fillStatisticsTable(apes.get(0)); // Save statistics of winner
 		} else {
+			/* At least 2 apes left */
 			activeApe.setActive(false);
 			activeApe.setInteractionAllowed(false);
 			nextApe.setActive(true);
@@ -199,8 +201,7 @@ public class Map {
 			} else {
 				controlPanel.setPanelAndComponentsVisible(true);
 			}
-			spawnItem(Constants.COIN_SPAWN_POSSIBILITY, Constants.HEALTH_PACK_SPAWN_POSSIBILITY,
-					Constants.ENERGY_PACK_SPAWN_POSSIBILITY); // TODO muss eigl nicht übergeben werden, wenn Konstante
+			spawnItem();
 		}
 	}
 
@@ -220,12 +221,12 @@ public class Map {
 
 	}
 
-	public void spawnItem(float probCoin, float probHealth, float probEnergy) {
+	public void spawnItem() {
 
 		ItemType itemType;
 
 		// Coin Spawnen
-		if (Utils.randomFloat(0, 1) < probCoin) {
+		if (Utils.randomFloat(0, 1) < Constants.COIN_SPAWN_POSSIBILITY) {
 			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 
@@ -244,7 +245,7 @@ public class Map {
 		}
 
 		// Healthpack Spawnen
-		if (Utils.randomFloat(0, 1) < probHealth) {
+		if (Utils.randomFloat(0, 1) < Constants.HEALTH_PACK_SPAWN_POSSIBILITY) {
 			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 				itemType = ItemType.HEALTH_PACK;
@@ -254,7 +255,7 @@ public class Map {
 		}
 
 		// Energypack Spawnen
-		if (Utils.randomFloat(0, 1) < probEnergy) {
+		if (Utils.randomFloat(0, 1) < Constants.ENERGY_PACK_SPAWN_POSSIBILITY) {
 			Vector2f itemPosition = this.findValidPosition(2, 10);
 			if (itemPosition != null) {
 				itemType = ItemType.ENERGY_PACK;

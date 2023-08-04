@@ -37,7 +37,7 @@ public abstract class ButtonAnimationAction implements Action {
 				}
 				// Button Sound
 				if (SpaceApes.PLAY_SOUNDS && !Resources.PLOP_SOUND.playing()) {
-					Resources.PLOP_SOUND.play(1.5f, 0.3f);
+					Resources.PLOP_SOUND.play(1.5f, 0.2f);
 				}
 				updateToPerform(container, game, delta, event);
 			}

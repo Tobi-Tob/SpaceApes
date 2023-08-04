@@ -14,6 +14,7 @@ import eea.engine.entity.StateBasedEntityManager;
 import gamestates.GameplayState;
 import gamestates.HighscoreState;
 import gamestates.MainMenuState;
+import gamestates.PauseState;
 
 public class SpaceApes extends StateBasedGame {
 
@@ -21,6 +22,7 @@ public class SpaceApes extends StateBasedGame {
 	public static final int MAINMENU_STATE = 0;
 	public static final int GAMEPLAY_STATE = 1;
 	public static final int HIGHSCORE_STATE = 2;
+	public static final int PAUSE_STATE = 3;
 
 	public static final List<String> players = new ArrayList<>(List.of("Player1", "AI"));
 
@@ -80,11 +82,13 @@ public class SpaceApes extends StateBasedGame {
 		addState(new MainMenuState(MAINMENU_STATE));
 		addState(new GameplayState(GAMEPLAY_STATE));
 		addState(new HighscoreState(HIGHSCORE_STATE));
+		addState(new PauseState(PAUSE_STATE));
 
 		// Fuege dem StateBasedEntityManager die States hinzu
 		StateBasedEntityManager.getInstance().addState(MAINMENU_STATE);
 		StateBasedEntityManager.getInstance().addState(GAMEPLAY_STATE);
 		StateBasedEntityManager.getInstance().addState(HIGHSCORE_STATE);
+		StateBasedEntityManager.getInstance().addState(PAUSE_STATE);
 	}
 
 	public void setRenderImages(boolean renderImages1) {

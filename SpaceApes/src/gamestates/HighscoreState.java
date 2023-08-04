@@ -1,6 +1,5 @@
 package gamestates;
 
-import java.awt.Font;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -10,11 +9,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import actions.NextGameStateAction;
 import eea.engine.action.basicactions.ChangeStateAction;
 import eea.engine.component.render.ImageRenderComponent;
 import eea.engine.entity.Entity;
@@ -93,7 +92,7 @@ public class HighscoreState extends BasicGameState {
 			System.err.println("Problem with quitHighscoreEntity image");
 		}
 		ANDEvent quitHighscoreMouseEvent = new ANDEvent(new MouseEnteredEvent(), new MouseClickedEvent());
-		quitHighscoreMouseEvent.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
+		quitHighscoreMouseEvent.addAction(new NextGameStateAction());
 		quitHighscoreEntity.addComponent(quitHighscoreMouseEvent);
 		entityManager.addEntity(stateID, quitHighscoreEntity);
 
@@ -102,7 +101,7 @@ public class HighscoreState extends BasicGameState {
 		Entity dummyEntity = new Entity("DummyHighscore");
 		entityManager.addEntity(stateID, dummyEntity);
 		Event escPressed = new KeyPressedEvent(Input.KEY_ESCAPE);
-		escPressed.addAction(new ChangeStateAction(SpaceApes.MAINMENU_STATE));
+		escPressed.addAction(new NextGameStateAction());
 		dummyEntity.addComponent(escPressed);
 	}
 

@@ -47,7 +47,7 @@ public class ShootAction implements Action {
 
 				System.out.println("Du bist zu arm fuer dieses Projektil :'(");
 				if (SpaceApes.PLAY_SOUNDS) {
-					Resources.REFUSED.play(1.5f, 0.3f);
+					Resources.REFUSED_SOUND.play(1.5f, 0.3f);
 				}
 
 			} else {

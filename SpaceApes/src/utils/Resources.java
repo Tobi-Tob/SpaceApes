@@ -46,7 +46,8 @@ public class Resources {
 	public static Sound PAUSE_SOUND;
 	// public static Sound SELECT_SOUND; // not used
 	public static Sound PLOP_SOUND;
-	public static Sound REFUSED;
+	public static Sound REFUSED_SOUND;
+	public static Sound BELL_SOUND;
 
 	/**
 	 * Initialise Font, Music and Sound objects
@@ -91,7 +92,8 @@ public class Resources {
 				START_SOUND = new Sound("snd/start.wav");
 				PAUSE_SOUND = new Sound("snd/pause.wav");
 				PLOP_SOUND = new Sound("snd/plop.wav");
-				REFUSED = new Sound("snd/refused.wav");
+				REFUSED_SOUND = new Sound("snd/refused.wav");
+				BELL_SOUND = new Sound("snd/bell.wav");
 			} catch (SlickException e) {
 				System.err.println("Problem with Sound");
 			}
